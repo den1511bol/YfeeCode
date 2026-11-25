@@ -39,7 +39,7 @@ object TermHints {
             val prev = before.trim().substringAfterLast(' ')
             if (prev == "import" || (before.trimStart().startsWith("from ") && prev == "from")) add(pyModules)
             else {
-                add(pyWords)
+                if (word.isNotEmpty()) add(pyWords)
                 if (word.length >= 2) {
                     val seen = history.flatMap { Regex("[A-Za-z_][A-Za-z0-9_]{2,}").findAll(it).map { m -> m.value }.toList() }.distinct()
                     add(seen)
