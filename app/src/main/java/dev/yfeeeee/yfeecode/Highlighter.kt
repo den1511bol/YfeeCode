@@ -52,6 +52,18 @@ object Highlighter {
                     withStyle(SpanStyle(color = kwComment)) { append(code.substring(i, end)) }
                     i = end
                 }
+                lang != Lang.PYTHON && lang != Lang.HTML && lang != Lang.TEXT && code.startsWith("/*", i) -> {
+                    val e = code.indexOf("*/", i + 2).let { if (it < 0) n else it + 2 }
+                    withStyle(SpanStyle(color = kwComment)) { append(code.substring(i, e)) }
+                    i = e
+                }
+                lang == Lang.PYTHON && (code.startsWith("\"\"\"", i) || code.startsWith("'''", i)) -> {
+                    // triple-quoted string / docstring, may span many lines
+                    val q = code.substring(i, i + 3)
+                    val e = code.indexOf(q, i + 3).let { if (it < 0) n else it + 3 }
+                    withStyle(SpanStyle(color = kwString)) { append(code.substring(i, e)) }
+                    i = e
+                }
                 lang == Lang.HTML && code.startsWith("<!--", i) -> {
                     val e = code.indexOf("-->", i).let { if (it < 0) n else it + 3 }
                     withStyle(SpanStyle(color = kwComment)) { append(code.substring(i, e)) }
