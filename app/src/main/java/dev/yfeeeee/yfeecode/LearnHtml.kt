@@ -57,5 +57,13 @@ fun htmlCourse() = Course("html", "HTML", "🌐", listOf(
         type("Закрой таблицу", "</table>"),
         build("Шапка страницы", "<|header|>", "footer|nav"),
         type("Подвал страницы", "<footer>")
+    )),
+    Lesson("Мета-теги и медиа", "В head кладут meta-теги: кодировку и viewport для телефонов. Для звука и видео есть audio и video.\n>&lt;meta charset=\"UTF-8\">\n>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">".replace("&lt;", "<"), listOf(
+        type("Укажи кодировку UTF-8", "<meta charset=\"UTF-8\">"),
+        type("Адаптация под телефон", "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"),
+        type("Подключи файл стилей", "<link rel=\"stylesheet\" href=\"style.css\">"),
+        type("Вставь видео с кнопками управления", "<video src=\"a.mp4\" controls></video>"),
+        type("Вставь аудио с кнопками управления", "<audio src=\"a.mp3\" controls></audio>"),
+        type("Подключи скрипт", "<script src=\"app.js\"></script>")
     ))
 ))

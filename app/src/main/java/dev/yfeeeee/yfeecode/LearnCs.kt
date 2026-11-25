@@ -65,5 +65,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Посчитай сумму nums", "int total = nums.Sum();"),
         build("Преврати результат в список", "nums|.|ToList|(|)", "ToArray|Count"),
         type("Найди первый элемент больше 5", "var x = nums.First(n => n > 5);")
+    )),
+    Lesson("Словари и строки", "Dictionary хранит пары ключ-значение. Строки в C# удобно склеивать через интерполяцию $\"...\".\n>var d = new Dictionary<string, int>();\n>d[\"a\"] = 1;", listOf(
+        type("Создай словарь string-int", "var d = new Dictionary<string, int>();"),
+        type("Добавь ключ a со значением 1", "d[\"a\"] = 1;"),
+        type("Проверь наличие ключа a", "d.ContainsKey(\"a\")"),
+        type("Перебери пары словаря", "foreach (var kv in d)"),
+        type("Строка с подстановкой name", "$\"Привет, {name}\""),
+        type("Длина строки s", "s.Length")
     ))
 ))

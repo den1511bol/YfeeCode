@@ -65,5 +65,13 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Конструктор класса Dog", "Dog() { }"),
         build("Вызови метод у объекта d", "d|.|speak|(|)|;", "Dog|class"),
         type("Создай указатель на Animal", "Animal* a = new Dog();")
+    )),
+    Lesson("Строки и ввод", "std::string хранит текст, cin читает ввод, getline читает строку целиком вместе с пробелами.\n>std::string s;\n>std::cin >> s;\n>std::cout << s.size();", listOf(
+        type("Объяви строку name", "std::string name;"),
+        type("Прочитай слово в name", "std::cin >> name;"),
+        type("Прочитай строку целиком", "std::getline(std::cin, name);"),
+        type("Длина строки", "name.size()"),
+        type("Склей две строки", "std::string c = a + b;"),
+        type("Подключи заголовок строк", "#include <string>")
     ))
 ))
