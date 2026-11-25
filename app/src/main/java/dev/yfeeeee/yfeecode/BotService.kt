@@ -58,6 +58,19 @@ class BotService : Service() {
         state().edit().putBoolean("running", true).putString("script", script).putString("log", log).apply()
         startForeground(1, buildNotification(script))
         acquireLocks()
+        // show the last line of the bot log in the notification
+        Thread {
+            var shown = ""
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            while (true) {
+                try {
+                    Thread.sleep(5000)
+                    val f = java.io.File(log)
+                    val line = if (f.isFile) f.useLines { it.lastOrNull { l -> l.isNotBlank() } }.orEmpty().take(120) else ""
+                    if (line != shown) { shown = line; nm.notify(1, buildNotification(script, line)) }
+                } catch (_: InterruptedException) { return@Thread } catch (_: Throwable) {}
+            }
+        }.apply { isDaemon = true }.start()
         if (intent == null) java.io.File(log).appendText("[run] Бот перезапущен после остановки системой\n")
         Thread {
             try {
@@ -78,7 +91,7 @@ class BotService : Service() {
         super.onDestroy()
     }
 
-    private fun buildNotification(script: String): Notification {
+    private fun buildNotification(script: String, lastLine: String = ""): Notification {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         nm.createNotificationChannel(
             NotificationChannel("bot", "Bot runner", NotificationManager.IMPORTANCE_LOW)
@@ -88,7 +101,8 @@ class BotService : Service() {
         val stop = android.app.PendingIntent.getService(this, 1, Intent(this, BotService::class.java).setAction(ACTION_STOP), flags)
         return Notification.Builder(this, "bot")
             .setContentTitle("YfeeCode: бот работает")
-            .setContentText(script.substringAfterLast('/'))
+            .setContentText(if (lastLine.isBlank()) script.substringAfterLast('/') else lastLine)
+            .setSubText(script.substringAfterLast('/'))
             .setSmallIcon(android.R.drawable.ic_media_play)
             .setOngoing(true)
             .setContentIntent(open)
