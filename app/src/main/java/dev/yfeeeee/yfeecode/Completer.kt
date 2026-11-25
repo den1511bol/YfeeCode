@@ -23,6 +23,8 @@ object Completer {
             "class" to "class |:\n    def __init__(self):\n        pass",
             "for" to "for i in range(|):\n    pass",
             "if" to "if |:\n    pass",
+            "while" to "while |:\n    pass",
+            "with" to "with open(\"|\") as f:\n    data = f.read()",
             "try" to "try:\n    |\nexcept Exception as e:\n    print(e)",
             "main" to "if __name__ == \"__main__\":\n    |",
             "async" to "async def |():\n    pass",
@@ -34,6 +36,9 @@ object Completer {
             "for" to "for (let i = 0; i < |; i++) {\n  \n}",
             "if" to "if (|) {\n  \n}",
             "log" to "console.log(|);",
+            "try" to "try {\n  |\n} catch (e) {\n  console.error(e);\n}",
+            "fetch" to "const res = await fetch(\"|\");\nconst data = await res.json();",
+            "class" to "class | {\n  constructor() {\n  }\n}",
             "af" to "const | = () => {\n  \n};"
         ),
         Lang.HTML to mapOf(
@@ -49,12 +54,16 @@ object Completer {
         Lang.CPP to mapOf(
             "main" to "#include <iostream>\n\nint main() {\n    |\n    return 0;\n}",
             "for" to "for (int i = 0; i < |; i++) {\n    \n}",
-            "cout" to "std::cout << | << std::endl;"
+            "cout" to "std::cout << | << std::endl;",
+            "class" to "class | {\npublic:\n    \n};",
+            "vec" to "std::vector<int> | = {};"
         ),
         Lang.CSHARP to mapOf(
             "main" to "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        |\n    }\n}",
             "for" to "for (int i = 0; i < |; i++)\n{\n    \n}",
-            "cw" to "Console.WriteLine(|);"
+            "cw" to "Console.WriteLine(|);",
+            "class" to "class |\n{\n    public string Name { get; set; }\n}",
+            "foreach" to "foreach (var x in |)\n{\n    \n}"
         )
     )
 
@@ -75,7 +84,7 @@ object Completer {
         if (prefix.length >= 2) {
             val pool = LinkedHashSet<String>()
             pool.addAll(words[lang].orEmpty())
-            Regex("[A-Za-z_][A-Za-z0-9_]{2,}").findAll(text).forEach { pool.add(it.value) }
+            if (text.length < 200_000) Regex("[A-Za-z_][A-Za-z0-9_]{2,}").findAll(text).forEach { pool.add(it.value) }
             pool.filter { it.startsWith(prefix, ignoreCase = true) && it != prefix }
                 .take(6).forEach { out += Suggestion(it, it) }
         }
