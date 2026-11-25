@@ -73,5 +73,13 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Длина строки", "name.size()"),
         type("Склей две строки", "std::string c = a + b;"),
         type("Подключи заголовок строк", "#include <string>")
+    )),
+    Lesson("Ссылки и const", "Ссылка (&) даёт другое имя той же переменной, поэтому функция может её менять без копирования. const запрещает менять значение.\n>void inc(int& x) { x++; }\n>const int N = 10;", listOf(
+        type("Параметр-ссылка на int", "void inc(int& x)"),
+        type("Константа N равна 10", "const int N = 10;"),
+        build("Передай строку по константной ссылке", "const|std::string|&|s", "int|void"),
+        type("Создай ссылку r на переменную a", "int& r = a;"),
+        type("Увеличь x на 1", "x++;"),
+        type("Подключи заголовок vector", "#include <vector>")
     ))
 ))

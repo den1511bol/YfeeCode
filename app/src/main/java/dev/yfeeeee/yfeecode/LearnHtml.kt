@@ -65,5 +65,13 @@ fun htmlCourse() = Course("html", "HTML", "🌐", listOf(
         type("Вставь видео с кнопками управления", "<video src=\"a.mp4\" controls></video>"),
         type("Вставь аудио с кнопками управления", "<audio src=\"a.mp3\" controls></audio>"),
         type("Подключи скрипт", "<script src=\"app.js\"></script>")
+    )),
+    Lesson("Атрибуты форм", "Атрибуты настраивают поля: type выбирает вид поля, required делает его обязательным, placeholder показывает подсказку, label подписывает поле.\n>&lt;label for=\"e\">Почта&lt;/label>\n>&lt;input id=\"e\" type=\"email\" required>".replace("&lt;", "<"), listOf(
+        type("Поле для почты", "<input type=\"email\">"),
+        type("Поле для пароля", "<input type=\"password\">"),
+        type("Обязательное поле", "<input required>"),
+        type("Подсказка внутри поля", "<input placeholder=\"Имя\">"),
+        type("Подпись, связанная с полем id=e", "<label for=\"e\">Почта</label>"),
+        type("Выпадающий список", "<select></select>")
     ))
 ))
