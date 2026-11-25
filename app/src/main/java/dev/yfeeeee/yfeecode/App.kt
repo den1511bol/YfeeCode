@@ -198,8 +198,9 @@ fun FilesScreen(
         NameDialog(
             title = "Новое имя", initial = target.name, onCancel = { renaming = null },
             onOk = { name ->
-                val dest = File(target.parentFile, name)
-                if (!dest.exists()) { onGone(target); target.renameTo(dest) }
+                val clean = name.trim().replace('\\', '/').substringAfterLast('/').trim()
+                val dest = File(target.parentFile, clean)
+                if (clean.isNotEmpty() && clean != ".." && clean != "." && !dest.exists()) { onGone(target); target.renameTo(dest) }
                 renaming = null; tick++
             }
         )

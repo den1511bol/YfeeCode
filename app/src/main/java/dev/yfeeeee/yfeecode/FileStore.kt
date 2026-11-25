@@ -20,13 +20,17 @@ class FileStore(private val ctx: Context) {
         f.writeText(text)
     }
 
+    /** Keeps only a plain file name: no folders, no "..", never empty. */
+    private fun safeName(name: String): String =
+        name.trim().replace('\\', '/').substringAfterLast('/').trim().ifBlank { "untitled" }.let { if (it == ".." || it == ".") "untitled" else it }
+
     fun create(dir: File, name: String, template: String = ""): File {
-        val f = File(dir, name.trim())
+        val f = File(dir, safeName(name))
         if (!f.exists()) write(f, template)
         return f
     }
 
-    fun mkdir(dir: File, name: String): File = File(dir, name.trim()).also { it.mkdirs() }
+    fun mkdir(dir: File, name: String): File = File(dir, safeName(name)).also { it.mkdirs() }
 
     fun delete(f: File) { f.deleteRecursively() }
 
@@ -37,7 +41,7 @@ class FileStore(private val ctx: Context) {
             val i = c.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             if (i >= 0 && c.moveToFirst()) name = c.getString(i)
         }
-        val out = File(dir, name)
+        val out = File(dir, safeName(name))
         ctx.contentResolver.openInputStream(uri)?.use { input ->
             out.outputStream().use { input.copyTo(it) }
         } ?: return null
