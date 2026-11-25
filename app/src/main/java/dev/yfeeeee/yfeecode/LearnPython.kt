@@ -57,5 +57,29 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Запусти опрос сообщений", "bot.infinity_polling()"),
         build("Команда модуля Heroku", "@|loader|.|command|(|)", "def|class"),
         type("Объяви класс модуля MyMod", "class MyMod(loader.Module):")
+    )),
+    Lesson("Словари и файлы", "Словарь хранит пары «ключ: значение». Файлы читают и пишут через open и with.\n>user = {\"name\": \"Аня\", \"age\": 18}\n>print(user[\"name\"])\n>with open(\"a.txt\", \"w\") as f:\n>    f.write(\"Привет\")", listOf(
+        build("Создай словарь с ключом name", "user|=|{|\"name\"|:|\"Аня\"|}", "[|(|=="),
+        type("Выведи значение по ключу name", "print(user[\"name\"])"),
+        build("Открой файл на запись", "with|open|(|\"a.txt\"|,|\"w\"|)|as|f|:", "def|import"),
+        type("Запиши строку в файл f", "f.write(\"Привет\")"),
+        build("Прочитай весь файл", "text|=|f|.|read|(|)", "write|open"),
+        type("Пройди по парам словаря user", "for k, v in user.items():")
+    )),
+    Lesson("Классы и объекты", "Класс описывает объект. Метод __init__ вызывается при создании, self — сам объект.\n>class Dog:\n>    def __init__(self, name):\n>        self.name = name\n>    def bark(self):\n>        print(self.name)\n>d = Dog(\"Рекс\")", listOf(
+        build("Объяви класс Dog", "class|Dog|:", "def|object"),
+        type("Метод __init__ с параметром name", "def __init__(self, name):"),
+        build("Сохрани имя в объекте", "self|.|name|=|name", "def|=="),
+        type("Создай объект Dog с именем Рекс", "d = Dog(\"Рекс\")"),
+        build("Вызови метод bark у d", "d|.|bark|(|)", "Dog|self"),
+        type("Метод bark с параметром self", "def bark(self):")
+    )),
+    Lesson("Асинхронность и aiogram", "async def создаёт корутину, await ждёт её результат. На этом построены aiogram и pyrogram.\n>import asyncio\n>async def main():\n>    await asyncio.sleep(1)\n>asyncio.run(main())\n>from aiogram import Bot, Dispatcher, executor", listOf(
+        build("Объяви асинхронную функцию main", "async|def|main|(|)|:", "await|class"),
+        type("Подожди 1 секунду", "await asyncio.sleep(1)"),
+        build("Запусти main", "asyncio|.|run|(|main|(|)|)", "await|def"),
+        type("Подключи aiogram", "from aiogram import Bot, Dispatcher, executor"),
+        build("Обработчик команды start в aiogram", "@|dp|.|message_handler|(|commands|=|[|\"start\"|]|)", "bot|def"),
+        type("Ответь пользователю в aiogram", "await message.answer(\"Привет\")")
     ))
 ))

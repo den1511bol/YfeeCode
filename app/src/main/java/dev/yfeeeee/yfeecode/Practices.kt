@@ -52,8 +52,13 @@ object Practices {
                     must("""message_handler""", "Нужен обработчик @bot.message_handler(...)"), must("""polling""", "Запусти bot.infinity_polling()"))),
             Practice("py8", "Модуль Heroku", "Напиши модуль Heroku: декоратор @loader.tds, класс от loader.Module и команду с @loader.command().", "from .. import loader, utils\n\n", Lang.PYTHON,
                 listOf(must("""@loader\.tds""", "Нужен декоратор @loader.tds"), must("""class\s+\w+\s*\(\s*loader\.Module\s*\)""", "Нужен класс: class MyMod(loader.Module):"),
-                    must("""@loader\.command""", "Нужен декоратор @loader.command()"), must("""async\s+def\s+\w+cmd""", "Команда: async def hellocmd(self, message):")))
-        ),
+                    must("""@loader\.command""", "Нужен декоратор @loader.command()"), must("""async\s+def\s+\w+cmd""", "Команда: async def hellocmd(self, message):"))),
+            Practice("py9", "Класс Dog", "Создай класс Dog с методом speak, который выводит Гав. Создай объект и вызови speak.", "", Lang.PYTHON,
+                listOf(must("""class\s+Dog""", "Нужен class Dog:"), must("""def\s+speak\s*\(\s*self""", "Нужен метод def speak(self):")), "Гав"),
+            Practice("py10", "Сумма значений", "Создай словарь prices с ключами a и b (значения 1 и 2) и выведи сумму его значений.", "", Lang.PYTHON,
+                listOf(must("""prices\s*=\s*\{""", "Создай словарь prices = {...}")), "3"),
+            Practice("py11", "Асинхронный main", "Напиши async def main(), который печатает Готово, и запусти её через asyncio.run.", "import asyncio\n\n", Lang.PYTHON,
+                listOf(must("""async\s+def\s+main""", "Нужна async def main():"), must("""asyncio\.run\s*\(""", "Запусти через asyncio.run(main())")), "Готово")        ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
                 listOf(must("""console\.log\s*\(""", "Нужен console.log(...)"), must("""Hello""", "Выведи слово Hello"))),
