@@ -512,6 +512,15 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 Text(l, color = c, fontFamily = FontFamily.Monospace, fontSize = 12.sp)
             }
         }
+        val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "run ", "mod ", "token ")
+            else listOf("print()", "import os", "import asyncio", "dir()", "help()", "exit()")
+        Row(Modifier.fillMaxWidth().background(Color(0xFF0D0716)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
+            quick.forEach { q ->
+                TextButton(onClick = { input = q }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
+                    Text(q.trim(), color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+                }
+            }
+        }
         Text(
             term.prompt + input + "▏", color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
             modifier = Modifier.fillMaxWidth().background(Color(0xFF110920)).padding(8.dp)
