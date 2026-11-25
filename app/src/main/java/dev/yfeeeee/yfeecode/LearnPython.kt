@@ -105,5 +105,13 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Проверь, есть ли 5 в списке", "5 in nums"),
         build("Отсортируй список на месте", "nums|.|sort|(|)", "sorted|reverse"),
         type("Найди позицию числа 2 в списке", "nums.index(2)")
+    )),
+    Lesson("Включения и файлы", "Списковое включение создаёт список в одну строку. Файлы читают через with open(...), он сам закрывает файл.\n>sq = [x * x for x in range(5)]\n>with open(\"a.txt\") as f:\n>    data = f.read()", listOf(
+        build("Квадраты чисел от 0 до 4", "[|x|*|x|for|x|in|range|(|5|)|]", "while|def"),
+        type("Только чётные из nums", "[x for x in nums if x % 2 == 0]"),
+        build("Открой файл a.txt на чтение", "with|open|(|\"a.txt\"|)|as|f|:", "def|import"),
+        type("Прочитай весь файл", "data = f.read()"),
+        build("Запиши текст в файл", "f|.|write|(|\"Привет\"|)", "read|close"),
+        type("Открой файл на запись", "with open(\"a.txt\", \"w\") as f:")
     ))
 ))
