@@ -115,7 +115,9 @@ object Practices {
             Practice("css4", "Сетка и адаптивность", "Сделай grid из трёх колонок и добавь media-запрос для узких экранов.", "", Lang.CSS,
                 listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"), must("""@media""", "Добавь @media (max-width: …)"))),
             Practice("css7", "Плавный hover", "Добавь кнопке .btn плавный переход transition.", "", Lang.CSS,
-                listOf(must("""\.btn""", "Нужен селектор .btn"), must("""transition\s*:""", "Добавь свойство transition")))
+                listOf(must("""\.btn""", "Нужен селектор .btn"), must("""transition\s*:""", "Добавь свойство transition"))),
+            Practice("css8", "CSS-переменная", "Объяви переменную --main в :root и используй её как цвет текста через var().", "", Lang.CSS,
+                listOf(must(""":root""", "Нужен блок :root"), must("""--main\s*:""", "Объяви переменную --main: ..."), must("""var\(\s*--main\s*\)""", "Используй var(--main)")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
@@ -143,7 +145,9 @@ object Practices {
             Practice("cs5", "LINQ: чётные", "Есть список nums. Оставь только чётные числа через Where.", "using System.Linq;\n\n", Lang.CSHARP,
                 listOf(must("""\.Where\s*\(""", "Используй nums.Where(...)"), must("""%\s*2""", "Чётность проверяется через % 2"))),
             Practice("cs6", "Словарь", "Создай Dictionary<string, int> и добавь в него ключ a.", "", Lang.CSHARP,
-                listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужен Dictionary<string, int>"), must("""[\[(]\s*"a""", "Добавь ключ \"a\"")))
+                listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужен Dictionary<string, int>"), must("""[\[(]\s*"a""", "Добавь ключ \"a\""))),
+            Practice("cs7", "try/catch", "Оберни int.Parse в try и поймай FormatException.", "", Lang.CSHARP,
+                listOf(must("""\btry\b""", "Нужен блок try"), must("""catch\s*\(\s*FormatException""", "Лови catch (FormatException e)"), must("""int\.Parse\s*\(""", "Используй int.Parse(...)")))
         )
     )
 }
