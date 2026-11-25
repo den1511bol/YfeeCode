@@ -50,7 +50,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
             cmd == "py" -> { mode = TermMode.PY; return }
             cmd == "sh" -> { mode = TermMode.SH; return }
             cmd.startsWith("token ") -> {
@@ -66,6 +66,26 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 val line = rest.substringAfter(' ', "")
                 if (line.isBlank()) print("Использование: mod файл.py .команда аргументы")
                 else runModuleCommand(File(cwd, name), line)
+                return
+            }
+            cmd.startsWith("get ") -> {
+                // get <url> [имя] — download a file from the internet (for example from GitHub) into the current folder
+                val parts = cmd.removePrefix("get ").trim().split(Regex("\\s+"))
+                val url = parts[0]
+                if (!url.startsWith("http://") && !url.startsWith("https://")) { print("Использование: get https://адрес/файл [имя]"); return }
+                val name = (parts.getOrNull(1) ?: url.substringBefore('?').substringAfterLast('/')).substringAfterLast('/').ifBlank { "download.txt" }
+                val dest = File(cwd, name)
+                print("Скачиваю $url …")
+                thread {
+                    try {
+                        val c = java.net.URL(url).openConnection() as java.net.HttpURLConnection
+                        c.connectTimeout = 15000; c.readTimeout = 30000; c.instanceFollowRedirects = true
+                        c.setRequestProperty("User-Agent", "YfeeCode")
+                        if (c.responseCode != 200) { print("Ошибка: HTTP ${c.responseCode}"); return@thread }
+                        val n = c.inputStream.use { i -> dest.outputStream().use { o -> i.copyTo(o) } }
+                        print("Сохранено: ${dest.name} ($n байт)")
+                    } catch (e: Exception) { print("Ошибка: ${e.message}") }
+                }
                 return
             }
             cmd == "stop" -> { stopAll(); return }

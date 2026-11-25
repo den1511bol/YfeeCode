@@ -55,6 +55,15 @@ fun App(
         sp.edit().putString("tabs", open.joinToString("\n") { it.file.absolutePath }).putInt("active", active).apply()
     }
     var dir by remember { mutableStateOf(store.root) }
+    LaunchedEffect(Unit) { Updater.autoCheck() }
+    var dismissedUpdate by remember { mutableStateOf(false) }
+    if (Updater.available && !dismissedUpdate && !showSettings) AlertDialog(
+        onDismissRequest = { dismissedUpdate = true },
+        title = { Text("Доступно обновление") },
+        text = { Text("Вышла новая версия 𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒. Файлы и настройки сохранятся.") },
+        confirmButton = { TextButton(onClick = { dismissedUpdate = true; showSettings = true; Updater.downloadAndInstall(ctx) }) { Text("Обновить") } },
+        dismissButton = { TextButton(onClick = { dismissedUpdate = true }) { Text("Позже") } }
+    )
 
     Column(Modifier.fillMaxSize().diamondPattern().statusBarsPadding().navigationBarsPadding()) {
         Row(
@@ -116,7 +125,7 @@ fun App(
             confirmButton = { TextButton(onClick = { showSettings = false; Settings.save(ctx) }) { Text("Готово") } },
             title = { Text("Настройки") },
             text = {
-                Column {
+                Column(Modifier.verticalScroll(rememberScrollState())) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Размер шрифта: ${Settings.fontSize}", modifier = Modifier.weight(1f))
                         TextButton(onClick = { Settings.fontSize = (Settings.fontSize - 1).coerceAtLeast(10) }) { Text("−") }
@@ -125,6 +134,17 @@ fun App(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Пульсация узоров", modifier = Modifier.weight(1f))
                         Switch(checked = Settings.pulse, onCheckedChange = { Settings.pulse = it })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Автопроверка обновлений", modifier = Modifier.weight(1f))
+                        Switch(checked = Settings.autoUpdate, onCheckedChange = { Settings.autoUpdate = it })
+                    }
+                    Text("Версия: ${Updater.currentLabel}", color = Color(0xFF8B7FA8), fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
+                    if (Updater.status.isNotEmpty()) Text(Updater.status, color = Color(0xFFC084FC), fontSize = 12.sp)
+                    if (Updater.progress >= 0) LinearProgressIndicator(progress = { Updater.progress / 100f }, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
+                    Row {
+                        TextButton(onClick = { Updater.check() }, enabled = !Updater.busy) { Text("Проверить") }
+                        if (Updater.available) TextButton(onClick = { Updater.downloadAndInstall(ctx) }, enabled = !Updater.busy) { Text("Обновить") }
                     }
                     Text("Цвет акцента", modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -513,7 +533,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 Text(l, color = c, fontFamily = FontFamily.Monospace, fontSize = 12.sp)
             }
         }
-        val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "run ", "mod ", "token ")
+        val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "get ", "run ", "mod ", "token ")
             else listOf("print()", "import os", "import asyncio", "dir()", "help()", "exit()")
         Row(Modifier.fillMaxWidth().background(Color(0xFF0D0716)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
             quick.forEach { q ->

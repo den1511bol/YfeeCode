@@ -14,10 +14,22 @@ android {
         applicationId = "dev.yfeeeee.yfeecode"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        // CI sets these so every build is newer than the previous one (needed for in-app updates)
+        versionCode = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
+        versionName = "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
+        buildConfigField("String", "GIT_SHA", "\"" + (System.getenv("GITHUB_SHA") ?: "dev") + "\"")
         ndk {
             abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+        }
+    }
+
+    // One fixed key for every build, so a new APK can be installed over the old one.
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("yfeecode.jks")
+            storePassword = "yfeecode"
+            keyAlias = "yfeecode"
+            keyPassword = "yfeecode"
         }
     }
 
@@ -35,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
