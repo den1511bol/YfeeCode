@@ -111,6 +111,9 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (!f.exists()) { print("Нет файла: ${f.name}"); return }
         when (Lang.fromName(f.name)) {
             Lang.PYTHON -> {
+                ui.post {
+                    if (Battery.requestIfNeeded(ctx)) print("Разреши работу в фоне в окне Android, чтобы бот не засыпал при выключенном экране")
+                }
                 BotService.stop(ctx) // kills previous run (if any)
                 thread {
                     Thread.sleep(800) // let the old :bot process die first

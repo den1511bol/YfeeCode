@@ -149,6 +149,14 @@ class EditorState(val file: File, initial: String) {
                 return
             }
         }
+        if (autoFix && Settings.autoSpace && s.length == 1) {
+            val e = AutoSpace.apply(text.substring(0, cursor), text.substring(cursor), s, lang)
+            if (e != null) {
+                val start = cursor - e.del
+                set(text.substring(0, start) + e.ins + text.substring(cursor), start + e.ins.length)
+                return
+            }
+        }
         if (autoFix && s == " ") {
             val before = text.getOrNull(cursor - 1)
             // phone keyboards like to double a space: ignore second space inside a line

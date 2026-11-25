@@ -137,6 +137,10 @@ fun App(
                         Switch(checked = Settings.pulse, onCheckedChange = { Settings.pulse = it })
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Автопробелы вокруг = + - ,", modifier = Modifier.weight(1f))
+                        Switch(checked = Settings.autoSpace, onCheckedChange = { Settings.autoSpace = it })
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Автопроверка обновлений", modifier = Modifier.weight(1f))
                         Switch(checked = Settings.autoUpdate, onCheckedChange = { Settings.autoUpdate = it })
                     }
@@ -534,12 +538,24 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 Text(l, color = c, fontFamily = FontFamily.Monospace, fontSize = 12.sp)
             }
         }
+        val dynamic = TermHints.suggest(input, term.mode, term.cwd, history)
         val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "get ", "run ", "mod ", "token ")
             else listOf("print()", "import os", "import asyncio", "dir()", "help()", "exit()")
         Row(Modifier.fillMaxWidth().background(Color(0xFF0D0716)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
-            quick.forEach { q ->
-                TextButton(onClick = { input = q }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
-                    Text(q.trim(), color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+            if (dynamic.isNotEmpty()) {
+                // tapping a suggestion only writes the word into the input line, nothing is sent
+                dynamic.forEach { q ->
+                    TextButton(onClick = { input = TermHints.apply(input, q) }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
+                        Text(q, color = Color(0xFFF472B6), fontFamily = FontFamily.Monospace, fontSize = 13.sp)
+                    }
+                }
+            } else {
+                quick.forEach { q ->
+                    TextButton(onClick = {
+                        input = if (input.isBlank()) q else if (input.endsWith(" ")) input + q else "$input $q"
+                    }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
+                        Text(q.trim(), color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+                    }
                 }
             }
         }
@@ -548,7 +564,11 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
             modifier = Modifier.fillMaxWidth().background(Color(0xFF110920)).padding(8.dp)
         )
         DevKeyboard(
-            onText = { input += it.replace("()", "(").replace("[]", "[").replace("{}", "{") },
+            onText = { raw ->
+                val t = raw.replace("()", "(").replace("[]", "[").replace("{}", "{")
+                val e = if (term.mode == TermMode.PY && Settings.autoSpace) AutoSpace.apply(input, "", t, Lang.PYTHON) else null
+                input = if (e != null) input.dropLast(e.del) + e.ins else input + t
+            },
             onCmd = { c ->
                 when (c) {
                     Cmd.BACK -> input = input.dropLast(1)
