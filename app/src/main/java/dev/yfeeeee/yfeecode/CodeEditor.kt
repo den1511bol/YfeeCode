@@ -22,6 +22,31 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/** Finds the bracket pair next to the caret: returns (a, b) offsets or null. */
+fun matchBracket(t: String, cur: Int): Pair<Int, Int>? {
+    if (t.isEmpty() || t.length > 60_000) return null
+    val open = "([{"; val close = ")]}"
+    for (i in intArrayOf(cur - 1, cur)) {
+        if (i < 0 || i >= t.length) continue
+        val c = t[i]
+        val o = open.indexOf(c); val k = close.indexOf(c)
+        if (o >= 0) {
+            var d = 0; var j = i
+            while (j < t.length && j - i < 20_000) {
+                if (t[j] == c) d++ else if (t[j] == close[o]) { d--; if (d == 0) return i to j }
+                j++
+            }
+        } else if (k >= 0) {
+            var d = 0; var j = i
+            while (j >= 0 && i - j < 20_000) {
+                if (t[j] == c) d++ else if (t[j] == open[k]) { d--; if (d == 0) return j to i }
+                j--
+            }
+        }
+    }
+    return null
+}
+
 /** Custom editor: does not use the system keyboard at all. */
 @Composable
 fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
@@ -84,6 +109,15 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                         val l0 = layout
                         if (l0 != null && state.hasSel && state.selEnd <= l0.layoutInput.text.length) {
                             drawPath(l0.getPathForRange(state.selStart, state.selEnd), Color(0x663B82F6))
+                        }
+                        val l1 = layout
+                        if (l1 != null) {
+                            val m = matchBracket(state.text, state.cursor)
+                            if (m != null && m.second < l1.layoutInput.text.length) {
+                                for (idx in intArrayOf(m.first, m.second)) {
+                                    drawPath(l1.getPathForRange(idx, idx + 1), Color(0x55C084FC))
+                                }
+                            }
                         }
                         drawContent()
                         val l = layout
