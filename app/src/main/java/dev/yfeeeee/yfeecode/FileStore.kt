@@ -1,0 +1,59 @@
+// YfeeCode — developer: @yfeeeee
+package dev.yfeeeee.yfeecode
+
+import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
+import java.io.File
+
+class FileStore(private val ctx: Context) {
+    val root: File = File(ctx.filesDir, "workspace").also { it.mkdirs() }
+    val logFile: File = File(ctx.filesDir, "run.log")
+
+    fun list(dir: File = root): List<File> =
+        (dir.listFiles() ?: emptyArray()).sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
+
+    fun read(f: File): String = runCatching { f.readText() }.getOrDefault("")
+
+    fun write(f: File, text: String) {
+        f.parentFile?.mkdirs()
+        f.writeText(text)
+    }
+
+    fun create(dir: File, name: String, template: String = ""): File {
+        val f = File(dir, name.trim())
+        if (!f.exists()) write(f, template)
+        return f
+    }
+
+    fun mkdir(dir: File, name: String): File = File(dir, name.trim()).also { it.mkdirs() }
+
+    fun delete(f: File) { f.deleteRecursively() }
+
+    /** Copies a file picked through the system picker into the workspace. */
+    fun importUri(uri: Uri, dir: File): File? {
+        var name = "imported.txt"
+        ctx.contentResolver.query(uri, null, null, null, null)?.use { c ->
+            val i = c.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (i >= 0 && c.moveToFirst()) name = c.getString(i)
+        }
+        val out = File(dir, name)
+        ctx.contentResolver.openInputStream(uri)?.use { input ->
+            out.outputStream().use { input.copyTo(it) }
+        } ?: return null
+        return out
+    }
+
+    fun exportTo(uri: Uri, f: File) {
+        ctx.contentResolver.openOutputStream(uri)?.use { o -> f.inputStream().use { it.copyTo(o) } }
+    }
+
+    fun template(lang: Lang): String = when (lang) {
+        Lang.PYTHON -> "import asyncio\n\n\nasync def main():\n    print(\"Hello from YfeeCode\")\n\n\nasyncio.run(main())\n"
+        Lang.JS -> "console.log('Hello from YfeeCode');\n"
+        Lang.HTML -> "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"utf-8\">\n    <title>Page</title>\n</head>\n<body>\n    \n</body>\n</html>\n"
+        Lang.CPP -> "#include <iostream>\n\nint main() {\n    std::cout << \"Hello\" << std::endl;\n    return 0;\n}\n"
+        Lang.CSHARP -> "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        Console.WriteLine(\"Hello\");\n    }\n}\n"
+        else -> ""
+    }
+}
