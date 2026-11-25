@@ -97,5 +97,13 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Подключи requests под именем r", "import requests as r"),
         build("Случайное число от 1 до 6", "randint|(|1|,|6|)", "range|len"),
         type("Подключи json", "import json")
+    )),
+    Lesson("Сортировка и поиск", "sorted() возвращает отсортированный список, .sort() сортирует на месте. min и max находят крайние значения, in проверяет наличие.\n>nums = [3, 1, 2]\n>print(sorted(nums))\n>print(max(nums))", listOf(
+        build("Отсортируй список nums", "sorted|(|nums|)", "sort|len"),
+        type("Отсортируй по убыванию", "sorted(nums, reverse=True)"),
+        build("Найди наибольшее число", "max|(|nums|)", "min|sum"),
+        type("Проверь, есть ли 5 в списке", "5 in nums"),
+        build("Отсортируй список на месте", "nums|.|sort|(|)", "sorted|reverse"),
+        type("Найди позицию числа 2 в списке", "nums.index(2)")
     ))
 ))
