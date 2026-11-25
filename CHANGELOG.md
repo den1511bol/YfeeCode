@@ -105,3 +105,6 @@
 
 ## Автосессия 32
 - Новые сниппеты: Python with/while, JS try/fetch/class, C++ class/vec, C# class/foreach. Подсказки слов не сканируют файлы >200 тыс. символов. __pycache__ убран из git.
+
+## Автосессия 33
+- Песочница модулей Heroku: настоящий интерфейс db (db.get(owner, key, default), db.set(owner, key, value)), данные сохраняются между командами. Проверено локально на тестовом модуле.

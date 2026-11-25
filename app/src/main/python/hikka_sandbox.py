@@ -21,15 +21,32 @@ class _Strings(dict):
         return self[key]
 
 
+class _FakeDB(dict):
+    """Like the real Heroku db: db.get(owner, key, default) / db.set(owner, key, value)."""
+
+    def get(self, owner, key=None, default=None):
+        return dict.get(self, owner, {}).get(key, default)
+
+    def set(self, owner, key, value):
+        self.setdefault(owner, {})[key] = value
+        return True
+
+    def pointer(self, owner, key, default=None):
+        return self.get(owner, key, default)
+
+
+_DBS = {}  # one fake db per module file, kept between commands in the same app run
+
+
 class Module:
     strings = {}
     strings_ru = {}
 
     def get(self, k, default=None):
-        return self.__dict__.setdefault("_db", {}).get(k, default)
+        return self.__dict__.setdefault("_db", _FakeDB()).get(type(self).__name__, k, default)
 
     def set(self, k, v):
-        self.__dict__.setdefault("_db", {})[k] = v
+        self.__dict__.setdefault("_db", _FakeDB()).set(type(self).__name__, k, v)
 
     @property
     def client(self):
@@ -37,7 +54,7 @@ class Module:
 
     @property
     def _client_db(self):
-        return self.__dict__.setdefault("_db", {})
+        return self.__dict__.setdefault("_db", _FakeDB())
 
     def config_complete(self):
         pass
@@ -194,9 +211,10 @@ def call(path, line):
             cls = _load(path)
             inst = cls()
             inst.strings = _Strings(getattr(cls, "strings", {}))
+            inst.__dict__["_db"] = _DBS.setdefault(path, _FakeDB())
             ready = getattr(inst, "client_ready", None)
             if ready:
-                r = ready(inst.client, inst.__dict__.setdefault("_db", {}))
+                r = ready(inst.client, inst.__dict__["_db"])
                 if inspect.iscoroutine(r):
                     asyncio.run(r)
             text = line.lstrip(".")
