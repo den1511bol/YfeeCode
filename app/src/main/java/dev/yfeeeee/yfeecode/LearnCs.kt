@@ -49,5 +49,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Выведи размер nums", "Console.WriteLine(nums.Count);"),
         build("Первый элемент nums", "nums|[|0|]", "(|1"),
         type("Подключи коллекции", "using System.Collections.Generic;")
+    )),
+    Lesson("Классы и свойства", "Класс описывает объект, свойство даёт доступ к данным через get и set.\n>public class Dog {\n>    public string Name { get; set; }\n>}\n>var d = new Dog();\n>d.Name = \"Рекс\";", listOf(
+        build("Объяви класс Dog", "public|class|Dog|{", "def|func"),
+        type("Свойство Name типа string", "public string Name { get; set; }"),
+        build("Создай объект Dog", "var|d|=|new|Dog|(|)|;", "Dog|=="),
+        type("Задай имя Рекс", "d.Name = \"Рекс\";"),
+        build("Выведи имя", "Console|.|WriteLine|(|d|.|Name|)|;", "ReadLine|print"),
+        type("Метод Bark, ничего не возвращает", "public void Bark() {")
     ))
 ))

@@ -49,5 +49,13 @@ fun htmlCourse() = Course("html", "HTML", "🌐", listOf(
         type("Открой тег script", "<script>"),
         build("Подключи стили", "<|link|rel|=|\"stylesheet\"|href|=|\"a.css\"|>", "src|script"),
         type("Закрой тег script", "</script>")
+    )),
+    Lesson("Таблицы и семантика", "Таблица: table, строка tr, ячейка td. Семантические теги описывают смысл: header, nav, main, footer.\n>&lt;table>\n>  &lt;tr>&lt;td>1&lt;/td>&lt;td>2&lt;/td>&lt;/tr>\n>&lt;/table>\n>&lt;header>&lt;/header>&lt;nav>&lt;/nav>&lt;footer>&lt;/footer>".replace("&lt;", "<"), listOf(
+        build("Открой таблицу", "<|table|>", "tr|td"),
+        build("Ячейка со словом Имя", "<|td|>|Имя|</|td|>", "tr|th"),
+        type("Открой строку таблицы", "<tr>"),
+        type("Закрой таблицу", "</table>"),
+        build("Шапка страницы", "<|header|>", "footer|nav"),
+        type("Подвал страницы", "<footer>")
     ))
 ))

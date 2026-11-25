@@ -41,5 +41,13 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Колонкой", "flex-direction: column;"),
         build("Расстояние 10px между элементами", "gap|:|10px|;", "margin|="),
         type("Пусть элементы переносятся", "flex-wrap: wrap;")
+    )),
+    Lesson("Grid и адаптивность", "Grid строит сетку, media-запрос меняет стили для узких экранов.\n>display: grid;\n>grid-template-columns: 1fr 1fr;\n>@media (max-width: 600px) {\n>  .box { display: block; }\n>}", listOf(
+        build("Включи grid", "display|:|grid|;", "flex|="),
+        type("Две равные колонки", "grid-template-columns: 1fr 1fr;"),
+        build("Для экранов уже 600px", "@|media|(|max-width|:|600px|)|{", "min-width|media"),
+        type("Расстояние между ячейками 8px", "gap: 8px;"),
+        build("Абсолютное позиционирование", "position|:|absolute|;", "display|="),
+        type("Скрой элемент", "display: none;")
     ))
 ))

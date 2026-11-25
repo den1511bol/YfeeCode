@@ -57,5 +57,13 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Запусти функцию main", "main();"),
         build("Ловить ошибки", "try|{", "catch|if"),
         type("Блок обработки ошибки", "} catch (e) {")
+    )),
+    Lesson("DOM и события", "DOM — это дерево элементов страницы. Находим элемент через querySelector, слушаем события через addEventListener.\n>const btn = document.querySelector(\"#btn\");\n>btn.addEventListener(\"click\", () => {\n>  btn.textContent = \"Нажато\";\n>});", listOf(
+        build("Найди элемент с id btn", "const|btn|=|document|.|querySelector|(|\"#btn\"|)|;", "getElement|fetch"),
+        type("Слушай клик по btn", "btn.addEventListener(\"click\", () => {"),
+        build("Поменяй текст элемента", "btn|.|textContent|=|\"Привет\"|;", "console|log"),
+        type("Добавь класс active", "btn.classList.add(\"active\");"),
+        build("Прочитай значение поля input", "const|v|=|input|.|value|;", "text|get"),
+        type("Закрой обработчик события", "});")
     ))
 ))

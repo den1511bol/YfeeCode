@@ -49,5 +49,13 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Объяви массив int a[3]", "int a[3];"),
         build("Первый элемент массива a", "a|[|0|]", "(|1"),
         type("Объяви vector чисел v", "std::vector<int> v;")
+    )),
+    Lesson("Указатели и классы", "Указатель хранит адрес переменной: & берёт адрес, * разыменовывает. Класс описывает объект.\n>int x = 5;\n>int* p = &x;\n>*p = 7;\n>class Dog {\n>public:\n>    std::string name;\n>};", listOf(
+        build("Возьми адрес x", "int|*|p|=|&|x|;", "int|x|=="),
+        type("Запиши 7 по указателю p", "*p = 7;"),
+        build("Объяви класс Dog", "class|Dog|{", "def|struct"),
+        type("Открытая секция класса", "public:"),
+        build("Поле name в классе", "std|::|string|name|;", "int|=="),
+        type("Создай объект Dog с именем d", "Dog d;")
     ))
 ))

@@ -25,3 +25,6 @@
 
 ## Автосессия 6
 - Подсказки Python для ботов: токен прямо в коде, нет polling/start_polling, time.sleep в async, нет @loader.tds, await вне async def, open без with.
+
+## Автосессия 7
+- Новые уроки: JS — DOM и события; HTML — таблицы и семантика; CSS — Grid и адаптивность; C++ — указатели и классы; C# — классы и свойства.
