@@ -51,6 +51,14 @@ class Progress(ctx: Context) {
         get() = sp.getInt("xp", 0)
         set(v) = sp.edit().putInt("xp", v).apply()
 
+    fun practiceDone(id: String) = sp.getBoolean("pr:$id", false)
+    fun completePractice(id: String, gained: Int) {
+        if (!practiceDone(id)) {
+            sp.edit().putBoolean("pr:$id", true).apply()
+            xp += gained
+        }
+    }
+
     fun complete(course: String, lesson: Int, gained: Int) {
         val first = !done(course, lesson)
         sp.edit().putBoolean("$course:$lesson", true).apply()
@@ -63,3 +71,18 @@ object Courses {
         listOf(pythonCourse(), jsCourse(), htmlCourse(), cssCourse(), cppCourse(), csCourse())
     }
 }
+
+data class Check(val regex: Regex, val message: String)
+
+/** Practical task solved in the built-in editor. For Python [expectOut] is compared with the real output. */
+data class Practice(
+    val id: String,
+    val title: String,
+    val task: String,
+    val starter: String,
+    val lang: Lang,
+    val checks: List<Check>,
+    val expectOut: String? = null
+)
+
+fun must(regex: String, message: String) = Check(Regex(regex), message)

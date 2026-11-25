@@ -7,6 +7,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,15 +40,18 @@ fun LearnScreen() {
     val prog = remember { Progress(ctx) }
     var course by remember { mutableStateOf<Course?>(null) }
     var lesson by remember { mutableStateOf<Int?>(null) }
+    var practice by remember { mutableStateOf<Practice?>(null) }
     var tick by remember { mutableIntStateOf(0) }
 
     BackHandler(enabled = course != null) { if (lesson != null) lesson = null else course = null }
+    val pr = practice
 
     val c = course
     val l = lesson
     when {
+        c != null && pr != null -> PracticeScreen(pr, prog) { practice = null; tick++ }
         c != null && l != null -> LessonRunner(c, l, prog) { lesson = null; tick++ }
-        c != null -> CourseMap(c, prog, tick, onBack = { course = null }, onOpen = { lesson = it })
+        c != null -> CourseMap(c, prog, tick, onBack = { course = null }, onOpen = { lesson = it }, onPractice = { practice = it })
         else -> LearnHome(prog, tick) { course = it }
     }
 }
@@ -88,7 +92,7 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
 }
 
 @Composable
-private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, onOpen: (Int) -> Unit) {
+private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, onOpen: (Int) -> Unit, onPractice: (Practice) -> Unit) {
     val doneCount = remember(tick) { prog.doneCount(c.id, c.lessons.size) }
     Column(Modifier.fillMaxSize().padding(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -114,6 +118,26 @@ private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, 
                     Text(les.title, color = if (locked) Muted else Color.White, fontSize = 15.sp)
                 }
             }
+            item {
+                Text("Практика в редакторе", color = Violet, fontSize = 17.sp, fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 12.dp, top = 12.dp))
+            }
+            items(Practices.forCourse(c.id)) { pr ->
+                val done = prog.practiceDone(pr.id)
+                Row(
+                    Modifier.fillMaxWidth().padding(horizontal = 12.dp)
+                        .background(Panel, RoundedCornerShape(14.dp))
+                        .border(1.dp, if (done) Good else Color(0x55C084FC), RoundedCornerShape(14.dp))
+                        .clickable { onPractice(pr) }.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(if (done) "✓" else "⌨", color = if (done) Good else Violet, fontSize = 20.sp)
+                    Spacer(Modifier.width(10.dp))
+                    Text(pr.title, color = Color.White, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                    Text("+15 XP", color = Muted, fontSize = 11.sp)
+                }
+            }
+            item { Spacer(Modifier.height(24.dp)) }
         }
     }
 }
