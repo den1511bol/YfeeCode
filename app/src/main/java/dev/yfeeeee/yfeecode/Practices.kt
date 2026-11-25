@@ -67,7 +67,9 @@ object Practices {
             Practice("py12", "Ловим ошибку", "Попробуй выполнить int(\"abc\"), поймай ValueError и выведи слово Ошибка.", "", Lang.PYTHON,
                 listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови except ValueError:")), "Ошибка"),
             Practice("py13", "Модуль math", "Подключи math и выведи корень из 81.", "", Lang.PYTHON,
-                listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0")
+                listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0"),
+            Practice("py14", "Квадраты", "Создай список squares из квадратов чисел от 0 до 4 и выведи его.", "", Lang.PYTHON,
+                listOf(must("""\bfor\b.*\bin\b""", "Используй списковое включение [x * x for x in ...]")), "[0, 1, 4, 9, 16]")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
@@ -79,7 +81,9 @@ object Practices {
             Practice("js4", "Обработчик клика", "Найди элемент по селектору и добавь обработчик события click.", "", Lang.JS,
                 listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)"))),
             Practice("js5", "Пауза через промис", "Напиши async-функцию, которая ждёт 1 секунду через Promise и setTimeout.", "", Lang.JS,
-                listOf(must("""\basync\b""", "Нужна async-функция"), must("""new\s+Promise""", "Создай new Promise(...)"), must("""setTimeout\s*\(""", "Используй setTimeout(...)")))
+                listOf(must("""\basync\b""", "Нужна async-функция"), must("""new\s+Promise""", "Создай new Promise(...)"), must("""setTimeout\s*\(""", "Используй setTimeout(...)"))),
+            Practice("js6", "map удвоение", "Удвой каждое число массива [1, 2, 3] через map.", "", Lang.JS,
+                listOf(must("""\.map\s*\(""", "Используй метод map"), must("""\*\s*2|2\s*\*""", "Умножай на 2")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
@@ -89,7 +93,9 @@ object Practices {
             Practice("html3", "Ссылка и картинка", "Добавь ссылку (a с href) и картинку (img с src).", "", Lang.HTML,
                 listOf(must("""<a\s+[^>]*href\s*=""", "Нужна ссылка <a href=…>"), must("""<img\s+[^>]*src\s*=""", "Нужна картинка <img src=…>"))),
             Practice("html4", "Таблица 2x2", "Сделай таблицу: две строки по две ячейки.", "", Lang.HTML,
-                listOf(must("""<table[\s>]""", "Нужен тег <table>"), must("""(<tr>[\s\S]*?</tr>[\s\S]*?){2}""", "Нужно две строки <tr>…</tr>"), must("""(<td>[\s\S]*?</td>[\s\S]*?){4}""", "Нужно четыре ячейки <td>…</td>")))
+                listOf(must("""<table[\s>]""", "Нужен тег <table>"), must("""(<tr>[\s\S]*?</tr>[\s\S]*?){2}""", "Нужно две строки <tr>…</tr>"), must("""(<td>[\s\S]*?</td>[\s\S]*?){4}""", "Нужно четыре ячейки <td>…</td>"))),
+            Practice("html8", "Мета viewport", "Добавь в head тег meta с name=\"viewport\".", "", Lang.HTML,
+                listOf(must("""<meta[^>]*name\s*=\s*["']viewport["']""", "Нужен <meta name=\"viewport\" ...>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
@@ -99,7 +105,9 @@ object Practices {
             Practice("css3", "Центр flex", "Отцентруй содержимое контейнера .box через flex по обеим осям.", "", Lang.CSS,
                 listOf(must("""display\s*:\s*flex""", "Нужен display: flex"), must("""justify-content\s*:\s*center""", "Нужен justify-content: center"), must("""align-items\s*:\s*center""", "Нужен align-items: center"))),
             Practice("css4", "Сетка и адаптивность", "Сделай grid из трёх колонок и добавь media-запрос для узких экранов.", "", Lang.CSS,
-                listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"), must("""@media""", "Добавь @media (max-width: …)")))
+                listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"), must("""@media""", "Добавь @media (max-width: …)"))),
+            Practice("css7", "Плавный hover", "Добавь кнопке .btn плавный переход transition.", "", Lang.CSS,
+                listOf(must("""\.btn""", "Нужен селектор .btn"), must("""transition\s*:""", "Добавь свойство transition")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
@@ -111,7 +119,9 @@ object Practices {
             Practice("cpp4", "Класс Dog", "Объяви класс Dog с открытым полем name типа std::string.", "", Lang.CPP,
                 listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""public\s*:""", "Нужна секция public:"), must("""string\s+name""", "Нужно поле std::string name;"))),
             Practice("cpp5", "Наследование", "Сделай класс Animal и класс Dog, наследник Animal.", "", Lang.CPP,
-                listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*:\s*public\s+Animal""", "Нужно: class Dog : public Animal")))
+                listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*:\s*public\s+Animal""", "Нужно: class Dog : public Animal"))),
+            Practice("cpp6", "Чтение строки", "Объяви std::string name и прочитай строку через getline.", "", Lang.CPP,
+                listOf(must("""string\s+name""", "Нужна переменная std::string name"), must("""getline\s*\(""", "Используй getline(cin, name)")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -123,7 +133,9 @@ object Practices {
             Practice("cs4", "Класс со свойством", "Создай класс Dog со свойством Name ({ get; set; }), создай объект и задай имя.", "", Lang.CSHARP,
                 listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""\{\s*get;\s*set;\s*\}""", "Нужно свойство { get; set; }"), must("""new\s+Dog\s*\(""", "Создай объект: new Dog()"))),
             Practice("cs5", "LINQ: чётные", "Есть список nums. Оставь только чётные числа через Where.", "using System.Linq;\n\n", Lang.CSHARP,
-                listOf(must("""\.Where\s*\(""", "Используй nums.Where(...)"), must("""%\s*2""", "Чётность проверяется через % 2")))
+                listOf(must("""\.Where\s*\(""", "Используй nums.Where(...)"), must("""%\s*2""", "Чётность проверяется через % 2"))),
+            Practice("cs6", "Словарь", "Создай Dictionary<string, int> и добавь в него ключ a.", "", Lang.CSHARP,
+                listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужен Dictionary<string, int>"), must("""[\[(]\s*"a""", "Добавь ключ \"a\"")))
         )
     )
 }
