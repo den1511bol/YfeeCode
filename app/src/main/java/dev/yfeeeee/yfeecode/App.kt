@@ -76,11 +76,12 @@ fun App(
                     },
                     goTerminal = { tab = 2 }
                 )
-                else -> TerminalScreen(term, open.getOrNull(active)?.file, dir)
+                2 -> TerminalScreen(term, open.getOrNull(active)?.file, dir)
+                else -> LearnScreen()
             }
         }
         NavigationBar(containerColor = Color(0xFF150B24)) {
-            listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal)
+            listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal, "Уроки" to Icons.Default.School)
                 .forEachIndexed { i, (label, icon) ->
                     NavigationBarItem(selected = tab == i, onClick = { tab = i },
                         icon = { Icon(icon, label) }, label = { Text(label) })
