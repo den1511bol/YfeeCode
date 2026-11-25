@@ -44,6 +44,42 @@ class FileStore(private val ctx: Context) {
         return out
     }
 
+    /** Packs the whole workspace into a zip. */
+    fun zipTo(uri: Uri) {
+        ctx.contentResolver.openOutputStream(uri)?.use { out ->
+            java.util.zip.ZipOutputStream(out).use { z ->
+                root.walkTopDown().filter { it.isFile }.forEach { f ->
+                    z.putNextEntry(java.util.zip.ZipEntry(f.relativeTo(root).path.replace('\\', '/')))
+                    f.inputStream().use { it.copyTo(z) }
+                    z.closeEntry()
+                }
+            }
+        }
+    }
+
+    /** Unpacks a zip into [dir]; entries trying to escape the folder are skipped. Returns file count. */
+    fun unzipFrom(uri: Uri, dir: File): Int {
+        var n = 0
+        val base = dir.canonicalPath
+        ctx.contentResolver.openInputStream(uri)?.use { input ->
+            java.util.zip.ZipInputStream(input).use { z ->
+                var e = z.nextEntry
+                while (e != null) {
+                    val target = File(dir, e.name).canonicalFile
+                    if (target.path.startsWith(base + File.separator)) {
+                        if (e.isDirectory) target.mkdirs() else {
+                            target.parentFile?.mkdirs()
+                            target.outputStream().use { z.copyTo(it) }
+                            n++
+                        }
+                    }
+                    e = z.nextEntry
+                }
+            }
+        }
+        return n
+    }
+
     fun exportTo(uri: Uri, f: File) {
         ctx.contentResolver.openOutputStream(uri)?.use { o -> f.inputStream().use { it.copyTo(o) } }
     }

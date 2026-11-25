@@ -35,7 +35,9 @@ fun App(
     term: TerminalState,
     refreshKey: Int,
     onImport: (File) -> Unit,
-    onExport: (File) -> Unit
+    onExport: (File) -> Unit,
+    onZipExport: () -> Unit = {},
+    onZipImport: (File) -> Unit = {}
 ) {
     var tab by remember { mutableIntStateOf(0) }
     var showSettings by remember { mutableStateOf(false) }
@@ -81,7 +83,7 @@ fun App(
                 listOf(Color(0x00C084FC), Color(0xFFC084FC), Color(0xFFF472B6), Color(0x00F472B6)))))
         Box(Modifier.weight(1f)) {
             when (tab) {
-                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport) { f ->
+                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport) { f ->
                     val i = open.indexOfFirst { it.file == f }
                     if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
                     tab = 1
@@ -131,7 +133,8 @@ fun App(
 @Composable
 fun FilesScreen(
     store: FileStore, dir: File, refreshKey: Int, onDir: (File) -> Unit,
-    onImport: (File) -> Unit, onExport: (File) -> Unit, onOpen: (File) -> Unit
+    onImport: (File) -> Unit, onExport: (File) -> Unit,
+    onZipExport: () -> Unit, onZipImport: (File) -> Unit, onOpen: (File) -> Unit
 ) {
     var tick by remember { mutableIntStateOf(0) }
     var dialog by remember { mutableStateOf<String?>(null) } // "file" | "dir"
@@ -144,6 +147,8 @@ fun FilesScreen(
             TextButton(onClick = { dialog = "dir" }) { Text("+ Папка") }
             TextButton(onClick = { dialog = "tpl" }) { Text("Шаблон") }
             TextButton(onClick = { onImport(dir) }) { Text("Импорт") }
+            TextButton(onClick = { onZipImport(dir) }) { Text("ZIP↓") }
+            TextButton(onClick = onZipExport) { Text("ZIP↑") }
         }
         Text(
             "~/" + dir.relativeToOrSelf(store.root).path, color = Color(0xFF8B7FA8),
@@ -429,6 +434,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 }
             }
             Spacer(Modifier.weight(1f))
+            TextButton(onClick = { term.lines.clear() }) { Text("очистить", color = Color(0xFF8B7FA8)) }
             TextButton(onClick = { current?.let { term.runFile(it) } }) { Text("▶ файл") }
             TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFF472B6)) }
         }

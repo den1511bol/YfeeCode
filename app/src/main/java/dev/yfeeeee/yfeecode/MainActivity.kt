@@ -48,7 +48,18 @@ class MainActivity : ComponentActivity() {
                         if (uri != null && f != null) store.exportTo(uri, f)
                     }
 
+                    val zipOut = rememberLauncherForActivityResult(
+                        ActivityResultContracts.CreateDocument("application/zip")
+                    ) { uri: Uri? -> if (uri != null) store.zipTo(uri) }
+                    val zipIn = rememberLauncherForActivityResult(
+                        ActivityResultContracts.OpenDocument()
+                    ) { uri: Uri? ->
+                        if (uri != null) { store.unzipFrom(uri, importDir); refresh++ }
+                    }
+
                     App(
+                        onZipExport = { zipOut.launch("YfeeCode-project.zip") },
+                        onZipImport = { dir -> importDir = dir; zipIn.launch(arrayOf("application/zip", "application/octet-stream")) },
                         store = store,
                         term = term,
                         refreshKey = refresh,
