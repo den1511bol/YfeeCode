@@ -37,6 +37,7 @@ fun App(
     onExport: (File) -> Unit
 ) {
     var tab by remember { mutableIntStateOf(0) }
+    var showSettings by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
     val sp = remember { ctx.getSharedPreferences("session", android.content.Context.MODE_PRIVATE) }
     val open = remember {
@@ -70,6 +71,9 @@ fun App(
             )
             Spacer(Modifier.weight(1f))
             Text("by @yfeeeee", color = Color(0xFFC084FC), fontSize = 12.sp)
+            IconButton(onClick = { showSettings = true }, modifier = Modifier.size(36.dp)) {
+                Icon(Icons.Default.Settings, "Настройки", tint = Color(0xFFC084FC))
+            }
         }
         Box(Modifier.fillMaxWidth().height(2.dp).background(
             androidx.compose.ui.graphics.Brush.horizontalGradient(
@@ -95,6 +99,24 @@ fun App(
                 else -> LearnScreen()
             }
         }
+        if (showSettings) AlertDialog(
+            onDismissRequest = { showSettings = false; Settings.save(ctx) },
+            confirmButton = { TextButton(onClick = { showSettings = false; Settings.save(ctx) }) { Text("Готово") } },
+            title = { Text("Настройки") },
+            text = {
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Размер шрифта: ${Settings.fontSize}", modifier = Modifier.weight(1f))
+                        TextButton(onClick = { Settings.fontSize = (Settings.fontSize - 1).coerceAtLeast(10) }) { Text("−") }
+                        TextButton(onClick = { Settings.fontSize = (Settings.fontSize + 1).coerceAtMost(24) }) { Text("+") }
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Пульсация узоров", modifier = Modifier.weight(1f))
+                        Switch(checked = Settings.pulse, onCheckedChange = { Settings.pulse = it })
+                    }
+                }
+            }
+        )
         NavigationBar(containerColor = Color(0xFF150B24)) {
             listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal, "Уроки" to Icons.Default.School)
                 .forEachIndexed { i, (label, icon) ->

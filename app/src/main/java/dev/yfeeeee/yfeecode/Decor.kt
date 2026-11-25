@@ -39,8 +39,9 @@ fun Modifier.diamondPattern(
         val s = step.toPx()
         val h = size.height
         // soft 0.35..1.0 breathing, different phase for each element
+        val ph = if (Settings.pulse) phase else 0.25f
         fun pulse(k: Float): Float =
-            0.35f + 0.65f * (0.5f + 0.5f * sin(2.0 * PI * (phase + k)).toFloat())
+            0.35f + 0.65f * (0.5f + 0.5f * sin(2.0 * PI * (ph + k)).toFloat())
 
         var i = 0
         var x = -h

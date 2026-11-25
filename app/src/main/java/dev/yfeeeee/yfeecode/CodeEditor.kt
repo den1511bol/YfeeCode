@@ -31,7 +31,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
     var viewportH by remember { mutableIntStateOf(0) }
 
     val styled = remember(state.text, state.lang) { Highlighter.highlight(state.text, state.lang) }
-    val style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 14.sp, lineHeight = 20.sp, color = Color(0xFFE6EDF3))
+    val style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = Settings.fontSize.sp, lineHeight = (Settings.fontSize + 6).sp, color = Color(0xFFE6EDF3))
     val lineCount = state.text.count { it == '\n' } + 1
     val gutter = remember(lineCount) { (1..lineCount).joinToString("\n") }
 
