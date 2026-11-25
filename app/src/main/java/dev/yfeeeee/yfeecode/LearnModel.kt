@@ -51,11 +51,34 @@ class Progress(ctx: Context) {
         get() = sp.getInt("xp", 0)
         set(v) = sp.edit().putInt("xp", v).apply()
 
+    private fun today() = java.time.LocalDate.now().toString()
+
+    /** Marks today as an active learning day and updates the streak. */
+    private fun touch() {
+        val t = today()
+        val last = sp.getString("last", "") ?: ""
+        if (last == t) return
+        val y = java.time.LocalDate.now().minusDays(1).toString()
+        val s = if (last == y) sp.getInt("streak", 0) + 1 else 1
+        sp.edit().putString("last", t).putInt("streak", s).apply()
+    }
+
+    /** Streak that is still alive (learned today or yesterday). */
+    fun streak(): Int {
+        val last = sp.getString("last", "") ?: ""
+        val y = java.time.LocalDate.now().minusDays(1).toString()
+        return if (last == today() || last == y) sp.getInt("streak", 0) else 0
+    }
+
+    fun level(): Int = xp / 100 + 1
+    fun levelProgress(): Float = (xp % 100) / 100f
+
     fun practiceDone(id: String) = sp.getBoolean("pr:$id", false)
     fun completePractice(id: String, gained: Int) {
         if (!practiceDone(id)) {
             sp.edit().putBoolean("pr:$id", true).apply()
             xp += gained
+            touch()
         }
     }
 
@@ -63,6 +86,7 @@ class Progress(ctx: Context) {
         val first = !done(course, lesson)
         sp.edit().putBoolean("$course:$lesson", true).apply()
         xp += if (first) gained else gained / 3
+        touch()
     }
 }
 

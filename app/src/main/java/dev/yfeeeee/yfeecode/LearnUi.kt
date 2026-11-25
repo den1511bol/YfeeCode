@@ -59,11 +59,25 @@ fun LearnScreen() {
 @Composable
 private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
     val xp = remember(tick) { prog.xp }
+    val streak = remember(tick) { prog.streak() }
+    val level = remember(tick) { prog.level() }
+    val lp = remember(tick) { prog.levelProgress() }
     Column(Modifier.fillMaxSize().padding(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("Уроки", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            Text("🔥 $streak", color = if (streak > 0) Color(0xFFFFB86C) else Muted, fontSize = 16.sp)
+            Spacer(Modifier.width(12.dp))
             Text("⭐ $xp XP", color = Violet, fontSize = 16.sp)
         }
+        Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("Уровень $level", color = Color.White, fontSize = 13.sp)
+            Spacer(Modifier.width(10.dp))
+            Box(Modifier.weight(1f).height(8.dp).background(Chip, CircleShape)) {
+                Box(Modifier.fillMaxWidth(lp.coerceIn(0.02f, 1f)).fillMaxHeight().background(Violet, CircleShape))
+            }
+        }
+        Text(if (streak > 0) "Серия: $streak дн. подряд. Занимайся каждый день!" else "Пройди урок сегодня, чтобы начать серию.",
+            color = Muted, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
         Text("Короткие уроки: собери команду из блоков, затем впиши её сам.", color = Muted, fontSize = 13.sp,
             modifier = Modifier.padding(vertical = 8.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
