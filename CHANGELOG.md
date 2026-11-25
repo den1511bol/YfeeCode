@@ -75,3 +75,6 @@
 
 ## Автосессия 22
 - Практика для новых уроков: списковые включения, map, CSS transition, meta viewport, getline, Dictionary. Всего 42 задачи.
+
+## Автосессия 23
+- Новые подсказки: C++ (vector, algorithm, cin/endl, if с «=», std::), C# (using для List/Dictionary и LINQ, if с «=»).

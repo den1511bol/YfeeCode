@@ -34,7 +34,7 @@ object Hints {
                 !cur.endsWith("}") && cur.contains(":"))
                 out += "CSS: в конце свойства нужна «;»"
             Lang.CPP -> cppHints(cur, code, out)
-            Lang.CSHARP -> csHints(cur, out)
+            Lang.CSHARP -> csHints(cur, code, out)
             else -> {}
         }
         return out.distinct().take(3)
@@ -112,14 +112,32 @@ object Hints {
         if (cur.isNotEmpty() && !cur.endsWith(";") && !cur.endsWith("{") && !cur.endsWith("}") &&
             !cur.startsWith("#") && !cur.startsWith("//") && !cur.endsWith(")") && !cur.endsWith(",") && cur.contains("="))
             out += "C++: не хватает «;» в конце"
+        if (Regex("""\bvector\s*<""").containsMatchIn(cur) && !code.contains("#include <vector>"))
+            out += "C++: для vector нужен #include <vector>"
+        if (Regex("""\b(sort|reverse|find|max|min)\s*\(""").containsMatchIn(cur) && !code.contains("#include <algorithm>"))
+            out += "C++: для sort, find, max, min нужен #include <algorithm>"
+        if (Regex("""\bcin\b""").containsMatchIn(cur) && !code.contains("#include <iostream>"))
+            out += "C++: для cin нужен #include <iostream>"
+        if (cur.contains("endl") && !code.contains("<iostream>"))
+            out += "C++: для endl нужен #include <iostream>"
+        if (Regex("""\bif\s*\(.*[^=!<>]=[^=].*\)""").containsMatchIn(cur))
+            out += "C++: в условии if нужно «==», а не «=»"
+        if (Regex("""\b(cout|cin|string|vector)\b""").containsMatchIn(cur) && !code.contains("using namespace std") && !cur.contains("std::") && !cur.startsWith("#"))
+            out += "C++: добавь std:: перед именем или using namespace std;"
     }
 
-    private fun csHints(cur: String, out: MutableList<String>) {
+    private fun csHints(cur: String, code: String, out: MutableList<String>) {
         if (cur.startsWith("Console.") && !cur.endsWith(";"))
             out += "C#: не хватает «;» в конце"
         if (cur.startsWith("class ") && !cur.contains("{"))
             out += "C#: после class нужен блок { }"
         if (cur.contains("await ") )
             out += "C#: await работает только в async-методе (Task)"
+        if (Regex("""\b(List|Dictionary)\s*<""").containsMatchIn(cur) && !code.contains("using System.Collections.Generic") && !code.contains("ImplicitUsings"))
+            out += "C#: для List и Dictionary нужен using System.Collections.Generic;"
+        if (Regex("""\.(Where|Select|OrderBy|Any|Sum)\s*\(""").containsMatchIn(cur) && !code.contains("using System.Linq"))
+            out += "C#: для LINQ нужен using System.Linq;"
+        if (Regex("""\bif\s*\(.*[^=!<>]=[^=].*\)""").containsMatchIn(cur))
+            out += "C#: в условии if нужно «==», а не «=»"
     }
 }
