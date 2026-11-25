@@ -23,7 +23,7 @@ class EditorState(val file: File, initial: String) {
     val hasSel: Boolean get() = anchor != null && anchor != cursor
     val selStart: Int get() = minOf(anchor ?: cursor, cursor)
     val selEnd: Int get() = maxOf(anchor ?: cursor, cursor)
-    val selectedText: String get() = if (hasSel) text.substring(selStart, selEnd) else ""
+    val selectedText: String get() = if (hasSel && selEnd <= text.length) text.substring(selStart, selEnd) else ""
 
     fun toggleSelect() {
         selectMode = !selectMode
@@ -119,7 +119,7 @@ class EditorState(val file: File, initial: String) {
         redo.clear()
     }
 
-    private fun set(t: String, c: Int) { text = t; cursor = c.coerceIn(0, t.length); dirty = true }
+    private fun set(t: String, c: Int) { text = t; cursor = c.coerceIn(0, t.length); anchor = anchor?.coerceIn(0, t.length); dirty = true }
 
     fun moveTo(c: Int) { cursor = c.coerceIn(0, text.length); afterMove() }
 
@@ -278,11 +278,11 @@ class EditorState(val file: File, initial: String) {
 
     fun undo() {
         val s = undo.removeLastOrNull() ?: return
-        redo.addLast(text to cursor); text = s.first; cursor = s.second; dirty = true
+        redo.addLast(text to cursor); text = s.first; cursor = s.second.coerceIn(0, text.length); anchor = null; selectMode = false; dirty = true
     }
 
     fun redo() {
         val s = redo.removeLastOrNull() ?: return
-        undo.addLast(text to cursor); text = s.first; cursor = s.second; dirty = true
+        undo.addLast(text to cursor); text = s.first; cursor = s.second.coerceIn(0, text.length); anchor = null; selectMode = false; dirty = true
     }
 }
