@@ -73,5 +73,13 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Объяви асинхронную стрелочную функцию", "const run = async () => {"),
         build("Дождись всех промисов", "await|Promise|.|all|(|list|)|;", "then|race"),
         type("Выведи ошибку в консоль", "console.error(e);")
+    )),
+    Lesson("map, filter, reduce", "Методы массивов принимают функцию. map преобразует каждый элемент, filter отбирает нужные, reduce сворачивает массив в одно значение.\n>const d = [1, 2, 3].map(x => x * 2)\n>const e = d.filter(x => x > 2)", listOf(
+        build("Удвой каждое число", "nums|.|map|(|x|=>|x|*|2|)", "filter|for"),
+        type("Оставь числа больше 10", "nums.filter(x => x > 10)"),
+        build("Сумма через reduce", "nums|.|reduce|(|(|a|,|b|)|=>|a|+|b|,|0|)", "map|filter"),
+        type("Пройди по массиву через forEach", "nums.forEach(x => console.log(x))"),
+        build("Найди первый элемент больше 3", "nums|.|find|(|x|=>|x|>|3|)", "filter|map"),
+        type("Проверь, есть ли 5 в массиве", "nums.includes(5)")
     ))
 ))

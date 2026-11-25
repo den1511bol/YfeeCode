@@ -49,5 +49,13 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Расстояние между ячейками 8px", "gap: 8px;"),
         build("Абсолютное позиционирование", "position|:|absolute|;", "display|="),
         type("Скрой элемент", "display: none;")
+    )),
+    Lesson("Переходы и анимации", "transition плавно меняет свойство, а @keyframes описывает свою анимацию, которую запускает свойство animation.\n>.btn { transition: 0.3s; }\n>.btn:hover { transform: scale(1.1); }", listOf(
+        build("Плавное изменение за 0.3 секунды", "transition|:|0.3s|;", "animation|color"),
+        type("Увеличь элемент при наведении", ".btn:hover { transform: scale(1.1); }"),
+        build("Объяви анимацию pulse", "@keyframes|pulse|{", "animation|from"),
+        type("Запусти анимацию pulse на 2 секунды", "animation: pulse 2s infinite;"),
+        build("Поверни элемент на 45 градусов", "transform|:|rotate|(|45deg|)|;", "scale|margin"),
+        type("Измени прозрачность до половины", "opacity: 0.5;")
     ))
 ))
