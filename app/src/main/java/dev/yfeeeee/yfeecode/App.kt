@@ -351,6 +351,9 @@ fun EditorScreen(
             MiniBtn("вырезать") { if (state.hasSel) clip.setText(androidx.compose.ui.text.AnnotatedString(state.cutSel())) }
             MiniBtn("//") { state.toggleComment() }
             MiniBtn("дубль") { state.duplicateLine() }
+            MiniBtn("⇥") { state.indentSel() }
+            MiniBtn("⇤") { state.dedentSel() }
+            MiniBtn("удалить строку") { state.deleteLine() }
             MiniBtn("строка…") { gotoOpen = true }
             MiniBtn("отмена выд.") { state.clearSel() }
         }

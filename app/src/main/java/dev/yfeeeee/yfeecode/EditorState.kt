@@ -200,7 +200,48 @@ class EditorState(val file: File, initial: String) {
         }
     }
 
-    fun tab() = insert("    ")
+    fun tab() { if (hasSel) indentSel() else insert("    ") }
+
+    private fun blockRange(): Pair<Int, Int> {
+        val a = if (hasSel) selStart else cursor
+        val b = if (hasSel) selEnd else cursor
+        val ls = text.lastIndexOf('\n', a - 1) + 1
+        val le = text.indexOf('\n', b).let { if (it < 0) text.length else it }
+        return ls to le
+    }
+
+    /** Adds 4 spaces to every line of the selection (or the current line). */
+    fun indentSel() {
+        val (ls, le) = blockRange()
+        val block = text.substring(ls, le).split("\n").joinToString("\n") { if (it.isBlank()) it else "    $it" }
+        snapshot()
+        set(text.substring(0, ls) + block + text.substring(le), ls + block.length)
+        anchor = null; selectMode = false
+    }
+
+    /** Removes up to 4 leading spaces from every line of the selection (or the current line). */
+    fun dedentSel() {
+        val (ls, le) = blockRange()
+        val block = text.substring(ls, le).split("\n").joinToString("\n") { l ->
+            val n = minOf(4, l.length - l.trimStart(' ').length)
+            l.substring(n)
+        }
+        snapshot()
+        set(text.substring(0, ls) + block + text.substring(le), ls + block.length)
+        anchor = null; selectMode = false
+    }
+
+    fun deleteLine() {
+        val ls = text.lastIndexOf('\n', cursor - 1) + 1
+        var le = text.indexOf('\n', cursor)
+        le = if (le < 0) text.length else le + 1
+        snapshot()
+        var nt = text.removeRange(ls, le)
+        var nc = ls
+        if (le == text.length && ls > 0) { nt = nt.dropLast(1); nc = ls - 1 }  // last line: also drop the preceding newline
+        set(nt, nc)
+        anchor = null; selectMode = false
+    }
 
     /** Replaces the word before the cursor; [cursorBack] = how many chars before the end to put the cursor. */
     fun complete(s: Suggestion) {
