@@ -113,5 +113,13 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Прочитай весь файл", "data = f.read()"),
         build("Запиши текст в файл", "f|.|write|(|\"Привет\"|)", "read|close"),
         type("Открой файл на запись", "with open(\"a.txt\", \"w\") as f:")
+    )),
+    Lesson("Наследование и декораторы", "Класс-наследник берёт всё у родителя и может переопределять методы. Декоратор оборачивает функцию: над ней пишут @имя.\n>class Dog(Animal):\n>    def speak(self):\n>        return super().speak()", listOf(
+        build("Класс Dog наследует Animal", "class|Dog|(|Animal|)|:", "def|import"),
+        type("Вызови метод родителя", "super().speak()"),
+        build("Конструктор с вызовом родителя", "super|(|)|.|__init__|(|)", "self|class"),
+        type("Объяви декоратор-функцию deco", "def deco(func):"),
+        build("Примени декоратор deco к функции", "@|deco", "def|class"),
+        type("Проверь, что d — это Dog", "isinstance(d, Dog)")
     ))
 ))

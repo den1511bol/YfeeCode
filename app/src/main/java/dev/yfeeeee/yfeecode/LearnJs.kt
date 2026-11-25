@@ -81,5 +81,13 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Пройди по массиву через forEach", "nums.forEach(x => console.log(x))"),
         build("Найди первый элемент больше 3", "nums|.|find|(|x|=>|x|>|3|)", "filter|map"),
         type("Проверь, есть ли 5 в массиве", "nums.includes(5)")
+    )),
+    Lesson("Классы и деструктуризация", "class описывает объект, constructor задаёт начальные поля. Деструктуризация достаёт значения из массива или объекта в одну строку.\n>class Dog { constructor(name) { this.name = name } }\n>const { name } = dog", listOf(
+        build("Объяви класс Dog", "class|Dog|{", "function|const"),
+        type("Конструктор с параметром name", "constructor(name) {"),
+        type("Запиши имя в объект", "this.name = name;"),
+        build("Создай объект Dog", "new|Dog|(|\"Rex\"|)", "class|this"),
+        type("Достань name из объекта dog", "const { name } = dog;"),
+        type("Достань два элемента из массива arr", "const [a, b] = arr;")
     ))
 ))
