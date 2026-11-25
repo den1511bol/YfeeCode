@@ -21,6 +21,11 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.io.File
+import androidx.compose.ui.platform.LocalContext
+import com.chaquo.python.Python
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,8 +37,18 @@ fun App(
     onExport: (File) -> Unit
 ) {
     var tab by remember { mutableIntStateOf(0) }
-    val open = remember { mutableStateListOf<EditorState>() }
-    var active by remember { mutableIntStateOf(0) }
+    val ctx = LocalContext.current
+    val sp = remember { ctx.getSharedPreferences("session", android.content.Context.MODE_PRIVATE) }
+    val open = remember {
+        mutableStateListOf<EditorState>().apply {
+            (sp.getString("tabs", "") ?: "").split("\n").filter { it.isNotBlank() }.map { File(it) }
+                .filter { it.isFile }.forEach { add(EditorState(it, store.read(it))) }
+        }
+    }
+    var active by remember { mutableIntStateOf(sp.getInt("active", 0).coerceIn(0, maxOf(0, open.size - 1))) }
+    LaunchedEffect(open.size, active) {
+        sp.edit().putString("tabs", open.joinToString("\n") { it.file.absolutePath }).putInt("active", active).apply()
+    }
     var dir by remember { mutableStateOf(store.root) }
 
     Column(Modifier.fillMaxSize().diamondPattern().statusBarsPadding().navigationBarsPadding()) {
@@ -205,6 +220,23 @@ fun EditorScreen(
     val clip = LocalClipboardManager.current
     val hints = remember(state.text, state.cursor) { Hints.analyze(state.text, state.lang, state.lineIndex) }
     val save = { store.write(state.file, state.text); state.markSaved() }
+    var syntaxErr by remember(state) { mutableStateOf("") }
+
+    LaunchedEffect(state.text) {
+        if (state.lang == Lang.PYTHON) {
+            delay(700)
+            syntaxErr = withContext(Dispatchers.Default) {
+                runCatching { Python.getInstance().getModule("syntax_check").callAttr("check", state.text).toString() }
+                    .getOrDefault("")
+            }
+        } else syntaxErr = ""
+    }
+    LaunchedEffect(state.text) {
+        if (state.dirty) { delay(1500); store.write(state.file, state.text); state.markSaved() }
+    }
+    DisposableEffect(state) {
+        onDispose { if (state.dirty) { store.write(state.file, state.text); state.markSaved() } }
+    }
 
     Column(Modifier.fillMaxSize()) {
         // open file tabs
@@ -261,6 +293,14 @@ fun EditorScreen(
                     Text(info, color = Color(0xFFE3B341), fontSize = 11.sp)
                 }
             }
+        }
+        if (syntaxErr.isNotEmpty()) {
+            val ln = syntaxErr.substringBefore("|").toIntOrNull()
+            Text(
+                "⛔ строка $ln: " + syntaxErr.substringAfter("|"), color = Color(0xFFF87171), fontSize = 12.sp,
+                modifier = Modifier.fillMaxWidth().background(Color(0x33F87171))
+                    .clickable { ln?.let { state.goToLine(it) } }.padding(horizontal = 10.dp, vertical = 5.dp)
+            )
         }
         if (hints.isNotEmpty()) {
             Column(Modifier.fillMaxWidth().background(Color(0xFF2A1733)).padding(horizontal = 10.dp, vertical = 4.dp)) {
