@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.io.File
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
 import com.chaquo.python.Python
 import kotlinx.coroutines.Dispatchers
@@ -330,6 +331,23 @@ fun EditorScreen(
             }
         }
         CodeEditor(state, Modifier.weight(1f).fillMaxWidth())
+        val sugg = remember(state.text, state.cursor) { Completer.suggest(state.text, state.cursor, state.lang) }
+        if (showKb && !findOpen && sugg.isNotEmpty()) {
+            Row(
+                Modifier.fillMaxWidth().background(Color(0xFF110920)).horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 4.dp, vertical = 3.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                sugg.forEach { sg ->
+                    Text(
+                        sg.label, color = if (sg.snippet) Color(0xFFF472B6) else Color(0xFFE6DDF7),
+                        fontFamily = FontFamily.Monospace, fontSize = 13.sp,
+                        modifier = Modifier.background(Color(0xFF2A1647), RoundedCornerShape(8.dp))
+                            .clickable { state.complete(sg) }.padding(horizontal = 10.dp, vertical = 6.dp)
+                    )
+                }
+            }
+        }
         if (showKb) DevKeyboard(
             onText = { t ->
                 if (findOpen) { if (focusRepl) replQ += t else findQ += t }

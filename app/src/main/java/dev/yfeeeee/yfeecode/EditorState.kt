@@ -190,6 +190,15 @@ class EditorState(val file: File, initial: String) {
 
     fun tab() = insert("    ")
 
+    /** Replaces the word before the cursor; [cursorBack] = how many chars before the end to put the cursor. */
+    fun complete(s: Suggestion) {
+        var i = cursor
+        while (i > 0 && (text[i - 1].isLetterOrDigit() || text[i - 1] == '_')) i--
+        snapshot()
+        val nt = text.substring(0, i) + s.insert + text.substring(cursor)
+        set(nt, i + s.insert.length - s.cursorBack)
+    }
+
     fun left() { if (cursor > 0) cursor -= 1; afterMove() }
     fun right() { if (cursor < text.length) cursor += 1; afterMove() }
 
