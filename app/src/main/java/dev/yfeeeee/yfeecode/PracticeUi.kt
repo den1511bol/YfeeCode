@@ -29,7 +29,14 @@ private fun extOf(l: Lang) = when (l) {
 @Composable
 fun PracticeScreen(p: Practice, prog: Progress, onExit: () -> Unit) {
     val ctx = LocalContext.current
-    val state = remember(p.id) { EditorState(File(ctx.filesDir, "learn/" + p.id + "." + extOf(p.lang)), p.starter) }
+    val sp = remember { ctx.getSharedPreferences("practice_code", android.content.Context.MODE_PRIVATE) }
+    val state = remember(p.id) {
+        EditorState(File(ctx.filesDir, "learn/" + p.id + "." + extOf(p.lang)), sp.getString(p.id, null) ?: p.starter)
+    }
+    LaunchedEffect(state.text) {
+        kotlinx.coroutines.delay(800)
+        sp.edit().putString(p.id, state.text).apply()
+    }
     var verdict by remember(p.id) { mutableStateOf<String?>(null) }
     var ok by remember(p.id) { mutableStateOf(false) }
     var busy by remember(p.id) { mutableStateOf(false) }
@@ -76,7 +83,7 @@ fun PracticeScreen(p: Practice, prog: Progress, onExit: () -> Unit) {
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC084FC), contentColor = Color.Black)
             ) { Text(if (busy) "Проверяю…" else "Проверить") }
-            TextButton(onClick = { state.replaceAll(p.starter); verdict = null }) { Text("Сбросить", color = Color(0xFFC084FC)) }
+            TextButton(onClick = { state.replaceAll(p.starter); verdict = null; sp.edit().remove(p.id).apply() }) { Text("Сбросить", color = Color(0xFFC084FC)) }
         }
         DevKeyboard(
             onText = { state.insert(it) },
