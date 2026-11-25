@@ -30,9 +30,7 @@ object Hints {
             Lang.PYTHON -> { pythonHints(cur, lines, cursorLine, out); pythonFile(code, out) }
             Lang.JS -> jsHints(cur, out)
             Lang.HTML -> htmlHints(code, out)
-            Lang.CSS -> if (cur.isNotEmpty() && !cur.endsWith(";") && !cur.endsWith("{") &&
-                !cur.endsWith("}") && cur.contains(":"))
-                out += "CSS: в конце свойства нужна «;»"
+            Lang.CSS -> cssHints(cur, out)
             Lang.CPP -> cppHints(cur, code, out)
             Lang.CSHARP -> csHints(cur, code, out)
             else -> {}
@@ -81,6 +79,19 @@ object Hints {
             out += "Файл лучше открывать через with open(...) as f:"
     }
 
+    private fun cssHints(cur: String, out: MutableList<String>) {
+        if (cur.isEmpty()) return
+        if (!cur.endsWith(";") && !cur.endsWith("{") && !cur.endsWith("}") && !cur.endsWith(",") && cur.contains(":") && !cur.startsWith("/*"))
+            out += "CSS: в конце свойства нужна «;»"
+        if (cur.contains("colour") || cur.contains("backgroud") || cur.contains("bacground"))
+            out += "CSS: опечатка в названии свойства (color, background)"
+        if (Regex("""#[0-9a-fA-F]+""").find(cur)?.value?.length?.let { it - 1 !in listOf(3, 4, 6, 8) } == true)
+            out += "CSS: цвет в hex должен иметь 3, 4, 6 или 8 символов"
+        if (Regex("""\b(width|height|margin|padding|font-size|border-radius|top|left|right|bottom)\s*:\s*[1-9][0-9]*\s*;""").containsMatchIn(cur))
+            out += "CSS: у числа нужна единица измерения (px, %, rem)"
+        if (cur.contains(";;")) out += "CSS: лишняя «;»"
+    }
+
     private fun jsHints(cur: String, out: MutableList<String>) {
         if (cur.startsWith("function") && !cur.contains("{") && !cur.endsWith("{"))
             out += "JS: после function(...) нужен блок { }"
@@ -91,6 +102,14 @@ object Hints {
             out += "JS: лучше использовать «===» вместо «==»"
         if (cur.contains("await ") )
             out += "JS: await работает только внутри async-функции"
+        if (Regex("""\.length\s*\(""").containsMatchIn(cur))
+            out += "JS: length — это свойство, скобки не нужны (arr.length)"
+        if (Regex("""getElementByID|getelementbyid|queryselector\(|ConsoleLog|console\.Log""").containsMatchIn(cur))
+            out += "JS: проверь регистр: getElementById, querySelector, console.log"
+        if (Regex("""\bif\s*\(.*[^=!<>]=[^=].*\)""").containsMatchIn(cur))
+            out += "JS: в условии if нужно «===», а не «=»"
+        if (cur.startsWith("var "))
+            out += "JS: вместо var лучше let или const"
     }
 
     private fun htmlHints(code: String, out: MutableList<String>) {

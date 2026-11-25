@@ -78,3 +78,6 @@
 
 ## Автосессия 23
 - Новые подсказки: C++ (vector, algorithm, cin/endl, if с «=», std::), C# (using для List/Dictionary и LINQ, if с «=»).
+
+## Автосессия 24
+- Подсказки CSS (опечатки, hex-цвет, единицы измерения, лишняя «;») и JS (length(), регистр, if с «=», var).
