@@ -25,26 +25,41 @@ class Module:
     strings = {}
     strings_ru = {}
 
-    def __init__(self):
-        self._db = {}
-        self.client = _FakeClient()
-        self.strings = _Strings(getattr(type(self), "strings", {}))
-
     def get(self, k, default=None):
-        return self._db.get(k, default)
+        return self.__dict__.setdefault("_db", {}).get(k, default)
 
     def set(self, k, v):
-        self._db[k] = v
+        self.__dict__.setdefault("_db", {})[k] = v
+
+    @property
+    def client(self):
+        return self.__dict__.setdefault("_client", _FakeClient())
+
+    @property
+    def _client_db(self):
+        return self.__dict__.setdefault("_db", {})
 
     def config_complete(self):
         pass
 
 
+class ConfigValue:
+    def __init__(self, option, default=None, doc=None, validator=None, **kw):
+        self.option = option
+        self.default = default
+        self.doc = doc
+
+
 class ModuleConfig(dict):
     def __init__(self, *items):
         super().__init__()
-        for i in range(0, len(items) - 1, 2):
-            pass
+        for it in items:
+            if isinstance(it, ConfigValue):
+                self[it.option] = it.default
+        # also support the old flat form: ModuleConfig("name", default, "doc", ...)
+        if items and not isinstance(items[0], ConfigValue):
+            for i in range(0, len(items) - 1, 3):
+                self[items[i]] = items[i + 1]
 
 
 class _FakeClient:
@@ -122,7 +137,7 @@ def _install_shims():
     loader.unrestricted = _deco
     loader.watcher = _deco
     loader.loop = _deco
-    loader.ConfigValue = lambda *a, **k: None
+    loader.ConfigValue = ConfigValue
     loader.validators = types.SimpleNamespace(
         String=lambda *a, **k: None, Integer=lambda *a, **k: None,
         Boolean=lambda *a, **k: None, Series=lambda *a, **k: None)
@@ -130,6 +145,8 @@ def _install_shims():
     utils.get_args_raw = get_args_raw
     utils.get_args = get_args
     utils.answer = answer
+    utils.escape_html = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    utils.get_chat_id = lambda m: getattr(m, "chat_id", 1)
     pkg = types.ModuleType("shimpkg")
     pkg.loader = loader
     pkg.utils = utils
@@ -176,6 +193,12 @@ def call(path, line):
         try:
             cls = _load(path)
             inst = cls()
+            inst.strings = _Strings(getattr(cls, "strings", {}))
+            ready = getattr(inst, "client_ready", None)
+            if ready:
+                r = ready(inst.client, inst.__dict__.setdefault("_db", {}))
+                if inspect.iscoroutine(r):
+                    asyncio.run(r)
             text = line.lstrip(".")
             name = text.split()[0] if text.split() else ""
             f = getattr(inst, name + "cmd", None) or getattr(inst, name, None)

@@ -32,7 +32,10 @@ object Highlighter {
         Lang.TEXT to setOf()
     )
 
-    fun highlight(code: String, lang: Lang): AnnotatedString = buildAnnotatedString {
+    fun highlight(code: String, lang: Lang): AnnotatedString =
+        if (code.length > 120_000) AnnotatedString(code) else highlightFull(code, lang)
+
+    private fun highlightFull(code: String, lang: Lang): AnnotatedString = buildAnnotatedString {
         val kws = keywords[lang] ?: emptySet()
         val lineComment = when (lang) {
             Lang.PYTHON -> "#"
