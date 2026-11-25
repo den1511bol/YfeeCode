@@ -70,7 +70,9 @@ object Practices {
             Practice("js2", "Функция sum", "Напиши функцию sum(a, b), которая возвращает сумму.", "", Lang.JS,
                 listOf(must("""(function\s+sum|const\s+sum\s*=|let\s+sum\s*=)""", "Нужна функция sum"), must("""\breturn\b|=>""", "Функция должна вернуть значение"))),
             Practice("js3", "Цикл", "Выведи числа от 1 до 5 в консоль с помощью цикла.", "", Lang.JS,
-                listOf(must("""\b(for|while)\s*\(""", "Нужен цикл for или while"), must("""console\.log""", "Выводи через console.log")))
+                listOf(must("""\b(for|while)\s*\(""", "Нужен цикл for или while"), must("""console\.log""", "Выводи через console.log"))),
+            Practice("js4", "Обработчик клика", "Найди элемент по селектору и добавь обработчик события click.", "", Lang.JS,
+                listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
@@ -78,7 +80,9 @@ object Practices {
             Practice("html2", "Список из трёх", "Сделай маркированный список ul из трёх пунктов li.", "", Lang.HTML,
                 listOf(must("""<ul[\s>]""", "Нужен тег <ul>"), must("""(<li>[\s\S]*?</li>[\s\S]*?){3}""", "Нужно три пункта <li>…</li>"))),
             Practice("html3", "Ссылка и картинка", "Добавь ссылку (a с href) и картинку (img с src).", "", Lang.HTML,
-                listOf(must("""<a\s+[^>]*href\s*=""", "Нужна ссылка <a href=…>"), must("""<img\s+[^>]*src\s*=""", "Нужна картинка <img src=…>")))
+                listOf(must("""<a\s+[^>]*href\s*=""", "Нужна ссылка <a href=…>"), must("""<img\s+[^>]*src\s*=""", "Нужна картинка <img src=…>"))),
+            Practice("html4", "Таблица 2x2", "Сделай таблицу: две строки по две ячейки.", "", Lang.HTML,
+                listOf(must("""<table[\s>]""", "Нужен тег <table>"), must("""(<tr>[\s\S]*?</tr>[\s\S]*?){2}""", "Нужно две строки <tr>…</tr>"), must("""(<td>[\s\S]*?</td>[\s\S]*?){4}""", "Нужно четыре ячейки <td>…</td>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
@@ -86,7 +90,9 @@ object Practices {
             Practice("css2", "Карточка", "Сделай правило .card со скруглением и внутренним отступом.", "", Lang.CSS,
                 listOf(must("""\.card\s*\{""", "Нужен селектор .card"), must("""border-radius\s*:""", "Добавь border-radius"), must("""padding\s*:""", "Добавь padding"))),
             Practice("css3", "Центр flex", "Отцентруй содержимое контейнера .box через flex по обеим осям.", "", Lang.CSS,
-                listOf(must("""display\s*:\s*flex""", "Нужен display: flex"), must("""justify-content\s*:\s*center""", "Нужен justify-content: center"), must("""align-items\s*:\s*center""", "Нужен align-items: center")))
+                listOf(must("""display\s*:\s*flex""", "Нужен display: flex"), must("""justify-content\s*:\s*center""", "Нужен justify-content: center"), must("""align-items\s*:\s*center""", "Нужен align-items: center"))),
+            Practice("css4", "Сетка и адаптивность", "Сделай grid из трёх колонок и добавь media-запрос для узких экранов.", "", Lang.CSS,
+                listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"), must("""@media""", "Добавь @media (max-width: …)")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
@@ -94,7 +100,9 @@ object Practices {
             Practice("cpp2", "Функция add", "Напиши функцию int add(int a, int b), возвращающую сумму.", "", Lang.CPP,
                 listOf(must("""int\s+add\s*\(\s*int\s+\w+\s*,\s*int\s+\w+\s*\)""", "Нужно: int add(int a, int b)"), must("""\breturn\b""", "Функция должна возвращать значение"))),
             Practice("cpp3", "Цикл 1–5", "Выведи числа от 1 до 5 циклом for.", "", Lang.CPP,
-                listOf(must("""for\s*\(""", "Нужен цикл for"), must("""cout""", "Вывод через std::cout")))
+                listOf(must("""for\s*\(""", "Нужен цикл for"), must("""cout""", "Вывод через std::cout"))),
+            Practice("cpp4", "Класс Dog", "Объяви класс Dog с открытым полем name типа std::string.", "", Lang.CPP,
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""public\s*:""", "Нужна секция public:"), must("""string\s+name""", "Нужно поле std::string name;")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -102,7 +110,9 @@ object Practices {
             Practice("cs2", "Метод Add", "Напиши метод static int Add(int a, int b), возвращающий сумму.", "", Lang.CSHARP,
                 listOf(must("""static\s+int\s+Add\s*\(\s*int\s+\w+\s*,\s*int\s+\w+\s*\)""", "Нужно: static int Add(int a, int b)"), must("""\breturn\b""", "Метод должен возвращать значение"))),
             Practice("cs3", "foreach", "Пройди по списку чисел через foreach и выведи каждое.", "", Lang.CSHARP,
-                listOf(must("""foreach\s*\(""", "Нужен цикл foreach"), must("""Console\.WriteLine""", "Вывод: Console.WriteLine")))
+                listOf(must("""foreach\s*\(""", "Нужен цикл foreach"), must("""Console\.WriteLine""", "Вывод: Console.WriteLine"))),
+            Practice("cs4", "Класс со свойством", "Создай класс Dog со свойством Name ({ get; set; }), создай объект и задай имя.", "", Lang.CSHARP,
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""\{\s*get;\s*set;\s*\}""", "Нужно свойство { get; set; }"), must("""new\s+Dog\s*\(""", "Создай объект: new Dog()")))
         )
     )
 }
