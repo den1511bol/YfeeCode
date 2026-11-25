@@ -81,5 +81,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Подключи aiogram", "from aiogram import Bot, Dispatcher, executor"),
         build("Обработчик команды start в aiogram", "@|dp|.|message_handler|(|commands|=|[|\"start\"|]|)", "bot|def"),
         type("Ответь пользователю в aiogram", "await message.answer(\"Привет\")")
+    )),
+    Lesson("Ошибки: try/except", "try пробует выполнить код, а except ловит ошибку, чтобы программа не упала. finally выполняется всегда.\n>try:\n>    x = int(\"abc\")\n>except ValueError:\n>    print(\"Не число\")\n>finally:\n>    print(\"Готово\")", listOf(
+        build("Начни блок try", "try|:", "except|def"),
+        type("Лови ошибку ValueError", "except ValueError:"),
+        build("Лови любую ошибку и сохрани в e", "except|Exception|as|e|:", "try|finally"),
+        type("Блок, который выполняется всегда", "finally:"),
+        build("Вызови своё исключение", "raise|ValueError|(|\"плохо\"|)", "try|catch"),
+        type("Выведи текст ошибки e", "print(e)")
+    )),
+    Lesson("Модули и импорт", "Модуль — это файл с кодом. import подключает его, from … import берёт отдельные имена.\n>import math\n>print(math.sqrt(16))\n>from random import randint\n>import requests", listOf(
+        build("Подключи модуль math", "import|math", "from|def"),
+        type("Выведи корень из 16", "print(math.sqrt(16))"),
+        build("Возьми randint из random", "from|random|import|randint", "import|as"),
+        type("Подключи requests под именем r", "import requests as r"),
+        build("Случайное число от 1 до 6", "randint|(|1|,|6|)", "range|len"),
+        type("Подключи json", "import json")
     ))
 ))

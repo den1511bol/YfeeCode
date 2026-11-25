@@ -65,5 +65,13 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Добавь класс active", "btn.classList.add(\"active\");"),
         build("Прочитай значение поля input", "const|v|=|input|.|value|;", "text|get"),
         type("Закрой обработчик события", "});")
+    )),
+    Lesson("Промисы и async", "Promise — это обещание результата в будущем. then получает результат, catch ловит ошибку. await делает то же короче.\n>fetch(url)\n>  .then(r => r.json())\n>  .catch(e => console.error(e));\n>await new Promise(r => setTimeout(r, 1000));", listOf(
+        build("Обработай результат промиса", "fetch|(|url|)|.|then|(|r|=>|r|.|json|(|)|)", "catch|await"),
+        type("Лови ошибку промиса", ".catch(e => console.error(e));"),
+        build("Подожди 1 секунду", "await|new|Promise|(|r|=>|setTimeout|(|r|,|1000|)|)|;", "fetch|then"),
+        type("Объяви асинхронную стрелочную функцию", "const run = async () => {"),
+        build("Дождись всех промисов", "await|Promise|.|all|(|list|)|;", "then|race"),
+        type("Выведи ошибку в консоль", "console.error(e);")
     ))
 ))

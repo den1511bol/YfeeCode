@@ -57,5 +57,13 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Открытая секция класса", "public:"),
         build("Поле name в классе", "std|::|string|name|;", "int|=="),
         type("Создай объект Dog с именем d", "Dog d;")
+    )),
+    Lesson("Наследование", "Класс-наследник получает поля и методы родителя. Двоеточие и public указывают базовый класс. virtual позволяет переопределять метод.\n>class Animal {\n>public:\n>    virtual void speak() { }\n>};\n>class Dog : public Animal {\n>};", listOf(
+        build("Наследуй Dog от Animal", "class|Dog|:|public|Animal|{", "extends|struct"),
+        type("Виртуальный метод speak", "virtual void speak() { }"),
+        build("Переопредели speak в наследнике", "void|speak|(|)|override|{", "virtual|class"),
+        type("Конструктор класса Dog", "Dog() { }"),
+        build("Вызови метод у объекта d", "d|.|speak|(|)|;", "Dog|class"),
+        type("Создай указатель на Animal", "Animal* a = new Dog();")
     ))
 ))

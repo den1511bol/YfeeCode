@@ -57,5 +57,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Задай имя Рекс", "d.Name = \"Рекс\";"),
         build("Выведи имя", "Console|.|WriteLine|(|d|.|Name|)|;", "ReadLine|print"),
         type("Метод Bark, ничего не возвращает", "public void Bark() {")
+    )),
+    Lesson("LINQ", "LINQ — запросы к спискам: Where фильтрует, Select преобразует, Sum и Count считают. Нужен using System.Linq.\n>using System.Linq;\n>var even = nums.Where(n => n % 2 == 0);\n>var sq = nums.Select(n => n * n);\n>int total = nums.Sum();", listOf(
+        build("Подключи LINQ", "using|System|.|Linq|;", "import|include"),
+        type("Оставь чётные числа", "var even = nums.Where(n => n % 2 == 0);"),
+        build("Возведи в квадрат каждый элемент", "var|sq|=|nums|.|Select|(|n|=>|n|*|n|)|;", "Where|map"),
+        type("Посчитай сумму nums", "int total = nums.Sum();"),
+        build("Преврати результат в список", "nums|.|ToList|(|)", "ToArray|Count"),
+        type("Найди первый элемент больше 5", "var x = nums.First(n => n > 5);")
     ))
 ))
