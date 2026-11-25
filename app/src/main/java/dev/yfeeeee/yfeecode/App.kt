@@ -56,13 +56,13 @@ fun App(
         sp.edit().putString("tabs", open.joinToString("\n") { it.file.absolutePath }).putInt("active", active).apply()
     }
     var dir by remember { mutableStateOf(store.root) }
-    LaunchedEffect(Unit) { Updater.autoCheck() }
+    LaunchedEffect(Unit) { Updater.autoCheck(ctx) }
     var dismissedUpdate by remember { mutableStateOf(false) }
     if (Updater.available && !dismissedUpdate && !showSettings) AlertDialog(
         onDismissRequest = { dismissedUpdate = true },
         title = { Text("Доступно обновление") },
-        text = { Text("Вышла новая версия 𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒. Файлы и настройки сохранятся.") },
-        confirmButton = { TextButton(onClick = { dismissedUpdate = true; showSettings = true; Updater.downloadAndInstall(ctx) }) { Text("Обновить") } },
+        text = { Text(if (Updater.ready) "Новая версия 𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 уже скачана. Файлы и настройки сохранятся." else "Вышла новая версия 𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒. Файлы и настройки сохранятся.") },
+        confirmButton = { TextButton(onClick = { dismissedUpdate = true; if (!Updater.ready) showSettings = true; Updater.downloadAndInstall(ctx) }) { Text(if (Updater.ready) "Установить" else "Обновить") } },
         dismissButton = { TextButton(onClick = { dismissedUpdate = true }) { Text("Позже") } }
     )
 
@@ -144,7 +144,7 @@ fun App(
                     if (Updater.status.isNotEmpty()) Text(Updater.status, color = Color(0xFFC084FC), fontSize = 12.sp)
                     if (Updater.progress >= 0) LinearProgressIndicator(progress = { Updater.progress / 100f }, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
                     Row {
-                        TextButton(onClick = { Updater.check() }, enabled = !Updater.busy) { Text("Проверить") }
+                        TextButton(onClick = { Updater.check(ctx) }, enabled = !Updater.busy) { Text("Проверить") }
                         if (Updater.available) TextButton(onClick = { Updater.downloadAndInstall(ctx) }, enabled = !Updater.busy) { Text("Обновить") }
                     }
                     Text("Цвет акцента", modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))

@@ -26,6 +26,7 @@ object Updater {
     private var apkUrl = ""
     private var remoteSha = ""
     private var autoChecked = false
+    var ready by mutableStateOf(false)        // the new APK is already downloaded and verified
 
     val currentSha: String get() = BuildConfig.GIT_SHA
     val currentLabel: String get() = "v${BuildConfig.VERSION_NAME} (${currentSha.take(7)})"
@@ -39,13 +40,13 @@ object Updater {
         }
 
     /** Auto check once per app start. */
-    fun autoCheck() {
+    fun autoCheck(ctx: Context) {
         if (autoChecked || !Settings.autoUpdate) return
         autoChecked = true
-        check(silent = true)
+        check(ctx.applicationContext, silent = true)
     }
 
-    fun check(silent: Boolean = false) {
+    fun check(ctx: Context, silent: Boolean = false) {
         if (busy) return
         busy = true
         if (!silent) status = "Проверяю…"
@@ -60,7 +61,9 @@ object Updater {
                 apkUrl = if (assets != null && assets.length() > 0) assets.getJSONObject(0).optString("browser_download_url") else ""
                 val newer = remoteSha.isNotEmpty() && apkUrl.isNotEmpty() && currentSha != "dev" && remoteSha != currentSha
                 available = newer
+                if (newer) ready = cachedApk(ctx)?.let { verify(ctx, it) } == true
                 status = when {
+                    newer && ready -> "Новая версия скачана, осталось установить"
                     newer -> "Доступна новая версия (${remoteSha.take(7)})"
                     currentSha == "dev" -> "Это локальная сборка, обновления отключены"
                     else -> "У тебя последняя версия"
@@ -70,23 +73,44 @@ object Updater {
             } finally {
                 busy = false
             }
+            // download in the background right away, so installing later is a single tap
+            if (available && !ready && silent) fetchApk(ctx, installAfter = false)
         }
     }
 
-    /** Downloads the APK into the cache and opens the system installer. */
+    private fun cachedApk(ctx: Context): File? =
+        File(File(ctx.cacheDir, "updates"), "YfeeCode-$remoteSha.apk").takeIf { it.isFile }
+
+    /** The file must be our own app and newer than the installed one, otherwise Android would refuse it. */
+    private fun verify(ctx: Context, f: File): Boolean = try {
+        val info = ctx.packageManager.getPackageArchiveInfo(f.absolutePath, 0)
+        @Suppress("DEPRECATION")
+        info != null && info.packageName == ctx.packageName && info.versionCode > BuildConfig.VERSION_CODE
+    } catch (e: Exception) { false }
+
+    /** Installs the downloaded update (downloads it first if needed). */
     fun downloadAndInstall(ctx: Context) {
+        val app = ctx.applicationContext
+        val f = cachedApk(app)
+        if (f != null && verify(app, f)) { install(ctx, f); return }
+        fetchApk(ctx, installAfter = true)
+    }
+
+    private fun fetchApk(ctx: Context, installAfter: Boolean) {
         if (busy || apkUrl.isEmpty()) return
-        busy = true; progress = 0; status = "Скачиваю…"
+        busy = true; progress = 0; status = "Скачиваю обновление…"
+        val app = ctx.applicationContext
         thread {
             try {
-                val dir = File(ctx.cacheDir, "updates").apply { mkdirs() }
+                val dir = File(app.cacheDir, "updates").apply { mkdirs() }
                 dir.listFiles()?.forEach { it.delete() }
-                val out = File(dir, "YfeeCode.apk")
+                val tmp = File(dir, "download.tmp")
+                val out = File(dir, "YfeeCode-$remoteSha.apk")
                 val c = open(apkUrl)
                 if (c.responseCode != 200) throw RuntimeException("скачивание: ${c.responseCode}")
                 val total = c.contentLengthLong
                 c.inputStream.use { input ->
-                    out.outputStream().use { o ->
+                    tmp.outputStream().use { o ->
                         val buf = ByteArray(64 * 1024)
                         var done = 0L
                         while (true) {
@@ -98,9 +122,12 @@ object Updater {
                         }
                     }
                 }
-                if (out.length() < 1_000_000) throw RuntimeException("файл слишком маленький")
-                status = "Готово, открываю установщик"
-                install(ctx, out)
+                if (total > 0 && tmp.length() != total) throw RuntimeException("файл скачан не полностью")
+                tmp.renameTo(out)
+                if (!verify(app, out)) { out.delete(); throw RuntimeException("файл не подходит для установки") }
+                ready = true
+                status = "Новая версия скачана, осталось установить"
+                if (installAfter) install(app, out)
             } catch (e: Exception) {
                 status = "Ошибка обновления: ${e.message}"
             } finally {
