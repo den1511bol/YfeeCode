@@ -123,6 +123,20 @@ class EditorState(val file: File, initial: String) {
             set(text.substring(0, cursor) + s + text.substring(cursor), cursor + 1)
             return
         }
+        if (autoFix && s.length == 1 && s[0] in "([{\"'") {
+            val c = s[0]
+            val close = AutoFix.pairs[c]!!
+            val next = text.getOrNull(cursor)
+            val prev = text.getOrNull(cursor - 1)
+            val nextOk = next == null || next.isWhitespace() || next in ")]}"
+            val isQuote = c == '"' || c == '\''
+            val prevWord = prev != null && (prev.isLetterOrDigit() || prev == '_')
+            val stepOver = isQuote && next == c
+            if (nextOk && !stepOver && !(isQuote && prevWord)) {
+                set(text.substring(0, cursor) + c + close + text.substring(cursor), cursor + 1)
+                return
+            }
+        }
         if (autoFix && s == " ") {
             val before = text.getOrNull(cursor - 1)
             // phone keyboards like to double a space: ignore second space inside a line

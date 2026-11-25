@@ -24,8 +24,8 @@ enum class Cmd { BACK, ENTER, TAB, LEFT, RIGHT, UP, DOWN, HOME, END, PASTE, DELW
 
 private val en = listOf("qwertyuiop", "asdfghjkl", "zxcvbnm")
 private val ru = listOf("йцукенгшщзхъ", "фывапролджэ", "ячсмитьбю")
-private val sym = listOf("1234567890", "@#$%&*-+=_", "!?:;,.|\\/~")
-private val code = listOf("()", "[]", "{}", "\"\"", "''", "<>", "``")
+private val sym = listOf("1234567890", "@#$%&*-+=_", "!?:;`\\/|<>")
+private val code = listOf("(", ")", "[", "]", "{", "}", "\"", "'")
 
 private val keyBg = Color(0xFF2A1647)
 private val keyBgAlt = Color(0xFF3B2068)
