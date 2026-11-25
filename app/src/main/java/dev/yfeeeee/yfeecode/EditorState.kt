@@ -109,7 +109,7 @@ class EditorState(val file: File, initial: String) {
 
     private fun set(t: String, c: Int) { text = t; cursor = c.coerceIn(0, t.length); dirty = true }
 
-    fun setCursor(c: Int) { cursor = c.coerceIn(0, text.length); afterMove() }
+    fun moveTo(c: Int) { cursor = c.coerceIn(0, text.length); afterMove() }
 
     fun markSaved() { dirty = false }
 

@@ -69,7 +69,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                     .defaultMinSize(minWidth = 300.dp, minHeight = 300.dp)
                     .pointerInput(Unit) {
                         detectTapGestures { pos ->
-                            layout?.let { state.setCursor(it.getOffsetForPosition(pos)) }
+                            layout?.let { state.moveTo(it.getOffsetForPosition(pos)) }
                         }
                     }
                     .drawWithContent {
