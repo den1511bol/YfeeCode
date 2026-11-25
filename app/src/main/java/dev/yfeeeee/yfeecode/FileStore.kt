@@ -80,6 +80,22 @@ class FileStore(private val ctx: Context) {
         return n
     }
 
+    data class Hit(val file: File, val line: Int, val text: String)
+
+    /** Case-insensitive text search through all workspace files (max 100 hits). */
+    fun searchAll(q: String): List<Hit> {
+        if (q.isBlank()) return emptyList()
+        val out = mutableListOf<Hit>()
+        for (f in root.walkTopDown().filter { it.isFile && it.length() < 500_000 }) {
+            val lines = runCatching { f.readLines() }.getOrNull() ?: continue
+            lines.forEachIndexed { i, l ->
+                if (out.size < 100 && l.contains(q, ignoreCase = true)) out += Hit(f, i + 1, l.trim().take(80))
+            }
+            if (out.size >= 100) break
+        }
+        return out
+    }
+
     fun exportTo(uri: Uri, f: File) {
         ctx.contentResolver.openOutputStream(uri)?.use { o -> f.inputStream().use { it.copyTo(o) } }
     }

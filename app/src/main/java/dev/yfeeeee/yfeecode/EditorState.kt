@@ -41,6 +41,18 @@ class EditorState(val file: File, initial: String) {
         anchor = null; selectMode = false
     }
 
+    fun selectWordAt(off: Int) {
+        val o = off.coerceIn(0, text.length)
+        var a = o
+        var b = o
+        while (a > 0 && (text[a - 1].isLetterOrDigit() || text[a - 1] == '_')) a--
+        while (b < text.length && (text[b].isLetterOrDigit() || text[b] == '_')) b++
+        if (a == b) return
+        selectMode = false
+        anchor = a
+        cursor = b
+    }
+
     fun cutSel(): String { val t = selectedText; deleteSel(); return t }
 
     // line helpers

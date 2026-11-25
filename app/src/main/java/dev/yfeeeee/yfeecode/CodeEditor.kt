@@ -68,9 +68,17 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                     .padding(top = 6.dp, end = 60.dp, bottom = 120.dp)
                     .defaultMinSize(minWidth = 300.dp, minHeight = 300.dp)
                     .pointerInput(Unit) {
-                        detectTapGestures { pos ->
-                            layout?.let { state.moveTo(it.getOffsetForPosition(pos)) }
-                        }
+                        detectTapGestures(
+                            onTap = { pos -> layout?.let { state.moveTo(it.getOffsetForPosition(pos)) } },
+                            onDoubleTap = { pos -> layout?.let { state.selectWordAt(it.getOffsetForPosition(pos)) } },
+                            onLongPress = { pos ->
+                                layout?.let {
+                                    state.clearSel()
+                                    state.moveTo(it.getOffsetForPosition(pos))
+                                    state.toggleSelect()
+                                }
+                            }
+                        )
                     }
                     .drawWithContent {
                         val l0 = layout

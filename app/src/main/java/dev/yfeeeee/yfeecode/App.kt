@@ -83,9 +83,10 @@ fun App(
                 listOf(Color(0x00C084FC), Color(0xFFC084FC), Color(0xFFF472B6), Color(0x00F472B6)))))
         Box(Modifier.weight(1f)) {
             when (tab) {
-                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport) { f ->
+                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport) { f, line ->
                     val i = open.indexOfFirst { it.file == f }
                     if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
+                    if (line != null) open[active].goToLine(line)
                     tab = 1
                 }
                 1 -> EditorScreen(
@@ -134,7 +135,7 @@ fun App(
 fun FilesScreen(
     store: FileStore, dir: File, refreshKey: Int, onDir: (File) -> Unit,
     onImport: (File) -> Unit, onExport: (File) -> Unit,
-    onZipExport: () -> Unit, onZipImport: (File) -> Unit, onOpen: (File) -> Unit
+    onZipExport: () -> Unit, onZipImport: (File) -> Unit, onOpen: (File, Int?) -> Unit
 ) {
     var tick by remember { mutableIntStateOf(0) }
     var dialog by remember { mutableStateOf<String?>(null) } // "file" | "dir"
@@ -146,6 +147,7 @@ fun FilesScreen(
             TextButton(onClick = { dialog = "file" }) { Text("+ Файл") }
             TextButton(onClick = { dialog = "dir" }) { Text("+ Папка") }
             TextButton(onClick = { dialog = "tpl" }) { Text("Шаблон") }
+            TextButton(onClick = { dialog = "search" }) { Text("Поиск") }
             TextButton(onClick = { onImport(dir) }) { Text("Импорт") }
             TextButton(onClick = { onZipImport(dir) }) { Text("ZIP↓") }
             TextButton(onClick = onZipExport) { Text("ZIP↑") }
@@ -160,7 +162,7 @@ fun FilesScreen(
             }
             items(items) { f ->
                 FileRow(f.name, f.isDirectory, onDelete = { store.delete(f); tick++ }) {
-                    if (f.isDirectory) onDir(f) else onOpen(f)
+                    if (f.isDirectory) onDir(f) else onOpen(f, null)
                 }
             }
         }
@@ -172,6 +174,30 @@ fun FilesScreen(
     }
 
     var chosen by remember { mutableStateOf<Template?>(null) }
+    var hits by remember { mutableStateOf<List<FileStore.Hit>?>(null) }
+    if (dialog == "search") {
+        NameDialog(
+            title = "Найти во всех файлах", onCancel = { dialog = null },
+            onOk = { q -> hits = store.searchAll(q); dialog = null }
+        )
+    }
+    hits?.let { list ->
+        AlertDialog(
+            onDismissRequest = { hits = null },
+            confirmButton = { TextButton(onClick = { hits = null }) { Text("Закрыть") } },
+            title = { Text("Найдено: ${list.size}") },
+            text = {
+                LazyColumn {
+                    items(list) { h ->
+                        Text(
+                            h.file.name + ":" + h.line + "  " + h.text, fontSize = 12.sp, fontFamily = FontFamily.Monospace,
+                            modifier = Modifier.fillMaxWidth().clickable { hits = null; onOpen(h.file, h.line) }.padding(vertical = 6.dp)
+                        )
+                    }
+                }
+            }
+        )
+    }
     if (dialog == "tpl") {
         AlertDialog(
             onDismissRequest = { dialog = null },
@@ -192,7 +218,7 @@ fun FilesScreen(
             onCancel = { dialog = null },
             onOk = { name ->
                 val f = store.create(dir, name, chosen!!.body)
-                dialog = null; tick++; onOpen(f)
+                dialog = null; tick++; onOpen(f, null)
             }
         )
     }
@@ -203,7 +229,7 @@ fun FilesScreen(
             onOk = { name ->
                 if (kind == "file") {
                     val f = store.create(dir, name, store.template(Lang.fromName(name)))
-                    onOpen(f)
+                    onOpen(f, null)
                 } else store.mkdir(dir, name)
                 dialog = null; tick++
             }
