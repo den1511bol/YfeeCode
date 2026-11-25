@@ -16,7 +16,12 @@ object Practices {
                 if (!c.regex.containsMatchIn(code)) { ui.post { onResult(false, c.message) }; return@thread }
             }
             if (p.expectOut != null && p.lang == Lang.PYTHON) {
-                val r = Python.getInstance().getModule("practice_run").callAttr("run", code).asList()
+                val r = try {
+                    Python.getInstance().getModule("practice_run").callAttr("run", code).asList()
+                } catch (e: Throwable) {
+                    ui.post { onResult(false, "Не удалось запустить код: " + e.message) }
+                    return@thread
+                }
                 val finished = r[0].toBoolean()
                 val out = r[1].toString().replace("\r\n", "\n").trim()
                 val err = r[2].toString()

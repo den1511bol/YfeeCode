@@ -29,8 +29,11 @@ class BotService : Service() {
         val log = intent.getStringExtra(EXTRA_LOG) ?: return START_NOT_STICKY
         startForeground(1, buildNotification(script))
         Thread {
-            val py = Python.getInstance()
-            py.getModule("runner").callAttr("run", script, log)
+            try {
+                Python.getInstance().getModule("runner").callAttr("run", script, log)
+            } catch (e: Throwable) {
+                java.io.File(log).appendText("[error] " + e.message + "\n")
+            }
             // script finished by itself
             stopForeground(STOP_FOREGROUND_REMOVE)
             Process.killProcess(Process.myPid())

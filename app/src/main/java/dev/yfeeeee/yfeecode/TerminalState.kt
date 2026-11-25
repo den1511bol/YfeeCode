@@ -31,16 +31,18 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     fun submit(raw: String) {
         val cmd = AutoFix.command(raw)
         if (cmd != raw.trim()) print("(исправлено: $cmd)")
-        lines.add(prompt + cmd)
+        lines.add(prompt + if (cmd.startsWith("token ")) "token ***" else cmd)
         if (mode == TermMode.PY) pySubmit(raw.trimEnd()) else shell(cmd)
     }
 
     private fun pySubmit(line: String) {
         thread {
-            val r = Python.getInstance().getModule("repl").callAttr("feed", line).asList()
-            val out = r[0].toString().trimEnd('\n')
-            if (out.isNotEmpty()) print(out)
-            ui.post { pyMore = r[1].toBoolean() }
+            try {
+                val r = Python.getInstance().getModule("repl").callAttr("feed", line).asList()
+                val out = r[0].toString().trimEnd('\n')
+                if (out.isNotEmpty()) print(out)
+                ui.post { pyMore = r[1].toBoolean() }
+            } catch (e: Throwable) { print("[error] " + e.message) }
         }
     }
 
@@ -48,9 +50,15 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
             cmd == "py" -> { mode = TermMode.PY; return }
             cmd == "sh" -> { mode = TermMode.SH; return }
+            cmd.startsWith("token ") -> {
+                // token 123:ABC — saves the bot token to token.txt in the current folder
+                File(cwd, "token.txt").writeText(cmd.removePrefix("token ").trim())
+                print("token.txt сохранён в текущей папке")
+                return
+            }
             cmd.startsWith("mod ") -> {
                 // mod <file.py> .command args  — test a Heroku/Hikka module offline
                 val rest = cmd.removePrefix("mod ").trim()
@@ -103,8 +111,10 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     /** Test a Heroku/Hikka-style module command, e.g. ".hello world". */
     fun runModuleCommand(f: File, line: String) {
         thread {
-            val out = Python.getInstance().getModule("hikka_sandbox").callAttr("call", f.absolutePath, line).toString()
-            print(out.trimEnd('\n'))
+            try {
+                val out = Python.getInstance().getModule("hikka_sandbox").callAttr("call", f.absolutePath, line).toString()
+                print(out.trimEnd('\n'))
+            } catch (e: Throwable) { print("[error] " + e.message) }
         }
     }
 
