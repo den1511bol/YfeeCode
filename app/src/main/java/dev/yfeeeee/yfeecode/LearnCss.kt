@@ -57,5 +57,13 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Запусти анимацию pulse на 2 секунды", "animation: pulse 2s infinite;"),
         build("Поверни элемент на 45 градусов", "transform|:|rotate|(|45deg|)|;", "scale|margin"),
         type("Измени прозрачность до половины", "opacity: 0.5;")
+    )),
+    Lesson("Переменные и media", "CSS-переменные задают значение один раз: объявляют в :root, используют через var(). @media применяет стили только на нужной ширине экрана.\n>:root { --main: #C084FC; }\n>a { color: var(--main); }\n>@media (max-width: 600px) { }", listOf(
+        type("Объяви переменную --main", ":root { --main: #C084FC; }"),
+        type("Используй переменную --main как цвет", "color: var(--main);"),
+        build("Стили только для узких экранов", "@media|(|max-width|:|600px|)|{", "@keyframes|from"),
+        type("Скрой элемент", "display: none;"),
+        build("Сделай ширину не больше 100%", "max-width|:|100%|;", "color|margin"),
+        type("Подключи шрифт по умолчанию без засечек", "font-family: sans-serif;")
     ))
 ))

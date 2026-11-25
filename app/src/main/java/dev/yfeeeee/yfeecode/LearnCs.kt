@@ -73,5 +73,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Перебери пары словаря", "foreach (var kv in d)"),
         type("Строка с подстановкой name", "$\"Привет, {name}\""),
         type("Длина строки s", "s.Length")
+    )),
+    Lesson("Исключения", "try ловит ошибку, catch обрабатывает, finally выполняется всегда. throw создаёт своё исключение.\n>try { int x = int.Parse(s); }\n>catch (FormatException e) { Console.WriteLine(e.Message); }", listOf(
+        build("Начни блок try", "try|{", "catch|finally"),
+        type("Поймай FormatException", "catch (FormatException e)"),
+        type("Выведи сообщение ошибки", "Console.WriteLine(e.Message);"),
+        build("Блок, который выполняется всегда", "finally|{", "try|catch"),
+        type("Брось своё исключение", "throw new Exception(\"Ошибка\");"),
+        type("Преобразуй строку в число", "int x = int.Parse(s);")
     ))
 ))
