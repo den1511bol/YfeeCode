@@ -103,7 +103,9 @@ object Practices {
             Practice("html4", "Таблица 2x2", "Сделай таблицу: две строки по две ячейки.", "", Lang.HTML,
                 listOf(must("""<table[\s>]""", "Нужен тег <table>"), must("""(<tr>[\s\S]*?</tr>[\s\S]*?){2}""", "Нужно две строки <tr>…</tr>"), must("""(<td>[\s\S]*?</td>[\s\S]*?){4}""", "Нужно четыре ячейки <td>…</td>"))),
             Practice("html8", "Мета viewport", "Добавь в head тег meta с name=\"viewport\".", "", Lang.HTML,
-                listOf(must("""<meta[^>]*name\s*=\s*["']viewport["']""", "Нужен <meta name=\"viewport\" ...>")))
+                listOf(must("""<meta[^>]*name\s*=\s*["']viewport["']""", "Нужен <meta name=\"viewport\" ...>"))),
+            Practice("html9", "Поле почты", "Создай обязательное поле для почты с подсказкой placeholder.", "", Lang.HTML,
+                listOf(must("""<input[^>]*type\s*=\s*["']email["']""", "Нужен <input type=\"email\">"), must("""\brequired\b""", "Добавь атрибут required"), must("""placeholder\s*=""", "Добавь placeholder")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
@@ -131,7 +133,9 @@ object Practices {
             Practice("cpp5", "Наследование", "Сделай класс Animal и класс Dog, наследник Animal.", "", Lang.CPP,
                 listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*:\s*public\s+Animal""", "Нужно: class Dog : public Animal"))),
             Practice("cpp6", "Чтение строки", "Объяви std::string name и прочитай строку через getline.", "", Lang.CPP,
-                listOf(must("""string\s+name""", "Нужна переменная std::string name"), must("""getline\s*\(""", "Используй getline(cin, name)")))
+                listOf(must("""string\s+name""", "Нужна переменная std::string name"), must("""getline\s*\(""", "Используй getline(cin, name)"))),
+            Practice("cpp7", "Функция со ссылкой", "Напиши функцию inc, которая принимает int по ссылке и увеличивает его на 1.", "", Lang.CPP,
+                listOf(must("""void\s+inc\s*\(\s*int\s*&""", "Нужно: void inc(int& x)"), must("""\+\+|\+=\s*1|=\s*\w+\s*\+\s*1""", "Увеличь значение на 1")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
