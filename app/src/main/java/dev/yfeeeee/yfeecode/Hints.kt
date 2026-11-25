@@ -27,7 +27,7 @@ object Hints {
         if (stack.isNotEmpty()) out += "Не закрыта скобка «${stack.last()}»"
 
         when (lang) {
-            Lang.PYTHON -> pythonHints(cur, lines, cursorLine, out)
+            Lang.PYTHON -> { pythonHints(cur, lines, cursorLine, out); pythonFile(code, out) }
             Lang.JS -> jsHints(cur, out)
             Lang.HTML -> htmlHints(code, out)
             Lang.CSS -> if (cur.isNotEmpty() && !cur.endsWith(";") && !cur.endsWith("{") &&
@@ -60,6 +60,25 @@ object Hints {
             out += "В условии, скорее всего, нужен «==» вместо «=»"
         if (cur.startsWith("@loader.command") || cur.startsWith("class ") && cur.contains("loader.Module"))
             out += "Heroku-модуль: нужен @loader.tds и strings = {\"name\": ...}"
+    }
+
+    /** Whole-file hints, mostly for Telegram bots. */
+    private fun pythonFile(code: String, out: MutableList<String>) {
+        if (Regex("""\d{8,}:[A-Za-z0-9_-]{30,}""").containsMatchIn(code))
+            out += "Токен бота в коде! Храни его в token.txt и не выкладывай на GitHub"
+        if (code.contains("TeleBot(") && !code.contains("polling"))
+            out += "Бот создан, но не запущен: добавь bot.infinity_polling()"
+        if (code.contains("aiogram") && code.contains("Dispatcher") &&
+            !code.contains("start_polling") && !code.contains("run_polling"))
+            out += "aiogram: не хватает запуска executor.start_polling(dp)"
+        if (code.contains("time.sleep") && code.contains("async def"))
+            out += "В async-коде вместо time.sleep используй await asyncio.sleep"
+        if (code.contains("@loader.command") && !code.contains("loader.tds"))
+            out += "Модуль Heroku: над классом нужен @loader.tds"
+        if (Regex("""\bawait\b""").containsMatchIn(code) && !code.contains("async def") && !code.contains("async with"))
+            out += "await используется вне async def"
+        if (Regex("""open\([^)]*\)""").containsMatchIn(code) && !code.contains("with open") && code.contains("write"))
+            out += "Файл лучше открывать через with open(...) as f:"
     }
 
     private fun jsHints(cur: String, out: MutableList<String>) {
