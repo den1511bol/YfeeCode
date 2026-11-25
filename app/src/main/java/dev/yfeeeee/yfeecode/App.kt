@@ -2,6 +2,7 @@
 package dev.yfeeeee.yfeecode
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
@@ -124,6 +125,17 @@ fun App(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text("Пульсация узоров", modifier = Modifier.weight(1f))
                         Switch(checked = Settings.pulse, onCheckedChange = { Settings.pulse = it })
+                    }
+                    Text("Цвет акцента", modifier = Modifier.padding(top = 10.dp, bottom = 6.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Settings.accents.forEachIndexed { i, c ->
+                            Box(
+                                Modifier.size(34.dp)
+                                    .background(Color(c), androidx.compose.foundation.shape.CircleShape)
+                                    .border(if (Settings.accent == i) 3.dp else 0.dp, Color.White, androidx.compose.foundation.shape.CircleShape)
+                                    .clickable { Settings.accent = i }
+                            )
+                        }
                     }
                 }
             }

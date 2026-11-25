@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         val store = FileStore(this)
         val term = TerminalState(this, store)
         setContent {
-            MaterialTheme(colorScheme = darkColorScheme(primary = Color(0xFFC084FC), surface = Color(0xFF0A0612))) {
+            MaterialTheme(colorScheme = darkColorScheme(primary = Settings.accentColor, surface = Color(0xFF0A0612))) {
                 Surface(Modifier.fillMaxSize(), color = Color(0xFF0A0612)) {
                     var pendingExport by remember { mutableStateOf<File?>(null) }
                     var importDir by remember { mutableStateOf(store.root) }
