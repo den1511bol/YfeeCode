@@ -83,7 +83,14 @@ fun App(
                 listOf(Color(0x00C084FC), Color(0xFFC084FC), Color(0xFFF472B6), Color(0x00F472B6)))))
         Box(Modifier.weight(1f)) {
             when (tab) {
-                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport) { f, line ->
+                0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport,
+                    onGone = { gone ->
+                        val prefix = gone.absolutePath
+                        val dead = open.filter { it.file.absolutePath == prefix || it.file.absolutePath.startsWith(prefix + File.separator) }
+                        dead.forEach { it.markSaved() }
+                        open.removeAll(dead.toSet())
+                        active = active.coerceIn(0, maxOf(0, open.size - 1))
+                    }) { f, line ->
                     val i = open.indexOfFirst { it.file == f }
                     if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
                     if (line != null) open[active].goToLine(line)
@@ -135,10 +142,11 @@ fun App(
 fun FilesScreen(
     store: FileStore, dir: File, refreshKey: Int, onDir: (File) -> Unit,
     onImport: (File) -> Unit, onExport: (File) -> Unit,
-    onZipExport: () -> Unit, onZipImport: (File) -> Unit, onOpen: (File, Int?) -> Unit
+    onZipExport: () -> Unit, onZipImport: (File) -> Unit, onGone: (File) -> Unit, onOpen: (File, Int?) -> Unit
 ) {
     var tick by remember { mutableIntStateOf(0) }
     var dialog by remember { mutableStateOf<String?>(null) } // "file" | "dir"
+    var renaming by remember { mutableStateOf<File?>(null) }
     val items = remember(dir, tick, refreshKey) { store.list(dir) }
     val atRoot = dir.canonicalPath == store.root.canonicalPath
 
@@ -158,10 +166,11 @@ fun FilesScreen(
         )
         LazyColumn(Modifier.weight(1f)) {
             if (!atRoot) item {
-                FileRow("..", true, {}) { onDir(dir.parentFile ?: store.root) }
+                FileRow("..", true, {}, {}) { onDir(dir.parentFile ?: store.root) }
             }
             items(items) { f ->
-                FileRow(f.name, f.isDirectory, onDelete = { store.delete(f); tick++ }) {
+                FileRow(f.name, f.isDirectory, onRename = { renaming = f },
+                    onDelete = { onGone(f); store.delete(f); tick++ }) {
                     if (f.isDirectory) onDir(f) else onOpen(f, null)
                 }
             }
@@ -173,6 +182,16 @@ fun FilesScreen(
         )
     }
 
+    renaming?.let { target ->
+        NameDialog(
+            title = "Новое имя", initial = target.name, onCancel = { renaming = null },
+            onOk = { name ->
+                val dest = File(target.parentFile, name)
+                if (!dest.exists()) { onGone(target); target.renameTo(dest) }
+                renaming = null; tick++
+            }
+        )
+    }
     var chosen by remember { mutableStateOf<Template?>(null) }
     var hits by remember { mutableStateOf<List<FileStore.Hit>?>(null) }
     if (dialog == "search") {
@@ -238,7 +257,7 @@ fun FilesScreen(
 }
 
 @Composable
-private fun FileRow(name: String, isDir: Boolean, onDelete: () -> Unit, onClick: () -> Unit) {
+private fun FileRow(name: String, isDir: Boolean, onRename: () -> Unit, onDelete: () -> Unit, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clickable { onClick() }.padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -247,6 +266,7 @@ private fun FileRow(name: String, isDir: Boolean, onDelete: () -> Unit, onClick:
             tint = if (isDir) Color(0xFFE3B341) else Color(0xFF79C0FF))
         Spacer(Modifier.width(10.dp))
         Text(name, color = Color.White, modifier = Modifier.weight(1f))
+        if (name != "..") IconButton(onClick = onRename) { Icon(Icons.Default.Edit, "Переименовать", tint = Color(0xFF8B7FA8)) }
         if (name != "..") IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, "Удалить", tint = Color(0xFF8B7FA8)) }
     }
 }
@@ -460,6 +480,9 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 }
             }
             Spacer(Modifier.weight(1f))
+            TextButton(onClick = { clip.setText(androidx.compose.ui.text.AnnotatedString(term.lines.joinToString("\n"))) }) {
+                Text("копия", color = Color(0xFF8B7FA8))
+            }
             TextButton(onClick = { term.lines.clear() }) { Text("очистить", color = Color(0xFF8B7FA8)) }
             TextButton(onClick = { current?.let { term.runFile(it) } }) { Text("▶ файл") }
             TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFF472B6)) }
