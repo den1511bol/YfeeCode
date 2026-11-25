@@ -63,7 +63,12 @@ object Practices {
             Practice("py10", "Сумма значений", "Создай словарь prices с ключами a и b (значения 1 и 2) и выведи сумму его значений.", "", Lang.PYTHON,
                 listOf(must("""prices\s*=\s*\{""", "Создай словарь prices = {...}")), "3"),
             Practice("py11", "Асинхронный main", "Напиши async def main(), который печатает Готово, и запусти её через asyncio.run.", "import asyncio\n\n", Lang.PYTHON,
-                listOf(must("""async\s+def\s+main""", "Нужна async def main():"), must("""asyncio\.run\s*\(""", "Запусти через asyncio.run(main())")), "Готово")        ),
+                listOf(must("""async\s+def\s+main""", "Нужна async def main():"), must("""asyncio\.run\s*\(""", "Запусти через asyncio.run(main())")), "Готово"),
+            Practice("py12", "Ловим ошибку", "Попробуй выполнить int(\"abc\"), поймай ValueError и выведи слово Ошибка.", "", Lang.PYTHON,
+                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови except ValueError:")), "Ошибка"),
+            Practice("py13", "Модуль math", "Подключи math и выведи корень из 81.", "", Lang.PYTHON,
+                listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0")
+        ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
                 listOf(must("""console\.log\s*\(""", "Нужен console.log(...)"), must("""Hello""", "Выведи слово Hello"))),
@@ -72,11 +77,7 @@ object Practices {
             Practice("js3", "Цикл", "Выведи числа от 1 до 5 в консоль с помощью цикла.", "", Lang.JS,
                 listOf(must("""\b(for|while)\s*\(""", "Нужен цикл for или while"), must("""console\.log""", "Выводи через console.log"))),
             Practice("js4", "Обработчик клика", "Найди элемент по селектору и добавь обработчик события click.", "", Lang.JS,
-                listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)"))),,
-            Practice("py12", "Ловим ошибку", "Попробуй выполнить int(\"abc\"), поймай ValueError и выведи слово Ошибка.", "", Lang.PYTHON,
-                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови except ValueError:")), "Ошибка"),
-            Practice("py13", "Модуль math", "Подключи math и выведи корень из 81.", "", Lang.PYTHON,
-                listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0")
+                listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)"))),
             Practice("js5", "Пауза через промис", "Напиши async-функцию, которая ждёт 1 секунду через Promise и setTimeout.", "", Lang.JS,
                 listOf(must("""\basync\b""", "Нужна async-функция"), must("""new\s+Promise""", "Создай new Promise(...)"), must("""setTimeout\s*\(""", "Используй setTimeout(...)")))
         ),
