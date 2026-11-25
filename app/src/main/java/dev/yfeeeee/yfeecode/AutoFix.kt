@@ -36,12 +36,51 @@ object AutoFix {
 
     /** Whole file fix: tabs, trailing spaces, odd Python indentation, final newline. */
     fun fixAll(code: String, lang: Lang): String {
-        val lines = code.replace("\r\n", "\n").split("\n").map { l ->
-            var x = l.replace("\t", "    ").trimEnd()
-            if (lang == Lang.PYTHON) {
+        val raw = code.replace("\r\n", "\n").split("\n").map { it.replace("\t", "    ") }
+        // For Python: lines that start a real statement (not inside brackets or a triple-quoted string).
+        val stmt = BooleanArray(raw.size)
+        if (lang == Lang.PYTHON) {
+            var depth = 0
+            var tri: String? = null
+            raw.forEachIndexed { i, l ->
+                stmt[i] = depth == 0 && tri == null
+                var j = 0
+                while (j < l.length) {
+                    val t = tri
+                    if (t != null) {
+                        if (l.startsWith(t, j)) { tri = null; j += 3 } else j++
+                        continue
+                    }
+                    val c = l[j]
+                    if (c == '#') break
+                    if (l.startsWith("\"\"\"", j) || l.startsWith("'''", j)) { tri = l.substring(j, j + 3); j += 3; continue }
+                    if (c == '"' || c == '\'') {
+                        var k = j + 1
+                        while (k < l.length && l[k] != c) { if (l[k] == '\\') k++; k++ }
+                        j = k + 1; continue
+                    }
+                    if (c == '(' || c == '[' || c == '{') depth++
+                    if ((c == ')' || c == ']' || c == '}') && depth > 0) depth--
+                    j++
+                }
+            }
+        }
+        fun gcd(a: Int, b: Int): Int = if (b == 0) a else gcd(b, a % b)
+        var unit = 0
+        if (lang == Lang.PYTHON) {
+            raw.forEachIndexed { i, l ->
+                if (stmt[i] && l.isNotBlank()) {
+                    val n = l.length - l.trimStart(' ').length
+                    if (n > 0) unit = gcd(unit, n)
+                }
+            }
+        }
+        val lines = raw.mapIndexed { i, l ->
+            var x = l.trimEnd()
+            if (lang == Lang.PYTHON && stmt[i] && x.isNotBlank()) {
                 val n = x.length - x.trimStart(' ').length
-                if (n % 4 != 0 && n > 0) {
-                    val fixed = ((n + 2) / 4) * 4
+                if (n > 0 && unit != 4) {
+                    val fixed = if (unit in 2..8) n / unit * 4 else ((n + 2) / 4) * 4
                     x = " ".repeat(fixed) + x.trimStart(' ')
                 }
             }
