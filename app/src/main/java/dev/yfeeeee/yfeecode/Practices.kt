@@ -72,7 +72,13 @@ object Practices {
             Practice("js3", "Цикл", "Выведи числа от 1 до 5 в консоль с помощью цикла.", "", Lang.JS,
                 listOf(must("""\b(for|while)\s*\(""", "Нужен цикл for или while"), must("""console\.log""", "Выводи через console.log"))),
             Practice("js4", "Обработчик клика", "Найди элемент по селектору и добавь обработчик события click.", "", Lang.JS,
-                listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)")))
+                listOf(must("""(querySelector|getElementById)\s*\(""", "Найди элемент через document.querySelector(...)"), must("""addEventListener\s*\(\s*["']click["']""", "Добавь addEventListener(\"click\", ...)"))),,
+            Practice("py12", "Ловим ошибку", "Попробуй выполнить int(\"abc\"), поймай ValueError и выведи слово Ошибка.", "", Lang.PYTHON,
+                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови except ValueError:")), "Ошибка"),
+            Practice("py13", "Модуль math", "Подключи math и выведи корень из 81.", "", Lang.PYTHON,
+                listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0")
+            Practice("js5", "Пауза через промис", "Напиши async-функцию, которая ждёт 1 секунду через Promise и setTimeout.", "", Lang.JS,
+                listOf(must("""\basync\b""", "Нужна async-функция"), must("""new\s+Promise""", "Создай new Promise(...)"), must("""setTimeout\s*\(""", "Используй setTimeout(...)")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
@@ -102,7 +108,9 @@ object Practices {
             Practice("cpp3", "Цикл 1–5", "Выведи числа от 1 до 5 циклом for.", "", Lang.CPP,
                 listOf(must("""for\s*\(""", "Нужен цикл for"), must("""cout""", "Вывод через std::cout"))),
             Practice("cpp4", "Класс Dog", "Объяви класс Dog с открытым полем name типа std::string.", "", Lang.CPP,
-                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""public\s*:""", "Нужна секция public:"), must("""string\s+name""", "Нужно поле std::string name;")))
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""public\s*:""", "Нужна секция public:"), must("""string\s+name""", "Нужно поле std::string name;"))),
+            Practice("cpp5", "Наследование", "Сделай класс Animal и класс Dog, наследник Animal.", "", Lang.CPP,
+                listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*:\s*public\s+Animal""", "Нужно: class Dog : public Animal")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -112,7 +120,9 @@ object Practices {
             Practice("cs3", "foreach", "Пройди по списку чисел через foreach и выведи каждое.", "", Lang.CSHARP,
                 listOf(must("""foreach\s*\(""", "Нужен цикл foreach"), must("""Console\.WriteLine""", "Вывод: Console.WriteLine"))),
             Practice("cs4", "Класс со свойством", "Создай класс Dog со свойством Name ({ get; set; }), создай объект и задай имя.", "", Lang.CSHARP,
-                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""\{\s*get;\s*set;\s*\}""", "Нужно свойство { get; set; }"), must("""new\s+Dog\s*\(""", "Создай объект: new Dog()")))
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""\{\s*get;\s*set;\s*\}""", "Нужно свойство { get; set; }"), must("""new\s+Dog\s*\(""", "Создай объект: new Dog()"))),
+            Practice("cs5", "LINQ: чётные", "Есть список nums. Оставь только чётные числа через Where.", "using System.Linq;\n\n", Lang.CSHARP,
+                listOf(must("""\.Where\s*\(""", "Используй nums.Where(...)"), must("""%\s*2""", "Чётность проверяется через % 2")))
         )
     )
 }
