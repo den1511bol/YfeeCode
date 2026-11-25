@@ -2,6 +2,8 @@
 package dev.yfeeeee.yfeecode
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import kotlinx.coroutines.coroutineScope
@@ -25,9 +27,9 @@ private val ru = listOf("йцукенгшщзхъ", "фывапролджэ", "�
 private val sym = listOf("1234567890", "@#$%&*-+=_", "!?:;,.|\\/~")
 private val code = listOf("()", "[]", "{}", "\"\"", "''", "<>", "``")
 
-private val keyBg = Color(0xFF262B36)
-private val keyBgAlt = Color(0xFF353C4B)
-private val accent = Color(0xFF2E7D55)
+private val keyBg = Color(0xFF2A1647)
+private val keyBgAlt = Color(0xFF3B2068)
+private val accent = Color(0xFF7C3AED)
 
 @Composable
 fun DevKeyboard(onText: (String) -> Unit, onCmd: (Cmd) -> Unit, modifier: Modifier = Modifier) {
@@ -35,7 +37,7 @@ fun DevKeyboard(onText: (String) -> Unit, onCmd: (Cmd) -> Unit, modifier: Modifi
     var shift by remember { mutableStateOf(false) }
 
     Column(
-        modifier.fillMaxWidth().background(Color(0xFF181B22)).padding(horizontal = 3.dp, vertical = 4.dp),
+        modifier.fillMaxWidth().diamondPattern(Color(0xFF0E0720), Color(0x22C084FC), 22.dp).padding(horizontal = 3.dp, vertical = 5.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         // developer row: pairs and navigation
@@ -85,7 +87,12 @@ private fun RowScope.Key(
         Modifier
             .weight(weight)
             .height(42.dp)
-            .background(if (pressed) Color(0xFF4A5368) else bg, RoundedCornerShape(7.dp))
+            .background(
+                if (pressed) Brush.verticalGradient(listOf(Color(0xFFA78BFA), Color(0xFF7C3AED)))
+                else Brush.verticalGradient(listOf(bg, bg.copy(red = bg.red * 0.6f, green = bg.green * 0.6f, blue = bg.blue * 0.75f))),
+                RoundedCornerShape(9.dp)
+            )
+            .border(1.dp, Color(0x55C084FC), RoundedCornerShape(9.dp))
             .pointerInput(repeat) {
                 detectTapGestures(onPress = {
                     pressed = true

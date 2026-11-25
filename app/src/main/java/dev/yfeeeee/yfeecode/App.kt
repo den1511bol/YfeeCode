@@ -36,9 +36,9 @@ fun App(
     var active by remember { mutableIntStateOf(0) }
     var dir by remember { mutableStateOf(store.root) }
 
-    Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
+    Column(Modifier.fillMaxSize().diamondPattern().statusBarsPadding().navigationBarsPadding()) {
         Row(
-            Modifier.fillMaxWidth().background(Color(0xFF181B22)).padding(horizontal = 12.dp, vertical = 8.dp),
+            Modifier.fillMaxWidth().background(Color(0xFF150B24)).padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -49,13 +49,16 @@ fun App(
                 letterSpacing = 1.5.sp,
                 style = androidx.compose.ui.text.TextStyle(
                     brush = androidx.compose.ui.graphics.Brush.horizontalGradient(
-                        listOf(Color(0xFF7CE0A3), Color(0xFF79C0FF))
+                        listOf(Color(0xFFC084FC), Color(0xFFF472B6))
                     )
                 )
             )
             Spacer(Modifier.weight(1f))
-            Text("by @yfeeeee", color = Color(0xFF7CE0A3), fontSize = 12.sp)
+            Text("by @yfeeeee", color = Color(0xFFC084FC), fontSize = 12.sp)
         }
+        Box(Modifier.fillMaxWidth().height(2.dp).background(
+            androidx.compose.ui.graphics.Brush.horizontalGradient(
+                listOf(Color(0x00C084FC), Color(0xFFC084FC), Color(0xFFF472B6), Color(0x00F472B6)))))
         Box(Modifier.weight(1f)) {
             when (tab) {
                 0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport) { f ->
@@ -76,7 +79,7 @@ fun App(
                 else -> TerminalScreen(term, open.getOrNull(active)?.file, dir)
             }
         }
-        NavigationBar(containerColor = Color(0xFF181B22)) {
+        NavigationBar(containerColor = Color(0xFF150B24)) {
             listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal)
                 .forEachIndexed { i, (label, icon) ->
                     NavigationBarItem(selected = tab == i, onClick = { tab = i },
@@ -104,7 +107,7 @@ fun FilesScreen(
             TextButton(onClick = { onImport(dir) }) { Text("Импорт") }
         }
         Text(
-            "~/" + dir.relativeToOrSelf(store.root).path, color = Color(0xFF7D8590),
+            "~/" + dir.relativeToOrSelf(store.root).path, color = Color(0xFF8B7FA8),
             fontFamily = FontFamily.Monospace, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 12.dp)
         )
         LazyColumn(Modifier.weight(1f)) {
@@ -120,7 +123,7 @@ fun FilesScreen(
         Text(
             "Совет: файлы лежат внутри приложения. «Импорт» копирует файл с телефона сюда, " +
                 "экспорт — кнопка в редакторе.",
-            color = Color(0xFF7D8590), fontSize = 11.sp, modifier = Modifier.padding(10.dp)
+            color = Color(0xFF8B7FA8), fontSize = 11.sp, modifier = Modifier.padding(10.dp)
         )
     }
 
@@ -174,7 +177,7 @@ private fun FileRow(name: String, isDir: Boolean, onDelete: () -> Unit, onClick:
             tint = if (isDir) Color(0xFFE3B341) else Color(0xFF79C0FF))
         Spacer(Modifier.width(10.dp))
         Text(name, color = Color.White, modifier = Modifier.weight(1f))
-        if (name != "..") IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, "Удалить", tint = Color(0xFF7D8590)) }
+        if (name != "..") IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, "Удалить", tint = Color(0xFF8B7FA8)) }
     }
 }
 
@@ -186,7 +189,7 @@ fun EditorScreen(
     val state = open.getOrNull(active)
     if (state == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text("Открой файл во вкладке «Файлы»", color = Color(0xFF7D8590))
+            Text("Открой файл во вкладке «Файлы»", color = Color(0xFF8B7FA8))
         }
         return
     }
@@ -204,22 +207,22 @@ fun EditorScreen(
 
     Column(Modifier.fillMaxSize()) {
         // open file tabs
-        Row(Modifier.fillMaxWidth().background(Color(0xFF14171D)).horizontalScroll(rememberScrollState())) {
+        Row(Modifier.fillMaxWidth().background(Color(0xFF110920)).horizontalScroll(rememberScrollState())) {
             open.forEachIndexed { i, e ->
                 Row(
                     Modifier.clickable { onSelect(i) }
-                        .background(if (i == active) Color(0xFF262B36) else Color.Transparent)
+                        .background(if (i == active) Color(0xFF2A1647) else Color.Transparent)
                         .padding(start = 10.dp, top = 6.dp, bottom = 6.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(e.file.name + if (e.dirty) " •" else "", color = Color.White, fontSize = 12.sp)
                     IconButton(onClick = { onClose(i) }, modifier = Modifier.size(26.dp)) {
-                        Icon(Icons.Default.Close, "Закрыть", tint = Color(0xFF7D8590), modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.Close, "Закрыть", tint = Color(0xFF8B7FA8), modifier = Modifier.size(14.dp))
                     }
                 }
             }
         }
-        Row(Modifier.fillMaxWidth().background(Color(0xFF14171D)).horizontalScroll(rememberScrollState()),
+        Row(Modifier.fillMaxWidth().background(Color(0xFF110920)).horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically) {
             ToolIcon(Icons.Default.Save, "Сохранить") { save() }
             ToolIcon(Icons.Default.Undo, "Отмена") { state.undo() }
@@ -233,7 +236,7 @@ fun EditorScreen(
             ToolIcon(Icons.Default.Share, "Экспорт") { save(); onExport(state.file) }
             ToolIcon(Icons.Default.Keyboard, "Клавиатура") { showKb = !showKb }
         }
-        Row(Modifier.fillMaxWidth().background(Color(0xFF181B22)).horizontalScroll(rememberScrollState()),
+        Row(Modifier.fillMaxWidth().background(Color(0xFF150B24)).horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically) {
             MiniBtn(if (state.selectMode) "✓ выделение" else "выделить", state.selectMode) { state.toggleSelect() }
             MiniBtn("всё") { state.selectAll() }
@@ -245,7 +248,7 @@ fun EditorScreen(
             MiniBtn("отмена выд.") { state.clearSel() }
         }
         if (findOpen) {
-            Column(Modifier.fillMaxWidth().background(Color(0xFF181B22)).padding(6.dp)) {
+            Column(Modifier.fillMaxWidth().background(Color(0xFF150B24)).padding(6.dp)) {
                 FieldBox("Найти", findQ, !focusRepl) { focusRepl = false }
                 Spacer(Modifier.height(4.dp))
                 FieldBox("Заменить на", replQ, focusRepl) { focusRepl = true }
@@ -259,7 +262,7 @@ fun EditorScreen(
             }
         }
         if (hints.isNotEmpty()) {
-            Column(Modifier.fillMaxWidth().background(Color(0xFF2A2417)).padding(horizontal = 10.dp, vertical = 4.dp)) {
+            Column(Modifier.fillMaxWidth().background(Color(0xFF2A1733)).padding(horizontal = 10.dp, vertical = 4.dp)) {
                 hints.forEach { Text("💡 $it", color = Color(0xFFE3B341), fontSize = 12.sp) }
             }
         }
@@ -304,7 +307,7 @@ fun EditorScreen(
 @Composable
 private fun MiniBtn(label: String, on: Boolean = false, onClick: () -> Unit) {
     TextButton(onClick = onClick, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)) {
-        Text(label, fontSize = 12.sp, color = if (on) Color(0xFF7CE0A3) else Color(0xFFC9D1D9))
+        Text(label, fontSize = 12.sp, color = if (on) Color(0xFFC084FC) else Color(0xFFD8CCF0))
     }
 }
 
@@ -312,16 +315,16 @@ private fun MiniBtn(label: String, on: Boolean = false, onClick: () -> Unit) {
 private fun FieldBox(hint: String, value: String, focused: Boolean, onClick: () -> Unit) {
     Text(
         if (value.isEmpty() && !focused) hint else value + if (focused) "▏" else "",
-        color = if (value.isEmpty() && !focused) Color(0xFF5C6370) else Color(0xFF7CE0A3),
+        color = if (value.isEmpty() && !focused) Color(0xFF6B5B8C) else Color(0xFFC084FC),
         fontFamily = FontFamily.Monospace, fontSize = 13.sp,
-        modifier = Modifier.fillMaxWidth().background(Color(0xFF0F1115)).clickable { onClick() }.padding(8.dp)
+        modifier = Modifier.fillMaxWidth().background(Color(0xFF0A0612)).clickable { onClick() }.padding(8.dp)
     )
 }
 
 @Composable
 private fun ToolIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, desc: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.size(38.dp)) {
-        Icon(icon, desc, tint = Color(0xFFC9D1D9), modifier = Modifier.size(20.dp))
+        Icon(icon, desc, tint = Color(0xFFD8CCF0), modifier = Modifier.size(20.dp))
     }
 }
 
@@ -338,20 +341,20 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
     }
 
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().background(Color(0xFF14171D)), verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth().background(Color(0xFF110920)), verticalAlignment = Alignment.CenterVertically) {
             TermMode.values().forEach { m ->
                 TextButton(onClick = { term.mode = m }) {
-                    Text(m.label, color = if (term.mode == m) Color(0xFF7CE0A3) else Color(0xFF7D8590))
+                    Text(m.label, color = if (term.mode == m) Color(0xFFC084FC) else Color(0xFF8B7FA8))
                 }
             }
             Spacer(Modifier.weight(1f))
             TextButton(onClick = { current?.let { term.runFile(it) } }) { Text("▶ файл") }
-            TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFFF7B72)) }
+            TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFF472B6)) }
         }
-        LazyColumn(Modifier.weight(1f).fillMaxWidth().background(Color(0xFF0B0D11)).padding(6.dp), state = listState) {
+        LazyColumn(Modifier.weight(1f).fillMaxWidth().diamondPattern(Color(0xFF07040D), Color(0x14C084FC), 32.dp).padding(6.dp), state = listState) {
             items(term.lines) { l ->
                 val c = when {
-                    l.startsWith("[error]") || l.contains("Traceback") || l.contains("Error") -> Color(0xFFFF7B72)
+                    l.startsWith("[error]") || l.contains("Traceback") || l.contains("Error") -> Color(0xFFF472B6)
                     l.startsWith("[") -> Color(0xFF79C0FF)
                     else -> Color(0xFFD0D7DE)
                 }
@@ -359,8 +362,8 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
             }
         }
         Text(
-            term.prompt + input + "▏", color = Color(0xFF7CE0A3), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
-            modifier = Modifier.fillMaxWidth().background(Color(0xFF14171D)).padding(8.dp)
+            term.prompt + input + "▏", color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
+            modifier = Modifier.fillMaxWidth().background(Color(0xFF110920)).padding(8.dp)
         )
         DevKeyboard(
             onText = { input += it.replace("()", "(").replace("[]", "[").replace("{}", "{") },

@@ -49,13 +49,13 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
 
     Row(
         modifier
-            .background(Color(0xFF0F1115))
+            .diamondPattern(Color(0xFF0A0612), Color(0x0FC084FC), 44.dp)
             .onSizeChanged { viewportH = it.height }
             .verticalScroll(vScroll)
     ) {
         Text(
             gutter,
-            style = style.copy(color = Color(0xFF5C6370)),
+            style = style.copy(color = Color(0xFF6B5B8C)),
             modifier = Modifier.width(40.dp).padding(start = 6.dp, end = 6.dp, top = 6.dp)
         )
         Box(Modifier.horizontalScroll(hScroll)) {
@@ -81,7 +81,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                         val l = layout
                         if (l != null && state.cursor <= l.layoutInput.text.length) {
                             val r = l.getCursorRect(state.cursor)
-                            drawRect(Color(0xFF7CE0A3), Offset(r.left, r.top), Size(2.5f, r.height))
+                            drawRect(Color(0xFFC084FC), Offset(r.left, r.top), Size(2.5f, r.height))
                         }
                     }
             )
