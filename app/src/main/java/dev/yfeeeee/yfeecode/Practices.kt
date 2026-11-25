@@ -69,7 +69,11 @@ object Practices {
             Practice("py13", "Модуль math", "Подключи math и выведи корень из 81.", "", Lang.PYTHON,
                 listOf(must("""import\s+math|from\s+math\s+import""", "Подключи модуль math")), "9.0"),
             Practice("py14", "Квадраты", "Создай список squares из квадратов чисел от 0 до 4 и выведи его.", "", Lang.PYTHON,
-                listOf(must("""\bfor\b.*\bin\b""", "Используй списковое включение [x * x for x in ...]")), "[0, 1, 4, 9, 16]")
+                listOf(must("""\bfor\b.*\bin\b""", "Используй списковое включение [x * x for x in ...]")), "[0, 1, 4, 9, 16]"),
+            Practice("py15", "Наследование", "Создай класс Animal с методом speak (возвращает \"звук\") и класс Dog(Animal). Выведи Dog().speak().", "", Lang.PYTHON,
+                listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*\(\s*Animal\s*\)""", "Нужно class Dog(Animal):")), "звук"),
+            Practice("py16", "Декоратор", "Напиши декоратор deco, который печатает start перед вызовом функции, и примени его к функции f. Вызови f().", "", Lang.PYTHON,
+                listOf(must("""def\s+deco\s*\(""", "Нужна функция deco"), must("""@deco""", "Примени декоратор: @deco")), "start")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
@@ -83,7 +87,11 @@ object Practices {
             Practice("js5", "Пауза через промис", "Напиши async-функцию, которая ждёт 1 секунду через Promise и setTimeout.", "", Lang.JS,
                 listOf(must("""\basync\b""", "Нужна async-функция"), must("""new\s+Promise""", "Создай new Promise(...)"), must("""setTimeout\s*\(""", "Используй setTimeout(...)"))),
             Practice("js6", "map удвоение", "Удвой каждое число массива [1, 2, 3] через map.", "", Lang.JS,
-                listOf(must("""\.map\s*\(""", "Используй метод map"), must("""\*\s*2|2\s*\*""", "Умножай на 2")))
+                listOf(must("""\.map\s*\(""", "Используй метод map"), must("""\*\s*2|2\s*\*""", "Умножай на 2"))),
+            Practice("js7", "Класс Dog", "Объяви класс Dog с constructor(name) и создай объект через new.", "", Lang.JS,
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""constructor\s*\(""", "Нужен constructor(...)"), must("""new\s+Dog\s*\(""", "Создай объект: new Dog(...)"))),
+            Practice("js8", "Деструктуризация", "Достань name из объекта dog через деструктуризацию.", "", Lang.JS,
+                listOf(must("""(const|let)\s*\{\s*name\s*\}\s*=\s*dog""", "Нужно: const { name } = dog;")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
