@@ -90,6 +90,8 @@ private val SECTIONS = listOf(
 • Кнопка «Остановить» в уведомлении завершает всё в Linux сразу.
 • Как в Termux: pkg install пакет (или apt install) ставит пакеты, pkg update/upgrade/search/remove. linux setup ставит git, ssh, curl, wget, tmux, node, npm, bash, htop.
 • Несколько сессий: сверху вкладки 1, 2, 3, «+ сессия» и «закрыть». Память телефона: кнопка «Файлы» (разреши доступ), затем новая сессия, папка /sdcard (Download, Documents). Разработчик @yfeeeee.
+• Ещё в Linux: yfee-sshd (SSH-сервер на порту 8022), langs node|go|rust|ruby|php|java (установка языка), yfee-backup / yfee-restore (копия системы в /sdcard/Download), termux-clipboard-set/get (кнопка «Буфер»), termux-open, termux-setup-storage.
+• Кнопки A− / A+ меняют размер шрифта. В панели клавиш есть Ctrl, Alt, Esc, Tab, стрелки, Home, End, Del, F1-F12.
 • Разреши работу в фоне, когда Android спросит, и отключи экономию батареи для YfeeCode, иначе производитель телефона может закрыть приложение.
 • Чтобы выйти из сессии насовсем, напиши exit. Тогда фоновая служба выключится.
 """.trim()),

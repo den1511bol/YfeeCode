@@ -187,3 +187,4 @@
 - Linux: приветствие и приятный prompt в ~/.profile (создаётся, если файла нет), алиасы ll и .. @yfeeeee
 - Резервная копия Linux: yfee-backup (в /sdcard/Download) и yfee-restore [файл]. @yfeeeee
 - Команда langs <node|go|rust|ruby|php|java|lua|perl>: установка языка одной командой в Linux. @yfeeeee
+- Справка и README обновлены под Termux-возможности (sshd, langs, backup, буфер, клавиши). @yfeeeee

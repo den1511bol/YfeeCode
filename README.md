@@ -66,3 +66,6 @@
 3. В редакторе нажми ▶ или в терминале `run bot_telebot.py`. Остановка: `stop` или «■ стоп».
 4. Модуль Heroku: шаблон «Модуль Heroku», затем `mod MyMod.py .hello` — проверка команды без Telegram.
 5. Резервная копия: «ZIP↑» в файлах; восстановление: «ZIP↓».
+
+## Linux в приложении (как Termux)
+Alpine через proot: `pkg install`, `apt install`, несколько сессий, `/sdcard`, `yfee-sshd` (SSH на порту 8022), `langs node|go|rust|ruby|php|java`, `yfee-backup` / `yfee-restore`, `termux-clipboard-set/get`, `termux-open`. Разработчик: @yfeeeee.
