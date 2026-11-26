@@ -190,3 +190,4 @@
 - Справка и README обновлены под Termux-возможности (sshd, langs, backup, буфер, клавиши). @yfeeeee
 - Сессия 14: JS +3 урока (npm, Express, Telegram-боты на Node), всего 133 урока. @yfeeeee
 - Сессия 15: C++ +2 урока (потоки, время и random), всего 135 уроков. @yfeeeee
+- Сессия 16: C# +2 урока (JSON, ASP.NET minimal API), всего 137 уроков. @yfeeeee

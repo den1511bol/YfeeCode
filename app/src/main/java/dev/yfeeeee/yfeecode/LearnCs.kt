@@ -177,5 +177,21 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Статический метод Hello, ничего не возвращает", "public static void Hello() {}"),
         type("Константа Pi равная 3.14", "public const double Pi = 3.14;"),
         type("Вызови статический метод Hello класса Util", "Util.Hello();")
+    )),
+    Lesson("JSON: System.Text.Json", "Встроенный класс JsonSerializer превращает объект в строку JSON и обратно. Serialize пишет, Deserialize читает. Свойства класса становятся полями JSON.\n>using System.Text.Json;\n>string s = JsonSerializer.Serialize(user);\n>var u = JsonSerializer.Deserialize<User>(s);", listOf(
+        type("Подключи пространство имён JSON", "using System.Text.Json;"),
+        type("Преврати user в строку JSON", "string s = JsonSerializer.Serialize(user);"),
+        type("Прочитай User из строки s", "var u = JsonSerializer.Deserialize<User>(s);"),
+        type("Прочитай весь файл data.json", "File.ReadAllText(\"data.json\")"),
+        type("Запиши строку s в файл out.json", "File.WriteAllText(\"out.json\", s);"),
+        type("Свойство Name типа string", "public string Name { get; set; }")
+    )),
+    Lesson("ASP.NET: минимальный API", "Минимальный веб-API создаётся в нескольких строках. WebApplication.CreateBuilder готовит приложение, MapGet описывает адрес, Run запускает сервер. Создать проект: dotnet new web.\n>var builder = WebApplication.CreateBuilder(args);\n>var app = builder.Build();\n>app.MapGet(\"/\", () => \"Привет\");\n>app.Run();", listOf(
+        type("Создай проект веб-приложения", "dotnet new web"),
+        type("Подготовь builder", "var builder = WebApplication.CreateBuilder(args);"),
+        type("Собери приложение", "var app = builder.Build();"),
+        type("Опиши GET / с ответом Привет", "app.MapGet(\"/\", () => \"Привет\");"),
+        type("Опиши POST /add", "app.MapPost(\"/add\", (Item i) => i);"),
+        type("Запусти сервер", "app.Run();")
     ))
 ))
