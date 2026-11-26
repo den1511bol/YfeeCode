@@ -227,3 +227,4 @@
 - Сессия v2-3: pkg: индекс обновляется сам раз в сутки и при ошибке установки, pkg list/show/files. @yfeeeee
 - Сессия v2-4: Linux: команды yfee-help (шпаргалка) и yfee-git-setup (имя, почта, токен GitHub). @yfeeeee
 - Сессия v2-5: Linux: yfee-bot (шаблон бота aiogram3) и yfee-hikka (шаблон модуля Heroku/Hikka). @yfeeeee
+- Сессия v2-6: терминал: Tab дополняет имена файлов и папок (история ↑/↓ уже была). @yfeeeee

@@ -627,7 +627,11 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                         hIdx = history.size
                         term.submit(input); input = ""
                     }
-                    Cmd.TAB -> input += "    "
+                    Cmd.TAB -> if (term.mode == TermMode.SH) {
+                        val r = tabComplete(input, term.cwd)
+                        if (r.second.isNotEmpty()) term.print(r.second.joinToString("  "))
+                        input = r.first
+                    } else input += "    "
                     Cmd.UP -> if (hIdx > 0) { hIdx--; input = history[hIdx] }
                     Cmd.DOWN -> if (hIdx < history.size - 1) { hIdx++; input = history[hIdx] } else { hIdx = history.size; input = "" }
                     Cmd.PASTE -> clip.getText()?.text?.let { input += it.replace("\n", " ") }
@@ -657,4 +661,24 @@ fun HtmlPreview(html: String, onClose: () -> Unit) {
             )
         }
     }
+}
+
+/** Tab completion of file names for the terminal input: returns the new line and the list of candidates (if several). Developer: @yfeeeee */
+fun tabComplete(input: String, cwd: java.io.File): Pair<String, List<String>> {
+    val sp = input.lastIndexOf(' ')
+    val head = input.substring(0, sp + 1)
+    val word = input.substring(sp + 1)
+    val slash = word.lastIndexOf('/')
+    val dirPart = if (slash >= 0) word.substring(0, slash + 1) else ""
+    val prefix = word.substring(slash + 1)
+    val dir = if (dirPart.isEmpty()) cwd else java.io.File(if (dirPart.startsWith("/")) dirPart else cwd.path + "/" + dirPart)
+    val names = (dir.list() ?: return input to emptyList<String>())
+        .filter { it.startsWith(prefix) && (!it.startsWith(".") || prefix.startsWith(".")) }
+        .sorted()
+    if (names.isEmpty()) return input to emptyList<String>()
+    fun label(n: String) = if (java.io.File(dir, n).isDirectory) "$n/" else n
+    if (names.size == 1) return (head + dirPart + label(names[0])) to emptyList<String>()
+    var common = names[0]
+    for (n in names) common = common.commonPrefixWith(n)
+    return (head + dirPart + common) to names.map { label(it) }
 }
