@@ -369,6 +369,7 @@ fun EditorScreen(
     var findQ by remember { mutableStateOf("") }
     var replQ by remember { mutableStateOf("") }
     var focusRepl by remember { mutableStateOf(false) }
+    var caseSens by remember { mutableStateOf(false) }
     var info by remember { mutableStateOf("") }
     val clip = LocalClipboardManager.current
     val hints = remember(state.text, state.cursor) { Hints.analyze(state.text, state.lang, state.lineIndex) }
@@ -453,9 +454,11 @@ fun EditorScreen(
                 Spacer(Modifier.height(4.dp))
                 FieldBox("Заменить на", replQ, focusRepl) { focusRepl = true }
                 Row(horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
-                    MiniBtn("далее") { info = if (state.findNext(findQ, state.cursor.let { if (state.hasSel) state.selEnd else it })) "" else "не найдено" }
-                    MiniBtn("заменить") { state.replaceCurrent(findQ, replQ) }
-                    MiniBtn("все") { info = "заменено: " + state.replaceAllText(findQ, replQ) }
+                    MiniBtn("далее") { info = if (state.findNext(findQ, state.cursor.let { if (state.hasSel) state.selEnd else it }, !caseSens)) "найдено: " + state.countMatches(findQ, !caseSens) else "не найдено" }
+                    MiniBtn("назад") { info = if (state.findPrev(findQ, !caseSens)) "найдено: " + state.countMatches(findQ, !caseSens) else "не найдено" }
+                    MiniBtn("Aa", caseSens) { caseSens = !caseSens }
+                    MiniBtn("заменить") { state.replaceCurrent(findQ, replQ, !caseSens) }
+                    MiniBtn("все") { info = "заменено: " + state.replaceAllText(findQ, replQ, !caseSens) }
                     MiniBtn("×") { findOpen = false }
                     Text(info, color = Color(0xFFE3B341), fontSize = 11.sp)
                 }
@@ -503,7 +506,7 @@ fun EditorScreen(
                     val nv = when (c) {
                         Cmd.BACK -> cur.dropLast(1)
                         Cmd.PASTE -> cur + (clip.getText()?.text ?: "").replace("\n", " ")
-                        else -> { info = if (state.findNext(findQ, if (state.hasSel) state.selEnd else state.cursor)) "" else "не найдено"; cur }
+                        else -> { info = if (state.findNext(findQ, if (state.hasSel) state.selEnd else state.cursor, !caseSens)) "" else "не найдено"; cur }
                     }
                     if (focusRepl) replQ = nv else findQ = nv
                 } else when (c) {

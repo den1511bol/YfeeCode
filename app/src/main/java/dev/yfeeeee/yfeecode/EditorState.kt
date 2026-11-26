@@ -94,17 +94,33 @@ class EditorState(val file: File, initial: String) {
         anchor = i; cursor = i + q.length; selectMode = false
         return true
     }
-    fun replaceCurrent(q: String, r: String) {
-        if (hasSel && selectedText.equals(q, true)) {
+    fun findPrev(q: String, ignoreCase: Boolean = true): Boolean {
+        if (q.isEmpty()) return false
+        val from = (if (hasSel) selStart else cursor) - 1
+        var i = if (from >= 0) text.lastIndexOf(q, from, ignoreCase) else -1
+        if (i < 0) i = text.lastIndexOf(q, text.length, ignoreCase)
+        if (i < 0) return false
+        anchor = i; cursor = i + q.length; selectMode = false
+        return true
+    }
+    fun countMatches(q: String, ignoreCase: Boolean = true): Int {
+        if (q.isEmpty()) return 0
+        var n = 0; var i = text.indexOf(q, 0, ignoreCase)
+        while (i >= 0 && n < 100000) { n++; i = text.indexOf(q, i + q.length, ignoreCase) }
+        return n
+    }
+    fun replaceCurrent(q: String, r: String, ignoreCase: Boolean = true) {
+        if (hasSel && selectedText.equals(q, ignoreCase)) {
             snapshot(); val a = selStart
             set(text.substring(0, a) + r + text.substring(selEnd), a + r.length); anchor = null
         }
-        findNext(q)
+        findNext(q, cursor, ignoreCase)
     }
-    fun replaceAllText(q: String, r: String): Int {
+    fun replaceAllText(q: String, r: String, ignoreCase: Boolean = true): Int {
         if (q.isEmpty()) return 0
-        val n = Regex(Regex.escape(q), RegexOption.IGNORE_CASE).findAll(text).count()
-        if (n > 0) { snapshot(); set(Regex(Regex.escape(q), RegexOption.IGNORE_CASE).replace(text) { r }, cursor) }
+        val rx = if (ignoreCase) Regex(Regex.escape(q), RegexOption.IGNORE_CASE) else Regex(Regex.escape(q))
+        val n = rx.findAll(text).count()
+        if (n > 0) { snapshot(); set(rx.replace(text) { r }, cursor) }
         return n
     }
 
