@@ -217,5 +217,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Проверь, что x не null", "if (x is not null) { }"),
         type("Вариант по умолчанию в switch-выражении", "_ => \"?\""),
         type("Ветка для значения 1", "1 => \"Пн\",")
+    )),
+    Lesson("События: event", "Событие позволяет одному объекту сообщать другим, что что-то произошло. Объявляется через event и тип делегата, подписка делает +=, вызов через Invoke. Знак вопроса перед точкой защищает от случая, когда подписчиков нет.\n>public event Action<string> Message;\n>obj.Message += text => Console.WriteLine(text);\n>Message?.Invoke(\"привет\");", listOf(
+        type("Объяви событие Message с текстом", "public event Action<string> Message;"),
+        type("Подпишись на событие", "obj.Message += text => Console.WriteLine(text);"),
+        type("Вызови событие безопасно", "Message?.Invoke(\"привет\");"),
+        type("Отпишись от события", "obj.Message -= Handler;"),
+        type("Делегат без параметров и результата", "Action a = () => { };"),
+        type("Делегат с результатом int", "Func<int> f = () => 5;")
     ))
 ))

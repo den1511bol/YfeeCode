@@ -321,5 +321,13 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Создай разборщик аргументов", "p = argparse.ArgumentParser()"),
         type("Добавь параметр --name", "p.add_argument(\"--name\")"),
         type("Разбери аргументы", "args = p.parse_args()")
+    )),
+    Lesson("Веб-сервер на aiohttp", "Библиотека aiohttp умеет и запросы, и серверы, всё асинхронно. Обработчик это async-функция, которая получает request и возвращает web.Response. Маршруты добавляют в приложение, run_app запускает сервер.\n>from aiohttp import web\n>async def hello(request):\n>    return web.Response(text=\"Привет\")\n>app = web.Application()\n>app.add_routes([web.get(\"/\", hello)])\n>web.run_app(app)", listOf(
+        type("Подключи web из aiohttp", "from aiohttp import web"),
+        type("Объяви обработчик hello", "async def hello(request):"),
+        type("Верни текстовый ответ", "return web.Response(text=\"Привет\")"),
+        type("Создай приложение", "app = web.Application()"),
+        type("Добавь маршрут GET /", "app.add_routes([web.get(\"/\", hello)])"),
+        type("Запусти сервер", "web.run_app(app)")
     ))
 ))
