@@ -656,7 +656,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                         val r = tabComplete(input, term.cwd)
                         if (r.second.isNotEmpty()) term.print(r.second.joinToString("  "))
                         input = r.first
-                    } else input += "    "
+                    } else { input += "    " }
                     Cmd.UP -> if (hIdx > 0) { hIdx--; input = history[hIdx] }
                     Cmd.DOWN -> if (hIdx < history.size - 1) { hIdx++; input = history[hIdx] } else { hIdx = history.size; input = "" }
                     Cmd.PASTE -> clip.getText()?.text?.let { input += it.replace("\n", " ") }
