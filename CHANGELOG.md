@@ -184,3 +184,4 @@
 - SSH-сервер: команда yfee-sshd в Linux (порт 8022, пароль root, ssh -p 8022 root@адрес). @yfeeeee
 - Вкладка Linux: кнопки A− / A+ меняют размер шрифта терминала (запоминается). @yfeeeee
 - Вкладка Linux: клавиши Alt, Home, End, Del, Ins, F1-F12 и символы \ { } [ ] & *. @yfeeeee
+- Linux: приветствие и приятный prompt в ~/.profile (создаётся, если файла нет), алиасы ll и .. @yfeeeee

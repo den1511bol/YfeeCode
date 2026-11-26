@@ -103,6 +103,11 @@ object Linux {
                 "termux-toast" to "#!/bin/sh\necho \"[toast] \$*\"\n"
             )
             for ((n, t) in scr) File(bin, n).also { it.writeText(t); it.setExecutable(true, false) }
+            File(root(ctx), "root").mkdirs()
+            File(root(ctx), "root/.profile").takeIf { !it.exists() }?.writeText(
+                "export PS1='\\[\\e[1;31m\\]yfee\\[\\e[0m\\]:\\w\\$ '\nalias ll='ls -la'\nalias ..='cd ..'\ncd /work 2>/dev/null\n" +
+                "echo 'YfeeCode Linux (Alpine). Разработчик: @yfeeeee'\necho 'pkg install <пакет>  |  termux-setup-storage  |  yfee-sshd  |  /sdcard  |  /work (проекты)'\n"
+            )
             File(bin, "termux-setup-storage").also {
                 it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
                 it.setExecutable(true, false)
