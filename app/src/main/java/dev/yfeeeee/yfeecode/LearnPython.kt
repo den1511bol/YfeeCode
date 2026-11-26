@@ -241,5 +241,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Запусти main", "asyncio.run(main())"),
         type("Выполни a() и b() одновременно", "await asyncio.gather(a(), b())"),
         type("Запусти задачу в фоне", "asyncio.create_task(a())")
+    )),
+    Lesson("Тесты: unittest и pytest", "Тест проверяет, что функция работает так, как задумано. В pytest достаточно функции test_... с assert. В unittest тесты лежат в классе от TestCase. Запуск: python3 -m pytest или python3 -m unittest.\n>def test_sum():\n>    assert add(2, 3) == 5\n>import unittest\n>class T(unittest.TestCase):\n>    def test_add(self):\n>        self.assertEqual(add(2, 3), 5)", listOf(
+        type("Объяви pytest-тест test_sum", "def test_sum():"),
+        type("Проверь, что add(2, 3) равно 5", "assert add(2, 3) == 5"),
+        type("Подключи unittest", "import unittest"),
+        type("Класс тестов T", "class T(unittest.TestCase):"),
+        type("Сравни a и b в unittest", "self.assertEqual(a, b)"),
+        type("Запусти pytest", "python3 -m pytest")
+    )),
+    Lesson("Модули Heroku и Hikka", "Модуль для Hikka это один .py файл. Класс наследуется от loader.Module, у него есть strings с именем модуля. Команда это метод с приставкой cmd в конце имени, внутри ответ отправляет utils.answer. Файл подключают командой loadmod.\n>from .. import loader, utils\n>@loader.tds\n>class HelloMod(loader.Module):\n>    strings = {\"name\": \"Hello\"}\n>    async def hicmd(self, message):\n>        await utils.answer(message, \"Привет\")", listOf(
+        type("Подключи loader и utils", "from .. import loader, utils"),
+        type("Класс модуля HelloMod", "class HelloMod(loader.Module):"),
+        type("Имя модуля в strings", "strings = {\"name\": \"Hello\"}"),
+        type("Объяви команду hi", "async def hicmd(self, message):"),
+        type("Ответь на сообщение текстом Привет", "await utils.answer(message, \"Привет\")"),
+        type("Декоратор перевода строк над классом", "@loader.tds")
     ))
 ))

@@ -178,3 +178,4 @@
 - Сессия 2: практики C++ (cpp8-15) и C# (cs8-15) по новым урокам.
 - Сессия 3: практики JS (js9-16), HTML (html10-15), CSS (css9-15).
 - Сессия 4: Python +3 урока (requests, sqlite3, asyncio), всего 128 уроков. Разработчик @yfeeeee.
+- Сессия 5: Python +2 урока (unittest/pytest, модули Heroku/Hikka), всего 130 уроков. Разработчик @yfeeeee.
