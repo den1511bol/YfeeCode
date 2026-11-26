@@ -202,3 +202,4 @@
 - Сессия 26: практики JS js17-js18 (localStorage, createElement) и C++ cpp16-cpp17 (thread, unordered_map). @yfeeeee
 - Сессия 27: практики C# cs16 (JSON) и cs17 (HashSet). @yfeeeee
 - Сессия 28: Python +2 урока (typing, abc), всего 149 уроков. @yfeeeee
+- Сессия 29: JS +2 урока (Math, Date), всего 151 урок. @yfeeeee

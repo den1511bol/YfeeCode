@@ -225,5 +225,21 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Прочитай массив обратно", "const arr = JSON.parse(localStorage.getItem(\"list\"))"),
         type("Удали ключ name", "localStorage.removeItem(\"name\")"),
         type("Очисти всю память", "localStorage.clear()")
+    )),
+    Lesson("Math и случайные числа", "Объект Math содержит математические функции. Math.random даёт число от 0 до 1, Math.floor округляет вниз, Math.round до ближайшего, Math.max и Math.min выбирают наибольшее и наименьшее. Случайное целое от 1 до 6 получают формулой с floor.\n>const r = Math.random()\n>const dice = Math.floor(Math.random() * 6) + 1\n>Math.round(2.6)\n>Math.max(1, 5, 3)", listOf(
+        type("Случайное число от 0 до 1", "const r = Math.random()"),
+        type("Случайное целое от 1 до 6", "const dice = Math.floor(Math.random() * 6) + 1"),
+        type("Округли 2.6 до ближайшего", "Math.round(2.6)"),
+        type("Округли x вниз", "Math.floor(x)"),
+        type("Найди наибольшее из 1, 5, 3", "Math.max(1, 5, 3)"),
+        type("Возведи 2 в степень 3", "Math.pow(2, 3)")
+    )),
+    Lesson("Дата и время: Date", "Объект Date работает с датой и временем. new Date создаёт текущий момент, getFullYear и getMonth возвращают части даты (месяцы считаются с нуля), toLocaleDateString показывает дату в удобном виде, Date.now даёт число миллисекунд.\n>const now = new Date()\n>now.getFullYear()\n>now.getMonth()\n>now.toLocaleDateString(\"ru-RU\")\n>const t = Date.now()", listOf(
+        type("Создай текущую дату", "const now = new Date()"),
+        type("Получи год из now", "now.getFullYear()"),
+        type("Получи месяц из now", "now.getMonth()"),
+        type("Покажи дату now по-русски", "now.toLocaleDateString(\"ru-RU\")"),
+        type("Получи число миллисекунд сейчас", "const t = Date.now()"),
+        type("Получи час из now", "now.getHours()")
     ))
 ))
