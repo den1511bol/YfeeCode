@@ -1,17 +1,16 @@
-# YfeeCode probe — developer: @yfeeeee. Manual experiment: can we fetch proot + rootfs for on-device Linux?
+# YfeeCode probe — developer: @yfeeeee. Manual experiment.
 name: Probe proot
 on: workflow_dispatch
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
-      - name: Termux proot package index
+      - name: Termux terminal library on jitpack
         run: |
-          set -x
-          curl -fsSL https://packages.termux.dev/apt/termux-main/dists/stable/main/binary-aarch64/Packages -o Packages || true
-          ls -l Packages || true
-          awk '/^Package: (proot|libtalloc|libandroid-glob|libandroid-support)$/{p=1} p{print} /^$/{p=0}' Packages | grep -E "^(Package|Version|Filename|Depends|Size)" || true
-      - name: Alpine rootfs
-        run: |
-          curl -fsSIL https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/aarch64/ | head -3 || true
-          curl -fsSL https://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/aarch64/latest-releases.yaml | grep -E "minirootfs" -A3 | head -12 || true
+          for a in terminal-view terminal-emulator; do
+            for v in v0.118.0 v0.118.1 0.118.0; do
+              code=$(curl -s -o /tmp/p.pom -w "%{http_code}" "https://jitpack.io/com/github/termux/termux-app/$a/$v/$a-$v.pom" || true)
+              echo "$a $v -> $code"
+            done
+          done
+          curl -s "https://jitpack.io/api/builds/com.github.termux.termux-app/terminal-view" | head -c 400 || true
