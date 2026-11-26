@@ -17,16 +17,16 @@ object Highlighter {
     private val keywords: Map<Lang, Set<String>> = mapOf(
         Lang.PYTHON to setOf("def", "class", "if", "elif", "else", "for", "while", "return", "import",
             "from", "as", "try", "except", "finally", "with", "async", "await", "lambda", "pass",
-            "break", "continue", "None", "True", "False", "in", "is", "not", "and", "or", "raise", "yield"),
+            "break", "continue", "None", "True", "False", "in", "is", "not", "and", "or", "raise", "yield", "global", "nonlocal", "del", "assert", "match", "case"),
         Lang.JS to setOf("function", "const", "let", "var", "if", "else", "for", "while", "return",
             "class", "new", "async", "await", "try", "catch", "finally", "import", "export", "from",
-            "null", "undefined", "true", "false", "this", "switch", "case", "break", "continue"),
+            "null", "undefined", "true", "false", "this", "switch", "case", "break", "continue", "do", "of", "typeof", "instanceof", "delete", "throw", "extends", "super", "default", "static", "void"),
         Lang.CPP to setOf("int", "float", "double", "char", "void", "bool", "class", "struct", "if",
             "else", "for", "while", "return", "include", "using", "namespace", "std", "new", "delete",
-            "const", "static", "public", "private", "true", "false", "nullptr", "auto"),
+            "const", "static", "public", "private", "true", "false", "nullptr", "auto", "template", "typename", "switch", "case", "break", "continue", "do", "override", "virtual", "enum", "unsigned", "long", "short", "constexpr", "throw", "try", "catch"),
         Lang.CSHARP to setOf("using", "namespace", "class", "public", "private", "static", "void",
             "int", "string", "bool", "var", "new", "if", "else", "for", "foreach", "while", "return",
-            "async", "await", "try", "catch", "finally", "null", "true", "false", "this"),
+            "async", "await", "try", "catch", "finally", "null", "true", "false", "this", "switch", "case", "break", "continue", "do", "interface", "enum", "override", "virtual", "abstract", "readonly", "double", "float", "char", "long", "record", "throw", "in"),
         Lang.CSS to setOf(),
         Lang.HTML to setOf(),
         Lang.TEXT to setOf()
@@ -69,7 +69,7 @@ object Highlighter {
                     withStyle(SpanStyle(color = kwComment)) { append(code.substring(i, e)) }
                     i = e
                 }
-                c == '"' || c == '\'' || (c == '`' && lang == Lang.JS) -> {
+                (lang != Lang.HTML && (c == '"' || c == '\'')) || (c == '`' && lang == Lang.JS) -> {
                     var j = i + 1
                     while (j < n && code[j] != c && code[j] != '\n') {
                         if (code[j] == '\\' && j + 1 < n) j++
