@@ -102,22 +102,22 @@ fun App(
                 letterSpacing = 1.5.sp,
                 style = androidx.compose.ui.text.TextStyle(
                     brush = androidx.compose.ui.graphics.Brush.horizontalGradient(
-                        listOf(Color(0xFFB91C1C), Color(0xFFF48972))
+                        listOf(Color(0xFFEF4444), Color(0xFFF48972))
                     )
                 )
             )
             Spacer(Modifier.weight(1f))
-            Text("by @yfeeeee", color = Color(0xFFB91C1C), fontSize = 12.sp)
+            Text("by @yfeeeee", color = Color(0xFFEF4444), fontSize = 12.sp)
             IconButton(onClick = { showHelp = true }, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Default.Info, "Инструкция", tint = Color(0xFFB91C1C))
+                Icon(Icons.Default.Info, "Инструкция", tint = Color(0xFFEF4444))
             }
             IconButton(onClick = { showSettings = true }, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Default.Settings, "Настройки", tint = Color(0xFFB91C1C))
+                Icon(Icons.Default.Settings, "Настройки", tint = Color(0xFFEF4444))
             }
         }
         Box(Modifier.fillMaxWidth().height(2.dp).background(
             androidx.compose.ui.graphics.Brush.horizontalGradient(
-                listOf(Color(0x00B91C1C), Color(0xFFB91C1C), Color(0xFFF48972), Color(0x00F48972)))))
+                listOf(Color(0x00B91C1C), Color(0xFFEF4444), Color(0xFFF48972), Color(0x00F48972)))))
         Box(Modifier.weight(1f)) {
             when (tab) {
                 0 -> FilesScreen(store, dir, refreshKey, { dir = it }, onImport, onExport, onZipExport, onZipImport,
@@ -172,7 +172,7 @@ fun App(
                         Switch(checked = Settings.autoUpdate, onCheckedChange = { Settings.autoUpdate = it })
                     }
                     Text("Версия: ${Updater.currentLabel}", color = Color(0xFFA87F81), fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
-                    if (Updater.status.isNotEmpty()) Text(Updater.status, color = Color(0xFFB91C1C), fontSize = 12.sp)
+                    if (Updater.status.isNotEmpty()) Text(Updater.status, color = Color(0xFFEF4444), fontSize = 12.sp)
                     if (Updater.progress >= 0) LinearProgressIndicator(progress = { Updater.progress / 100f }, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
                     Row {
                         TextButton(onClick = { Updater.check(ctx) }, enabled = !Updater.busy) { Text("Проверить") }
@@ -524,7 +524,7 @@ fun EditorScreen(
 @Composable
 private fun MiniBtn(label: String, on: Boolean = false, onClick: () -> Unit) {
     TextButton(onClick = onClick, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)) {
-        Text(label, fontSize = 12.sp, color = if (on) Color(0xFFB91C1C) else Color(0xFFF0CCCD))
+        Text(label, fontSize = 12.sp, color = if (on) Color(0xFFEF4444) else Color(0xFFF0CCCD))
     }
 }
 
@@ -532,7 +532,7 @@ private fun MiniBtn(label: String, on: Boolean = false, onClick: () -> Unit) {
 private fun FieldBox(hint: String, value: String, focused: Boolean, onClick: () -> Unit) {
     Text(
         if (value.isEmpty() && !focused) hint else value + if (focused) "▏" else "",
-        color = if (value.isEmpty() && !focused) Color(0xFF8C5B5D) else Color(0xFFB91C1C),
+        color = if (value.isEmpty() && !focused) Color(0xFF8C5B5D) else Color(0xFFEF4444),
         fontFamily = FontFamily.Monospace, fontSize = 13.sp,
         modifier = Modifier.fillMaxWidth().background(Color(0xFF120606)).clickable { onClick() }.padding(8.dp)
     )
@@ -561,7 +561,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
         Row(Modifier.fillMaxWidth().background(Color(0xFF20090A)), verticalAlignment = Alignment.CenterVertically) {
             TermMode.values().forEach { m ->
                 TextButton(onClick = { term.mode = m }) {
-                    Text(m.label, color = if (term.mode == m) Color(0xFFB91C1C) else Color(0xFFA87F81))
+                    Text(m.label, color = if (term.mode == m) Color(0xFFEF4444) else Color(0xFFA87F81))
                 }
             }
             Spacer(Modifier.weight(1f))
@@ -598,13 +598,13 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                     TextButton(onClick = {
                         input = if (input.isBlank()) q else if (input.endsWith(" ")) input + q else "$input $q"
                     }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
-                        Text(q.trim(), color = Color(0xFFB91C1C), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+                        Text(q.trim(), color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
                     }
                 }
             }
         }
         Text(
-            term.prompt + input + "▏", color = Color(0xFFB91C1C), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
+            term.prompt + input + "▏", color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
             modifier = Modifier.fillMaxWidth().background(Color(0xFF20090A)).padding(8.dp)
         )
         DevKeyboard(

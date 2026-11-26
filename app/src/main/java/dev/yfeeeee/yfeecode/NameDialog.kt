@@ -21,7 +21,7 @@ fun NameDialog(title: String, initial: String = "", onOk: (String) -> Unit, onCa
         Column(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).padding(8.dp)) {
             Text(title, color = Color.White, modifier = Modifier.padding(8.dp))
             Text(
-                value + "▏", color = Color(0xFFB91C1C), fontFamily = FontFamily.Monospace,
+                value + "▏", color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace,
                 modifier = Modifier.fillMaxWidth().background(Color(0xFF120606)).padding(12.dp)
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {

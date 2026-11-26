@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val Violet = Color(0xFFB91C1C)
+private val Violet = Color(0xFFEF4444)
 private val Panel = Color(0xFF240B0B)
 private val Chip = Color(0xFF471617)
 private val Good = Color(0xFF4ADE80)

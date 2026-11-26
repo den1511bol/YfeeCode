@@ -13,7 +13,7 @@ object Settings {
     var accent by mutableIntStateOf(0)
     var autoUpdate by mutableStateOf(true)
     var autoSpace by mutableStateOf(true)
-    val accents = listOf(0xFFB91C1C, 0xFFF472B6, 0xFF60A5FA, 0xFF34D399, 0xFFFBBF24)
+    val accents = listOf(0xFFEF4444, 0xFFF472B6, 0xFF60A5FA, 0xFF34D399, 0xFFFBBF24)
     val accentColor: androidx.compose.ui.graphics.Color get() = androidx.compose.ui.graphics.Color(accents[accent.coerceIn(0, accents.lastIndex)])
 
     fun load(ctx: Context) {

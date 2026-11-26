@@ -127,7 +127,7 @@ fun HelpDialog(onClose: () -> Unit) {
         Surface(Modifier.fillMaxSize(), color = Color(0xFF140606)) {
             Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("Инструкция", color = Color(0xFFB91C1C), fontSize = 20.sp, modifier = Modifier.weight(1f))
+                    Text("Инструкция", color = Color(0xFFEF4444), fontSize = 20.sp, modifier = Modifier.weight(1f))
                     TextButton(onClick = onClose) { Text("Закрыть") }
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
@@ -144,7 +144,7 @@ fun HelpDialog(onClose: () -> Unit) {
                         }
                     }
                     Spacer(Modifier.height(10.dp))
-                    Text("𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 · разработчик @yfeeeee", color = Color(0xFFB91C1C), fontSize = 12.sp,
+                    Text("𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 · разработчик @yfeeeee", color = Color(0xFFEF4444), fontSize = 12.sp,
                         modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacer(Modifier.height(16.dp))
                 }

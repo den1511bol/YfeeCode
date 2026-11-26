@@ -123,7 +123,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                         val l = layout
                         if (l != null && state.cursor <= l.layoutInput.text.length) {
                             val r = l.getCursorRect(state.cursor)
-                            drawRect(Color(0xFFB91C1C), Offset(r.left, r.top), Size(2.5f, r.height))
+                            drawRect(Color(0xFFEF4444), Offset(r.left, r.top), Size(2.5f, r.height))
                         }
                     }
             )
