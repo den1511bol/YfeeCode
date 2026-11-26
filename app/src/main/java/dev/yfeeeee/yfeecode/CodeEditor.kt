@@ -16,6 +16,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -54,6 +55,8 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
     val hScroll = rememberScrollState()
     var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
     var viewportH by remember { mutableIntStateOf(0) }
+    var viewportW by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
 
     val styled = remember(state.text, state.lang) { Highlighter.highlight(state.text, state.lang) }
     val style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = Settings.fontSize.sp, lineHeight = (Settings.fontSize + 6).sp, color = Color(0xFFE6EDF3))
@@ -75,13 +78,23 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
     Row(
         modifier
             .diamondPattern(Color(0xFF120606), Color(0x0FB91C1C), 44.dp)
-            .onSizeChanged { viewportH = it.height }
+            .onSizeChanged { viewportH = it.height; viewportW = it.width }
             .verticalScroll(vScroll)
     ) {
         Text(
             gutter,
             style = style.copy(color = Color(0xFF8C5B5D)),
-            modifier = Modifier.width(40.dp).padding(start = 6.dp, end = 6.dp, top = 6.dp)
+            modifier = Modifier.width(40.dp)
+                .pointerInput(Unit) {
+                    val top = 6.dp.toPx()
+                    detectTapGestures(onTap = { pos ->
+                        layout?.let { l ->
+                            val ln = l.getLineForVerticalPosition((pos.y - top).coerceAtLeast(0f))
+                            state.moveTo(l.getLineStart(ln))
+                        }
+                    })
+                }
+                .padding(start = 6.dp, end = 6.dp, top = 6.dp)
         )
         Box(Modifier.horizontalScroll(hScroll)) {
             Text(
@@ -90,21 +103,26 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                 softWrap = false,
                 onTextLayout = { layout = it },
                 modifier = Modifier
-                    .padding(top = 6.dp, end = 60.dp, bottom = 120.dp)
-                    .defaultMinSize(minWidth = 300.dp, minHeight = 300.dp)
+                    // the tap area covers the whole editor (also empty space below and to the right of the text)
+                    .defaultMinSize(
+                        minWidth = with(density) { maxOf(viewportW - 40.dp.roundToPx(), 300.dp.roundToPx()).toDp() },
+                        minHeight = with(density) { maxOf(viewportH, 300.dp.roundToPx()).toDp() }
+                    )
                     .pointerInput(Unit) {
+                        val top = 6.dp.toPx()
                         detectTapGestures(
-                            onTap = { pos -> layout?.let { state.moveTo(it.getOffsetForPosition(pos)) } },
-                            onDoubleTap = { pos -> layout?.let { state.selectWordAt(it.getOffsetForPosition(pos)) } },
+                            onTap = { pos -> layout?.let { state.moveTo(it.getOffsetForPosition(Offset(pos.x, (pos.y - top).coerceAtLeast(0f)))) } },
+                            onDoubleTap = { pos -> layout?.let { state.selectWordAt(it.getOffsetForPosition(Offset(pos.x, (pos.y - top).coerceAtLeast(0f)))) } },
                             onLongPress = { pos ->
                                 layout?.let {
                                     state.clearSel()
-                                    state.moveTo(it.getOffsetForPosition(pos))
+                                    state.moveTo(it.getOffsetForPosition(Offset(pos.x, (pos.y - top).coerceAtLeast(0f))))
                                     state.toggleSelect()
                                 }
                             }
                         )
                     }
+                    .padding(top = 6.dp, end = 60.dp, bottom = 120.dp)
                     .drawWithContent {
                         val l0 = layout
                         if (l0 != null && state.hasSel && state.selEnd <= l0.layoutInput.text.length) {
@@ -123,7 +141,8 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                         val l = layout
                         if (l != null && state.cursor <= l.layoutInput.text.length) {
                             val r = l.getCursorRect(state.cursor)
-                            drawRect(Color(0xFFEF4444), Offset(r.left, r.top), Size(2.5f, r.height))
+                            drawRect(Color(0xCC000000), Offset(r.left - 1.5f, r.top), Size(6f, r.height))
+                            drawRect(Color.White, Offset(r.left, r.top), Size(3f, r.height))
                         }
                     }
             )
