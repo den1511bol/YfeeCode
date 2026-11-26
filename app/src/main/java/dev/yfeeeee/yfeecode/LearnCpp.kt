@@ -233,5 +233,21 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Запусти собранную программу", "./app"),
         type("Подготовь проект CMake в текущей папке", "cmake ."),
         type("Собери проект через make", "make")
+    )),
+    Lesson("std::optional", "optional хранит значение или «ничего». Удобно, когда функция может не найти результат. has_value и проверка в if говорят, есть ли значение, value и звёздочка достают его, value_or даёт запасное. Автор курса: @yfeeeee.\n>#include <optional>\n>std::optional<int> x = 5;\n>std::optional<int> y = std::nullopt;\n>if (x) std::cout << *x;\n>int v = y.value_or(0);", listOf(
+        type("Подключи optional", "#include <optional>"),
+        type("Создай optional со значением 5", "std::optional<int> x = 5;"),
+        type("Создай пустой optional", "std::optional<int> y = std::nullopt;"),
+        type("Выведи значение, если оно есть", "if (x) std::cout << *x;"),
+        type("Возьми значение или 0", "int v = y.value_or(0);"),
+        type("Проверь наличие значения", "bool ok = x.has_value();")
+    )),
+    Lesson("std::move", "std::move разрешает забрать ресурсы у объекта вместо копирования. После перемещения исходный объект остаётся в допустимом, но неопределённом состоянии, пользоваться его значением не стоит. Так быстро передают большие строки и векторы.\n>#include <utility>\n>std::string a = \"привет\";\n>std::string b = std::move(a);\n>v.push_back(std::move(b));", listOf(
+        type("Подключи utility", "#include <utility>"),
+        type("Создай строку a", "std::string a = \"привет\";"),
+        type("Перемести a в b", "std::string b = std::move(a);"),
+        type("Добавь b в вектор без копии", "v.push_back(std::move(b));"),
+        type("Перемести вектор в другой", "std::vector<int> w = std::move(v);"),
+        type("Конструктор перемещения класса A", "A(A&& other) noexcept = default;")
     ))
 ))

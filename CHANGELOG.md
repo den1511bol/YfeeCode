@@ -217,3 +217,4 @@
 - Сессия 41: проверка Keyboard: в русской раскладке добавлена буква ё (с Shift — Ё). @yfeeeee
 - Сессия 42: JS уроки «WebSocket в браузере», «Canvas: рисование». @yfeeeee
 - Сессия 43: проверка Highlighter: больше ключевых слов (Python/JS/C++/C#), апостроф в тексте HTML не красит строку. @yfeeeee
+- Сессия 44: C++ уроки «std::optional», «std::move». @yfeeeee
