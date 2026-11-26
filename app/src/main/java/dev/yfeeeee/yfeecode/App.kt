@@ -43,6 +43,7 @@ fun App(
 ) {
     var tab by remember { mutableIntStateOf(0) }
     var showSettings by remember { mutableStateOf(false) }
+    var showHelp by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
     val sp = remember { ctx.getSharedPreferences("session", android.content.Context.MODE_PRIVATE) }
     val open = remember {
@@ -85,6 +86,9 @@ fun App(
             )
             Spacer(Modifier.weight(1f))
             Text("by @yfeeeee", color = Color(0xFFC084FC), fontSize = 12.sp)
+            IconButton(onClick = { showHelp = true }, modifier = Modifier.size(36.dp)) {
+                Icon(Icons.Default.Info, "Инструкция", tint = Color(0xFFC084FC))
+            }
             IconButton(onClick = { showSettings = true }, modifier = Modifier.size(36.dp)) {
                 Icon(Icons.Default.Settings, "Настройки", tint = Color(0xFFC084FC))
             }
@@ -121,6 +125,7 @@ fun App(
                 else -> LearnScreen()
             }
         }
+        if (showHelp) HelpDialog { showHelp = false }
         if (showSettings) AlertDialog(
             onDismissRequest = { showSettings = false; Settings.save(ctx) },
             confirmButton = { TextButton(onClick = { showSettings = false; Settings.save(ctx) }) { Text("Готово") } },
