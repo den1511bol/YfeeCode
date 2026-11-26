@@ -42,8 +42,14 @@ object Linux {
 
     private fun prepareLibs(ctx: Context): File {
         val libs = File(base(ctx), "lib").also { it.mkdirs() }
+        // the app path changes after every update, so always recreate the links
+        val target = File(nat(ctx), "libtalloc.so").absolutePath
         val link = File(libs, "libtalloc.so.2")
-        if (!link.exists()) try { Os.symlink(File(nat(ctx), "libtalloc.so").absolutePath, link.absolutePath) } catch (_: Exception) {}
+        val cur = try { Os.readlink(link.absolutePath) } catch (_: Exception) { null }
+        if (cur != target) {
+            try { link.delete() } catch (_: Exception) {}
+            try { Os.symlink(target, link.absolutePath) } catch (_: Exception) {}
+        }
         return libs
     }
 
