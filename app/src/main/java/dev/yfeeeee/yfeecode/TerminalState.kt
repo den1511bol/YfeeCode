@@ -72,7 +72,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             cmd == "linux dotnet" -> {
                 // .NET SDK from the Alpine repository: lets the play button run C# offline
                 thread {
-                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache dotnet8-sdk icu-libs", { proc = it }) { print(it) }
+                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache dotnet8-sdk dotnet8-targeting-pack icu-libs", { proc = it }) { print(it) }
                         print(if (Linux.hasDotnet(ctx)) "Готово: .NET установлен, кнопка ▶ на .cs теперь работает офлайн" else "Не удалось поставить .NET (пакет dotnet8-sdk недоступен)") }
                     catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
@@ -188,10 +188,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                     thread {
                         try {
                             val q = "'" + f.name.replace("'", "'\\''") + "'"
-                            val proj = "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable><InvariantGlobalization>true</InvariantGlobalization></PropertyGroup></Project>"
-                            val cmdLine = "d=/tmp/yfeecs; mkdir -p \$d && cp $q \$d/Program.cs && cd \$d && " +
-                                "[ -f app.csproj ] || printf '%s' '" + proj + "' > app.csproj; " +
-                                "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1 DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 DOTNET_gcServer=0; dotnet run -v q"
+                            val cmdLine = "yfeecs $q"
                             Linux.exec(ctx, store, f.parentFile ?: cwd, cmdLine, { proc = it }) { print(it) }
                         } catch (e: Exception) { print("Ошибка: ${e.message}") }
                     }

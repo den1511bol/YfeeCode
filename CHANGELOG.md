@@ -173,3 +173,4 @@
 - Вкладка Linux использует встроенную клавиатуру приложения (DevKeyboard), системная не вызывается.
 - C# офлайн: команда linux dotnet ставит dotnet8-sdk в Alpine, ▶ на .cs собирает через dotnet run (иначе онлайн Wandbox).
 - Уроки расширены: Python 27, JS 23, HTML 15, CSS 16, C++ 22, C# 22 (всего 125 уроков, около 750 заданий).
+- C# офлайн: вместо dotnet run (падал MSBuild под proot) компиляция Roslyn csc.dll напрямую через скрипт yfeecs (assets), без NuGet.

@@ -86,7 +86,18 @@ object Linux {
         try { execInner(ctx, store, cwd, cmd, onProc, say) } finally { LinuxService.end(ctx) }
     }
 
+    /** Helper scripts shipped in assets are copied into the Linux system before each run. */
+    private fun installScripts(ctx: Context) {
+        try {
+            val bin = File(root(ctx), "usr/local/bin").also { it.mkdirs() }
+            val t = File(bin, "yfeecs")
+            ctx.assets.open("yfeecs.sh").use { i -> t.outputStream().use { o -> i.copyTo(o) } }
+            t.setExecutable(true, false)
+        } catch (_: Exception) {}
+    }
+
     private fun execInner(ctx: Context, store: FileStore, cwd: File, cmd: String, onProc: (Process?) -> Unit, say: (String) -> Unit) {
+        installScripts(ctx)
         val libs = prepareLibs(ctx)
         val rel = cwd.relativeToOrSelf(store.root).path
         val work = if (rel.isEmpty() || rel == ".") "/work" else "/work/$rel"
