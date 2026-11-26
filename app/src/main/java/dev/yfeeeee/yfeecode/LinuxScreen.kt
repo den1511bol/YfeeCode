@@ -33,7 +33,10 @@ object LinuxTerm {
     val sessionClient = object : TerminalSessionClient {
         override fun onTextChanged(changedSession: TerminalSession) { view?.onScreenUpdated() }
         override fun onTitleChanged(changedSession: TerminalSession) {}
-        override fun onSessionFinished(finishedSession: TerminalSession) { session = null; finished = true }
+        override fun onSessionFinished(finishedSession: TerminalSession) {
+            session = null; finished = true
+            view?.context?.let { LinuxService.end(it) }
+        }
         override fun onCopyTextToClipboard(session: TerminalSession, text: String?) {
             val cm = view?.context?.getSystemService(Context.CLIPBOARD_SERVICE) as? android.content.ClipboardManager
             cm?.setPrimaryClip(android.content.ClipData.newPlainText("term", text ?: ""))
@@ -110,6 +113,7 @@ fun LinuxScreen(store: FileStore) {
                     val (args, env) = Linux.shell(c, store)
                     LinuxTerm.finished = false
                     LinuxTerm.session = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, LinuxTerm.sessionClient)
+                    LinuxService.begin(c)
                 }
                 v.attachSession(LinuxTerm.session)
                 v.requestFocus()
@@ -125,6 +129,7 @@ fun LinuxScreen(store: FileStore) {
                     LinuxTerm.finished = false
                     val s = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, LinuxTerm.sessionClient)
                     LinuxTerm.session = s
+                    LinuxService.begin(ctx)
                     LinuxTerm.view?.attachSession(s)
                 }) { Text("Новая сессия") }
             }

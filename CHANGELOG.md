@@ -169,3 +169,4 @@
 - Исправлено: после обновления приложения ломалась ссылка libtalloc.so.2 (CANNOT LINK EXECUTABLE) — теперь ссылка пересоздаётся при смене пути.
 - Linux этап 3: команды linux setup, lpy, lpip (Python и pip внутри Linux).
 - Вкладка «Linux»: настоящий терминал (PTY) на Termux terminal-view; работают vim, nano, top; панель Esc/Tab/Ctrl/стрелки.
+- Фон для Linux: LinuxService (уведомление, WakeLock, WifiLock), тип specialUse без 6-часового лимита dataSync; BotService тоже переведён на specialUse.

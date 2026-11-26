@@ -80,6 +80,11 @@ object Linux {
 
     fun exec(ctx: Context, store: FileStore, cwd: File, cmd: String, onProc: (Process?) -> Unit = {}, say: (String) -> Unit) {
         if (!installed(ctx)) { say("Linux не установлен. Выполни: linux install"); return }
+        LinuxService.begin(ctx)
+        try { execInner(ctx, store, cwd, cmd, onProc, say) } finally { LinuxService.end(ctx) }
+    }
+
+    private fun execInner(ctx: Context, store: FileStore, cwd: File, cmd: String, onProc: (Process?) -> Unit, say: (String) -> Unit) {
         val libs = prepareLibs(ctx)
         val rel = cwd.relativeToOrSelf(store.root).path
         val work = if (rel.isEmpty() || rel == ".") "/work" else "/work/$rel"
