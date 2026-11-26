@@ -27,6 +27,6 @@
 - [x] 15. (ПРОПУЩЕНО: смена палитры требует API эмулятора без проверки сборкой, рискованно) Linux: цветовая схема терминала (Termux-подобная палитра) и выбор темы терминала в настройках, если простая.
 - [x] 16. Обновить HelpScreen.kt, README.md, CHANGELOG.md под всё новое (честно: что проверено только сборкой).
 - [x] 17. (ревизия сделана: экранирование строк, типы, импорты проверены) Ревизия: перечитай `git diff main..dev` по Kotlin-файлам, найди ошибки компиляции (скобки, импорты, `$`, типы) и исправь.
-- [ ] 18. Влей dev в main (`git checkout main && git merge --ff-only dev` или merge), push main, дождись сборки (gh run list --workflow build.yml --limit 1; ждать до успеха). Красная: `gh run view <id> --log-failed | grep -E " e: |error:"`, исправь и повтори.
+- [x] 18. Влей dev в main (`git checkout main && git merge --ff-only dev` или merge), push main, дождись сборки (gh run list --workflow build.yml --limit 1; ждать до успеха). Красная: `gh run view <id> --log-failed | grep -E " e: |error:"`, исправь и повтори.
 - [ ] 19. Если сборка красная или были правки: довести до зелёной. Если зелёная: удали OVERNIGHT.md и ветку dev не нужно, просто небольшая проверка.
 - [ ] 20. Финал: НЕ ставь напоминаний. Отправь пользователю SendUserMessage подробный итог по-русски (что добавлено, как обновиться, что не проверено на телефоне) и ссылку на последнюю успешную сборку (gh run list --workflow build.yml --status success --limit 1 --json url).
