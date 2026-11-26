@@ -56,6 +56,41 @@ def _prepare_thread_env():
     sys.stdin = io.StringIO("")
 
 
+def _hint(e):
+    """Short Russian hint for the most common errors (developer: @yfeeeee)."""
+    name = type(e).__name__
+    msg = str(e)
+    low = msg.lower()
+    if "invalidtoken" in name.lower() or "unauthorized" in low or "token is invalid" in low or "invalid token" in low:
+        return "Telegram не принял токен: проверь token.txt (токен из @BotFather, без пробелов и лишних строк)."
+    if isinstance(e, ModuleNotFoundError):
+        mod = getattr(e, "name", None) or msg
+        return "Нет модуля «%s». Поставь его: вкладка Linux, затем pip install %s, и запусти файл кнопкой «Запуск в Linux»." % (mod, str(mod).split(".")[0])
+    if isinstance(e, IndentationError):
+        return "Ошибка отступов: проверь, что отступы одинаковые (4 пробела) и после «:» есть блок."
+    if isinstance(e, SyntaxError):
+        return "Синтаксическая ошибка: проверь строку %s (скобки, кавычки, двоеточия)." % (e.lineno,)
+    if isinstance(e, NameError):
+        return "Имя не определено: опечатка или не хватает import / присваивания. " + msg
+    if isinstance(e, FileNotFoundError):
+        return "Файл не найден. Текущая папка при запуске — папка скрипта."
+    if isinstance(e, ZeroDivisionError):
+        return "Деление на ноль."
+    if isinstance(e, KeyError):
+        return "Нет такого ключа в словаре: " + msg
+    if isinstance(e, IndexError):
+        return "Индекс выходит за границы списка."
+    if isinstance(e, AttributeError):
+        return "У объекта нет такого атрибута или метода: " + msg
+    if isinstance(e, TypeError):
+        return "Неподходящий тип или неверное число аргументов: " + msg
+    if isinstance(e, ValueError):
+        return "Неверное значение: " + msg
+    if isinstance(e, ConnectionError) or "network" in low or "name resolution" in low:
+        return "Проблема с сетью: проверь интернет."
+    return ""
+
+
 def run(script_path, log_path):
     w = _LogWriter(log_path)
     sys.stdout = w
@@ -71,6 +106,12 @@ def run(script_path, log_path):
         print("[done] exit 0")
     except SystemExit as e:
         print("[done] exit %s" % (e.code,))
-    except BaseException:
+    except BaseException as e:
         traceback.print_exc()
+        try:
+            h = _hint(e)
+            if h:
+                print("[подсказка] " + h)
+        except Exception:
+            pass
         print("[done] crashed")
