@@ -225,5 +225,21 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Отпишись от события", "obj.Message -= Handler;"),
         type("Делегат без параметров и результата", "Action a = () => { };"),
         type("Делегат с результатом int", "Func<int> f = () => 5;")
+    )),
+    Lesson("EF Core и SQLite", "Entity Framework Core связывает классы C# с таблицами базы. Модель это обычный класс, DbContext описывает наборы данных (DbSet) и подключение. SaveChanges записывает изменения в SQLite. Автор курса: @yfeeeee.\n>public class User { public int Id { get; set; } public string Name { get; set; } }\n>class Db : DbContext { public DbSet<User> Users => Set<User>(); }\n>protected override void OnConfiguring(DbContextOptionsBuilder o) => o.UseSqlite(\"Data Source=app.db\");\n>db.Users.Add(new User { Name = \"Ян\" });\n>db.SaveChanges();", listOf(
+        type("Объяви набор данных Users", "public DbSet<User> Users => Set<User>();"),
+        type("Подключи SQLite", "o.UseSqlite(\"Data Source=app.db\");"),
+        type("Добавь пользователя", "db.Users.Add(new User { Name = \"Ян\" });"),
+        type("Сохрани изменения", "db.SaveChanges();"),
+        type("Создай базу, если её нет", "db.Database.EnsureCreated();"),
+        type("Найди пользователей по имени", "var list = db.Users.Where(u => u.Name == \"Ян\").ToList();")
+    )),
+    Lesson("Func и Action", "Func хранит метод с результатом: последний параметр типа это тип результата. Action хранит метод без результата. Оба можно задавать лямбдой и передавать в другие методы.\n>Func<int, int> sq = x => x * x;\n>Action<string> say = s => Console.WriteLine(s);\n>int r = sq(4);\n>say(\"привет\");", listOf(
+        type("Func, возводящий int в квадрат", "Func<int, int> sq = x => x * x;"),
+        type("Action для вывода строки", "Action<string> say = s => Console.WriteLine(s);"),
+        type("Вызови sq с 4", "int r = sq(4);"),
+        type("Вызови say", "say(\"привет\");"),
+        type("Func без параметров, возвращает строку", "Func<string> f = () => \"ок\";"),
+        type("Передай Func в метод", "Apply(5, x => x + 1);")
     ))
 ))
