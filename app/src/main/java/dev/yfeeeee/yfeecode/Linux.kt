@@ -57,12 +57,15 @@ object Linux {
     /** Command line + environment for an interactive shell inside Alpine (used by the PTY terminal). */
     fun shell(ctx: Context, store: FileStore): Pair<Array<String>, Array<String>> {
         val libs = prepareLibs(ctx)
+        installScripts(ctx)
+        File(root(ctx), "sdcard").mkdirs()
         val sh = "if [ -x /usr/bin/bash ]; then exec /usr/bin/bash -l; else exec /bin/sh -l; fi"
         val args = arrayOf(
             File(nat(ctx), "libproot.so").absolutePath, "-0", "--link2symlink",
             "-r", root(ctx).absolutePath,
             "-b", "/dev", "-b", "/proc", "-b", "/sys",
             "-b", store.root.absolutePath + ":/work",
+            *(if (File("/storage/emulated/0").list() != null) arrayOf("-b", "/storage/emulated/0:/sdcard") else emptyArray()),
             "-w", "/work", "/bin/sh", "-c", sh
         )
         val env = arrayOf(
@@ -87,9 +90,15 @@ object Linux {
     }
 
     /** Helper scripts shipped in assets are copied into the Linux system before each run. */
-    private fun installScripts(ctx: Context) {
+    fun installScripts(ctx: Context) {
         try {
             val bin = File(root(ctx), "usr/local/bin").also { it.mkdirs() }
+            val pkg = "#!/bin/sh\n# pkg/apt for YfeeCode (Alpine apk). Developer: @yfeeeee\nc=\"\$1\"; [ \$# -gt 0 ] && shift\ncase \"\$c\" in\n install|i|add) apk add \"\$@\";;\n remove|uninstall|rm|del|purge) apk del \"\$@\";;\n update) apk update;;\n upgrade|full-upgrade|up) apk update && apk upgrade;;\n search) apk search \"\$@\";;\n list|list-installed) apk info;;\n show|info) apk info -a \"\$@\";;\n *) echo \"pkg install|remove|update|upgrade|search|list  (Alpine apk)\";;\nesac\n"
+            for (n in listOf("pkg", "apt", "apt-get")) File(bin, n).also { it.writeText(pkg); it.setExecutable(true, false) }
+            File(bin, "termux-setup-storage").also {
+                it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
+                it.setExecutable(true, false)
+            }
             val t = File(bin, "yfeecs")
             ctx.assets.open("yfeecs.sh").use { i -> t.outputStream().use { o -> i.copyTo(o) } }
             t.setExecutable(true, false)

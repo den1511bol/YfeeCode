@@ -81,7 +81,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             cmd == "linux setup" -> {
                 // one-shot install of the usual tools inside Alpine
                 thread {
-                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache python3 py3-pip git build-base nano vim curl", { proc = it }) { print(it) }; print("Готово: python3, pip, git, g++, nano, vim, curl") }
+                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache python3 py3-pip git build-base nano vim curl wget openssh tmux nodejs npm bash htop zip unzip jq", { proc = it }) { print(it) }; print("Готово: python3, pip, git, g++, nano, vim, curl, wget, ssh, tmux, node, npm, bash. Есть pkg install, apt install") }
                     catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
                 return

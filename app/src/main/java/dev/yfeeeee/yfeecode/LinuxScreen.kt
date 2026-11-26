@@ -25,16 +25,38 @@ import com.termux.view.TerminalViewClient
 
 /** Real PTY terminal (vim, nano, top) inside Alpine, rendered by Termux's terminal-view. */
 object LinuxTerm {
-    var session: TerminalSession? = null
+    val sessions = mutableStateListOf<TerminalSession>()
+    var cur by mutableStateOf(0)
+    val session: TerminalSession? get() = sessions.getOrNull(cur)
     var view: TerminalView? = null
     var ctrl by mutableStateOf(false)
-    var finished by mutableStateOf(false)
+    val finished: Boolean get() = sessions.isEmpty()
+
+    fun newSession(c: Context, store: FileStore) {
+        val (args, env) = Linux.shell(c, store)
+        val s = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, sessionClient)
+        sessions.add(s); cur = sessions.size - 1
+        LinuxService.begin(c)
+        view?.attachSession(s)
+    }
+
+    fun select(i: Int) {
+        if (i !in sessions.indices) return
+        cur = i
+        view?.attachSession(sessions[i])
+        view?.onScreenUpdated()
+    }
 
     val sessionClient = object : TerminalSessionClient {
         override fun onTextChanged(changedSession: TerminalSession) { view?.onScreenUpdated() }
         override fun onTitleChanged(changedSession: TerminalSession) {}
         override fun onSessionFinished(finishedSession: TerminalSession) {
-            session = null; finished = true
+            val i = sessions.indexOf(finishedSession)
+            if (i >= 0) {
+                sessions.removeAt(i)
+                cur = cur.coerceAtMost(sessions.size - 1).coerceAtLeast(0)
+                sessions.getOrNull(cur)?.let { view?.attachSession(it) }
+            }
             view?.context?.let { LinuxService.end(it) }
         }
         override fun onCopyTextToClipboard(session: TerminalSession, text: String?) {
@@ -107,31 +129,27 @@ fun LinuxScreen(store: FileStore) {
                 v.setTerminalViewClient(LinuxTerm.viewClient)
                 v.setTextSize((13 * c.resources.displayMetrics.scaledDensity).toInt())
                 LinuxTerm.view = v
-                if (LinuxTerm.session == null) {
-                    val (args, env) = Linux.shell(c, store)
-                    LinuxTerm.finished = false
-                    LinuxTerm.session = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, LinuxTerm.sessionClient)
-                    LinuxService.begin(c)
-                }
+                if (LinuxTerm.sessions.isEmpty()) LinuxTerm.newSession(c, store)
                 v.isFocusable = false
                 v.isFocusableInTouchMode = false
-                v.attachSession(LinuxTerm.session)
+                LinuxTerm.session?.let { v.attachSession(it) }
                 v
             },
             update = { LinuxTerm.view = it }
         )
-        if (LinuxTerm.finished) {
-            Row(Modifier.fillMaxWidth().padding(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("Сессия завершена", color = Color(0xFF8B7FA8), modifier = Modifier.weight(1f))
-                TextButton(onClick = {
-                    val (args, env) = Linux.shell(ctx, store)
-                    LinuxTerm.finished = false
-                    val s = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, LinuxTerm.sessionClient)
-                    LinuxTerm.session = s
-                    LinuxService.begin(ctx)
-                    LinuxTerm.view?.attachSession(s)
-                }) { Text("Новая сессия") }
+        Row(Modifier.fillMaxWidth().background(Color(0xFF1A0707)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            LinuxTerm.sessions.forEachIndexed { i, _ ->
+                TextButton(onClick = { LinuxTerm.select(i) }, contentPadding = PaddingValues(horizontal = 12.dp)) {
+                    Text("${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
+                }
             }
+            TextButton(onClick = { LinuxTerm.newSession(ctx, store) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("+ сессия", fontSize = 14.sp) }
+            if (LinuxTerm.sessions.isNotEmpty()) TextButton(onClick = { LinuxTerm.session?.finishIfRunning() }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("закрыть", fontSize = 14.sp) }
+            TextButton(onClick = {
+                try {
+                    ctx.startActivity(android.content.Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, android.net.Uri.parse("package:" + ctx.packageName)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (_: Exception) {}
+            }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("Файлы", fontSize = 14.sp) }
         }
         Row(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
             fun key(label: String, send: String) = @Composable {

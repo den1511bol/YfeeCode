@@ -179,3 +179,4 @@
 - Сессия 3: практики JS (js9-16), HTML (html10-15), CSS (css9-15).
 - Сессия 4: Python +3 урока (requests, sqlite3, asyncio), всего 128 уроков. Разработчик @yfeeeee.
 - Сессия 5: Python +2 урока (unittest/pytest, модули Heroku/Hikka), всего 130 уроков. Разработчик @yfeeeee.
+- Как Termux: pkg/apt install (поверх apk), больше пакетов в linux setup (ssh, tmux, node, wget...), несколько сессий (вкладки), /sdcard и кнопка «Файлы» (доступ ко всем файлам). Разработчик @yfeeeee.
