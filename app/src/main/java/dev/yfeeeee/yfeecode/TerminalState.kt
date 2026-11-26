@@ -119,7 +119,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 val rest = cmd.removePrefix("mod ").trim()
                 val name = rest.substringBefore(' ')
                 val line = rest.substringAfter(' ', "")
-                if (line.isBlank()) print("Использование: mod файл.py .команда аргументы")
+                if (line.isBlank()) listModuleCommands(File(cwd, name))
                 else runModuleCommand(File(cwd, name), line)
                 return
             }
@@ -233,6 +233,18 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
             }
             else -> print("Запуск для ${f.extension} не поддерживается (HTML открывается кнопкой «Просмотр»)")
+        }
+    }
+
+    /** Prints the commands found in a Heroku/Hikka-style module file. Developer: @yfeeeee */
+    fun listModuleCommands(f: File) {
+        if (!f.exists()) { print("Нет файла: ${f.name}"); return }
+        thread {
+            try {
+                val r = Python.getInstance().getModule("hikka_sandbox").callAttr("commands", f.absolutePath).asList()
+                if (r.isEmpty()) print("В модуле нет команд")
+                else print("Команды модуля: " + r.joinToString(", ") { "." + it.toString() } + "\nПроверка: mod " + f.name + " ." + r[0].toString() + " аргументы")
+            } catch (e: Throwable) { print("[error] " + e.message) }
         }
     }
 
