@@ -206,3 +206,4 @@
 - Сессия 30: C++ +1 урок (итераторы), C# +1 урок (паттерн-матчинг), всего 153 урока. @yfeeeee
 - Сессия 31: CSS +2 урока (grid areas и clamp, тёмная тема и keyframes), всего 155 уроков. @yfeeeee
 - Сессия 32: HTML +2 урока (проверка форм, details/data/template), всего 157 уроков. @yfeeeee
+- Сессия 33: практики HTML html16-17 (email required, details) и CSS css16-17 (clamp, тёмная тема). @yfeeeee

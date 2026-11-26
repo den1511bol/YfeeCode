@@ -141,7 +141,11 @@ object Practices {
             Practice("html14", "Семантика", "Собери страницу из header, main и footer.", "", Lang.HTML,
                 listOf(must("""<header""", "Нужен header"), must("""<main""", "Нужен main"), must("""<footer""", "Нужен footer"))),
             Practice("html15", "Видео", "Вставь видео v.mp4 с кнопками управления.", "", Lang.HTML,
-                listOf(must("""<video[^>]*src\s*=\s*["\']v\.mp4""", "Нужен video с src=v.mp4"), must("""controls""", "Добавь атрибут controls")))
+                listOf(must("""<video[^>]*src\s*=\s*["\']v\.mp4""", "Нужен video с src=v.mp4"), must("""controls""", "Добавь атрибут controls"))),
+            Practice("html16", "Обязательная почта", "Создай поле ввода почты (type=email), обязательное для заполнения.", "", Lang.HTML,
+                listOf(must("""<input[^>]*type\s*=\s*["\']email["\']""", "Нужен input с type=\"email\""), must("""\brequired\b""", "Добавь атрибут required"))),
+            Practice("html17", "Раскрывающийся блок", "Сделай блок details с заголовком summary и текстом внутри.", "", Lang.HTML,
+                listOf(must("""<details""", "Нужен тег details"), must("""<summary""", "Нужен тег summary внутри details")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
@@ -169,7 +173,11 @@ object Practices {
             Practice("css14", "Адаптивность", "Сделай media-запрос для экранов уже 600px, где .menu скрывается.", "", Lang.CSS,
                 listOf(must("""@media\s*\([^)]*max-width\s*:\s*600px""", "Нужен @media (max-width: 600px)"), must("""display\s*:\s*none""", "display: none"))),
             Practice("css15", "Анимация", "Создай @keyframes pulse и подключи её через animation.", "", Lang.CSS,
-                listOf(must("""@keyframes\s+pulse""", "Нужен @keyframes pulse"), must("""animation\s*:[^;]*pulse""", "Подключи animation: pulse ...")))
+                listOf(must("""@keyframes\s+pulse""", "Нужен @keyframes pulse"), must("""animation\s*:[^;]*pulse""", "Подключи animation: pulse ..."))),
+            Practice("css16", "Гибкий шрифт", "Задай заголовку h1 размер шрифта через функцию clamp.", "", Lang.CSS,
+                listOf(must("""h1\s*\{""", "Нужен селектор h1"), must("""font-size\s*:\s*clamp\s*\(""", "Используй font-size: clamp(...)"))),
+            Practice("css17", "Тёмная тема", "Сделай медиа-запрос prefers-color-scheme: dark с тёмным фоном body.", "", Lang.CSS,
+                listOf(must("""prefers-color-scheme\s*:\s*dark""", "Нужен @media (prefers-color-scheme: dark)"), must("""background""", "Задай background")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
