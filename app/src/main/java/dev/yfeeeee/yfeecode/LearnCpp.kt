@@ -209,5 +209,13 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Проверь наличие ключа a", "if (m.count(\"a\")) {}"),
         type("Удали ключ a", "m.erase(\"a\");"),
         type("Создай пару чисел", "std::pair<int, int> p = {1, 2};")
+    )),
+    Lesson("Итераторы и auto", "Итератор указывает на элемент контейнера. begin даёт первый, end стоит за последним. Разыменование звёздочкой читает значение, ++ двигает дальше. Слово auto избавляет от длинного типа.\n>std::vector<int> v = {1, 2, 3};\n>auto it = v.begin();\n>int x = *it;\n>++it;\n>for (auto it = v.begin(); it != v.end(); ++it) {}", listOf(
+        type("Получи итератор на начало v", "auto it = v.begin();"),
+        type("Прочитай значение итератора", "int x = *it;"),
+        type("Сдвинь итератор вперёд", "++it;"),
+        type("Итератор на конец v", "v.end()"),
+        type("Цикл по итераторам", "for (auto it = v.begin(); it != v.end(); ++it) {}"),
+        type("Найди 2 в v через std::find", "auto p = std::find(v.begin(), v.end(), 2);")
     ))
 ))

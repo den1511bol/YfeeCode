@@ -209,5 +209,13 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Сгруппируй слова по длине", "var groups = words.GroupBy(w => w.Length);"),
         type("Проверь, есть ли число больше 5", "bool has = nums.Any(n => n > 5);"),
         type("Возьми первый элемент", "var first = nums.First();")
+    )),
+    Lesson("Паттерн-матчинг", "Оператор is проверяет тип или значение и может сразу создать переменную. switch-выражение возвращает значение по шаблонам: можно сравнивать с константами, диапазонами и типами.\n>if (obj is string s) { }\n>if (n is > 0 and < 10) { }\n>var name = day switch {\n>    1 => \"Пн\",\n>    _ => \"?\"\n>};", listOf(
+        type("Проверь, что obj строка, и положи в s", "if (obj is string s) { }"),
+        type("Проверь, что n больше 0 и меньше 10", "if (n is > 0 and < 10) { }"),
+        type("Проверь на null", "if (x is null) { }"),
+        type("Проверь, что x не null", "if (x is not null) { }"),
+        type("Вариант по умолчанию в switch-выражении", "_ => \"?\""),
+        type("Ветка для значения 1", "1 => \"Пн\",")
     ))
 ))
