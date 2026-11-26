@@ -238,3 +238,4 @@
 - Сессия v2-14: dev влит в main одним обновлением. @yfeeeee
 - Сессия v2-15: Linux: yfee-venv (виртуальное окружение) и yfee-keepalive (перезапуск упавшего бота). @yfeeeee
 - Сессия v2-16: Linux: yfee-pg start|stop|status|psql (PostgreSQL, не проверено на устройстве). @yfeeeee
+- Сессия v2-17: yfee-help, справка и README дополнены командами yfee-venv, yfee-keepalive, yfee-pg. @yfeeeee
