@@ -62,9 +62,7 @@ object LinuxTerm {
     val viewClient = object : TerminalViewClient {
         override fun onScale(scale: Float): Float = 1f
         override fun onSingleTapUp(e: MotionEvent?) {
-            val v = view ?: return
-            v.requestFocus()
-            (v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(v, 0)
+            // typing goes through the in-app keyboard (DevKeyboard), the system keyboard is never opened
         }
         override fun shouldBackButtonBeMappedToEscape(): Boolean = false
         override fun shouldEnforceCharBasedInput(): Boolean = true
@@ -115,8 +113,9 @@ fun LinuxScreen(store: FileStore) {
                     LinuxTerm.session = TerminalSession(args[0], store.root.absolutePath, args, env, 3000, LinuxTerm.sessionClient)
                     LinuxService.begin(c)
                 }
+                v.isFocusable = false
+                v.isFocusableInTouchMode = false
                 v.attachSession(LinuxTerm.session)
-                v.requestFocus()
                 v
             },
             update = { LinuxTerm.view = it }
@@ -158,5 +157,35 @@ fun LinuxScreen(store: FileStore) {
             key("PgUp", "\u001b[5~")()
             key("PgDn", "\u001b[6~")()
         }
+        DevKeyboard(
+            onText = { t ->
+                val sess = LinuxTerm.session
+                if (sess != null) {
+                    if (LinuxTerm.ctrl && t.length == 1 && t[0].lowercaseChar() in 'a'..'z') {
+                        sess.write(String(charArrayOf((t[0].lowercaseChar().code and 0x1f).toChar())))
+                        LinuxTerm.ctrl = false
+                    } else sess.write(t)
+                }
+            },
+            onCmd = { c ->
+                val sess = LinuxTerm.session
+                if (sess != null) when (c) {
+                    Cmd.BACK -> sess.write("\u007f")
+                    Cmd.ENTER -> sess.write("\r")
+                    Cmd.TAB -> sess.write("\t")
+                    Cmd.LEFT -> sess.write("\u001b[D")
+                    Cmd.RIGHT -> sess.write("\u001b[C")
+                    Cmd.UP -> sess.write("\u001b[A")
+                    Cmd.DOWN -> sess.write("\u001b[B")
+                    Cmd.HOME -> sess.write("\u001b[H")
+                    Cmd.END -> sess.write("\u001b[F")
+                    Cmd.DELWORD -> sess.write("\u0017")
+                    Cmd.PASTE -> {
+                        val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                        cm.primaryClip?.getItemAt(0)?.text?.toString()?.let { sess.write(it) }
+                    }
+                }
+            }
+        )
     }
 }
