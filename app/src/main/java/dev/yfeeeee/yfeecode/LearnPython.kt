@@ -257,5 +257,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Объяви команду hi", "async def hicmd(self, message):"),
         type("Ответь на сообщение текстом Привет", "await utils.answer(message, \"Привет\")"),
         type("Декоратор перевода строк над классом", "@loader.tds")
+    )),
+    Lesson("Бот на telebot", "Библиотека pyTelegramBotAPI (импорт telebot) самая простая для старта. Создаёшь бота с токеном, обработчик команды вешается декоратором message_handler, ответ шлёт reply_to или send_message. infinity_polling держит бота запущенным.\n>import telebot\n>bot = telebot.TeleBot(TOKEN)\n>@bot.message_handler(commands=[\"start\"])\n>def start(m):\n>    bot.reply_to(m, \"Привет\")\n>bot.infinity_polling()", listOf(
+        type("Установи библиотеку", "pip install pyTelegramBotAPI"),
+        type("Подключи telebot", "import telebot"),
+        type("Создай бота с токеном", "bot = telebot.TeleBot(TOKEN)"),
+        type("Обработчик команды start", "@bot.message_handler(commands=[\"start\"])"),
+        type("Ответь на сообщение m", "bot.reply_to(m, \"Привет\")"),
+        type("Запусти бота", "bot.infinity_polling()")
+    )),
+    Lesson("aiogram: кнопки и состояния", "В aiogram 3 команды ловит Router с фильтром Command. Кнопки создаются через InlineKeyboardMarkup, нажатие приходит как callback_query. Состояния FSM помнят шаг диалога: StatesGroup описывает шаги, state.set_state переключает.\n>from aiogram import Router, F\n>from aiogram.filters import Command\n>router = Router()\n>@router.message(Command(\"start\"))\n>async def start(m):\n>    await m.answer(\"Привет\")\n>@router.callback_query(F.data == \"ok\")", listOf(
+        type("Подключи Router и F", "from aiogram import Router, F"),
+        type("Подключи фильтр Command", "from aiogram.filters import Command"),
+        type("Создай роутер", "router = Router()"),
+        type("Обработчик команды start", "@router.message(Command(\"start\"))"),
+        type("Ответь пользователю", "await m.answer(\"Привет\")"),
+        type("Ловить нажатие кнопки с данными ok", "@router.callback_query(F.data == \"ok\")")
     ))
 ))
