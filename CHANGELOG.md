@@ -182,3 +182,4 @@
 - Как Termux: pkg/apt install (поверх apk), больше пакетов в linux setup (ssh, tmux, node, wget...), несколько сессий (вкладки), /sdcard и кнопка «Файлы» (доступ ко всем файлам). Разработчик @yfeeeee.
 - Termux-команды: termux-clipboard-set/get (кнопка «Буфер» во вкладке Linux), termux-open, termux-toast. @yfeeeee
 - SSH-сервер: команда yfee-sshd в Linux (порт 8022, пароль root, ssh -p 8022 root@адрес). @yfeeeee
+- Вкладка Linux: кнопки A− / A+ меняют размер шрифта терминала (запоминается). @yfeeeee

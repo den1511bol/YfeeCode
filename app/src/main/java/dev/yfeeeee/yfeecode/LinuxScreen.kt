@@ -30,6 +30,14 @@ object LinuxTerm {
     val session: TerminalSession? get() = sessions.getOrNull(cur)
     var view: TerminalView? = null
     var ctrl by mutableStateOf(false)
+    var fontSp = 13
+
+    fun setFont(c: Context, sp: Int) {
+        fontSp = sp.coerceIn(8, 28)
+        try { c.getSharedPreferences("session", Context.MODE_PRIVATE).edit().putInt("lx_font", fontSp).apply() } catch (_: Exception) {}
+        view?.setTextSize((fontSp * c.resources.displayMetrics.scaledDensity).toInt())
+        view?.onScreenUpdated()
+    }
     val finished: Boolean get() = sessions.isEmpty()
 
     fun newSession(c: Context, store: FileStore) {
@@ -127,7 +135,8 @@ fun LinuxScreen(store: FileStore) {
             factory = { c ->
                 val v = TerminalView(c, null)
                 v.setTerminalViewClient(LinuxTerm.viewClient)
-                v.setTextSize((13 * c.resources.displayMetrics.scaledDensity).toInt())
+                LinuxTerm.fontSp = try { c.getSharedPreferences("session", Context.MODE_PRIVATE).getInt("lx_font", 13) } catch (_: Exception) { 13 }
+                v.setTextSize((LinuxTerm.fontSp * c.resources.displayMetrics.scaledDensity).toInt())
                 LinuxTerm.view = v
                 if (LinuxTerm.sessions.isEmpty()) LinuxTerm.newSession(c, store)
                 v.isFocusable = false
@@ -143,6 +152,8 @@ fun LinuxScreen(store: FileStore) {
                     Text("${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
                 }
             }
+            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp - 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A−", fontSize = 14.sp) }
+            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp + 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A+", fontSize = 14.sp) }
             TextButton(onClick = { LinuxTerm.newSession(ctx, store) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("+ сессия", fontSize = 14.sp) }
             if (LinuxTerm.sessions.isNotEmpty()) TextButton(onClick = { LinuxTerm.session?.finishIfRunning() }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("закрыть", fontSize = 14.sp) }
             TextButton(onClick = {
