@@ -60,12 +60,31 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install (поставить Linux), lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup (поставить Linux и инструменты), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
                     try { Linux.install(ctx) { print(it) } }
                     catch (e: Exception) { print("Ошибка установки: ${e.message}") }
+                }
+                return
+            }
+            cmd == "linux setup" -> {
+                // one-shot install of the usual tools inside Alpine
+                thread {
+                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache python3 py3-pip git build-base nano vim curl", { proc = it }) { print(it) }; print("Готово: python3, pip, git, g++, nano, vim, curl") }
+                    catch (e: Exception) { print("Ошибка: ${e.message}") }
+                }
+                return
+            }
+            cmd.startsWith("lpy ") || cmd.startsWith("lpip ") -> {
+                // lpy file.py [args]  — run Python inside Linux;  lpip install X  — pip inside Linux
+                val c = if (cmd.startsWith("lpy ")) "python3 " + cmd.removePrefix("lpy ").trim()
+                        else if (cmd.removePrefix("lpip ").trim().startsWith("install")) "pip " + cmd.removePrefix("lpip ").trim() + " --break-system-packages"
+                        else "pip " + cmd.removePrefix("lpip ").trim()
+                thread {
+                    try { Linux.exec(ctx, store, cwd, c, { proc = it }) { print(it) } }
+                    catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
                 return
             }
