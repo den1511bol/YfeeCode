@@ -69,6 +69,7 @@ fun DevKeyboard(onText: (String) -> Unit, onCmd: (Cmd) -> Unit, modifier: Modifi
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
             Key(if (layer == 2) "ABC" else "123", 1.4f, keyBgAlt) { layer = if (layer == 2) 0 else 2 }
             Key(if (layer == 1) "EN" else "RU", 1.2f, keyBgAlt) { layer = if (layer == 1) 0 else 1 }
+            if (layer == 1) { val e = if (shift) "Ё" else "ё"; Key(e, 1f, keyBg) { onText(e); shift = false } }
             Key(".", 1f, keyBg) { onText(".") }
             Key("пробел", 4f, keyBg) { onText(" ") }
             Key(",", 1f, keyBg) { onText(",") }

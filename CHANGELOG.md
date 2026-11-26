@@ -214,3 +214,4 @@
 - Сессия 38: практики JS js19 (бросок кубика) и js20 (год из Date). @yfeeeee
 - Сессия 39: C# уроки «EF Core и SQLite», «Func и Action». @yfeeeee
 - Сессия 40: проверка TerminalState: «stop» останавливает и обычные sh-команды, подсказка для «lx». @yfeeeee
+- Сессия 41: проверка Keyboard: в русской раскладке добавлена буква ё (с Shift — Ё). @yfeeeee
