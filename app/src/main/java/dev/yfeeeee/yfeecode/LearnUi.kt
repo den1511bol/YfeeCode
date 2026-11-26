@@ -42,16 +42,18 @@ fun LearnScreen() {
     var lesson by remember { mutableStateOf<Int?>(null) }
     var practice by remember { mutableStateOf<Practice?>(null) }
     var tick by remember { mutableIntStateOf(0) }
+    var reading by remember { mutableStateOf(false) }
 
-    BackHandler(enabled = course != null) { if (lesson != null) lesson = null else course = null }
+    BackHandler(enabled = course != null) { if (reading) reading = false else if (lesson != null) lesson = null else course = null }
     val pr = practice
 
     val c = course
     val l = lesson
     when {
+        c != null && reading -> TheoryScreen(c) { reading = false }
         c != null && pr != null -> PracticeScreen(pr, prog) { practice = null; tick++ }
         c != null && l != null -> LessonRunner(c, l, prog) { lesson = null; tick++ }
-        c != null -> CourseMap(c, prog, tick, onBack = { course = null }, onOpen = { lesson = it }, onPractice = { practice = it })
+        c != null -> CourseMap(c, prog, tick, onBack = { course = null }, onOpen = { lesson = it }, onPractice = { practice = it }, onTheory = { reading = true })
         else -> LearnHome(prog, tick) { course = it }
     }
 }
@@ -106,12 +108,13 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
 }
 
 @Composable
-private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, onOpen: (Int) -> Unit, onPractice: (Practice) -> Unit) {
+private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, onOpen: (Int) -> Unit, onPractice: (Practice) -> Unit, onTheory: () -> Unit) {
     val doneCount = remember(tick) { prog.doneCount(c.id, c.lessons.size) }
     Column(Modifier.fillMaxSize().padding(14.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             TextButton(onClick = onBack) { Text("← назад", color = Violet) }
-            Text("${c.emoji} ${c.title}", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text("${c.emoji} ${c.title}", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            TextButton(onClick = onTheory) { Text("📖 Теория", color = Violet) }
         }
         LazyColumn(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             itemsIndexed(c.lessons) { i, les ->
@@ -149,6 +152,26 @@ private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, 
                     Spacer(Modifier.width(10.dp))
                     Text(pr.title, color = Color.White, fontSize = 15.sp, modifier = Modifier.weight(1f))
                     Text("+15 XP", color = Muted, fontSize = 11.sp)
+                }
+            }
+            item { Spacer(Modifier.height(24.dp)) }
+        }
+    }
+}
+
+/** Reading mode: the whole course theory as a book, no exercises. */
+@Composable
+private fun TheoryScreen(c: Course, onBack: () -> Unit) {
+    Column(Modifier.fillMaxSize().padding(14.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = onBack) { Text("← к заданиям", color = Violet) }
+            Text("📖 ${c.title}: теория", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
+        LazyColumn(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            itemsIndexed(c.lessons) { i, les ->
+                Column(Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(14.dp)).padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("${i + 1}. ${les.title}", color = Violet, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                    TheoryText(les.theory)
                 }
             }
             item { Spacer(Modifier.height(24.dp)) }
