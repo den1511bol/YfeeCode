@@ -50,6 +50,7 @@ android {
         buildConfig = true
     }
     packaging {
+        jniLibs.useLegacyPackaging = true // extract native libs so proot can be executed
         resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 }

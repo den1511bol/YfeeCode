@@ -51,7 +51,23 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: linux install (поставить Linux), lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "linux" || cmd == "linux install" -> {
+                if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
+                thread {
+                    try { Linux.install(ctx) { print(it) } }
+                    catch (e: Exception) { print("Ошибка установки: ${e.message}") }
+                }
+                return
+            }
+            cmd.startsWith("lx ") -> {
+                val c = cmd.removePrefix("lx ").trim()
+                thread {
+                    try { Linux.exec(ctx, store, cwd, c) { print(it) } }
+                    catch (e: Exception) { print("Ошибка: ${e.message}") }
+                }
+                return
+            }
             cmd == "py" -> { mode = TermMode.PY; return }
             cmd == "sh" -> { mode = TermMode.SH; return }
             cmd.startsWith("token ") -> {
