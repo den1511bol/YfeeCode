@@ -24,8 +24,8 @@ import kotlin.math.sin
  * very slowly with its own phase, so the pulse drifts across the screen in no fixed order.
  */
 fun Modifier.diamondPattern(
-    base: Color = Color(0xFF0A0612),
-    line: Color = Color(0x1AC084FC),
+    base: Color = Color(0xFF120606),
+    line: Color = Color(0x1AB91C1C),
     step: Dp = 26.dp
 ): Modifier = composed {
     val t = rememberInfiniteTransition(label = "pattern")
@@ -35,7 +35,7 @@ fun Modifier.diamondPattern(
         label = "phase"
     )
     Modifier.drawBehind {
-        drawRect(Brush.verticalGradient(listOf(base, Color(0xFF12082A), base)))
+        drawRect(Brush.verticalGradient(listOf(base, Color(0xFF2A0809), base)))
         val s = step.toPx()
         val h = size.height
         // soft 0.35..1.0 breathing, different phase for each element

@@ -27,9 +27,9 @@ private val ru = listOf("йцукенгшщзхъ", "фывапролджэ", "�
 private val sym = listOf("1234567890", "@#$%&*-+=_", "!?:;`\\/|<>")
 private val code = listOf("(", ")", "[", "]", "{", "}", "\"", "'")
 
-private val keyBg = Color(0xFF2A1647)
-private val keyBgAlt = Color(0xFF3B2068)
-private val accent = Color(0xFF7C3AED)
+private val keyBg = Color(0xFF471617)
+private val keyBgAlt = Color(0xFF682022)
+private val accent = Color(0xFFED3A3E)
 
 @Composable
 fun DevKeyboard(onText: (String) -> Unit, onCmd: (Cmd) -> Unit, modifier: Modifier = Modifier) {
@@ -37,7 +37,7 @@ fun DevKeyboard(onText: (String) -> Unit, onCmd: (Cmd) -> Unit, modifier: Modifi
     var shift by remember { mutableStateOf(false) }
 
     Column(
-        modifier.fillMaxWidth().diamondPattern(Color(0xFF0E0720), Color(0x22C084FC), 22.dp).padding(horizontal = 3.dp, vertical = 5.dp),
+        modifier.fillMaxWidth().diamondPattern(Color(0xFF200708), Color(0x22B91C1C), 22.dp).padding(horizontal = 3.dp, vertical = 5.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         // developer row: pairs and navigation
@@ -88,11 +88,11 @@ private fun RowScope.Key(
             .weight(weight)
             .height(42.dp)
             .background(
-                if (pressed) Brush.verticalGradient(listOf(Color(0xFFA78BFA), Color(0xFF7C3AED)))
+                if (pressed) Brush.verticalGradient(listOf(Color(0xFFFA8B90), Color(0xFFED3A3E)))
                 else Brush.verticalGradient(listOf(bg, bg.copy(red = bg.red * 0.6f, green = bg.green * 0.6f, blue = bg.blue * 0.75f))),
                 RoundedCornerShape(9.dp)
             )
-            .border(1.dp, Color(0x55C084FC), RoundedCornerShape(9.dp))
+            .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(9.dp))
             .pointerInput(repeat) {
                 detectTapGestures(onPress = {
                     pressed = true

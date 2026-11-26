@@ -48,17 +48,17 @@ fun PracticeScreen(p: Practice, prog: Progress, onExit: () -> Unit) {
 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onClick = onExit) { Text("✕", color = Color(0xFF8B7FA8), fontSize = 18.sp) }
+            TextButton(onClick = onExit) { Text("✕", color = Color(0xFFA87F81), fontSize = 18.sp) }
             Text(p.title, color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text(p.lang.label, color = Color(0xFFC084FC), fontSize = 12.sp, modifier = Modifier.padding(end = 8.dp))
+            Text(p.lang.label, color = Color(0xFFB91C1C), fontSize = 12.sp, modifier = Modifier.padding(end = 8.dp))
         }
         Text(
-            p.task, color = Color(0xFFE6DDF7), fontSize = 14.sp, lineHeight = 20.sp,
+            p.task, color = Color(0xFFF7DDDE), fontSize = 14.sp, lineHeight = 20.sp,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp)
-                .background(Color(0xFF150B24), RoundedCornerShape(10.dp)).padding(10.dp)
+                .background(Color(0xFF240B0B), RoundedCornerShape(10.dp)).padding(10.dp)
         )
         if (hints.isNotEmpty()) {
-            Column(Modifier.fillMaxWidth().padding(top = 4.dp).background(Color(0xFF2A1733)).padding(horizontal = 10.dp, vertical = 3.dp)) {
+            Column(Modifier.fillMaxWidth().padding(top = 4.dp).background(Color(0xFF331817)).padding(horizontal = 10.dp, vertical = 3.dp)) {
                 hints.forEach { Text("💡 $it", color = Color(0xFFE3B341), fontSize = 11.sp) }
             }
         }
@@ -81,9 +81,9 @@ fun PracticeScreen(p: Practice, prog: Progress, onExit: () -> Unit) {
                 },
                 enabled = !busy,
                 modifier = Modifier.weight(1f),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC084FC), contentColor = Color.Black)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB91C1C), contentColor = Color.Black)
             ) { Text(if (busy) "Проверяю…" else "Проверить") }
-            TextButton(onClick = { state.replaceAll(p.starter); verdict = null; sp.edit().remove(p.id).apply() }) { Text("Сбросить", color = Color(0xFFC084FC)) }
+            TextButton(onClick = { state.replaceAll(p.starter); verdict = null; sp.edit().remove(p.id).apply() }) { Text("Сбросить", color = Color(0xFFB91C1C)) }
         }
         DevKeyboard(
             onText = { state.insert(it) },

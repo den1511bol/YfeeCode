@@ -27,12 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-private val Violet = Color(0xFFC084FC)
-private val Panel = Color(0xFF150B24)
-private val Chip = Color(0xFF2A1647)
+private val Violet = Color(0xFFB91C1C)
+private val Panel = Color(0xFF240B0B)
+private val Chip = Color(0xFF471617)
 private val Good = Color(0xFF4ADE80)
 private val Bad = Color(0xFFF87171)
-private val Muted = Color(0xFF8B7FA8)
+private val Muted = Color(0xFFA87F81)
 
 @Composable
 fun LearnScreen() {
@@ -85,7 +85,7 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
                 val done = remember(tick) { prog.doneCount(c.id, c.lessons.size) }
                 Row(
                     Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(16.dp))
-                        .border(1.dp, Color(0x55C084FC), RoundedCornerShape(16.dp))
+                        .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(16.dp))
                         .clickable { onOpen(c) }.padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -141,7 +141,7 @@ private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, 
                 Row(
                     Modifier.fillMaxWidth().padding(horizontal = 12.dp)
                         .background(Panel, RoundedCornerShape(14.dp))
-                        .border(1.dp, if (done) Good else Color(0x55C084FC), RoundedCornerShape(14.dp))
+                        .border(1.dp, if (done) Good else Color(0x55B91C1C), RoundedCornerShape(14.dp))
                         .clickable { onPractice(pr) }.padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -163,9 +163,9 @@ private fun TheoryText(text: String) {
             if (line.startsWith(">")) {
                 Text(
                     line.removePrefix(">").trimStart(), color = Violet, fontFamily = FontFamily.Monospace, fontSize = 14.sp,
-                    modifier = Modifier.fillMaxWidth().background(Color(0xFF07040D), RoundedCornerShape(8.dp)).padding(10.dp)
+                    modifier = Modifier.fillMaxWidth().background(Color(0xFF0D0404), RoundedCornerShape(8.dp)).padding(10.dp)
                 )
-            } else if (line.isNotBlank()) Text(line, color = Color(0xFFE6DDF7), fontSize = 15.sp, lineHeight = 22.sp)
+            } else if (line.isNotBlank()) Text(line, color = Color(0xFFF7DDDE), fontSize = 15.sp, lineHeight = 22.sp)
         }
     }
 }
@@ -173,7 +173,7 @@ private fun TheoryText(text: String) {
 @Composable
 private fun BlockChip(text: String, onClick: () -> Unit) {
     Box(
-        Modifier.background(Chip, RoundedCornerShape(12.dp)).border(1.dp, Color(0x88C084FC), RoundedCornerShape(12.dp))
+        Modifier.background(Chip, RoundedCornerShape(12.dp)).border(1.dp, Color(0x88B91C1C), RoundedCornerShape(12.dp))
             .clickable { onClick() }.padding(horizontal = 12.dp, vertical = 9.dp)
     ) { Text(text, color = Color.White, fontFamily = FontFamily.Monospace, fontSize = 15.sp) }
 }
@@ -242,7 +242,7 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                     if (ex.kind == Kind.BUILD) {
                         FlowRow(
                             Modifier.fillMaxWidth().heightIn(min = 64.dp).background(Panel, RoundedCornerShape(12.dp))
-                                .border(1.dp, Color(0x55C084FC), RoundedCornerShape(12.dp)).padding(8.dp),
+                                .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(12.dp)).padding(8.dp),
                             horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             picked.toList().forEach { bi ->
@@ -259,8 +259,8 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                     } else {
                         Text(
                             "$ " + input + if (result == null) "▏" else "", color = Violet, fontFamily = FontFamily.Monospace, fontSize = 16.sp,
-                            modifier = Modifier.fillMaxWidth().background(Color(0xFF07040D), RoundedCornerShape(12.dp))
-                                .border(1.dp, Color(0x55C084FC), RoundedCornerShape(12.dp)).padding(14.dp)
+                            modifier = Modifier.fillMaxWidth().background(Color(0xFF0D0404), RoundedCornerShape(12.dp))
+                                .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(12.dp)).padding(14.dp)
                         )
                     }
                     result?.let { ok ->
@@ -272,7 +272,7 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                                 color = Color.White, fontFamily = FontFamily.Monospace, fontSize = 14.sp,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
-                            if (ex.explain.isNotBlank()) Text(ex.explain, color = Color(0xFFE6DDF7), fontSize = 13.sp, modifier = Modifier.padding(top = 6.dp))
+                            if (ex.explain.isNotBlank()) Text(ex.explain, color = Color(0xFFF7DDDE), fontSize = 13.sp, modifier = Modifier.padding(top = 6.dp))
                         }
                     }
                 }

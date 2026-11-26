@@ -124,27 +124,27 @@ private val SECTIONS = listOf(
 @Composable
 fun HelpDialog(onClose: () -> Unit) {
     Dialog(onDismissRequest = onClose, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Surface(Modifier.fillMaxSize(), color = Color(0xFF0B0614)) {
+        Surface(Modifier.fillMaxSize(), color = Color(0xFF140606)) {
             Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("Инструкция", color = Color(0xFFC084FC), fontSize = 20.sp, modifier = Modifier.weight(1f))
+                    Text("Инструкция", color = Color(0xFFB91C1C), fontSize = 20.sp, modifier = Modifier.weight(1f))
                     TextButton(onClick = onClose) { Text("Закрыть") }
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
                     SECTIONS.forEachIndexed { i, s ->
                         var open by remember { mutableStateOf(i == 0) }
                         Column(Modifier.fillMaxWidth().padding(vertical = 4.dp)
-                            .background(Color(0xFF1A0F2E), RoundedCornerShape(12.dp))
+                            .background(Color(0xFF2E0F10), RoundedCornerShape(12.dp))
                             .clickable { open = !open }.padding(14.dp)) {
-                            Text((if (open) "▾ " else "▸ ") + s.title, color = Color(0xFFE9D5FF), fontSize = 16.sp)
+                            Text((if (open) "▾ " else "▸ ") + s.title, color = Color(0xFFFFD5D5), fontSize = 16.sp)
                             if (open) {
                                 Spacer(Modifier.height(8.dp))
-                                Text(s.body, color = Color(0xFFCBB8E8), fontSize = 14.sp, lineHeight = 21.sp)
+                                Text(s.body, color = Color(0xFFE8B8B9), fontSize = 14.sp, lineHeight = 21.sp)
                             }
                         }
                     }
                     Spacer(Modifier.height(10.dp))
-                    Text("𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 · разработчик @yfeeeee", color = Color(0xFFC084FC), fontSize = 12.sp,
+                    Text("𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 · разработчик @yfeeeee", color = Color(0xFFB91C1C), fontSize = 12.sp,
                         modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacer(Modifier.height(16.dp))
                 }

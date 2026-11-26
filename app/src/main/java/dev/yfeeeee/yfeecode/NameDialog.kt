@@ -18,11 +18,11 @@ import androidx.compose.ui.window.DialogProperties
 fun NameDialog(title: String, initial: String = "", onOk: (String) -> Unit, onCancel: () -> Unit) {
     var value by remember { mutableStateOf(initial) }
     Dialog(onDismissRequest = onCancel, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-        Column(Modifier.fillMaxWidth().background(Color(0xFF150B24)).padding(8.dp)) {
+        Column(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).padding(8.dp)) {
             Text(title, color = Color.White, modifier = Modifier.padding(8.dp))
             Text(
-                value + "▏", color = Color(0xFFC084FC), fontFamily = FontFamily.Monospace,
-                modifier = Modifier.fillMaxWidth().background(Color(0xFF0A0612)).padding(12.dp)
+                value + "▏", color = Color(0xFFB91C1C), fontFamily = FontFamily.Monospace,
+                modifier = Modifier.fillMaxWidth().background(Color(0xFF120606)).padding(12.dp)
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onCancel) { Text("Отмена") }

@@ -74,13 +74,13 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
 
     Row(
         modifier
-            .diamondPattern(Color(0xFF0A0612), Color(0x0FC084FC), 44.dp)
+            .diamondPattern(Color(0xFF120606), Color(0x0FB91C1C), 44.dp)
             .onSizeChanged { viewportH = it.height }
             .verticalScroll(vScroll)
     ) {
         Text(
             gutter,
-            style = style.copy(color = Color(0xFF6B5B8C)),
+            style = style.copy(color = Color(0xFF8C5B5D)),
             modifier = Modifier.width(40.dp).padding(start = 6.dp, end = 6.dp, top = 6.dp)
         )
         Box(Modifier.horizontalScroll(hScroll)) {
@@ -115,7 +115,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                             val m = matchBracket(state.text, state.cursor)
                             if (m != null && m.second < l1.layoutInput.text.length) {
                                 for (idx in intArrayOf(m.first, m.second)) {
-                                    drawPath(l1.getPathForRange(idx, idx + 1), Color(0x55C084FC))
+                                    drawPath(l1.getPathForRange(idx, idx + 1), Color(0x55B91C1C))
                                 }
                             }
                         }
@@ -123,7 +123,7 @@ fun CodeEditor(state: EditorState, modifier: Modifier = Modifier) {
                         val l = layout
                         if (l != null && state.cursor <= l.layoutInput.text.length) {
                             val r = l.getCursorRect(state.cursor)
-                            drawRect(Color(0xFFC084FC), Offset(r.left, r.top), Size(2.5f, r.height))
+                            drawRect(Color(0xFFB91C1C), Offset(r.left, r.top), Size(2.5f, r.height))
                         }
                     }
             )

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.YfeeCode" parent="android:Theme.Material.NoActionBar">
-        <item name="android:windowBackground">#0A0612</item>
-        <item name="android:statusBarColor">#0A0612</item>
-        <item name="android:navigationBarColor">#0A0612</item>
+        <item name="android:windowBackground">#120606</item>
+        <item name="android:statusBarColor">#120606</item>
+        <item name="android:navigationBarColor">#120606</item>
     </style>
 </resources>

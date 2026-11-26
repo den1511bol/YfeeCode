@@ -8,9 +8,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 
 object Highlighter {
-    private val kwKeyword = Color(0xFFF472B6)
+    private val kwKeyword = Color(0xFFF48972)
     private val kwString = Color(0xFFA5D6A7)
-    private val kwComment = Color(0xFF8B7FA8)
+    private val kwComment = Color(0xFFA87F81)
     private val kwNumber = Color(0xFF79C0FF)
     private val kwBase = Color(0xFFE6EDF3)
 
