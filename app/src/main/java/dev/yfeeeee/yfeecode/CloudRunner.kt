@@ -42,7 +42,7 @@ object CloudRunner {
             } else if (n.startsWith("mono")) mono = n // mono compiles much faster than dotnet
             else if (n.startsWith("dotnet")) best = n
         }
-        if (lang == Lang.CSHARP && mono != null) best = mono
+        if (lang == Lang.CSHARP && best == null) best = mono // dotnet preferred: mono breaks Cyrillic output
         val r = best ?: throw IllegalStateException("нет компилятора для $want")
         cache[lang] = r
         return r
