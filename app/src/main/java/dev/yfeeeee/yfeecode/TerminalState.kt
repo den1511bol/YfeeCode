@@ -29,7 +29,16 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         get() = if (mode == TermMode.PY) (if (pyMore) "... " else ">>> ")
         else cwd.relativeToOrSelf(store.root).path.ifEmpty { "~" } + " $ "
 
+    @Volatile private var proc: Process? = null
+
     fun submit(raw: String) {
+        // a Linux program is running: send the line to its stdin
+        val rp = proc
+        if (rp != null && rp.isAlive) {
+            lines.add(raw)
+            Thread { try { rp.outputStream.write((raw + "\n").toByteArray()); rp.outputStream.flush() } catch (_: Exception) {} }.start()
+            return
+        }
         val cmd = AutoFix.command(raw)
         if (cmd != raw.trim()) print("(исправлено: $cmd)")
         lines.add(prompt + if (cmd.startsWith("token ")) "token ***" else cmd)
@@ -63,7 +72,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             cmd.startsWith("lx ") -> {
                 val c = cmd.removePrefix("lx ").trim()
                 thread {
-                    try { Linux.exec(ctx, store, cwd, c) { print(it) } }
+                    try { Linux.exec(ctx, store, cwd, c, { proc = it }) { print(it) } }
                     catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
                 return
@@ -146,6 +155,16 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             Lang.CPP, Lang.CSHARP -> {
                 val lang = Lang.fromName(f.name)
+                if (lang == Lang.CPP && Linux.installed(ctx) && Linux.hasGpp(ctx)) {
+                    print("Компиляция ${f.name} (g++, офлайн)...")
+                    thread {
+                        try {
+                            val q = "'" + f.name.replace("'", "'\\''") + "'"
+                            Linux.exec(ctx, store, f.parentFile ?: cwd, "g++ -std=gnu++17 -O1 $q -o /tmp/yfee_out && /tmp/yfee_out", { proc = it }) { print(it) }
+                        } catch (e: Exception) { print("Ошибка: ${e.message}") }
+                    }
+                    return
+                }
                 print("Компиляция ${f.name} (${lang.label}, онлайн)... ${if (lang == Lang.CSHARP) "C# может занять до 30 секунд" else ""}")
                 thread {
                     try { print(CloudRunner.run(lang, f.readText())) }
@@ -167,6 +186,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     }
 
     fun stopAll() {
+        proc?.destroyForcibly(); proc = null
         tailGen++
         BotService.stop(ctx)
         ui.post { js?.stop(); js = null }
