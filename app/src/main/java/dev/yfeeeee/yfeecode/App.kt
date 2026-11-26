@@ -429,6 +429,10 @@ fun EditorScreen(
         }
         Row(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).horizontalScroll(rememberScrollState()),
             verticalAlignment = Alignment.CenterVertically) {
+            run {
+                val col = state.cursor - (state.text.lastIndexOf('\n', state.cursor - 1) + 1) + 1
+                Text("Стр ${state.lineIndex + 1}:$col", color = Color(0xFFA87F81), fontSize = 12.sp, modifier = Modifier.padding(horizontal = 8.dp))
+            }
             MiniBtn(if (state.selectMode) "✓ выделение" else "выделить", state.selectMode) { state.toggleSelect() }
             MiniBtn("всё") { state.selectAll() }
             MiniBtn("копия") { if (state.hasSel) clip.setText(androidx.compose.ui.text.AnnotatedString(state.selectedText)) }
