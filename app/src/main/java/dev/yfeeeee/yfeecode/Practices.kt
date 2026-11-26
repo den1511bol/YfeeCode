@@ -111,7 +111,11 @@ object Practices {
             Practice("js15", "async и await", "Напиши async-функцию load, которая ждёт fetch и вызывает json().", "", Lang.JS,
                 listOf(must("""async\s+function\s+load|async\s*\(""", "Нужна async-функция load"), must("""await\s+fetch\s*\(""", "Дождись: await fetch(...)"), must("""\.json\s*\(""", "Вызови .json()"))),
             Practice("js16", "try/catch", "Оберни JSON.parse(text) в try/catch и выведи ошибку.", "", Lang.JS,
-                listOf(must("""try\s*\{""", "Нужен блок try {"), must("""catch\s*\(""", "Нужен catch (e)"), must("""JSON\.parse\s*\(""", "Используй JSON.parse")))
+                listOf(must("""try\s*\{""", "Нужен блок try {"), must("""catch\s*\(""", "Нужен catch (e)"), must("""JSON\.parse\s*\(""", "Используй JSON.parse"))),
+            Practice("js17", "localStorage", "Сохрани в localStorage ключ name со значением Аня и прочитай его обратно в консоль.", "", Lang.JS,
+                listOf(must("""localStorage\.setItem\s*\(""", "Нужен localStorage.setItem(...)"), must("""localStorage\.getItem\s*\(""", "Нужен localStorage.getItem(...)"))),
+            Practice("js18", "Новый элемент", "Создай элемент li через createElement, задай ему textContent и добавь в list через appendChild.", "", Lang.JS,
+                listOf(must("""createElement\s*\(""", "Нужен document.createElement(...)"), must("""textContent""", "Задай textContent"), must("""appendChild\s*\(""", "Нужен appendChild(...)")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
@@ -197,7 +201,11 @@ object Practices {
             Practice("cpp14", "Запись в файл", "Открой файл a.txt через ofstream и запиши в него слово.", "", Lang.CPP,
                 listOf(must("""ofstream\s+\w+\s*\(\s*"a\.txt"(?:)""", "Нужно: ofstream out(\"a.txt\");"), must("""<<""", "Запиши текст через <<"))),
             Practice("cpp15", "Умный указатель", "Создай unique_ptr на int со значением 5 через make_unique.", "", Lang.CPP,
-                listOf(must("""make_unique\s*<\s*int\s*>\s*\(\s*5\s*\)""", "Нужно: make_unique<int>(5)")))
+                listOf(must("""make_unique\s*<\s*int\s*>\s*\(\s*5\s*\)""", "Нужно: make_unique<int>(5)"))),
+            Practice("cpp16", "Поток", "Запусти функцию work в отдельном потоке std::thread и дождись его через join.", "", Lang.CPP,
+                listOf(must("""std::thread\s+\w+\s*\(""", "Нужен std::thread t(work);"), must("""\.join\s*\(\s*\)""", "Нужен t.join();"))),
+            Practice("cpp17", "Словарь", "Создай unordered_map из string в int и запиши значение 1 по ключу a.", "", Lang.CPP,
+                listOf(must("""unordered_map\s*<\s*(std::)?string\s*,\s*int\s*>""", "Нужен unordered_map<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши m[\"a\"] = 1;")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,

@@ -199,3 +199,4 @@
 - Сессия 23: C# +2 урока (HashSet/Queue/Stack, LINQ группировка), всего 145 уроков. @yfeeeee
 - Сессия 24: Python +2 урока (ООП: __str__ и classmethod, datetime), всего 147 уроков. @yfeeeee
 - Сессия 25: практики Python py17 (__str__) и py18 (datetime). @yfeeeee
+- Сессия 26: практики JS js17-js18 (localStorage, createElement) и C++ cpp16-cpp17 (thread, unordered_map). @yfeeeee
