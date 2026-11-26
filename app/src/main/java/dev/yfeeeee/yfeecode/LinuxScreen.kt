@@ -147,6 +147,14 @@ fun LinuxScreen(store: FileStore) {
             if (LinuxTerm.sessions.isNotEmpty()) TextButton(onClick = { LinuxTerm.session?.finishIfRunning() }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("закрыть", fontSize = 14.sp) }
             TextButton(onClick = {
                 try {
+                    val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                    val out = java.io.File(store.root, ".yfee_clip")
+                    if (out.exists()) { cm.setPrimaryClip(android.content.ClipData.newPlainText("linux", out.readText())); out.delete() }
+                    else cm.primaryClip?.getItemAt(0)?.text?.toString()?.let { java.io.File(store.root, ".yfee_clipin").writeText(it) }
+                } catch (_: Exception) {}
+            }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("Буфер", fontSize = 14.sp) }
+            TextButton(onClick = {
+                try {
                     ctx.startActivity(android.content.Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, android.net.Uri.parse("package:" + ctx.packageName)).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
                 } catch (_: Exception) {}
             }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("Файлы", fontSize = 14.sp) }

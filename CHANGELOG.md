@@ -180,3 +180,4 @@
 - Сессия 4: Python +3 урока (requests, sqlite3, asyncio), всего 128 уроков. Разработчик @yfeeeee.
 - Сессия 5: Python +2 урока (unittest/pytest, модули Heroku/Hikka), всего 130 уроков. Разработчик @yfeeeee.
 - Как Termux: pkg/apt install (поверх apk), больше пакетов в linux setup (ssh, tmux, node, wget...), несколько сессий (вкладки), /sdcard и кнопка «Файлы» (доступ ко всем файлам). Разработчик @yfeeeee.
+- Termux-команды: termux-clipboard-set/get (кнопка «Буфер» во вкладке Linux), termux-open, termux-toast. @yfeeeee

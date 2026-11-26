@@ -95,6 +95,13 @@ object Linux {
             val bin = File(root(ctx), "usr/local/bin").also { it.mkdirs() }
             val pkg = "#!/bin/sh\n# pkg/apt for YfeeCode (Alpine apk). Developer: @yfeeeee\nc=\"\$1\"; [ \$# -gt 0 ] && shift\ncase \"\$c\" in\n install|i|add) apk add \"\$@\";;\n remove|uninstall|rm|del|purge) apk del \"\$@\";;\n update) apk update;;\n upgrade|full-upgrade|up) apk update && apk upgrade;;\n search) apk search \"\$@\";;\n list|list-installed) apk info;;\n show|info) apk info -a \"\$@\";;\n *) echo \"pkg install|remove|update|upgrade|search|list  (Alpine apk)\";;\nesac\n"
             for (n in listOf("pkg", "apt", "apt-get")) File(bin, n).also { it.writeText(pkg); it.setExecutable(true, false) }
+            val scr = mapOf(
+                "termux-clipboard-set" to "#!/bin/sh\n# Developer: @yfeeeee. Then press the Buffer button in the Linux tab.\ncat > /work/.yfee_clip\necho 'Скопировано. Нажми кнопку «Буфер» во вкладке Linux.' >&2\n",
+                "termux-clipboard-get" to "#!/bin/sh\n# Press the Buffer button in the Linux tab first.\ncat /work/.yfee_clipin 2>/dev/null\n",
+                "termux-open" to "#!/bin/sh\n[ -z \"\$1\" ] && { echo 'termux-open файл: копирует файл в /sdcard/Download'; exit 1; }\ncp \"\$1\" /sdcard/Download/ && echo \"Файл в /sdcard/Download/\$(basename \"\$1\")\"\n",
+                "termux-toast" to "#!/bin/sh\necho \"[toast] \$*\"\n"
+            )
+            for ((n, t) in scr) File(bin, n).also { it.writeText(t); it.setExecutable(true, false) }
             File(bin, "termux-setup-storage").also {
                 it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
                 it.setExecutable(true, false)
