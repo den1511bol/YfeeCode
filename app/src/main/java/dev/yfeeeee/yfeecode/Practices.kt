@@ -73,7 +73,11 @@ object Practices {
             Practice("py15", "Наследование", "Создай класс Animal с методом speak (возвращает \"звук\") и класс Dog(Animal). Выведи Dog().speak().", "", Lang.PYTHON,
                 listOf(must("""class\s+Animal""", "Нужен class Animal"), must("""class\s+Dog\s*\(\s*Animal\s*\)""", "Нужно class Dog(Animal):")), "звук"),
             Practice("py16", "Декоратор", "Напиши декоратор deco, который печатает start перед вызовом функции, и примени его к функции f. Вызови f().", "", Lang.PYTHON,
-                listOf(must("""def\s+deco\s*\(""", "Нужна функция deco"), must("""@deco""", "Примени декоратор: @deco")), "start")
+                listOf(must("""def\s+deco\s*\(""", "Нужна функция deco"), must("""@deco""", "Примени декоратор: @deco")), "start"),
+            Practice("py17", "Метод __str__", "Создай класс User с полем name и методом __str__, который возвращает имя. Выведи print(User(\"Аня\")).", "", Lang.PYTHON,
+                listOf(must("""class\s+User""", "Нужен class User"), must("""def\s+__str__""", "Нужен метод __str__")), "Аня"),
+            Practice("py18", "Дата из строки", "Разбери строку \"01.02.2026\" через datetime.strptime (формат %d.%m.%Y) и выведи дату в виде год-месяц-день через strftime.", "", Lang.PYTHON,
+                listOf(must("""strptime""", "Нужен datetime.strptime"), must("""strftime""", "Нужен strftime")), "2026-02-01")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,

@@ -198,3 +198,4 @@
 - Сессия 22: JS +2 урока (DOM: создание элементов, localStorage), всего 143 урока. @yfeeeee
 - Сессия 23: C# +2 урока (HashSet/Queue/Stack, LINQ группировка), всего 145 уроков. @yfeeeee
 - Сессия 24: Python +2 урока (ООП: __str__ и classmethod, datetime), всего 147 уроков. @yfeeeee
+- Сессия 25: практики Python py17 (__str__) и py18 (datetime). @yfeeeee
