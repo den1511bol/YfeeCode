@@ -41,22 +41,44 @@ fun App(
     onZipExport: () -> Unit = {},
     onZipImport: (File) -> Unit = {}
 ) {
-    var tab by remember { mutableIntStateOf(0) }
-    var showSettings by remember { mutableStateOf(false) }
-    var showHelp by remember { mutableStateOf(false) }
     val ctx = LocalContext.current
     val sp = remember { ctx.getSharedPreferences("session", android.content.Context.MODE_PRIVATE) }
+    var tab by remember { mutableIntStateOf(sp.getInt("tab", 0).coerceIn(0, 3)) }
+    LaunchedEffect(tab) { sp.edit().putInt("tab", tab).apply() }
+    var showSettings by remember { mutableStateOf(false) }
+    var showHelp by remember { mutableStateOf(false) }
     val open = remember {
         mutableStateListOf<EditorState>().apply {
             (sp.getString("tabs", "") ?: "").split("\n").filter { it.isNotBlank() }.map { File(it) }
-                .filter { it.isFile }.forEach { add(EditorState(it, store.read(it))) }
+                .filter { it.isFile }.forEach { f -> add(EditorState(f, store.read(f)).also { it.moveTo(sp.getInt("cur_" + f.absolutePath, 0)) }) }
         }
     }
     var active by remember { mutableIntStateOf(sp.getInt("active", 0).coerceIn(0, maxOf(0, open.size - 1))) }
     LaunchedEffect(open.size, active) {
         sp.edit().putString("tabs", open.joinToString("\n") { it.file.absolutePath }).putInt("active", active).apply()
     }
-    var dir by remember { mutableStateOf(store.root) }
+    var dir by remember {
+        mutableStateOf(File(sp.getString("dir", "") ?: "").takeIf {
+            it.isDirectory && it.absolutePath.startsWith(store.root.absolutePath)
+        } ?: store.root)
+    }
+    LaunchedEffect(dir) { sp.edit().putString("dir", dir.absolutePath).apply() }
+    // Flush unsaved text and cursor positions whenever the app goes to background
+    DisposableEffect(Unit) {
+        val lc = (ctx as? androidx.activity.ComponentActivity)?.lifecycle
+        val obs = androidx.lifecycle.LifecycleEventObserver { _, ev ->
+            if (ev == androidx.lifecycle.Lifecycle.Event.ON_STOP) {
+                val e = sp.edit()
+                open.forEach { st ->
+                    if (st.dirty && st.file.exists()) { store.write(st.file, st.text); st.markSaved() }
+                    e.putInt("cur_" + st.file.absolutePath, st.cursor)
+                }
+                e.apply()
+            }
+        }
+        lc?.addObserver(obs)
+        onDispose { lc?.removeObserver(obs) }
+    }
     LaunchedEffect(Unit) { Updater.autoCheck(ctx) }
     var dismissedUpdate by remember { mutableStateOf(false) }
     if (Updater.available && !dismissedUpdate && !showSettings) AlertDialog(
@@ -189,6 +211,7 @@ fun FilesScreen(
     var tick by remember { mutableIntStateOf(0) }
     var dialog by remember { mutableStateOf<String?>(null) } // "file" | "dir"
     var renaming by remember { mutableStateOf<File?>(null) }
+    var deleting by remember { mutableStateOf<File?>(null) }
     val items = remember(dir, tick, refreshKey) { store.list(dir) }
     val atRoot = dir.canonicalPath == store.root.canonicalPath
 
@@ -206,13 +229,23 @@ fun FilesScreen(
             "~/" + dir.relativeToOrSelf(store.root).path, color = Color(0xFF8B7FA8),
             fontFamily = FontFamily.Monospace, fontSize = 12.sp, modifier = Modifier.padding(horizontal = 12.dp)
         )
+        deleting?.let { d ->
+            val n = if (d.isDirectory) d.walkTopDown().count { it.isFile } else 0
+            AlertDialog(
+                onDismissRequest = { deleting = null },
+                title = { Text(if (d.isDirectory) "Удалить папку?" else "Удалить файл?") },
+                text = { Text("«" + d.name + "»" + (if (d.isDirectory) " и все файлы внутри ($n шт.)" else "") + "\n\nЭто нельзя отменить. Сначала можно сделать ZIP-экспорт проекта.") },
+                confirmButton = { TextButton(onClick = { onGone(d); store.delete(d); tick++; deleting = null }) { Text("Удалить", color = Color(0xFFF472B6)) } },
+                dismissButton = { TextButton(onClick = { deleting = null }) { Text("Отмена") } }
+            )
+        }
         LazyColumn(Modifier.weight(1f)) {
             if (!atRoot) item {
                 FileRow("..", true, {}, {}) { onDir(dir.parentFile ?: store.root) }
             }
             items(items) { f ->
                 FileRow(f.name, f.isDirectory, onRename = { renaming = f },
-                    onDelete = { onGone(f); store.delete(f); tick++ }) {
+                    onDelete = { deleting = f }) {
                     if (f.isDirectory) onDir(f) else onOpen(f, null)
                 }
             }
@@ -338,6 +371,12 @@ fun EditorScreen(
     val hints = remember(state.text, state.cursor) { Hints.analyze(state.text, state.lang, state.lineIndex) }
     val save = { store.write(state.file, state.text); state.markSaved() }
     var syntaxErr by remember(state) { mutableStateOf("") }
+    val spE = LocalContext.current.getSharedPreferences("session", android.content.Context.MODE_PRIVATE)
+    LaunchedEffect(state.text) {
+        delay(1500) // autosave 1.5 s after the last edit
+        if (state.dirty) { store.write(state.file, state.text); state.markSaved() }
+        spE.edit().putInt("cur_" + state.file.absolutePath, state.cursor).apply()
+    }
 
     LaunchedEffect(state.text) {
         if (state.lang == Lang.PYTHON) {
