@@ -217,5 +217,21 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Итератор на конец v", "v.end()"),
         type("Цикл по итераторам", "for (auto it = v.begin(); it != v.end(); ++it) {}"),
         type("Найди 2 в v через std::find", "auto p = std::find(v.begin(), v.end(), 2);")
+    )),
+    Lesson("constexpr и static_assert", "constexpr значит, что значение можно вычислить ещё при компиляции. Так делают константы и небольшие функции без накладных расходов. static_assert проверяет условие при сборке: если оно ложно, программа не скомпилируется.\n>constexpr int N = 10;\n>constexpr int sq(int x) { return x * x; }\n>static_assert(N > 0, \"N должно быть больше нуля\");", listOf(
+        type("Константа N равна 10 на этапе компиляции", "constexpr int N = 10;"),
+        type("Функция sq вычисляется при компиляции", "constexpr int sq(int x) { return x * x; }"),
+        type("Проверь при сборке, что N больше нуля", "static_assert(N > 0);"),
+        type("Обычная неизменяемая константа", "const int M = 5;"),
+        type("Автоматический тип для переменной", "auto x = 5;"),
+        type("Размер массива из constexpr N", "int arr[N];")
+    )),
+    Lesson("Сборка: g++ и CMake", "g++ собирает программу из исходников. Флаг -o задаёт имя файла, -std выбирает стандарт, -Wall включает предупреждения, -pthread нужен для потоков. Для больших проектов описывают сборку в файле CMakeLists.txt и запускают cmake и make.\n>g++ -std=c++17 -Wall main.cpp -o app\n>g++ main.cpp -pthread -o app\n>cmake .\n>make", listOf(
+        type("Собери main.cpp в app со стандартом c++17", "g++ -std=c++17 main.cpp -o app"),
+        type("Включи все предупреждения", "g++ -Wall main.cpp -o app"),
+        type("Собери программу с потоками", "g++ main.cpp -pthread -o app"),
+        type("Запусти собранную программу", "./app"),
+        type("Подготовь проект CMake в текущей папке", "cmake ."),
+        type("Собери проект через make", "make")
     ))
 ))
