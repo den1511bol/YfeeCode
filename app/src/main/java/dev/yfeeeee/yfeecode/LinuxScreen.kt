@@ -147,12 +147,52 @@ fun LinuxScreen(store: FileStore) {
             },
             update = { LinuxTerm.view = it }
         )
+        val kbOn = remember { mutableStateOf(true) }
         Row(Modifier.fillMaxWidth().background(Color(0xFF1A0707)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             LinuxTerm.sessions.forEachIndexed { i, _ ->
                 TextButton(onClick = { LinuxTerm.select(i) }, contentPadding = PaddingValues(horizontal = 12.dp)) {
                     Text("${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
                 }
             }
+            TextButton(onClick = { kbOn.value = !kbOn.value }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text(if (kbOn.value) "⌨↓" else "⌨↑", fontSize = 14.sp) }
+            fun key(label: String, send: String) = @Composable {
+                TextButton(onClick = { LinuxTerm.session?.write(send) }, contentPadding = PaddingValues(horizontal = 10.dp)) { Text(label, fontSize = 14.sp) }
+            }
+            TextButton(onClick = { LinuxTerm.ctrl = !LinuxTerm.ctrl }, contentPadding = PaddingValues(horizontal = 10.dp)) {
+                Text("Ctrl", fontSize = 14.sp, color = if (LinuxTerm.ctrl) Color(0xFFF472B6) else Color.Unspecified)
+            }
+            TextButton(onClick = { LinuxTerm.alt = !LinuxTerm.alt }, contentPadding = PaddingValues(horizontal = 10.dp)) {
+                Text("Alt", fontSize = 14.sp, color = if (LinuxTerm.alt) Color(0xFFF472B6) else Color.Unspecified)
+            }
+            key("Esc", "\u001b")()
+            key("^C", "\u0003")()
+            key("^D", "\u0004")()
+            key("^X", "\u0018")()
+            key("^O", "\u000f")()
+            key("/", "/")()
+            key("-", "-")()
+            key("|", "|")()
+            key("~", "~")()
+            key("PgUp", "\u001b[5~")()
+            key("PgDn", "\u001b[6~")()
+            key("Del", "\u001b[3~")()
+            key("Ins", "\u001b[2~")()
+            key("\\", "\\")()
+            key("&", "&")()
+            key("*", "*")()
+            key("F1", "\u001bOP")()
+            key("F2", "\u001bOQ")()
+            key("F3", "\u001bOR")()
+            key("F4", "\u001bOS")()
+            key("F5", "\u001b[15~")()
+            key("F6", "\u001b[17~")()
+            key("F7", "\u001b[18~")()
+            key("F8", "\u001b[19~")()
+            key("F9", "\u001b[20~")()
+            key("F10", "\u001b[21~")()
+            key("F11", "\u001b[23~")()
+            key("F12", "\u001b[24~")()
+
             TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp - 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A−", fontSize = 14.sp) }
             TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp + 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A+", fontSize = 14.sp) }
             TextButton(onClick = { LinuxTerm.newSession(ctx, store) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("+ сессия", fontSize = 14.sp) }
@@ -171,56 +211,7 @@ fun LinuxScreen(store: FileStore) {
                 } catch (_: Exception) {}
             }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("Файлы", fontSize = 14.sp) }
         }
-        Row(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
-            fun key(label: String, send: String) = @Composable {
-                TextButton(onClick = { LinuxTerm.session?.write(send) }, contentPadding = PaddingValues(horizontal = 10.dp)) { Text(label, fontSize = 14.sp) }
-            }
-            TextButton(onClick = { LinuxTerm.ctrl = !LinuxTerm.ctrl }, contentPadding = PaddingValues(horizontal = 10.dp)) {
-                Text("Ctrl", fontSize = 14.sp, color = if (LinuxTerm.ctrl) Color(0xFFF472B6) else Color.Unspecified)
-            }
-            TextButton(onClick = { LinuxTerm.alt = !LinuxTerm.alt }, contentPadding = PaddingValues(horizontal = 10.dp)) {
-                Text("Alt", fontSize = 14.sp, color = if (LinuxTerm.alt) Color(0xFFF472B6) else Color.Unspecified)
-            }
-            key("Esc", "\u001b")()
-            key("Tab", "\t")()
-            key("↑", "\u001b[A")()
-            key("↓", "\u001b[B")()
-            key("←", "\u001b[D")()
-            key("→", "\u001b[C")()
-            key("^C", "\u0003")()
-            key("^D", "\u0004")()
-            key("^X", "\u0018")()
-            key("^O", "\u000f")()
-            key("/", "/")()
-            key("-", "-")()
-            key("|", "|")()
-            key("~", "~")()
-            key("PgUp", "\u001b[5~")()
-            key("PgDn", "\u001b[6~")()
-            key("Home", "\u001b[H")()
-            key("End", "\u001b[F")()
-            key("Del", "\u001b[3~")()
-            key("Ins", "\u001b[2~")()
-            key("\\", "\\")()
-            key("{", "{")()
-            key("}", "}")()
-            key("[", "[")()
-            key("]", "]")()
-            key("&", "&")()
-            key("*", "*")()
-            key("F1", "\u001bOP")()
-            key("F2", "\u001bOQ")()
-            key("F3", "\u001bOR")()
-            key("F4", "\u001bOS")()
-            key("F5", "\u001b[15~")()
-            key("F6", "\u001b[17~")()
-            key("F7", "\u001b[18~")()
-            key("F8", "\u001b[19~")()
-            key("F9", "\u001b[20~")()
-            key("F10", "\u001b[21~")()
-            key("F11", "\u001b[23~")()
-            key("F12", "\u001b[24~")()
-        }
+        if (kbOn.value) {
         DevKeyboard(
             onText = { t ->
                 val sess = LinuxTerm.session
@@ -252,5 +243,6 @@ fun LinuxScreen(store: FileStore) {
                 }
             }
         )
+        }
     }
 }
