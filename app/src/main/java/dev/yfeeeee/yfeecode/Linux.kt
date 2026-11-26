@@ -114,6 +114,12 @@ object Linux {
                 "if [ -n \"\$BASH_VERSION\" ]; then export PS1='\\[\\e[1;31m\\]yfee\\[\\e[0m\\]:\\w\\$ '; else export PS1='yfee# '; fi\nalias ll='ls -la'\nalias ..='cd ..'\ncd /work 2>/dev/null\n" +
                 "echo 'YfeeCode Linux (Alpine). Разработчик: @yfeeeee'\necho 'pkg install <пакет>  |  termux-setup-storage  |  yfee-sshd  |  /sdcard  |  /work (проекты)'\n"
             )
+            // always rewritten: shell extras for every login shell (Developer: @yfeeeee)
+            File(root(ctx), "etc/profile.d").mkdirs()
+            File(root(ctx), "etc/profile.d/yfee-extra.sh").writeText(
+                "# YfeeCode extras. Developer: @yfeeeee\nalias ll='ls -lah --color=auto'\nalias la='ls -A --color=auto'\nalias ls='ls --color=auto'\nalias grep='grep --color=auto'\nalias gs='git status'\n" +
+                "if [ -n \"\$BASH_VERSION\" ]; then\n  export HISTFILE=/root/.bash_history HISTSIZE=5000 HISTFILESIZE=10000\n  shopt -s histappend 2>/dev/null\n  [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion\nfi\n"
+            )
             File(bin, "termux-setup-storage").also {
                 it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
                 it.setExecutable(true, false)
