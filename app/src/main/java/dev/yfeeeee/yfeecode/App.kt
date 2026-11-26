@@ -246,7 +246,8 @@ fun FilesScreen(
             }
             items(items) { f ->
                 FileRow(f.name, f.isDirectory, onRename = { renaming = f },
-                    onDelete = { deleting = f }) {
+                    onDelete = { deleting = f },
+                    onDuplicate = if (f.isFile) ({ store.duplicate(f); tick++ }) else null) {
                     if (f.isDirectory) onDir(f) else onOpen(f, null)
                 }
             }
@@ -334,7 +335,7 @@ fun FilesScreen(
 }
 
 @Composable
-private fun FileRow(name: String, isDir: Boolean, onRename: () -> Unit, onDelete: () -> Unit, onClick: () -> Unit) {
+private fun FileRow(name: String, isDir: Boolean, onRename: () -> Unit, onDelete: () -> Unit, onDuplicate: (() -> Unit)? = null, onClick: () -> Unit) {
     Row(
         Modifier.fillMaxWidth().clickable { onClick() }.padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -343,6 +344,7 @@ private fun FileRow(name: String, isDir: Boolean, onRename: () -> Unit, onDelete
             tint = if (isDir) Color(0xFFE3B341) else Color(0xFF79C0FF))
         Spacer(Modifier.width(10.dp))
         Text(name, color = Color.White, modifier = Modifier.weight(1f))
+        if (onDuplicate != null) IconButton(onClick = onDuplicate) { Icon(Icons.Default.ContentCopy, "Дублировать", tint = Color(0xFFA87F81)) }
         if (name != "..") IconButton(onClick = onRename) { Icon(Icons.Default.Edit, "Переименовать", tint = Color(0xFFA87F81)) }
         if (name != "..") IconButton(onClick = onDelete) { Icon(Icons.Default.Delete, "Удалить", tint = Color(0xFFA87F81)) }
     }

@@ -34,6 +34,17 @@ class FileStore(private val ctx: Context) {
 
     fun delete(f: File) { f.deleteRecursively() }
 
+    /** Duplicates a file next to the original: name_copy.ext, name_copy2.ext ... Developer: @yfeeeee */
+    fun duplicate(f: File): File? {
+        if (!f.isFile) return null
+        val base = f.nameWithoutExtension
+        val ext = if (f.extension.isEmpty()) "" else "." + f.extension
+        var n = 1
+        var t = File(f.parentFile, base + "_copy" + ext)
+        while (t.exists()) { n++; t = File(f.parentFile, base + "_copy" + n + ext) }
+        return runCatching { f.copyTo(t) }.getOrNull()
+    }
+
     /** Copies a file picked through the system picker into the workspace. */
     fun importUri(uri: Uri, dir: File): File? {
         var name = "imported.txt"
