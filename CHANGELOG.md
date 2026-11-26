@@ -209,3 +209,4 @@
 - Сессия 33: практики HTML html16-17 (email required, details) и CSS css16-17 (clamp, тёмная тема). @yfeeeee
 - Сессия 34: Python +2 урока (logging, аргументы командной строки), всего 159 уроков. Поиск по урокам не добавлен: на устройстве работает только встроенная клавиатура. @yfeeeee
 - Сессия 35: C++ +2 урока (constexpr и static_assert, сборка g++ и CMake), всего 161 урок. @yfeeeee
+- Сессия 36: практики py19 (argparse), cpp18 (constexpr), cs18 (паттерн is). @yfeeeee

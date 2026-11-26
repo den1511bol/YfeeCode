@@ -77,7 +77,9 @@ object Practices {
             Practice("py17", "Метод __str__", "Создай класс User с полем name и методом __str__, который возвращает имя. Выведи print(User(\"Аня\")).", "", Lang.PYTHON,
                 listOf(must("""class\s+User""", "Нужен class User"), must("""def\s+__str__""", "Нужен метод __str__")), "Аня"),
             Practice("py18", "Дата из строки", "Разбери строку \"01.02.2026\" через datetime.strptime (формат %d.%m.%Y) и выведи дату в виде год-месяц-день через strftime.", "", Lang.PYTHON,
-                listOf(must("""strptime""", "Нужен datetime.strptime"), must("""strftime""", "Нужен strftime")), "2026-02-01")
+                listOf(must("""strptime""", "Нужен datetime.strptime"), must("""strftime""", "Нужен strftime")), "2026-02-01"),
+            Practice("py19", "argparse", "Создай ArgumentParser, добавь параметр --name со значением по умолчанию \"мир\" и выведи \"Привет, мир\" с именем из аргументов (parse_args без параметров).", "", Lang.PYTHON,
+                listOf(must("""ArgumentParser\s*\(""", "Нужен argparse.ArgumentParser()"), must("""add_argument\s*\(""", "Нужен add_argument(...)"), must("""parse_args\s*\(""", "Нужен parse_args()")), "Привет, мир")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
@@ -213,7 +215,9 @@ object Practices {
             Practice("cpp16", "Поток", "Запусти функцию work в отдельном потоке std::thread и дождись его через join.", "", Lang.CPP,
                 listOf(must("""std::thread\s+\w+\s*\(""", "Нужен std::thread t(work);"), must("""\.join\s*\(\s*\)""", "Нужен t.join();"))),
             Practice("cpp17", "Словарь", "Создай unordered_map из string в int и запиши значение 1 по ключу a.", "", Lang.CPP,
-                listOf(must("""unordered_map\s*<\s*(std::)?string\s*,\s*int\s*>""", "Нужен unordered_map<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши m[\"a\"] = 1;")))
+                listOf(must("""unordered_map\s*<\s*(std::)?string\s*,\s*int\s*>""", "Нужен unordered_map<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши m[\"a\"] = 1;"))),
+            Practice("cpp18", "constexpr", "Объяви constexpr функцию sq, которая возвращает квадрат числа.", "", Lang.CPP,
+                listOf(must("""constexpr\s+int\s+sq\s*\(""", "Нужно: constexpr int sq(int x)"), must("""\breturn\b""", "Функция должна вернуть значение")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -249,7 +253,9 @@ object Practices {
             Practice("cs16", "JSON", "Преврати объект user в строку JSON через JsonSerializer.Serialize.", "", Lang.CSHARP,
                 listOf(must("""JsonSerializer\.Serialize\s*\(""", "Нужен JsonSerializer.Serialize(user)"))),
             Practice("cs17", "HashSet", "Создай HashSet<int> и добавь в него число 5 через Add.", "", Lang.CSHARP,
-                listOf(must("""HashSet\s*<\s*int\s*>""", "Нужен HashSet<int>"), must("""\.Add\s*\(\s*5\s*\)""", "Добавь число: set.Add(5);")))
+                listOf(must("""HashSet\s*<\s*int\s*>""", "Нужен HashSet<int>"), must("""\.Add\s*\(\s*5\s*\)""", "Добавь число: set.Add(5);"))),
+            Practice("cs18", "Паттерн is", "Проверь, что obj является строкой, и сразу положи её в переменную s через is.", "", Lang.CSHARP,
+                listOf(must("""\bis\s+string\s+\w+""", "Нужно: obj is string s")))
         )
     )
 }
