@@ -366,6 +366,7 @@ fun EditorScreen(
     var preview by remember { mutableStateOf(false) }
     var findOpen by remember { mutableStateOf(false) }
     var gotoOpen by remember { mutableStateOf(false) }
+    var symOpen by remember { mutableStateOf(false) }
     var findQ by remember { mutableStateOf("") }
     var replQ by remember { mutableStateOf("") }
     var focusRepl by remember { mutableStateOf(false) }
@@ -446,6 +447,7 @@ fun EditorScreen(
             MiniBtn("⇤") { state.dedentSel() }
             MiniBtn("удалить строку") { state.deleteLine() }
             MiniBtn("строка…") { gotoOpen = true }
+            MiniBtn("символы") { symOpen = true }
             MiniBtn("отмена выд.") { state.clearSel() }
         }
         if (findOpen) {
@@ -527,6 +529,24 @@ fun EditorScreen(
     }
 
     if (preview) HtmlPreview(state.text) { preview = false }
+    if (symOpen) {
+        val syms = remember(state.text, state.lang) { Symbols.list(state.text, state.lang) }
+        AlertDialog(
+            onDismissRequest = { symOpen = false },
+            confirmButton = { TextButton(onClick = { symOpen = false }) { Text("Закрыть") } },
+            title = { Text("Функции и классы") },
+            text = {
+                Column(Modifier.heightIn(max = 400.dp).verticalScroll(rememberScrollState())) {
+                    if (syms.isEmpty()) Text("Ничего не найдено")
+                    syms.forEach { (n, label) ->
+                        TextButton(onClick = { state.goToLine(n); symOpen = false }) {
+                            Text("$n  $label", fontFamily = FontFamily.Monospace, fontSize = 13.sp)
+                        }
+                    }
+                }
+            }
+        )
+    }
     if (gotoOpen) NameDialog("Номер строки", onCancel = { gotoOpen = false }, onOk = {
         it.toIntOrNull()?.let { n -> state.goToLine(n) }; gotoOpen = false
     })
