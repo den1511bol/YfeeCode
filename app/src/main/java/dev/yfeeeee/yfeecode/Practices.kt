@@ -117,7 +117,11 @@ object Practices {
             Practice("js17", "localStorage", "Сохрани в localStorage ключ name со значением Аня и прочитай его обратно в консоль.", "", Lang.JS,
                 listOf(must("""localStorage\.setItem\s*\(""", "Нужен localStorage.setItem(...)"), must("""localStorage\.getItem\s*\(""", "Нужен localStorage.getItem(...)"))),
             Practice("js18", "Новый элемент", "Создай элемент li через createElement, задай ему textContent и добавь в list через appendChild.", "", Lang.JS,
-                listOf(must("""createElement\s*\(""", "Нужен document.createElement(...)"), must("""textContent""", "Задай textContent"), must("""appendChild\s*\(""", "Нужен appendChild(...)")))
+                listOf(must("""createElement\s*\(""", "Нужен document.createElement(...)"), must("""textContent""", "Задай textContent"), must("""appendChild\s*\(""", "Нужен appendChild(...)"))),
+            Practice("js19", "Бросок кубика", "Получи случайное целое число от 1 до 6 через Math.random и Math.floor и выведи его в консоль.", "", Lang.JS,
+                listOf(must("""Math\.random\s*\(""", "Нужен Math.random()"), must("""Math\.floor\s*\(""", "Нужен Math.floor(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"))),
+            Practice("js20", "Год", "Создай текущую дату через new Date и выведи год через getFullYear.", "", Lang.JS,
+                listOf(must("""new\s+Date\s*\(""", "Нужен new Date()"), must("""getFullYear\s*\(""", "Нужен getFullYear()")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,

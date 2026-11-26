@@ -211,3 +211,4 @@
 - Сессия 35: C++ +2 урока (constexpr и static_assert, сборка g++ и CMake), всего 161 урок. @yfeeeee
 - Сессия 36: практики py19 (argparse), cpp18 (constexpr), cs18 (паттерн is). @yfeeeee
 - Сессия 37: C# +1 урок (события), Python +1 урок (aiohttp-сервер), всего 163 урока. @yfeeeee
+- Сессия 38: практики JS js19 (бросок кубика) и js20 (год из Date). @yfeeeee
