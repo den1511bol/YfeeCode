@@ -185,5 +185,29 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Отсортируй числа по возрастанию", "arr.sort((a, b) => a - b)"),
         type("Проверь наличие 3", "arr.includes(3)"),
         type("Склей массив через дефис", "arr.join(\"-\")")
+    )),
+    Lesson("npm и package.json", "npm это менеджер пакетов Node.js. npm init -y создаёт package.json, где записаны зависимости. npm install ставит пакет в папку node_modules. Запуск файла: node index.js.\n>npm init -y\n>npm install express\n>node index.js\n>const express = require(\"express\")", listOf(
+        type("Создай package.json", "npm init -y"),
+        type("Установи пакет express", "npm install express"),
+        type("Запусти файл index.js", "node index.js"),
+        type("Подключи express (require)", "const express = require(\"express\")"),
+        type("Установи все зависимости из package.json", "npm install"),
+        type("Установи пакет только для разработки nodemon", "npm install --save-dev nodemon")
+    )),
+    Lesson("Сервер на Express", "Express создаёт веб-сервер за несколько строк. app.get описывает адрес и ответ, res.send отправляет текст, res.json отправляет JSON, app.listen запускает сервер на порту.\n>const express = require(\"express\")\n>const app = express()\n>app.get(\"/\", (req, res) => {\n>  res.send(\"Привет\")\n>})\n>app.listen(3000)", listOf(
+        type("Создай приложение express", "const app = express()"),
+        type("Опиши GET-адрес /hello", "app.get(\"/hello\", (req, res) => {"),
+        type("Отправь текст Привет", "res.send(\"Привет\")"),
+        type("Отправь объект data как JSON", "res.json(data)"),
+        type("Включи разбор JSON в теле запроса", "app.use(express.json())"),
+        type("Запусти сервер на порту 3000", "app.listen(3000)")
+    )),
+    Lesson("Telegram-боты на Node.js", "Бот на Node.js: пакет node-telegram-bot-api. Создаёшь бота с токеном и polling, onText ловит команды, sendMessage отвечает. Токен храни в переменной окружения, а не в коде.\n>const TelegramBot = require(\"node-telegram-bot-api\")\n>const bot = new TelegramBot(process.env.TOKEN, { polling: true })\n>bot.onText(/\\/start/, (msg) => {\n>  bot.sendMessage(msg.chat.id, \"Привет\")\n>})", listOf(
+        type("Установи пакет бота", "npm install node-telegram-bot-api"),
+        type("Подключи библиотеку", "const TelegramBot = require(\"node-telegram-bot-api\")"),
+        type("Создай бота с токеном из окружения", "const bot = new TelegramBot(process.env.TOKEN, { polling: true })"),
+        type("Ловить команду /start", "bot.onText(/\\/start/, (msg) => {"),
+        type("Ответь в тот же чат", "bot.sendMessage(msg.chat.id, \"Привет\")"),
+        type("Прочитай токен из окружения", "process.env.TOKEN")
     ))
 ))

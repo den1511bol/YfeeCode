@@ -188,3 +188,4 @@
 - Резервная копия Linux: yfee-backup (в /sdcard/Download) и yfee-restore [файл]. @yfeeeee
 - Команда langs <node|go|rust|ruby|php|java|lua|perl>: установка языка одной командой в Linux. @yfeeeee
 - Справка и README обновлены под Termux-возможности (sshd, langs, backup, буфер, клавиши). @yfeeeee
+- Сессия 14: JS +3 урока (npm, Express, Telegram-боты на Node), всего 133 урока. @yfeeeee
