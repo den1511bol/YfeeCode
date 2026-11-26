@@ -65,5 +65,69 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Скрой элемент", "display: none;"),
         build("Сделай ширину не больше 100%", "max-width|:|100%|;", "color|margin"),
         type("Подключи шрифт по умолчанию без засечек", "font-family: sans-serif;")
+    )),
+    Lesson("Блочная модель и box-sizing", "У блока есть content, padding, border и margin. box-sizing: border-box включает padding и рамку в ширину, так считать проще всего.\n>* { box-sizing: border-box; }\n>.card { width: 200px; padding: 10px; border: 1px solid #ccc; margin: 8px; }", listOf(
+        type("Включи border-box для всех", "* { box-sizing: border-box; }"),
+        type("Внутренний отступ 10px", "padding: 10px;"),
+        type("Внешний отступ 8px", "margin: 8px;"),
+        type("Рамка 1px сплошная серая", "border: 1px solid #ccc;"),
+        type("Ширина 200px", "width: 200px;"),
+        type("Центрируй блок по горизонтали", "margin: 0 auto;")
+    )),
+    Lesson("Позиционирование", "position задаёт способ размещения: relative сдвигает от своего места, absolute относительно родителя с position, fixed прилипает к окну, sticky залипает при прокрутке. z-index управляет слоями.\n>.box { position: absolute; top: 10px; right: 10px; z-index: 5; }", listOf(
+        type("Абсолютное позиционирование", "position: absolute;"),
+        type("Родитель для absolute", "position: relative;"),
+        type("Прилепи к окну", "position: fixed;"),
+        type("Залипание при прокрутке", "position: sticky;"),
+        type("Слой выше других", "z-index: 10;"),
+        type("Отступ сверху 10px у позиционированного блока", "top: 10px;")
+    )),
+    Lesson("Псевдоклассы и псевдоэлементы", "Псевдокласс реагирует на состояние: :hover, :focus, :first-child, :nth-child(2). Псевдоэлемент создаёт часть элемента: ::before и ::after с полем content.\n>a:hover { color: red; }\n>li:first-child { font-weight: bold; }\n>p::after { content: \"!\"; }", listOf(
+        type("Цвет ссылки при наведении красный", "a:hover { color: red; }"),
+        type("Первый элемент списка жирный", "li:first-child { font-weight: bold; }"),
+        type("Каждый второй элемент", "li:nth-child(2n)"),
+        type("Добавь ! после абзаца", "p::after { content: \"!\"; }"),
+        type("Поле в фокусе", "input:focus"),
+        type("Последний элемент", "li:last-child")
+    )),
+    Lesson("Display, overflow, visibility", "display задаёт тип блока: block, inline, none, flex, grid. none убирает элемент совсем, visibility: hidden прячет, но место оставляет. overflow управляет содержимым, которое не влезло.\n>.a { display: none; }\n>.b { visibility: hidden; }\n>.c { overflow: auto; }", listOf(
+        type("Убери элемент совсем", "display: none;"),
+        type("Спрячь, но оставь место", "visibility: hidden;"),
+        type("Прокрутка при переполнении", "overflow: auto;"),
+        type("Обрежь лишнее", "overflow: hidden;"),
+        type("Строчный блок", "display: inline-block;"),
+        type("Курсор-рука", "cursor: pointer;")
+    )),
+    Lesson("Единицы и шрифты", "px фиксированный размер, rem зависит от размера шрифта страницы, em от родителя, % от родителя, vw и vh от окна. font-family задаёт шрифт, line-height высоту строки.\n>html { font-size: 16px; }\n>h1 { font-size: 2rem; }\n>body { font-family: Arial, sans-serif; line-height: 1.5; }", listOf(
+        type("Размер шрифта 2rem", "font-size: 2rem;"),
+        type("Шрифт Arial, запасной sans-serif", "font-family: Arial, sans-serif;"),
+        type("Высота строки 1.5", "line-height: 1.5;"),
+        type("Ширина на весь экран", "width: 100vw;"),
+        type("Высота половины окна", "height: 50vh;"),
+        type("Жирный шрифт", "font-weight: bold;")
+    )),
+    Lesson("Тени, градиенты, transform", "box-shadow даёт тень, linear-gradient плавный переход цветов, border-radius скругляет углы, transform поворачивает и масштабирует.\n>.card { box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-radius: 12px; }\n>.bg { background: linear-gradient(to right, red, black); }\n>.r { transform: rotate(10deg); }", listOf(
+        type("Тень со смещением вниз 4px и размытием 10px", "box-shadow: 0 4px 10px rgba(0,0,0,0.3);"),
+        type("Скругли углы 12px", "border-radius: 12px;"),
+        type("Градиент слева направо от красного к чёрному", "background: linear-gradient(to right, red, black);"),
+        type("Поверни на 10 градусов", "transform: rotate(10deg);"),
+        type("Увеличь в 1.2 раза", "transform: scale(1.2);"),
+        type("Круг из квадрата", "border-radius: 50%;")
+    )),
+    Lesson("Каскад и специфичность", "Когда правила конфликтуют, побеждает более специфичный селектор: id сильнее класса, класс сильнее тега. При равенстве выигрывает правило ниже. !important ломает порядок, пользоваться им лучше редко.\n>p { color: blue; }\n>.t { color: green; }\n>#x { color: red; }", listOf(
+        type("Селектор по id x", "#x"),
+        type("Селектор по классу t", ".t"),
+        type("Селектор тега p", "p"),
+        type("Селектор потомка a внутри nav", "nav a"),
+        type("Селектор прямого потомка li в ul", "ul > li"),
+        type("Усиль правило", "color: red !important;")
+    )),
+    Lesson("Flex и Grid подробнее", "Во flex есть justify-content (по основной оси), align-items (по поперечной), flex-wrap (перенос), gap (промежутки). В grid задают колонки: grid-template-columns, и промежутки gap.\n>.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }\n>.grid { display: grid; grid-template-columns: repeat(3, 1fr); }", listOf(
+        type("Разнеси элементы по краям", "justify-content: space-between;"),
+        type("Выровняй по центру по вертикали", "align-items: center;"),
+        type("Разреши перенос", "flex-wrap: wrap;"),
+        type("Промежуток 10px", "gap: 10px;"),
+        type("Три равные колонки", "grid-template-columns: repeat(3, 1fr);"),
+        type("Элемент занимает свободное место", "flex: 1;")
     ))
 ))

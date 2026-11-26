@@ -73,5 +73,53 @@ fun htmlCourse() = Course("html", "HTML", "🌐", listOf(
         type("Подсказка внутри поля", "<input placeholder=\"Имя\">"),
         type("Подпись, связанная с полем id=e", "<label for=\"e\">Почта</label>"),
         type("Выпадающий список", "<select></select>")
+    )),
+    Lesson("Аудио, видео и iframe", "audio и video встраивают медиа, controls показывает кнопки управления. iframe вставляет другую страницу. source задаёт файл.\n>&lt;audio src=\"a.mp3\" controls>&lt;/audio>\n>&lt;video src=\"v.mp4\" controls>&lt;/video>\n>&lt;iframe src=\"https://example.com\">&lt;/iframe>".replace("&lt;", "<"), listOf(
+        type("Аудио a.mp3 с кнопками", "<audio src=\"a.mp3\" controls></audio>"),
+        type("Видео v.mp4 с кнопками", "<video src=\"v.mp4\" controls></video>"),
+        type("Вставь страницу через iframe", "<iframe src=\"https://example.com\"></iframe>"),
+        type("Атрибут, показывающий кнопки плеера", "controls"),
+        type("Источник внутри video", "<source src=\"v.mp4\" type=\"video/mp4\">"),
+        type("Видео без звука и с автозапуском (атрибуты)", "<video src=\"v.mp4\" autoplay muted></video>")
+    )),
+    Lesson("Доступность", "Доступная страница понятна и людям, и программам чтения. У картинки пишут alt, у поля label, роли и подписи задают через aria-атрибуты. Структура заголовков идёт по порядку h1, h2, h3.\n>&lt;img src=\"a.png\" alt=\"Кот\">\n>&lt;label for=\"n\">Имя&lt;/label>\n>&lt;button aria-label=\"Закрыть\">x&lt;/button>".replace("&lt;", "<"), listOf(
+        type("Картинка с описанием Кот", "<img src=\"a.png\" alt=\"Кот\">"),
+        type("Подпись к полю с id n", "<label for=\"n\">Имя</label>"),
+        type("Кнопка с подписью Закрыть для программ чтения", "<button aria-label=\"Закрыть\">x</button>"),
+        type("Язык страницы русский", "<html lang=\"ru\">"),
+        type("Роль навигации", "<nav role=\"navigation\">"),
+        type("Спрячь элемент от программ чтения", "<span aria-hidden=\"true\"></span>")
+    )),
+    Lesson("Интерактивные теги", "details и summary делают раскрывающийся блок без скриптов. dialog создаёт окно, progress и meter показывают шкалы. data-атрибуты хранят свои данные.\n>&lt;details>&lt;summary>Подробнее&lt;/summary>Текст&lt;/details>\n>&lt;progress value=\"30\" max=\"100\">&lt;/progress>\n>&lt;div data-id=\"5\">&lt;/div>".replace("&lt;", "<"), listOf(
+        type("Раскрывающийся блок", "<details><summary>Подробнее</summary>Текст</details>"),
+        type("Шкала прогресса 30 из 100", "<progress value=\"30\" max=\"100\"></progress>"),
+        type("Свой атрибут id со значением 5", "<div data-id=\"5\"></div>"),
+        type("Тег окна диалога", "<dialog>"),
+        type("Тег измерителя", "<meter value=\"0.5\"></meter>"),
+        type("Заголовок раскрывающегося блока", "<summary>")
+    )),
+    Lesson("SVG и canvas", "svg рисует векторную графику прямо в HTML, canvas даёт холст для рисования скриптом. В svg есть circle, rect, line, text.\n>&lt;svg width=\"100\" height=\"100\">\n>  &lt;circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"red\"/>\n>&lt;/svg>\n>&lt;canvas id=\"c\" width=\"200\" height=\"100\">&lt;/canvas>".replace("&lt;", "<"), listOf(
+        type("Тег векторной графики", "<svg>"),
+        type("Красный круг r=40 в центре 50 50", "<circle cx=\"50\" cy=\"50\" r=\"40\" fill=\"red\"/>"),
+        type("Прямоугольник", "<rect width=\"10\" height=\"10\"/>"),
+        type("Холст с id c", "<canvas id=\"c\"></canvas>"),
+        type("Линия", "<line x1=\"0\" y1=\"0\" x2=\"10\" y2=\"10\"/>"),
+        type("Текст внутри svg", "<text x=\"10\" y=\"20\">Привет</text>")
+    )),
+    Lesson("SEO и социальные сети", "Поисковики читают title и description. Open Graph мета-теги задают, как ссылка выглядит в мессенджерах. canonical указывает основную версию страницы.\n>&lt;title>Мой сайт&lt;/title>\n>&lt;meta name=\"description\" content=\"Описание\">\n>&lt;meta property=\"og:title\" content=\"Заголовок\">".replace("&lt;", "<"), listOf(
+        type("Заголовок страницы", "<title>Мой сайт</title>"),
+        type("Описание страницы", "<meta name=\"description\" content=\"Описание\">"),
+        type("Open Graph заголовок", "<meta property=\"og:title\" content=\"Заголовок\">"),
+        type("Картинка для превью ссылки", "<meta property=\"og:image\" content=\"a.png\">"),
+        type("Основной адрес страницы", "<link rel=\"canonical\" href=\"https://example.com\">"),
+        type("Иконка сайта", "<link rel=\"icon\" href=\"favicon.ico\">")
+    )),
+    Lesson("Шаблон страницы целиком", "Полная страница собирает всё вместе: doctype, html с языком, head с кодировкой и viewport, body с шапкой, основным содержимым и подвалом.\n>&lt;!DOCTYPE html>\n>&lt;html lang=\"ru\">\n>&lt;head>&lt;meta charset=\"UTF-8\">&lt;title>Сайт&lt;/title>&lt;/head>\n>&lt;body>&lt;header>&lt;/header>&lt;main>&lt;/main>&lt;footer>&lt;/footer>&lt;/body>\n>&lt;/html>".replace("&lt;", "<"), listOf(
+        type("Кодировка UTF-8", "<meta charset=\"UTF-8\">"),
+        type("Адаптация под телефон", "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"),
+        type("Шапка страницы", "<header></header>"),
+        type("Основное содержимое", "<main></main>"),
+        type("Подвал страницы", "<footer></footer>"),
+        type("Подключи файл стилей style.css", "<link rel=\"stylesheet\" href=\"style.css\">")
     ))
 ))

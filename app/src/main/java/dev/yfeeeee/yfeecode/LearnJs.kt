@@ -89,5 +89,101 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         build("Создай объект Dog", "new|Dog|(|\"Rex\"|)", "class|this"),
         type("Достань name из объекта dog", "const { name } = dog;"),
         type("Достань два элемента из массива arr", "const [a, b] = arr;")
+    )),
+    Lesson("Строки и шаблоны", "Строки в JS удобно собирать шаблонными литералами в обратных кавычках: подстановка через \${...}. Методы: toUpperCase, trim, split, includes, replace, slice.\n>const s = `Привет, \${name}!`;\n>s.toUpperCase();\n>\"a,b\".split(\",\");\n>s.includes(\"при\");", listOf(
+        type("Строка-шаблон с подстановкой name", "const s = `Привет, \${name}!`;"),
+        type("Верхний регистр строки s", "s.toUpperCase()"),
+        type("Убери пробелы по краям", "s.trim()"),
+        type("Раздели строку по запятой", "s.split(\",\")"),
+        type("Проверь, содержит ли s слово при", "s.includes(\"при\")"),
+        type("Длина строки s", "s.length")
+    )),
+    Lesson("Объекты", "Объект хранит пары ключ-значение. К полю обращаются через точку или квадратные скобки. Object.keys, values и entries перечисляют поля.\n>const user = { name: \"Аня\", age: 20 };\n>user.name;\n>user[\"age\"];\n>Object.keys(user);", listOf(
+        type("Создай объект user с полем name Аня", "const user = { name: \"Аня\" };"),
+        type("Прочитай поле name", "user.name"),
+        type("Прочитай поле age через скобки", "user[\"age\"]"),
+        type("Задай полю age значение 21", "user.age = 21;"),
+        type("Получи список ключей объекта", "Object.keys(user)"),
+        type("Удали поле age", "delete user.age;")
+    )),
+    Lesson("Замыкания и область видимости", "Переменная let видна только в своём блоке. Функция запоминает переменные, где была создана: это замыкание. Так делают счётчики и приватные данные.\n>function counter() {\n>  let n = 0;\n>  return () => ++n;\n>}\n>const c = counter();\n>c(); // 1", listOf(
+        type("Объяви счётчик n равный 0", "let n = 0;"),
+        type("Верни стрелочную функцию с увеличением n", "return () => ++n;"),
+        type("Создай счётчик c", "const c = counter();"),
+        type("Вызови c", "c();"),
+        type("Увеличь n на 1 (короткая запись)", "n++;"),
+        type("Функция выражением f", "const f = function() {};")
+    )),
+    Lesson("Стрелочные функции и this", "Стрелка короче обычной функции: (a, b) => a + b. Если в теле одно выражение, return не нужен. Стрелка не имеет своего this.\n>const add = (a, b) => a + b;\n>const sq = x => x * x;\n>const hi = () => { console.log(\"hi\"); };", listOf(
+        type("Стрелка сложения a и b", "const add = (a, b) => a + b;"),
+        type("Стрелка квадрата x с одним параметром", "const sq = x => x * x;"),
+        type("Стрелка без параметров, пишет hi", "const hi = () => { console.log(\"hi\"); };"),
+        type("Передай стрелку в map", "arr.map(x => x * 2)"),
+        type("Вызови add с 1 и 2", "add(1, 2)"),
+        type("Функция по умолчанию b равно 2", "function f(a, b = 2) {}")
+    )),
+    Lesson("Spread и rest", "Три точки разворачивают массив или объект (spread) и собирают остальные аргументы (rest). Так копируют и объединяют данные.\n>const a = [1, 2];\n>const b = [...a, 3];\n>const o2 = { ...o, x: 1 };\n>function f(...args) {}", listOf(
+        type("Новый массив из a и числа 3", "const b = [...a, 3];"),
+        type("Копия объекта o с полем x равным 1", "const o2 = { ...o, x: 1 };"),
+        type("Функция с любым числом аргументов", "function f(...args) {}"),
+        type("Склей массивы a и b", "const c = [...a, ...b];"),
+        type("Максимум из массива a", "Math.max(...a)"),
+        type("Первый элемент и остальные", "const [first, ...rest] = a;")
+    )),
+    Lesson("Map, Set и JSON", "Map хранит пары с любыми ключами, Set только уникальные значения. JSON.stringify превращает объект в строку, JSON.parse обратно.\n>const m = new Map();\n>m.set(\"a\", 1);\n>const s = new Set([1, 2, 2]);\n>JSON.stringify(obj);\n>JSON.parse(text);", listOf(
+        type("Создай Map", "const m = new Map();"),
+        type("Положи в m ключ a со значением 1", "m.set(\"a\", 1);"),
+        type("Создай Set из 1, 2, 2", "const s = new Set([1, 2, 2]);"),
+        type("Объект obj в строку JSON", "JSON.stringify(obj)"),
+        type("Строку text в объект", "JSON.parse(text)"),
+        type("Размер множества s", "s.size")
+    )),
+    Lesson("Ошибки: try/catch", "try пробует код, catch ловит ошибку, finally выполняется всегда. throw создаёт свою ошибку. Для async-кода try/catch работает вместе с await.\n>try {\n>  JSON.parse(text);\n>} catch (e) {\n>  console.log(e.message);\n>}", listOf(
+        type("Начни блок try", "try {"),
+        type("Поймай ошибку в e", "} catch (e) {"),
+        type("Выведи сообщение ошибки", "console.log(e.message);"),
+        type("Блок, который выполнится всегда", "} finally {"),
+        type("Брось свою ошибку", "throw new Error(\"плохо\");"),
+        type("Проверь тип значения x", "typeof x")
+    )),
+    Lesson("Таймеры и цикл событий", "setTimeout запускает функцию один раз позже, setInterval повторяет. Они не блокируют программу: JS ставит задачу в очередь и идёт дальше.\n>setTimeout(() => console.log(\"ок\"), 1000);\n>const id = setInterval(tick, 500);\n>clearInterval(id);", listOf(
+        type("Выведи ок через 1000 мс", "setTimeout(() => console.log(\"ок\"), 1000);"),
+        type("Повторяй tick каждые 500 мс", "const id = setInterval(tick, 500);"),
+        type("Останови интервал id", "clearInterval(id);"),
+        type("Отмени таймер t", "clearTimeout(t);"),
+        type("Пауза через промис на 1 секунду", "await new Promise(r => setTimeout(r, 1000));"),
+        type("Текущее время в миллисекундах", "Date.now()")
+    )),
+    Lesson("Модули import и export", "Модули делят код на файлы. export открывает функцию, import подключает. В Node.js ещё встречается require.\n>export function add(a, b) { return a + b; }\n>import { add } from \"./math.js\";\n>export default add;", listOf(
+        type("Экспортируй функцию add", "export function add(a, b) { return a + b; }"),
+        type("Импортируй add из math.js", "import { add } from \"./math.js\";"),
+        type("Экспорт по умолчанию", "export default add;"),
+        type("Импортируй всё как m", "import * as m from \"./math.js\";"),
+        type("Подключи fs через require", "const fs = require(\"fs\");"),
+        type("Экспорт через module.exports", "module.exports = add;")
+    )),
+    Lesson("Node.js: файлы и скрипты", "Node.js запускает JS без браузера. Модуль fs читает и пишет файлы, process.argv хранит аргументы. Пакеты ставят через npm.\n>const fs = require(\"fs\");\n>const t = fs.readFileSync(\"a.txt\", \"utf8\");\n>fs.writeFileSync(\"b.txt\", \"привет\");\n>npm install express", listOf(
+        type("Прочитай a.txt как utf8", "fs.readFileSync(\"a.txt\", \"utf8\")"),
+        type("Запиши привет в b.txt", "fs.writeFileSync(\"b.txt\", \"привет\");"),
+        type("Аргументы командной строки", "process.argv"),
+        type("Установи express", "npm install express"),
+        type("Запусти файл app.js в Node", "node app.js"),
+        type("Создай package.json", "npm init -y")
+    )),
+    Lesson("Регулярные выражения", "Регулярное выражение пишут между слэшами. \\d цифра, \\w буква, + один или больше. Методы: test, match, replace.\n>/\\d+/.test(\"abc123\");\n>\"a1b22\".match(/\\d+/g);\n>s.replace(/\\s+/g, \" \");", listOf(
+        type("Проверь, есть ли цифры в строке s", "/\\d+/.test(s)"),
+        type("Найди все числа в строке s", "s.match(/\\d+/g)"),
+        type("Замени все пробелы на один", "s.replace(/\\s+/g, \" \")"),
+        type("Флаг глобального поиска", "g"),
+        type("Любая буква или цифра в шаблоне", "\\w"),
+        type("Создай регулярку из строки", "new RegExp(\"a+\")")
+    )),
+    Lesson("Продвинутые массивы", "find ищет первый подходящий элемент, some и every проверяют условие, sort сортирует, flat выравнивает вложенные массивы, includes проверяет наличие.\n>arr.find(x => x > 2);\n>arr.some(x => x > 2);\n>arr.sort((a, b) => a - b);\n>arr.includes(3);", listOf(
+        type("Найди первый элемент больше 2", "arr.find(x => x > 2)"),
+        type("Есть ли хоть один больше 2", "arr.some(x => x > 2)"),
+        type("Все ли больше 0", "arr.every(x => x > 0)"),
+        type("Отсортируй числа по возрастанию", "arr.sort((a, b) => a - b)"),
+        type("Проверь наличие 3", "arr.includes(3)"),
+        type("Склей массив через дефис", "arr.join(\"-\")")
     ))
 ))

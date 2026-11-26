@@ -81,5 +81,101 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай ссылку r на переменную a", "int& r = a;"),
         type("Увеличь x на 1", "x++;"),
         type("Подключи заголовок vector", "#include <vector>")
+    )),
+    Lesson("Ввод: cin и getline", "cin читает слово или число, getline читает всю строку с пробелами. После cin перед getline нужно убрать перевод строки: cin.ignore().\n>int a;\n>cin >> a;\n>string s;\n>getline(cin, s);", listOf(
+        type("Прочитай число в переменную a", "cin >> a;"),
+        type("Прочитай две переменные a и b", "cin >> a >> b;"),
+        type("Прочитай строку целиком в s", "getline(cin, s);"),
+        type("Убери перевод строки из ввода", "cin.ignore();"),
+        type("Выведи a и перенос строки", "cout << a << endl;"),
+        type("Подключи ввод-вывод", "#include <iostream>")
+    )),
+    Lesson("Switch и тернарный оператор", "switch выбирает ветку по значению, break выходит из switch, default срабатывает, если ничего не подошло. Тернарный оператор: условие ? да : нет.\n>switch (x) {\n>  case 1: cout << \"один\"; break;\n>  default: cout << \"другое\";\n>}\n>int m = a > b ? a : b;", listOf(
+        type("Начни switch по x", "switch (x) {"),
+        type("Ветка для значения 1", "case 1:"),
+        type("Выйди из switch", "break;"),
+        type("Ветка по умолчанию", "default:"),
+        type("Максимум из a и b тернарным оператором", "int m = a > b ? a : b;"),
+        type("Условие И", "a > 0 && b > 0")
+    )),
+    Lesson("Строки std::string", "string хранит текст. Методы: size, substr, find, append, +. Строки сравнивают через ==. Нужен #include <string>.\n>string s = \"Привет\";\n>s.size();\n>s.substr(0, 3);\n>s.find(\"ив\");\n>s += \"!\";", listOf(
+        type("Создай строку s со значением abc", "string s = \"abc\";"),
+        type("Длина строки s", "s.size()"),
+        type("Первые 3 символа s", "s.substr(0, 3)"),
+        type("Найди ab в строке s", "s.find(\"ab\")"),
+        type("Добавь ! к строке s", "s += \"!\";"),
+        type("Подключи string", "#include <string>")
+    )),
+    Lesson("Структуры и enum", "struct объединяет поля в один тип. enum задаёт набор именованных значений. Поля читают через точку.\n>struct Point { int x; int y; };\n>Point p = {1, 2};\n>p.x = 5;\n>enum Color { RED, GREEN, BLUE };", listOf(
+        type("Структура Point с полями x и y", "struct Point { int x; int y; };"),
+        type("Создай p со значениями 1 и 2", "Point p = {1, 2};"),
+        type("Задай полю x значение 5", "p.x = 5;"),
+        type("Перечисление Color из RED GREEN BLUE", "enum Color { RED, GREEN, BLUE };"),
+        type("Переменная c равна GREEN", "Color c = GREEN;"),
+        type("Прочитай поле y", "p.y")
+    )),
+    Lesson("map и set", "map хранит пары ключ-значение и держит ключи отсортированными. set хранит уникальные значения. Нужны #include <map> и <set>.\n>map<string, int> m;\n>m[\"a\"] = 1;\n>set<int> s;\n>s.insert(5);\n>m.count(\"a\");", listOf(
+        type("Создай map string-int", "map<string, int> m;"),
+        type("Положи a со значением 1", "m[\"a\"] = 1;"),
+        type("Создай множество int", "set<int> s;"),
+        type("Добавь 5 в множество", "s.insert(5);"),
+        type("Проверь, есть ли ключ a", "m.count(\"a\")"),
+        type("Перебери пары map", "for (auto& kv : m) {")
+    )),
+    Lesson("Алгоритмы", "Заголовок <algorithm> даёт sort, reverse, find, count, max_element. Они работают с диапазоном begin() ... end().\n>sort(v.begin(), v.end());\n>reverse(v.begin(), v.end());\n>auto it = find(v.begin(), v.end(), 3);", listOf(
+        type("Подключи algorithm", "#include <algorithm>"),
+        type("Отсортируй вектор v", "sort(v.begin(), v.end());"),
+        type("Разверни вектор v", "reverse(v.begin(), v.end());"),
+        type("Найди число 3 в v", "auto it = find(v.begin(), v.end(), 3);"),
+        type("Посчитай, сколько раз 3 в v", "count(v.begin(), v.end(), 3)"),
+        type("Размер вектора v", "v.size()")
+    )),
+    Lesson("Лямбды", "Лямбда это безымянная функция: [захват](параметры){тело}. Её часто передают в алгоритмы.\n>auto sq = [](int x) { return x * x; };\n>sort(v.begin(), v.end(), [](int a, int b) { return a > b; });", listOf(
+        type("Лямбда квадрата x в переменной sq", "auto sq = [](int x) { return x * x; };"),
+        type("Вызови sq с 5", "sq(5)"),
+        type("Сортировка по убыванию лямбдой", "sort(v.begin(), v.end(), [](int a, int b) { return a > b; });"),
+        type("Лямбда, захватывающая всё по ссылке", "[&]() {}"),
+        type("Лямбда без параметров и тела", "[]() {}"),
+        type("Подключи functional", "#include <functional>")
+    )),
+    Lesson("Шаблоны", "Шаблон делает функцию или класс для любого типа. template<typename T> объявляет тип-параметр.\n>template<typename T>\n>T maxOf(T a, T b) { return a > b ? a : b; }\n>maxOf<int>(1, 2);", listOf(
+        type("Объяви шаблон с типом T", "template<typename T>"),
+        type("Функция maxOf для T", "T maxOf(T a, T b) { return a > b ? a : b; }"),
+        type("Вызови maxOf для int", "maxOf<int>(1, 2)"),
+        type("Вектор строк", "vector<string> v;"),
+        type("Пара из int и string", "pair<int, string> p;"),
+        type("Создай пару 1 и a", "make_pair(1, \"a\")")
+    )),
+    Lesson("Динамическая память и умные указатели", "new выделяет память, delete освобождает. Умные указатели делают это сами: unique_ptr владеет один, shared_ptr разделяют. Нужен #include <memory>.\n>int* p = new int(5);\n>delete p;\n>auto u = make_unique<int>(5);", listOf(
+        type("Выдели память под int со значением 5", "int* p = new int(5);"),
+        type("Освободи память p", "delete p;"),
+        type("Создай unique_ptr на 5", "auto u = make_unique<int>(5);"),
+        type("Создай shared_ptr на 5", "auto s = make_shared<int>(5);"),
+        type("Подключи memory", "#include <memory>"),
+        type("Прочитай значение через указатель p", "*p")
+    )),
+    Lesson("Исключения", "try ловит ошибку, catch обрабатывает, throw бросает. Для стандартных ошибок используют std::exception и what().\n>try {\n>  throw runtime_error(\"плохо\");\n>} catch (const exception& e) {\n>  cout << e.what();\n>}", listOf(
+        type("Начни блок try", "try {"),
+        type("Брось runtime_error", "throw runtime_error(\"плохо\");"),
+        type("Поймай любое стандартное исключение", "} catch (const exception& e) {"),
+        type("Выведи текст ошибки", "cout << e.what();"),
+        type("Поймай вообще всё", "} catch (...) {"),
+        type("Подключи stdexcept", "#include <stdexcept>")
+    )),
+    Lesson("Файлы: fstream", "ifstream читает файл, ofstream пишет. Нужен #include <fstream>. Файл закрывается сам, когда объект исчезает.\n>ofstream out(\"a.txt\");\n>out << \"привет\";\n>ifstream in(\"a.txt\");\n>getline(in, line);", listOf(
+        type("Подключи fstream", "#include <fstream>"),
+        type("Открой a.txt для записи", "ofstream out(\"a.txt\");"),
+        type("Запиши привет в файл", "out << \"привет\";"),
+        type("Открой a.txt для чтения", "ifstream in(\"a.txt\");"),
+        type("Прочитай строку из файла", "getline(in, line);"),
+        type("Проверь, что файл открылся", "in.is_open()")
+    )),
+    Lesson("Перегрузка операторов и namespace", "Оператор можно определить для своего класса. namespace группирует имена и предотвращает конфликты. using namespace std; избавляет от префикса std::.\n>Point operator+(Point a, Point b) {\n>  return {a.x + b.x, a.y + b.y};\n>}\n>namespace my { int x = 1; }\n>my::x", listOf(
+        type("Оператор плюс для Point", "Point operator+(Point a, Point b) {"),
+        type("Объяви пространство имён my", "namespace my {"),
+        type("Обратись к x из my", "my::x"),
+        type("Используй пространство std", "using namespace std;"),
+        type("Вызови cout с префиксом", "std::cout"),
+        type("Постоянная pi равная 3.14 на этапе компиляции", "constexpr double pi = 3.14;")
     ))
 ))

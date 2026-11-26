@@ -121,5 +121,101 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Объяви декоратор-функцию deco", "def deco(func):"),
         build("Примени декоратор deco к функции", "@|deco", "def|class"),
         type("Проверь, что d — это Dog", "isinstance(d, Dog)")
+    )),
+    Lesson("Строки и f-строки", "Строки можно склеивать, умножать и форматировать. f-строка подставляет переменные прямо в текст. Методы: upper, lower, strip, split, replace.\n>name = \"Аня\"\n>print(f\"Привет, {name}!\")\n>s.upper()  # ПРИВЕТ\n>\"a,b\".split(\",\")  # ['a', 'b']", listOf(
+        build("Выведи Привет с именем из переменной name", "print|(|f\"Привет, {name}\"|)", "format|str"),
+        type("Переведи s в верхний регистр", "s.upper()"),
+        type("Убери пробелы по краям s", "s.strip()"),
+        type("Раздели строку s по запятой", "s.split(\",\")"),
+        type("Замени a на b в строке s", "s.replace(\"a\", \"b\")"),
+        type("Длина строки s", "len(s)")
+    )),
+    Lesson("Числа и математика", "Python умеет считать: + - * /, деление нацело //, остаток %, степень **. Функции round, abs, min, max, sum. Модуль math даёт sqrt, pi и другое.\n>7 // 2   # 3\n>7 % 2    # 1\n>2 ** 10  # 1024\n>import math\n>math.sqrt(16)  # 4.0", listOf(
+        type("Остаток от деления 7 на 2", "7 % 2"),
+        type("Целочисленное деление 7 на 2", "7 // 2"),
+        type("2 в степени 10", "2 ** 10"),
+        type("Округли x до двух знаков", "round(x, 2)"),
+        type("Подключи модуль math", "import math"),
+        type("Корень из 16 через math", "math.sqrt(16)")
+    )),
+    Lesson("Кортежи и множества", "Кортеж (tuple) нельзя менять. Множество (set) хранит только уникальные значения. Оба удобны, когда список не нужен.\n>t = (1, 2, 3)\n>s = {1, 2, 2, 3}  # {1, 2, 3}\n>s.add(4)\n>2 in s  # True", listOf(
+        type("Создай кортеж из 1, 2, 3", "t = (1, 2, 3)"),
+        type("Создай множество из 1, 2, 3", "s = {1, 2, 3}"),
+        type("Добавь 4 в множество s", "s.add(4)"),
+        type("Проверь, что 2 есть в s", "2 in s"),
+        type("Преврати список lst в множество", "set(lst)"),
+        type("Распакуй кортеж в a и b", "a, b = t")
+    )),
+    Lesson("Срезы и перебор", "Срез берёт часть списка или строки: s[1:3]. Отрицательный индекс считает с конца. range создаёт числа, enumerate даёт индекс, zip склеивает списки.\n>s[1:3]\n>s[::-1]   # развернуть\n>for i, x in enumerate(lst):\n>for a, b in zip(l1, l2):", listOf(
+        type("Элементы с 1 по 2 включительно", "s[1:3]"),
+        type("Последний элемент списка s", "s[-1]"),
+        type("Разверни список s срезом", "s[::-1]"),
+        type("Перебор с индексом i и значением x", "for i, x in enumerate(lst):"),
+        type("Перебери два списка вместе", "for a, b in zip(l1, l2):"),
+        type("Числа от 0 до 4", "range(5)")
+    )),
+    Lesson("Функции: *args, lambda", "*args собирает любое число аргументов, **kwargs собирает именованные. lambda создаёт короткую функцию. У параметров бывают значения по умолчанию.\n>def f(a, b=2):\n>def g(*args, **kwargs):\n>sq = lambda x: x * x", listOf(
+        type("Функция f с параметром b=2 по умолчанию", "def f(a, b=2):"),
+        type("Функция, принимающая любое число аргументов", "def g(*args):"),
+        type("Функция с именованными аргументами", "def h(**kwargs):"),
+        type("Лямбда: квадрат числа x", "sq = lambda x: x * x"),
+        type("Вызови f с b равным 5", "f(1, b=5)"),
+        type("Отсортируй список по длине строк", "sorted(words, key=len)")
+    )),
+    Lesson("Генераторы и итераторы", "Генератор отдаёт значения по одному через yield и не хранит всё в памяти. Генераторное выражение похоже на включение, но в круглых скобках. next берёт следующее значение.\n>def count():\n>    yield 1\n>    yield 2\n>g = (x * x for x in range(5))\n>next(g)", listOf(
+        type("Отдай значение 1 из генератора", "yield 1"),
+        type("Генераторное выражение квадратов чисел 0-4", "g = (x * x for x in range(5))"),
+        type("Возьми следующее значение генератора g", "next(g)"),
+        type("Преврати генератор g в список", "list(g)"),
+        type("Сумма квадратов без списка", "sum(x * x for x in range(5))"),
+        type("Получи итератор из списка lst", "iter(lst)")
+    )),
+    Lesson("Файлы и JSON", "with открывает файл и сам закрывает его. json превращает словарь в текст и обратно: dumps, loads, dump, load. Для русского текста указывай encoding и ensure_ascii=False.\n>with open(\"a.txt\", \"w\", encoding=\"utf-8\") as f:\n>    f.write(\"Привет\")\n>import json\n>data = json.loads(text)", listOf(
+        type("Открой a.txt для записи как f", "with open(\"a.txt\", \"w\") as f:"),
+        type("Прочитай весь файл f", "f.read()"),
+        type("Подключи json", "import json"),
+        type("Преврати строку text в словарь", "data = json.loads(text)"),
+        type("Преврати словарь data в строку", "json.dumps(data)"),
+        type("Дописывай в конец файла (режим)", "open(\"a.txt\", \"a\")")
+    )),
+    Lesson("Стандартная библиотека", "Полезные модули: random (случайные числа), datetime (даты), os (файлы и пути), time (пауза), sys (аргументы).\n>import random\n>random.randint(1, 6)\n>from datetime import datetime\n>datetime.now()\n>import os\n>os.path.exists(\"a.txt\")", listOf(
+        type("Случайное число от 1 до 6", "random.randint(1, 6)"),
+        type("Случайный элемент списка lst", "random.choice(lst)"),
+        type("Подключи datetime из datetime", "from datetime import datetime"),
+        type("Текущее время", "datetime.now()"),
+        type("Проверь, существует ли файл a.txt", "os.path.exists(\"a.txt\")"),
+        type("Подожди 2 секунды", "time.sleep(2)")
+    )),
+    Lesson("Регулярные выражения", "Модуль re ищет шаблоны в тексте. \\d цифра, \\w буква, + один или больше, * ноль или больше. search ищет первое совпадение, findall все, sub заменяет.\n>import re\n>re.findall(r\"\\d+\", text)\n>re.sub(r\"\\s+\", \" \", text)", listOf(
+        type("Подключи модуль re", "import re"),
+        type("Найди все числа в text", "re.findall(r\"\\d+\", text)"),
+        type("Найди первое совпадение слова", "re.search(r\"\\w+\", text)"),
+        type("Замени пробелы на один пробел", "re.sub(r\"\\s+\", \" \", text)"),
+        type("Проверь начало строки на число", "re.match(r\"\\d\", text)"),
+        type("Цифра в шаблоне (одна)", "\\d")
+    )),
+    Lesson("Классы: dataclass и свойства", "dataclass сам создаёт __init__ и вывод. @property делает метод похожим на поле. Подсказки типов не обязательны, но помогают читать код.\n>from dataclasses import dataclass\n>@dataclass\n>class User:\n>    name: str\n>    age: int = 0", listOf(
+        type("Подключи dataclass", "from dataclasses import dataclass"),
+        type("Декоратор dataclass над классом", "@dataclass"),
+        type("Поле name типа str", "name: str"),
+        type("Поле age типа int по умолчанию 0", "age: int = 0"),
+        type("Метод, доступный как свойство", "@property"),
+        type("Создай User с именем Аня", "u = User(\"Аня\")")
+    )),
+    Lesson("Контекстные менеджеры и ошибки", "with гарантирует закрытие ресурса. raise бросает свою ошибку, finally выполняется всегда. Свой тип ошибки — класс от Exception. assert проверяет условие при отладке.\n>try:\n>    x = int(s)\n>except ValueError as e:\n>    print(e)\n>finally:\n>    print(\"конец\")", listOf(
+        type("Поймай ValueError как e", "except ValueError as e:"),
+        type("Блок, который выполнится всегда", "finally:"),
+        type("Брось ошибку с текстом", "raise ValueError(\"плохо\")"),
+        type("Свой тип ошибки", "class MyError(Exception):"),
+        type("Проверь, что x больше 0", "assert x > 0"),
+        type("Пропусти действие в блоке", "pass")
+    )),
+    Lesson("Виртуальные среды и pip", "pip ставит библиотеки. venv создаёт отдельную среду для проекта, чтобы версии не конфликтовали. requirements.txt хранит список зависимостей.\n>pip install requests\n>python3 -m venv venv\n>source venv/bin/activate\n>pip freeze > requirements.txt", listOf(
+        type("Установи requests через pip", "pip install requests"),
+        type("Создай среду venv", "python3 -m venv venv"),
+        type("Включи среду", "source venv/bin/activate"),
+        type("Сохрани список пакетов", "pip freeze > requirements.txt"),
+        type("Установи пакеты из файла", "pip install -r requirements.txt"),
+        type("Покажи установленные пакеты", "pip list")
     ))
 ))
