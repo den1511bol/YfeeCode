@@ -121,5 +121,21 @@ fun htmlCourse() = Course("html", "HTML", "🌐", listOf(
         type("Основное содержимое", "<main></main>"),
         type("Подвал страницы", "<footer></footer>"),
         type("Подключи файл стилей style.css", "<link rel=\"stylesheet\" href=\"style.css\">")
+    )),
+    Lesson("Проверка полей формы", "Браузер сам проверяет поля формы, если задать атрибуты. required делает поле обязательным, minlength и maxlength ограничивают длину, pattern задаёт шаблон, а type=email и type=number проверяют формат.\n>&lt;input type=\"email\" required>\n>&lt;input minlength=\"3\" maxlength=\"20\">\n>&lt;input pattern=\"[0-9]+\">\n>&lt;input type=\"number\" min=\"1\" max=\"10\">".replace("&lt;", "<"), listOf(
+        type("Поле почты, обязательное", "<input type=\"email\" required>"),
+        type("Минимальная длина 3", "minlength=\"3\""),
+        type("Максимальная длина 20", "maxlength=\"20\""),
+        type("Шаблон только цифры", "pattern=\"[0-9]+\""),
+        type("Число от 1 до 10", "<input type=\"number\" min=\"1\" max=\"10\">"),
+        type("Подсказка внутри поля", "placeholder=\"Имя\"")
+    )),
+    Lesson("details, data-атрибуты и шаблоны", "Тег details с summary делает раскрывающийся блок без JavaScript. Атрибуты data- хранят свои данные в теге, их читает скрипт. Тег template хранит заготовку, которая не показывается, пока скрипт её не вставит.\n>&lt;details>&lt;summary>Подробнее&lt;/summary>Текст&lt;/details>\n>&lt;div data-id=\"5\">&lt;/div>\n>&lt;template>&lt;li>Пункт&lt;/li>&lt;/template>".replace("&lt;", "<"), listOf(
+        type("Раскрывающийся блок", "<details></details>"),
+        type("Заголовок раскрывающегося блока", "<summary>Подробнее</summary>"),
+        type("Свой атрибут data-id со значением 5", "data-id=\"5\""),
+        type("Скрытая заготовка", "<template></template>"),
+        type("Блок открыт сразу", "<details open>"),
+        type("Иконка сайта в head", "<link rel=\"icon\" href=\"icon.png\">")
     ))
 ))
