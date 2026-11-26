@@ -161,6 +161,18 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         }
     }
 
+    /** Runs a Python file inside Alpine (pip libraries from lpip, input() works). */
+    fun runLinuxPython(f: File) {
+        if (!Linux.installed(ctx)) { print("Linux не установлен. Выполни: linux install, затем linux setup"); return }
+        print("Запуск ${f.name} в Linux (python3)...")
+        thread {
+            try {
+                val q = "'" + f.name.replace("'", "'\\''") + "'"
+                Linux.exec(ctx, store, f.parentFile ?: cwd, "python3 -u $q", { proc = it }) { print(it) }
+            } catch (e: Exception) { print("Ошибка: ${e.message}") }
+        }
+    }
+
     fun runFile(f: File) {
         if (!f.exists()) { print("Нет файла: ${f.name}"); return }
         when (Lang.fromName(f.name)) {

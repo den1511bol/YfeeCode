@@ -421,6 +421,7 @@ fun EditorScreen(
                 state.replaceAll(AutoFix.fixAll(state.text, state.lang))
             }
             ToolIcon(Icons.Default.PlayArrow, "Запуск") { save(); goTerminal(); term.runFile(state.file) }
+            if (state.lang == Lang.PYTHON) ToolIcon(Icons.Default.Memory, "Запуск в Linux (pip, ввод)") { save(); goTerminal(); term.runLinuxPython(state.file) }
             if (state.lang == Lang.HTML) ToolIcon(Icons.Default.Language, "Просмотр") { save(); preview = true }
             ToolIcon(Icons.Default.Search, "Поиск") { findOpen = !findOpen }
             ToolIcon(Icons.Default.Share, "Экспорт") { save(); onExport(state.file) }
