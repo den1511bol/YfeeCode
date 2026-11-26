@@ -127,6 +127,14 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 js?.stop()
                 js = JsRunner(ctx) { print(it) }.also { it.run(f.readText()) }
             }
+            Lang.CPP, Lang.CSHARP -> {
+                val lang = Lang.fromName(f.name)
+                print("Компиляция ${f.name} (${lang.label}, онлайн)...")
+                thread {
+                    try { print(CloudRunner.run(lang, f.readText())) }
+                    catch (e: Exception) { print("Ошибка: нужен интернет (${e.message})") }
+                }
+            }
             else -> print("Запуск для ${f.extension} не поддерживается (HTML открывается кнопкой «Просмотр»)")
         }
     }
