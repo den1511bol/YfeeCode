@@ -240,3 +240,4 @@
 - Сессия v2-16: Linux: yfee-pg start|stop|status|psql (PostgreSQL, не проверено на устройстве). @yfeeeee
 - Сессия v2-17: yfee-help, справка и README дополнены командами yfee-venv, yfee-keepalive, yfee-pg. @yfeeeee
 - Сессия v2-18: второе слияние dev в main (yfeе-venv, keepalive, pg, справка). @yfeeeee
+- Сессия v3-1: терминал: команда log [N] печатает последние строки лога бота, кнопка log. @yfeeeee
