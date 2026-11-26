@@ -197,3 +197,4 @@
 - Сессия 21: C++ +2 урока (stack/queue/deque, unordered_map/pair), всего 141 урок. @yfeeeee
 - Сессия 22: JS +2 урока (DOM: создание элементов, localStorage), всего 143 урока. @yfeeeee
 - Сессия 23: C# +2 урока (HashSet/Queue/Stack, LINQ группировка), всего 145 уроков. @yfeeeee
+- Сессия 24: Python +2 урока (ООП: __str__ и classmethod, datetime), всего 147 уроков. @yfeeeee

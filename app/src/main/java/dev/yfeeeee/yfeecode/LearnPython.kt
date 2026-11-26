@@ -273,5 +273,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Обработчик команды start", "@router.message(Command(\"start\"))"),
         type("Ответь пользователю", "await m.answer(\"Привет\")"),
         type("Ловить нажатие кнопки с данными ok", "@router.callback_query(F.data == \"ok\")")
+    )),
+    Lesson("ООП: методы класса и __str__", "Особые методы с двойным подчёркиванием настраивают поведение объекта. __str__ задаёт текст для print, __len__ даёт длину, __eq__ сравнивает. @classmethod получает сам класс и часто служит альтернативным конструктором, @staticmethod не получает ничего.\n>class User:\n>    def __init__(self, name):\n>        self.name = name\n>    def __str__(self):\n>        return self.name\n>    @classmethod\n>    def guest(cls):\n>        return cls(\"гость\")", listOf(
+        type("Метод текста для print", "def __str__(self):"),
+        type("Метод длины объекта", "def __len__(self):"),
+        type("Метод сравнения объектов", "def __eq__(self, other):"),
+        type("Декоратор метода класса", "@classmethod"),
+        type("Создай объект через cls", "return cls(\"гость\")"),
+        type("Декоратор статического метода", "@staticmethod")
+    )),
+    Lesson("Даты и время: datetime", "Модуль datetime работает с датами. now даёт текущее время, timedelta добавляет интервал, strftime превращает дату в строку по шаблону, strptime разбирает строку в дату.\n>from datetime import datetime, timedelta\n>now = datetime.now()\n>tomorrow = now + timedelta(days=1)\n>text = now.strftime(\"%d.%m.%Y %H:%M\")\n>d = datetime.strptime(\"01.01.2026\", \"%d.%m.%Y\")", listOf(
+        type("Подключи datetime и timedelta", "from datetime import datetime, timedelta"),
+        type("Получи текущее время", "now = datetime.now()"),
+        type("Прибавь один день", "tomorrow = now + timedelta(days=1)"),
+        type("Преврати дату в строку день.месяц.год", "text = now.strftime(\"%d.%m.%Y\")"),
+        type("Разбери строку s в дату", "d = datetime.strptime(s, \"%d.%m.%Y\")"),
+        type("Получи год из даты now", "now.year")
     ))
 ))
