@@ -135,7 +135,23 @@ object Practices {
             Practice("cpp6", "Чтение строки", "Объяви std::string name и прочитай строку через getline.", "", Lang.CPP,
                 listOf(must("""string\s+name""", "Нужна переменная std::string name"), must("""getline\s*\(""", "Используй getline(cin, name)"))),
             Practice("cpp7", "Функция со ссылкой", "Напиши функцию inc, которая принимает int по ссылке и увеличивает его на 1.", "", Lang.CPP,
-                listOf(must("""void\s+inc\s*\(\s*int\s*&""", "Нужно: void inc(int& x)"), must("""\+\+|\+=\s*1|=\s*\w+\s*\+\s*1""", "Увеличь значение на 1")))
+                listOf(must("""void\s+inc\s*\(\s*int\s*&""", "Нужно: void inc(int& x)"), must("""\+\+|\+=\s*1|=\s*\w+\s*\+\s*1""", "Увеличь значение на 1"))),
+            Practice("cpp8", "Вектор", "Создай std::vector<int> v и добавь в него число 5 методом push_back.", "", Lang.CPP,
+                listOf(must("""vector\s*<\s*int\s*>\s+v""", "Нужно: vector<int> v;"), must("""push_back\s*\(\s*5\s*\)""", "Добавь 5: v.push_back(5);"))),
+            Practice("cpp9", "Структура Point", "Объяви структуру Point с полями int x и int y.", "", Lang.CPP,
+                listOf(must("""struct\s+Point""", "Нужна struct Point"), must("""int\s+x""", "Нужно поле int x"), must("""int\s+y""", "Нужно поле int y"))),
+            Practice("cpp10", "Switch", "Напиши switch по переменной x с веткой case 1 и break.", "", Lang.CPP,
+                listOf(must("""switch\s*\(""", "Нужен switch (x)"), must("""case\s+1\s*:""", "Нужна ветка case 1:"), must("""\bbreak\b""", "Нужен break;"))),
+            Practice("cpp11", "Словарь map", "Создай map<string, int> m и положи m[\"a\"] = 1.", "", Lang.CPP,
+                listOf(must("""map\s*<\s*string\s*,\s*int\s*>""", "Нужно: map<string, int> m;"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши m[\"a\"] = 1;"))),
+            Practice("cpp12", "Лямбда", "Создай лямбду sq, которая возвращает квадрат числа x.", "", Lang.CPP,
+                listOf(must("""\[\s*[&=]?\s*\]\s*\(\s*int\s+\w+\s*\)""", "Лямбда: [](int x) { ... }"), must("""\breturn\b""", "Лямбда должна вернуть значение"))),
+            Practice("cpp13", "Сортировка", "Отсортируй вектор v функцией sort.", "", Lang.CPP,
+                listOf(must("""sort\s*\(\s*v\.begin\(\)\s*,\s*v\.end\(\)""", "Нужно: sort(v.begin(), v.end());"))),
+            Practice("cpp14", "Запись в файл", "Открой файл a.txt через ofstream и запиши в него слово.", "", Lang.CPP,
+                listOf(must("""ofstream\s+\w+\s*\(\s*"a\.txt"(?:)""", "Нужно: ofstream out(\"a.txt\");"), must("""<<""", "Запиши текст через <<"))),
+            Practice("cpp15", "Умный указатель", "Создай unique_ptr на int со значением 5 через make_unique.", "", Lang.CPP,
+                listOf(must("""make_unique\s*<\s*int\s*>\s*\(\s*5\s*\)""", "Нужно: make_unique<int>(5)")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -151,7 +167,23 @@ object Practices {
             Practice("cs6", "Словарь", "Создай Dictionary<string, int> и добавь в него ключ a.", "", Lang.CSHARP,
                 listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужен Dictionary<string, int>"), must("""[\[(]\s*"a""", "Добавь ключ \"a\""))),
             Practice("cs7", "try/catch", "Оберни int.Parse в try и поймай FormatException.", "", Lang.CSHARP,
-                listOf(must("""\btry\b""", "Нужен блок try"), must("""catch\s*\(\s*FormatException""", "Лови catch (FormatException e)"), must("""int\.Parse\s*\(""", "Используй int.Parse(...)")))
+                listOf(must("""\btry\b""", "Нужен блок try"), must("""catch\s*\(\s*FormatException""", "Лови catch (FormatException e)"), must("""int\.Parse\s*\(""", "Используй int.Parse(...)"))),
+            Practice("cs8", "Список", "Создай List<int> list и добавь в него число 5.", "", Lang.CSHARP,
+                listOf(must("""List\s*<\s*int\s*>""", "Нужно: List<int>"), must("""\.Add\s*\(\s*5\s*\)""", "Добавь 5: list.Add(5);"))),
+            Practice("cs9", "Switch", "Напиши switch по x с веткой case 1 и break.", "", Lang.CSHARP,
+                listOf(must("""switch\s*\(""", "Нужен switch (x)"), must("""case\s+1\s*:""", "Нужна ветка case 1:"), must("""\bbreak\b""", "Нужен break;"))),
+            Practice("cs10", "LINQ Where", "Оставь в списке nums числа больше 2 через Where.", "", Lang.CSHARP,
+                listOf(must("""\.Where\s*\(""", "Используй nums.Where(...)"), must("""=>""", "Нужна лямбда n => ..."))),
+            Practice("cs11", "Интерфейс", "Объяви интерфейс IAnimal с методом Speak, который ничего не возвращает.", "", Lang.CSHARP,
+                listOf(must("""interface\s+IAnimal""", "Нужен interface IAnimal"), must("""void\s+Speak\s*\(""", "Нужно: void Speak();"))),
+            Practice("cs12", "Словарь", "Создай Dictionary<string, int> d и запиши d[\"a\"] = 1.", "", Lang.CSHARP,
+                listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужно: Dictionary<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши d[\"a\"] = 1;"))),
+            Practice("cs13", "async и await", "Напиши async-метод Work, который возвращает Task и ждёт Task.Delay(100).", "", Lang.CSHARP,
+                listOf(must("""async\s+Task""", "Нужно: async Task Work()"), must("""await\s+Task\.Delay""", "Дождись: await Task.Delay(100);"))),
+            Practice("cs14", "Запись в файл", "Запиши слово в файл a.txt через File.WriteAllText.", "", Lang.CSHARP,
+                listOf(must("""File\.WriteAllText\s*\(\s*"a\.txt"(?:)""", "Нужно: File.WriteAllText(\"a.txt\", ...);"))),
+            Practice("cs15", "record", "Объяви record Point с целыми X и Y.", "", Lang.CSHARP,
+                listOf(must("""record\s+Point\s*\(""", "Нужно: record Point(int X, int Y);"), must("""int\s+X""", "Нужен параметр int X"), must("""int\s+Y""", "Нужен параметр int Y")))
         )
     )
 }
