@@ -289,5 +289,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Преврати дату в строку день.месяц.год", "text = now.strftime(\"%d.%m.%Y\")"),
         type("Разбери строку s в дату", "d = datetime.strptime(s, \"%d.%m.%Y\")"),
         type("Получи год из даты now", "now.year")
+    )),
+    Lesson("Подсказки типов: typing", "Подсказки типов не меняют работу программы, но помогают читать код и ловить ошибки в редакторе. Тип параметра пишут после двоеточия, тип результата после стрелки. Optional значит значение или None, list[int] это список целых.\n>def add(a: int, b: int) -> int:\n>    return a + b\n>from typing import Optional\n>def find(x: int) -> Optional[str]:\n>    return None", listOf(
+        type("Параметр a типа int", "a: int"),
+        type("Функция add возвращает int", "def add(a: int, b: int) -> int:"),
+        type("Подключи Optional", "from typing import Optional"),
+        type("Тип список целых", "list[int]"),
+        type("Тип словарь из строки в число", "dict[str, int]"),
+        type("Тип значение или None для строки", "Optional[str]")
+    )),
+    Lesson("Абстрактные классы: abc", "Абстрактный класс задаёт обязательные методы для потомков. Его нельзя создать напрямую. Класс наследуют от ABC, а обязательные методы помечают @abstractmethod. Если потомок не реализует метод, Python выдаст ошибку.\n>from abc import ABC, abstractmethod\n>class Shape(ABC):\n>    @abstractmethod\n>    def area(self):\n>        pass\n>class Square(Shape):\n>    def area(self):\n>        return 4", listOf(
+        type("Подключи ABC и abstractmethod", "from abc import ABC, abstractmethod"),
+        type("Абстрактный класс Shape", "class Shape(ABC):"),
+        type("Декоратор обязательного метода", "@abstractmethod"),
+        type("Потомок Square от Shape", "class Square(Shape):"),
+        type("Метод area в потомке", "def area(self):"),
+        type("Вернуть 4", "return 4")
     ))
 ))
