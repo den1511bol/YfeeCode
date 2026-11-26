@@ -30,6 +30,7 @@ object LinuxTerm {
     val session: TerminalSession? get() = sessions.getOrNull(cur)
     var view: TerminalView? = null
     var ctrl by mutableStateOf(false)
+    var alt by mutableStateOf(false)
     var fontSp = 13
 
     fun setFont(c: Context, sp: Int) {
@@ -177,6 +178,9 @@ fun LinuxScreen(store: FileStore) {
             TextButton(onClick = { LinuxTerm.ctrl = !LinuxTerm.ctrl }, contentPadding = PaddingValues(horizontal = 10.dp)) {
                 Text("Ctrl", fontSize = 14.sp, color = if (LinuxTerm.ctrl) Color(0xFFF472B6) else Color.Unspecified)
             }
+            TextButton(onClick = { LinuxTerm.alt = !LinuxTerm.alt }, contentPadding = PaddingValues(horizontal = 10.dp)) {
+                Text("Alt", fontSize = 14.sp, color = if (LinuxTerm.alt) Color(0xFFF472B6) else Color.Unspecified)
+            }
             key("Esc", "\u001b")()
             key("Tab", "\t")()
             key("↑", "\u001b[A")()
@@ -193,6 +197,29 @@ fun LinuxScreen(store: FileStore) {
             key("~", "~")()
             key("PgUp", "\u001b[5~")()
             key("PgDn", "\u001b[6~")()
+            key("Home", "\u001b[H")()
+            key("End", "\u001b[F")()
+            key("Del", "\u001b[3~")()
+            key("Ins", "\u001b[2~")()
+            key("\\", "\\")()
+            key("{", "{")()
+            key("}", "}")()
+            key("[", "[")()
+            key("]", "]")()
+            key("&", "&")()
+            key("*", "*")()
+            key("F1", "\u001bOP")()
+            key("F2", "\u001bOQ")()
+            key("F3", "\u001bOR")()
+            key("F4", "\u001bOS")()
+            key("F5", "\u001b[15~")()
+            key("F6", "\u001b[17~")()
+            key("F7", "\u001b[18~")()
+            key("F8", "\u001b[19~")()
+            key("F9", "\u001b[20~")()
+            key("F10", "\u001b[21~")()
+            key("F11", "\u001b[23~")()
+            key("F12", "\u001b[24~")()
         }
         DevKeyboard(
             onText = { t ->
@@ -201,7 +228,8 @@ fun LinuxScreen(store: FileStore) {
                     if (LinuxTerm.ctrl && t.length == 1 && t[0].lowercaseChar() in 'a'..'z') {
                         sess.write(String(charArrayOf((t[0].lowercaseChar().code and 0x1f).toChar())))
                         LinuxTerm.ctrl = false
-                    } else sess.write(t)
+                    } else if (LinuxTerm.alt) { sess.write("\u001b" + t); LinuxTerm.alt = false }
+                    else sess.write(t)
                 }
             },
             onCmd = { c ->
