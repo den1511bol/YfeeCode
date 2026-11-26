@@ -168,3 +168,4 @@
 - Linux этап 2: ввод с клавиатуры в работающие программы, офлайн-запуск C++ через g++ в Alpine (если установлен build-base), подсказки без перевода строки.
 - Исправлено: после обновления приложения ломалась ссылка libtalloc.so.2 (CANNOT LINK EXECUTABLE) — теперь ссылка пересоздаётся при смене пути.
 - Linux этап 3: команды linux setup, lpy, lpip (Python и pip внутри Linux).
+- Вкладка «Linux»: настоящий терминал (PTY) на Termux terminal-view; работают vim, nano, top; панель Esc/Tab/Ctrl/стрелки.

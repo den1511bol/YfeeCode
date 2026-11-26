@@ -40,7 +40,7 @@ object Linux {
         say("Готово. Попробуй: lx uname -a   или   lx apk add python3 git")
     }
 
-    private fun prepareLibs(ctx: Context): File {
+    fun prepareLibs(ctx: Context): File {
         val libs = File(base(ctx), "lib").also { it.mkdirs() }
         // the app path changes after every update, so always recreate the links
         val target = File(nat(ctx), "libtalloc.so").absolutePath
@@ -54,6 +54,28 @@ object Linux {
     }
 
     /** Runs a command inside Alpine; [cwd] is a folder inside the project root (mounted at /work). */
+    /** Command line + environment for an interactive shell inside Alpine (used by the PTY terminal). */
+    fun shell(ctx: Context, store: FileStore): Pair<Array<String>, Array<String>> {
+        val libs = prepareLibs(ctx)
+        val sh = "if [ -x /usr/bin/bash ]; then exec /usr/bin/bash -l; else exec /bin/sh -l; fi"
+        val args = arrayOf(
+            File(nat(ctx), "libproot.so").absolutePath, "-0", "--link2symlink",
+            "-r", root(ctx).absolutePath,
+            "-b", "/dev", "-b", "/proc", "-b", "/sys",
+            "-b", store.root.absolutePath + ":/work",
+            "-w", "/work", "/bin/sh", "-c", sh
+        )
+        val env = arrayOf(
+            "PROOT_LOADER=" + File(nat(ctx), "libproot-loader.so").absolutePath,
+            "PROOT_TMP_DIR=" + ctx.cacheDir.absolutePath,
+            "PROOT_NO_SECCOMP=1",
+            "LD_LIBRARY_PATH=" + libs.absolutePath + ":" + nat(ctx),
+            "HOME=/root", "TERM=xterm-256color", "LANG=C.UTF-8",
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        )
+        return args to env
+    }
+
     fun hasGpp(ctx: Context) = File(root(ctx), "usr/bin/g++").exists()
 
     fun exec(ctx: Context, store: FileStore, cwd: File, cmd: String, onProc: (Process?) -> Unit = {}, say: (String) -> Unit) {

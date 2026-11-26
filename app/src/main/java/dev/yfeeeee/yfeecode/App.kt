@@ -43,7 +43,7 @@ fun App(
 ) {
     val ctx = LocalContext.current
     val sp = remember { ctx.getSharedPreferences("session", android.content.Context.MODE_PRIVATE) }
-    var tab by remember { mutableIntStateOf(sp.getInt("tab", 0).coerceIn(0, 3)) }
+    var tab by remember { mutableIntStateOf(sp.getInt("tab", 0).coerceIn(0, 4)) }
     LaunchedEffect(tab) { sp.edit().putInt("tab", tab).apply() }
     var showSettings by remember { mutableStateOf(false) }
     var showHelp by remember { mutableStateOf(false) }
@@ -144,6 +144,7 @@ fun App(
                     goTerminal = { tab = 2 }
                 )
                 2 -> TerminalScreen(term, open.getOrNull(active)?.file, dir)
+                4 -> LinuxScreen(store)
                 else -> LearnScreen()
             }
         }
@@ -193,7 +194,7 @@ fun App(
             }
         )
         NavigationBar(containerColor = Color(0xFF240B0B)) {
-            listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal, "Уроки" to Icons.Default.School)
+            listOf("Файлы" to Icons.Default.Folder, "Редактор" to Icons.Default.Code, "Терминал" to Icons.Default.Terminal, "Уроки" to Icons.Default.School, "Linux" to Icons.Default.Memory)
                 .forEachIndexed { i, (label, icon) ->
                     NavigationBarItem(selected = tab == i, onClick = { tab = i },
                         icon = { Icon(icon, label) }, label = { Text(label) })
