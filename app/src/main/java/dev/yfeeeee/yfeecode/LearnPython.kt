@@ -305,5 +305,21 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Потомок Square от Shape", "class Square(Shape):"),
         type("Метод area в потомке", "def area(self):"),
         type("Вернуть 4", "return 4")
+    )),
+    Lesson("Логи: logging", "Модуль logging лучше print для бота: у сообщений есть уровни важности и время. basicConfig настраивает вывод, level задаёт минимальный уровень, а info, warning и error пишут сообщения. Логи можно писать в файл.\n>import logging\n>logging.basicConfig(level=logging.INFO)\n>logging.info(\"бот запущен\")\n>logging.error(\"ошибка\")", listOf(
+        type("Подключи logging", "import logging"),
+        type("Настрой вывод от уровня INFO", "logging.basicConfig(level=logging.INFO)"),
+        type("Запиши информацию бот запущен", "logging.info(\"бот запущен\")"),
+        type("Запиши предупреждение", "logging.warning(\"внимание\")"),
+        type("Запиши ошибку", "logging.error(\"ошибка\")"),
+        type("Писать логи в файл bot.log", "logging.basicConfig(filename=\"bot.log\")")
+    )),
+    Lesson("Аргументы командной строки", "Скрипт может принимать параметры при запуске. sys.argv хранит список аргументов, где нулевой элемент это имя файла. argparse делает это удобнее: описываешь параметры, а он разбирает их и показывает справку.\n>import sys\n>name = sys.argv[1]\n>import argparse\n>p = argparse.ArgumentParser()\n>p.add_argument(\"--name\")\n>args = p.parse_args()", listOf(
+        type("Подключи sys", "import sys"),
+        type("Первый аргумент после имени файла", "name = sys.argv[1]"),
+        type("Подключи argparse", "import argparse"),
+        type("Создай разборщик аргументов", "p = argparse.ArgumentParser()"),
+        type("Добавь параметр --name", "p.add_argument(\"--name\")"),
+        type("Разбери аргументы", "args = p.parse_args()")
     ))
 ))

@@ -207,3 +207,4 @@
 - Сессия 31: CSS +2 урока (grid areas и clamp, тёмная тема и keyframes), всего 155 уроков. @yfeeeee
 - Сессия 32: HTML +2 урока (проверка форм, details/data/template), всего 157 уроков. @yfeeeee
 - Сессия 33: практики HTML html16-17 (email required, details) и CSS css16-17 (clamp, тёмная тема). @yfeeeee
+- Сессия 34: Python +2 урока (logging, аргументы командной строки), всего 159 уроков. Поиск по урокам не добавлен: на устройстве работает только встроенная клавиатура. @yfeeeee
