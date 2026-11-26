@@ -215,3 +215,4 @@
 - Сессия 39: C# уроки «EF Core и SQLite», «Func и Action». @yfeeeee
 - Сессия 40: проверка TerminalState: «stop» останавливает и обычные sh-команды, подсказка для «lx». @yfeeeee
 - Сессия 41: проверка Keyboard: в русской раскладке добавлена буква ё (с Shift — Ё). @yfeeeee
+- Сессия 42: JS уроки «WebSocket в браузере», «Canvas: рисование». @yfeeeee

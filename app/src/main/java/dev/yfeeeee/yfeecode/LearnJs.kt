@@ -241,5 +241,21 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Покажи дату now по-русски", "now.toLocaleDateString(\"ru-RU\")"),
         type("Получи число миллисекунд сейчас", "const t = Date.now()"),
         type("Получи час из now", "now.getHours()")
+    )),
+    Lesson("WebSocket в браузере", "WebSocket держит постоянное соединение с сервером: данные идут в обе стороны без повторных запросов. Адрес начинается с ws:// или wss://. События: open, message, close. Метод send отправляет строку. Автор курса: @yfeeeee.\n>const ws = new WebSocket(\"wss://example.com/chat\")\n>ws.onopen = () => ws.send(\"привет\")\n>ws.onmessage = e => console.log(e.data)\n>ws.onclose = () => console.log(\"закрыто\")\n>ws.close()", listOf(
+        type("Открой соединение", "const ws = new WebSocket(\"wss://example.com/chat\")"),
+        type("Отправь привет при открытии", "ws.onopen = () => ws.send(\"привет\")"),
+        type("Выведи полученные данные", "ws.onmessage = e => console.log(e.data)"),
+        type("Реагируй на закрытие", "ws.onclose = () => console.log(\"закрыто\")"),
+        type("Закрой соединение", "ws.close()"),
+        type("Отправь JSON", "ws.send(JSON.stringify({ a: 1 }))")
+    )),
+    Lesson("Canvas: рисование", "Элемент canvas это холст. Берём контекст 2d и рисуем: fillStyle задаёт цвет, fillRect рисует прямоугольник, arc с beginPath и fill рисует круг. requestAnimationFrame зовёт функцию перед каждым кадром, так делают анимации и игры.\n>const ctx = canvas.getContext(\"2d\")\n>ctx.fillStyle = \"#ef4444\"\n>ctx.fillRect(10, 10, 50, 50)\n>ctx.beginPath()\n>ctx.arc(100, 100, 20, 0, Math.PI * 2)\n>ctx.fill()\n>requestAnimationFrame(draw)", listOf(
+        type("Получи контекст 2d", "const ctx = canvas.getContext(\"2d\")"),
+        type("Задай красный цвет заливки", "ctx.fillStyle = \"#ef4444\""),
+        type("Нарисуй квадрат 50 на 50", "ctx.fillRect(10, 10, 50, 50)"),
+        type("Начни новый путь", "ctx.beginPath()"),
+        type("Нарисуй полный круг", "ctx.arc(100, 100, 20, 0, Math.PI * 2)"),
+        type("Запроси следующий кадр", "requestAnimationFrame(draw)")
     ))
 ))
