@@ -31,6 +31,7 @@ object LinuxTerm {
     var view: TerminalView? = null
     var ctrl by mutableStateOf(false)
     var alt by mutableStateOf(false)
+    var titleTick by mutableStateOf(0)
     var fontSp = 13
 
     fun setFont(c: Context, sp: Int) {
@@ -58,7 +59,7 @@ object LinuxTerm {
 
     val sessionClient = object : TerminalSessionClient {
         override fun onTextChanged(changedSession: TerminalSession) { view?.onScreenUpdated() }
-        override fun onTitleChanged(changedSession: TerminalSession) {}
+        override fun onTitleChanged(changedSession: TerminalSession) { titleTick++ }
         override fun onSessionFinished(finishedSession: TerminalSession) {
             val i = sessions.indexOf(finishedSession)
             if (i >= 0) {
@@ -149,9 +150,9 @@ fun LinuxScreen(store: FileStore) {
         )
         val kbOn = remember { mutableStateOf(true) }
         Row(Modifier.fillMaxWidth().background(Color(0xFF1A0707)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-            LinuxTerm.sessions.forEachIndexed { i, _ ->
+            LinuxTerm.sessions.forEachIndexed { i, sess ->
                 TextButton(onClick = { LinuxTerm.select(i) }, contentPadding = PaddingValues(horizontal = 12.dp)) {
-                    Text("${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
+                    Text(if (LinuxTerm.titleTick >= 0 && !sess.title.isNullOrBlank()) "${i + 1} ${sess.title.take(12)}" else "${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
                 }
             }
             TextButton(onClick = { kbOn.value = !kbOn.value }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text(if (kbOn.value) "⌨↓" else "⌨↑", fontSize = 14.sp) }
@@ -197,6 +198,13 @@ fun LinuxScreen(store: FileStore) {
             TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp + 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A+", fontSize = 14.sp) }
             TextButton(onClick = { LinuxTerm.newSession(ctx, store) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("+ сессия", fontSize = 14.sp) }
             if (LinuxTerm.sessions.isNotEmpty()) TextButton(onClick = { LinuxTerm.session?.finishIfRunning() }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("закрыть", fontSize = 14.sp) }
+            TextButton(onClick = {
+                try {
+                    val tx = LinuxTerm.session?.emulator?.screen?.transcriptText ?: ""
+                    val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                    cm.setPrimaryClip(android.content.ClipData.newPlainText("linux", tx.trimEnd().takeLast(20000)))
+                } catch (_: Exception) {}
+            }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("Копир. вывод", fontSize = 14.sp) }
             TextButton(onClick = {
                 try {
                     val cm = ctx.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
