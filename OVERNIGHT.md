@@ -17,7 +17,7 @@
 - [x] 5. Linux: ~/.bashrc (алиасы ll, la, .., цветной PS1 с папкой, постоянная история HISTFILE, bash-completion при наличии), приветствие.
 - [x] 6. Linux: pkg: автоматический `apk update` раз в сутки, `pkg list-installed`, `pkg show`, `pkg files`, справка `pkg help`, запасное зеркало при ошибке.
 - [x] 7. Linux: команда `yfee-help` (шпаргалка команд YfeeCode) и `yfee-git-setup` (имя, почта, credential store для GitHub).
-- [ ] 8. Linux: шаблоны для разработчика ботов: `yfee-bot mybot` (создаёт папку с bot.py на aiogram/telebot, token.txt, requirements), `yfee-hikka mod` (шаблон модуля для Heroku/Hikka).
+- [x] 8. Linux: шаблоны для разработчика ботов: `yfee-bot mybot` (создаёт папку с bot.py на aiogram/telebot, token.txt, requirements), `yfee-hikka mod` (шаблон модуля для Heroku/Hikka).
 - [ ] 9. Терминал-вкладка: история команд (кнопки ↑/↓) и автодополнение имён файлов по кнопке Tab.
 - [ ] 10. Linux: заголовки вкладок сессий (например «1 bash», «2 python»), кнопка «Копировать вывод» (последние N строк в буфер).
 - [ ] 11. Файлы: открыть/поделиться файлом, дублировать файл, создать из шаблона (если ещё нет).

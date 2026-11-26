@@ -226,3 +226,4 @@
 - Сессия v2-2: Linux: /etc/profile.d/yfee-extra.sh (алиасы ll/la/gs, цвет ls/grep, постоянная история bash, bash-completion). @yfeeeee
 - Сессия v2-3: pkg: индекс обновляется сам раз в сутки и при ошибке установки, pkg list/show/files. @yfeeeee
 - Сессия v2-4: Linux: команды yfee-help (шпаргалка) и yfee-git-setup (имя, почта, токен GitHub). @yfeeeee
+- Сессия v2-5: Linux: yfee-bot (шаблон бота aiogram3) и yfee-hikka (шаблон модуля Heroku/Hikka). @yfeeeee
