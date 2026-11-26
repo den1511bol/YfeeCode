@@ -129,5 +129,21 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Промежуток 10px", "gap: 10px;"),
         type("Три равные колонки", "grid-template-columns: repeat(3, 1fr);"),
         type("Элемент занимает свободное место", "flex: 1;")
+    )),
+    Lesson("Grid areas и clamp", "grid-template-areas описывает раскладку словами: каждой области даёшь имя, а элементу задаёшь grid-area. Функция clamp(мин, желаемое, макс) делает размер гибким в заданных пределах, например для шрифта.\n>.page { display: grid; grid-template-areas: \"head head\" \"menu main\"; }\n>.head { grid-area: head; }\n>h1 { font-size: clamp(20px, 5vw, 40px); }", listOf(
+        type("Задай области сетки", "grid-template-areas: \"head head\" \"menu main\";"),
+        type("Помести элемент в область head", "grid-area: head;"),
+        type("Шрифт от 20px до 40px, гибкий", "font-size: clamp(20px, 5vw, 40px);"),
+        type("Высота экрана", "height: 100vh;"),
+        type("Ширина не больше 600px", "max-width: 600px;"),
+        type("Центрируй блок по горизонтали", "margin: 0 auto;")
+    )),
+    Lesson("Тёмная тема и keyframes", "Медиа-запрос prefers-color-scheme позволяет сделать тёмную тему по настройке телефона. @keyframes описывает шаги анимации, а свойство animation подключает её с длительностью и повторением.\n>@media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }\n>@keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }\n>.dot { animation: pulse 1s infinite; }", listOf(
+        type("Тёмная тема по настройке системы", "@media (prefers-color-scheme: dark) {"),
+        type("Тёмный фон", "background: #111;"),
+        type("Объяви анимацию pulse", "@keyframes pulse {"),
+        type("Подключи анимацию на 1 секунду бесконечно", "animation: pulse 1s infinite;"),
+        type("Прозрачность 0.4", "opacity: 0.4;"),
+        type("Плавное изменение цвета за 0.3 секунды", "transition: color 0.3s;")
     ))
 ))
