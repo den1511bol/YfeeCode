@@ -217,5 +217,29 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Сохрани список пакетов", "pip freeze > requirements.txt"),
         type("Установи пакеты из файла", "pip install -r requirements.txt"),
         type("Покажи установленные пакеты", "pip list")
+    )),
+    Lesson("Запросы: requests", "Библиотека requests ходит в интернет. get получает данные, post отправляет. Ответ r хранит статус и тело. r.json() превращает JSON в словарь. Всегда ставь timeout, иначе программа может зависнуть.\n>import requests\n>r = requests.get(\"https://api.github.com\", timeout=10)\n>print(r.status_code)\n>data = r.json()", listOf(
+        type("Подключи requests", "import requests"),
+        type("Сделай GET-запрос к url с таймаутом 10", "r = requests.get(url, timeout=10)"),
+        type("Покажи код ответа", "r.status_code"),
+        type("Получи JSON из ответа", "r.json()"),
+        type("Отправь POST с данными d в формате JSON", "requests.post(url, json=d)"),
+        type("Брось ошибку, если ответ плохой", "r.raise_for_status()")
+    )),
+    Lesson("Базы данных: sqlite3", "sqlite3 встроен в Python: база хранится в одном файле. connect открывает файл, execute выполняет SQL, commit сохраняет изменения. Значения подставляй через ? — так безопаснее всего.\n>import sqlite3\n>db = sqlite3.connect(\"bot.db\")\n>db.execute(\"CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)\")\n>db.execute(\"INSERT INTO users VALUES (?, ?)\", (1, \"Аня\"))\n>db.commit()", listOf(
+        type("Подключи sqlite3", "import sqlite3"),
+        type("Открой базу bot.db", "db = sqlite3.connect(\"bot.db\")"),
+        type("Добавь строку в users со значениями 1 и name", "db.execute(\"INSERT INTO users VALUES (?, ?)\", (1, name))"),
+        type("Сохрани изменения", "db.commit()"),
+        type("Выбери все строки таблицы users", "db.execute(\"SELECT * FROM users\").fetchall()"),
+        type("Закрой базу", "db.close()")
+    )),
+    Lesson("Асинхронность: asyncio", "async def создаёт корутину, await ждёт результат и не блокирует остальных. Боты на aiogram и модули Hikka работают именно так. asyncio.run запускает главную корутину, gather ждёт сразу несколько.\n>import asyncio\n>async def main():\n>    await asyncio.sleep(1)\n>    print(\"готово\")\n>asyncio.run(main())", listOf(
+        type("Подключи asyncio", "import asyncio"),
+        type("Объяви асинхронную функцию main", "async def main():"),
+        type("Подожди секунду, не блокируя других", "await asyncio.sleep(1)"),
+        type("Запусти main", "asyncio.run(main())"),
+        type("Выполни a() и b() одновременно", "await asyncio.gather(a(), b())"),
+        type("Запусти задачу в фоне", "asyncio.create_task(a())")
     ))
 ))
