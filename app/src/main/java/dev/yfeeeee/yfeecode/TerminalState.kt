@@ -20,6 +20,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     private var logOffset = 0L
     private var js: JsRunner? = null
     private val ui = android.os.Handler(android.os.Looper.getMainLooper())
+    init { CloudRunner.prefetch() }
 
     fun print(s: String) { ui.post { s.split("\n").forEach { lines.add(it) }; trim() } }
     private fun trim() { while (lines.size > 1500) lines.removeAt(0) }
@@ -129,7 +130,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             Lang.CPP, Lang.CSHARP -> {
                 val lang = Lang.fromName(f.name)
-                print("Компиляция ${f.name} (${lang.label}, онлайн)...")
+                print("Компиляция ${f.name} (${lang.label}, онлайн)... ${if (lang == Lang.CSHARP) "C# может занять до 30 секунд" else ""}")
                 thread {
                     try { print(CloudRunner.run(lang, f.readText())) }
                     catch (e: Exception) { print("Ошибка: нужен интернет (${e.message})") }

@@ -31,6 +31,7 @@ object CloudRunner {
         val arr = JSONArray(http(BASE + "list.json"))
         val want = if (lang == Lang.CPP) "C++" else "C#"
         var best: String? = null
+        var mono: String? = null
         for (i in 0 until arr.length()) {
             val o = arr.getJSONObject(i)
             if (o.optString("language") != want) continue
@@ -38,12 +39,18 @@ object CloudRunner {
             if (lang == Lang.CPP) {
                 if (n == "gcc-head") { best = n; break }
                 if (n.startsWith("gcc-") && !n.contains("c-")) best = n
-            } else if (n.startsWith("dotnetcore") || n.startsWith("dotnet")) best = n
-            else if (best == null && n.startsWith("mono")) best = n
+            } else if (n.startsWith("mono")) mono = n // mono compiles much faster than dotnet
+            else if (n.startsWith("dotnet")) best = n
         }
+        if (lang == Lang.CSHARP && mono != null) best = mono
         val r = best ?: throw IllegalStateException("нет компилятора для $want")
         cache[lang] = r
         return r
+    }
+
+    /** Warm up: fetch compiler names in background so the first run is faster. */
+    fun prefetch() {
+        Thread { try { compiler(Lang.CPP); compiler(Lang.CSHARP) } catch (_: Exception) {} }.start()
     }
 
     /** Returns output text; throws on network errors. */
