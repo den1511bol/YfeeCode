@@ -93,6 +93,9 @@ object Linux {
     fun installScripts(ctx: Context) {
         try {
             val bin = File(root(ctx), "usr/local/bin").also { it.mkdirs() }
+            val t = File(bin, "yfeecs")
+            ctx.assets.open("yfeecs.sh").use { i -> t.outputStream().use { o -> i.copyTo(o) } }
+            t.setExecutable(true, false)
             val pkg = "#!/bin/sh\n# pkg/apt for YfeeCode (Alpine apk). Developer: @yfeeeee\nc=\"\$1\"; [ \$# -gt 0 ] && shift\ncase \"\$c\" in\n install|i|add) apk add \"\$@\";;\n remove|uninstall|rm|del|purge) apk del \"\$@\";;\n update) apk update;;\n upgrade|full-upgrade|up) apk update && apk upgrade;;\n search) apk search \"\$@\";;\n list|list-installed) apk info;;\n show|info) apk info -a \"\$@\";;\n *) echo \"pkg install|remove|update|upgrade|search|list  (Alpine apk)\";;\nesac\n"
             for (n in listOf("pkg", "apt", "apt-get")) File(bin, n).also { it.writeText(pkg); it.setExecutable(true, false) }
             val scr = mapOf(
@@ -108,16 +111,13 @@ object Linux {
             for ((n, t) in scr) File(bin, n).also { it.writeText(t); it.setExecutable(true, false) }
             File(root(ctx), "root").mkdirs()
             File(root(ctx), "root/.profile").takeIf { !it.exists() }?.writeText(
-                "export PS1='\\[\\e[1;31m\\]yfee\\[\\e[0m\\]:\\w\\$ '\nalias ll='ls -la'\nalias ..='cd ..'\ncd /work 2>/dev/null\n" +
+                "if [ -n \"\$BASH_VERSION\" ]; then export PS1='\\[\\e[1;31m\\]yfee\\[\\e[0m\\]:\\w\\$ '; else export PS1='yfee# '; fi\nalias ll='ls -la'\nalias ..='cd ..'\ncd /work 2>/dev/null\n" +
                 "echo 'YfeeCode Linux (Alpine). Разработчик: @yfeeeee'\necho 'pkg install <пакет>  |  termux-setup-storage  |  yfee-sshd  |  /sdcard  |  /work (проекты)'\n"
             )
             File(bin, "termux-setup-storage").also {
                 it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
                 it.setExecutable(true, false)
             }
-            val t = File(bin, "yfeecs")
-            ctx.assets.open("yfeecs.sh").use { i -> t.outputStream().use { o -> i.copyTo(o) } }
-            t.setExecutable(true, false)
         } catch (_: Exception) {}
     }
 
