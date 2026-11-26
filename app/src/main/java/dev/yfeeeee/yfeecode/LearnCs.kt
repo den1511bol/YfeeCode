@@ -193,5 +193,21 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Опиши GET / с ответом Привет", "app.MapGet(\"/\", () => \"Привет\");"),
         type("Опиши POST /add", "app.MapPost(\"/add\", (Item i) => i);"),
         type("Запусти сервер", "app.Run();")
+    )),
+    Lesson("Коллекции: HashSet, Queue, Stack", "HashSet хранит только уникальные значения, Add возвращает false для повтора. Queue работает по очереди: Enqueue кладёт, Dequeue берёт первый. Stack берёт последний: Push и Pop.\n>var set = new HashSet<int>();\n>set.Add(5);\n>var q = new Queue<string>();\n>q.Enqueue(\"a\");\n>var s = new Stack<int>();\n>s.Push(1);", listOf(
+        type("Создай множество целых", "var set = new HashSet<int>();"),
+        type("Добавь 5 в множество", "set.Add(5);"),
+        type("Создай очередь строк", "var q = new Queue<string>();"),
+        type("Положи a в очередь", "q.Enqueue(\"a\");"),
+        type("Возьми первый из очереди", "var x = q.Dequeue();"),
+        type("Положи 1 в стек", "s.Push(1);")
+    )),
+    Lesson("LINQ: группировка и агрегаты", "LINQ умеет считать и группировать. Sum, Average, Max, Min считают по числам, Count считает элементы, GroupBy собирает группы по ключу, Any проверяет наличие, First берёт первый.\n>using System.Linq;\n>int total = nums.Sum();\n>double avg = nums.Average();\n>var groups = words.GroupBy(w => w.Length);\n>bool has = nums.Any(n => n > 5);", listOf(
+        type("Подключи LINQ", "using System.Linq;"),
+        type("Посчитай сумму nums", "int total = nums.Sum();"),
+        type("Найди среднее nums", "double avg = nums.Average();"),
+        type("Сгруппируй слова по длине", "var groups = words.GroupBy(w => w.Length);"),
+        type("Проверь, есть ли число больше 5", "bool has = nums.Any(n => n > 5);"),
+        type("Возьми первый элемент", "var first = nums.First();")
     ))
 ))
