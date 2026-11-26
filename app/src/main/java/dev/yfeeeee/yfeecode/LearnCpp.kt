@@ -177,5 +177,21 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Используй пространство std", "using namespace std;"),
         type("Вызови cout с префиксом", "std::cout"),
         type("Постоянная pi равная 3.14 на этапе компиляции", "constexpr double pi = 3.14;")
+    )),
+    Lesson("Потоки: std::thread", "Поток выполняет функцию параллельно с главной программой. join ждёт его завершения. Если два потока меняют одну переменную, нужен mutex: lock_guard закрывает доступ на время блока. При сборке добавь флаг -pthread.\n>#include <thread>\n>#include <mutex>\n>std::thread t(work);\n>t.join();\n>std::mutex m;\n>std::lock_guard<std::mutex> lock(m);", listOf(
+        type("Подключи thread", "#include <thread>"),
+        type("Подключи mutex", "#include <mutex>"),
+        type("Запусти функцию work в потоке t", "std::thread t(work);"),
+        type("Дождись завершения потока t", "t.join();"),
+        type("Создай мьютекс m", "std::mutex m;"),
+        type("Закрой доступ на время блока", "std::lock_guard<std::mutex> lock(m);")
+    )),
+    Lesson("Время и случайные числа", "chrono измеряет время, random даёт качественные случайные числа. mt19937 это генератор, uniform_int_distribution задаёт диапазон. this_thread::sleep_for делает паузу.\n>#include <chrono>\n>#include <random>\n>std::mt19937 gen(std::random_device{}());\n>std::uniform_int_distribution<int> d(1, 6);\n>int x = d(gen);\n>std::this_thread::sleep_for(std::chrono::seconds(1));", listOf(
+        type("Подключи chrono", "#include <chrono>"),
+        type("Подключи random", "#include <random>"),
+        type("Создай генератор gen", "std::mt19937 gen(std::random_device{}());"),
+        type("Задай диапазон от 1 до 6", "std::uniform_int_distribution<int> d(1, 6);"),
+        type("Получи число x", "int x = d(gen);"),
+        type("Пауза на 1 секунду", "std::this_thread::sleep_for(std::chrono::seconds(1));")
     ))
 ))
