@@ -614,7 +614,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
             }
         }
         val dynamic = TermHints.suggest(input, term.mode, term.cwd, history)
-        val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "get ", "run ", "mod ", "token ")
+        val quick = if (term.mode == TermMode.SH) listOf("ls", "ls -la", "pwd", "cd ..", "cd ~", "help", "get ", "run ", "log", "mod ", "token ")
             else listOf("print()", "import os", "import asyncio", "dir()", "help()", "exit()")
         Row(Modifier.fillMaxWidth().background(Color(0xFF160707)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp)) {
             if (dynamic.isNotEmpty()) {

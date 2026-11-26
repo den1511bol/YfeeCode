@@ -60,7 +60,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -141,6 +141,14 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                         print("Сохранено: ${dest.name} ($n байт)")
                     } catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
+                return
+            }
+            cmd == "log" || cmd.startsWith("log ") -> {
+                // log [N] — last N lines of the bot log (default 30)
+                val n = cmd.removePrefix("log").trim().toIntOrNull()?.coerceIn(1, 500) ?: 30
+                val f = store.logFile
+                if (!f.exists() || f.length() == 0L) print("Лог пуст: запусти бота кнопкой ▶ или командой run файл.py")
+                else print(f.readText().takeLast(60000).trimEnd('\n').split("\n").takeLast(n).joinToString("\n"))
                 return
             }
             cmd == "stop" -> { stopAll(); return }
