@@ -193,5 +193,21 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Задай диапазон от 1 до 6", "std::uniform_int_distribution<int> d(1, 6);"),
         type("Получи число x", "int x = d(gen);"),
         type("Пауза на 1 секунду", "std::this_thread::sleep_for(std::chrono::seconds(1));")
+    )),
+    Lesson("STL: stack, queue, deque", "stack работает по принципу последним пришёл, первым ушёл: push кладёт, top смотрит верх, pop убирает. queue работает по очереди: front смотрит первый, push кладёт в конец. deque это двусторонняя очередь: push_front и push_back.\n>#include <stack>\n>std::stack<int> s;\n>s.push(5);\n>int x = s.top();\n>s.pop();\n>std::queue<int> q;\n>q.push(1);", listOf(
+        type("Подключи stack", "#include <stack>"),
+        type("Создай стек целых s", "std::stack<int> s;"),
+        type("Положи 5 в стек", "s.push(5);"),
+        type("Посмотри верхний элемент стека", "int x = s.top();"),
+        type("Убери верхний элемент", "s.pop();"),
+        type("Создай очередь целых q", "std::queue<int> q;")
+    )),
+    Lesson("STL: unordered_map и pair", "unordered_map хранит пары ключ-значение с быстрым поиском. Квадратные скобки добавляют или меняют значение, count проверяет наличие ключа, erase удаляет. pair хранит два значения вместе: first и second.\n>#include <unordered_map>\n>std::unordered_map<std::string, int> m;\n>m[\"a\"] = 1;\n>if (m.count(\"a\")) {}\n>for (auto& p : m) {}\n>std::pair<int, int> p = {1, 2};", listOf(
+        type("Подключи unordered_map", "#include <unordered_map>"),
+        type("Создай словарь строка в число", "std::unordered_map<std::string, int> m;"),
+        type("Запиши по ключу a значение 1", "m[\"a\"] = 1;"),
+        type("Проверь наличие ключа a", "if (m.count(\"a\")) {}"),
+        type("Удали ключ a", "m.erase(\"a\");"),
+        type("Создай пару чисел", "std::pair<int, int> p = {1, 2};")
     ))
 ))
