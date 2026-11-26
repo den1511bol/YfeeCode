@@ -209,5 +209,21 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Ловить команду /start", "bot.onText(/\\/start/, (msg) => {"),
         type("Ответь в тот же чат", "bot.sendMessage(msg.chat.id, \"Привет\")"),
         type("Прочитай токен из окружения", "process.env.TOKEN")
+    )),
+    Lesson("DOM: создание элементов", "JavaScript умеет создавать элементы на лету. createElement делает тег, textContent задаёт текст, appendChild добавляет в страницу, remove убирает. Так строят списки задач и карточки.\n>const li = document.createElement(\"li\")\n>li.textContent = \"Купить хлеб\"\n>list.appendChild(li)\n>li.remove()", listOf(
+        type("Создай элемент li", "const li = document.createElement(\"li\")"),
+        type("Задай текст элемента", "li.textContent = \"Купить хлеб\""),
+        type("Добавь li в список list", "list.appendChild(li)"),
+        type("Удали элемент li", "li.remove()"),
+        type("Добавь класс done", "li.classList.add(\"done\")"),
+        type("Найди элемент с id list", "document.getElementById(\"list\")")
+    )),
+    Lesson("localStorage: память браузера", "localStorage хранит строки между запусками страницы. setItem записывает, getItem читает. Объекты и массивы превращают в строку через JSON.stringify и обратно через JSON.parse.\n>localStorage.setItem(\"name\", \"Аня\")\n>const n = localStorage.getItem(\"name\")\n>localStorage.setItem(\"list\", JSON.stringify(arr))\n>const arr = JSON.parse(localStorage.getItem(\"list\"))", listOf(
+        type("Запиши name в память", "localStorage.setItem(\"name\", \"Аня\")"),
+        type("Прочитай name из памяти", "const n = localStorage.getItem(\"name\")"),
+        type("Сохрани массив arr как строку", "localStorage.setItem(\"list\", JSON.stringify(arr))"),
+        type("Прочитай массив обратно", "const arr = JSON.parse(localStorage.getItem(\"list\"))"),
+        type("Удали ключ name", "localStorage.removeItem(\"name\")"),
+        type("Очисти всю память", "localStorage.clear()")
     ))
 ))
