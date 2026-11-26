@@ -99,6 +99,7 @@ object Linux {
                 "termux-clipboard-set" to "#!/bin/sh\n# Developer: @yfeeeee. Then press the Buffer button in the Linux tab.\ncat > /work/.yfee_clip\necho 'Скопировано. Нажми кнопку «Буфер» во вкладке Linux.' >&2\n",
                 "termux-clipboard-get" to "#!/bin/sh\n# Press the Buffer button in the Linux tab first.\ncat /work/.yfee_clipin 2>/dev/null\n",
                 "termux-open" to "#!/bin/sh\n[ -z \"\$1\" ] && { echo 'termux-open файл: копирует файл в /sdcard/Download'; exit 1; }\ncp \"\$1\" /sdcard/Download/ && echo \"Файл в /sdcard/Download/\$(basename \"\$1\")\"\n",
+                "yfee-sshd" to "#!/bin/sh\n# SSH-сервер на порту 8022. Developer: @yfeeeee\ncommand -v sshd >/dev/null || apk add --no-cache openssh || exit 1\nssh-keygen -A\ngrep -q '^PermitRootLogin yes' /etc/ssh/sshd_config || echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config\n[ -f /root/.pw_set ] || { echo 'Задай пароль для root:'; passwd root && touch /root/.pw_set; }\npkill sshd 2>/dev/null\n/usr/sbin/sshd -p 8022 -o UsePAM=no && echo 'sshd запущен. Подключение: ssh -p 8022 root@АДРЕС_ТЕЛЕФОНА'\nip addr 2>/dev/null | grep 'inet ' | grep -v 127.0.0.1\n",
                 "termux-toast" to "#!/bin/sh\necho \"[toast] \$*\"\n"
             )
             for ((n, t) in scr) File(bin, n).also { it.writeText(t); it.setExecutable(true, false) }
