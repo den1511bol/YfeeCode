@@ -237,7 +237,11 @@ object Practices {
             Practice("cs14", "Запись в файл", "Запиши слово в файл a.txt через File.WriteAllText.", "", Lang.CSHARP,
                 listOf(must("""File\.WriteAllText\s*\(\s*"a\.txt"(?:)""", "Нужно: File.WriteAllText(\"a.txt\", ...);"))),
             Practice("cs15", "record", "Объяви record Point с целыми X и Y.", "", Lang.CSHARP,
-                listOf(must("""record\s+Point\s*\(""", "Нужно: record Point(int X, int Y);"), must("""int\s+X""", "Нужен параметр int X"), must("""int\s+Y""", "Нужен параметр int Y")))
+                listOf(must("""record\s+Point\s*\(""", "Нужно: record Point(int X, int Y);"), must("""int\s+X""", "Нужен параметр int X"), must("""int\s+Y""", "Нужен параметр int Y"))),
+            Practice("cs16", "JSON", "Преврати объект user в строку JSON через JsonSerializer.Serialize.", "", Lang.CSHARP,
+                listOf(must("""JsonSerializer\.Serialize\s*\(""", "Нужен JsonSerializer.Serialize(user)"))),
+            Practice("cs17", "HashSet", "Создай HashSet<int> и добавь в него число 5 через Add.", "", Lang.CSHARP,
+                listOf(must("""HashSet\s*<\s*int\s*>""", "Нужен HashSet<int>"), must("""\.Add\s*\(\s*5\s*\)""", "Добавь число: set.Add(5);")))
         )
     )
 }
