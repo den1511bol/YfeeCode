@@ -237,3 +237,4 @@
 - Сессия v2-13: ревизия изменений перед слиянием, мелкая правка Tab. @yfeeeee
 - Сессия v2-14: dev влит в main одним обновлением. @yfeeeee
 - Сессия v2-15: Linux: yfee-venv (виртуальное окружение) и yfee-keepalive (перезапуск упавшего бота). @yfeeeee
+- Сессия v2-16: Linux: yfee-pg start|stop|status|psql (PostgreSQL, не проверено на устройстве). @yfeeeee

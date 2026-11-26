@@ -29,7 +29,7 @@
 - [x] 17. (ревизия сделана: экранирование строк, типы, импорты проверены) Ревизия: перечитай `git diff main..dev` по Kotlin-файлам, найди ошибки компиляции (скобки, импорты, `$`, типы) и исправь.
 - [x] 18. Влей dev в main (`git checkout main && git merge --ff-only dev` или merge), push main, дождись сборки (gh run list --workflow build.yml --limit 1; ждать до успеха). Красная: `gh run view <id> --log-failed | grep -E " e: |error:"`, исправь и повтори.
 - [x] 18b. Linux: скрипты `yfee-venv имя` (создать и подключить виртуальное окружение Python) и `yfee-keepalive команда...` (перезапускать команду, если она упала, с паузой 3 с; для ботов).
-- [ ] 18c. Linux: `yfee-pg start|stop|status|psql` (установка postgresql при необходимости, initdb в /root/pgdata, pg_ctl, под proot без проверки).
+- [x] 18c. Linux: `yfee-pg start|stop|status|psql` (установка postgresql при необходимости, initdb в /root/pgdata, pg_ctl, под proot без проверки).
 - [ ] 18d. Дописать новые команды в yfee-help, HelpScreen.kt и README.md.
 - [ ] 19. (ПОВТОРНОЕ СЛИЯНИЕ после 18b-18d: если эти пункты выполнены, влей dev в main, дождись зелёной сборки; если красная, почини.) Если сборка красная или были правки: довести до зелёной. Если зелёная: удали OVERNIGHT.md и ветку dev не нужно, просто небольшая проверка.
 - [ ] 20. Финал: НЕ ставь напоминаний. Отправь пользователю SendUserMessage подробный итог по-русски (что добавлено, как обновиться, что не проверено на телефоне) и ссылку на последнюю успешную сборку (gh run list --workflow build.yml --status success --limit 1 --json url).
