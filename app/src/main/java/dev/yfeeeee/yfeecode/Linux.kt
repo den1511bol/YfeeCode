@@ -76,6 +76,8 @@ object Linux {
         return args to env
     }
 
+    fun hasDotnet(ctx: Context) = File(root(ctx), "usr/bin/dotnet").exists() || File(root(ctx), "usr/lib/dotnet/dotnet").exists()
+
     fun hasGpp(ctx: Context) = File(root(ctx), "usr/bin/g++").exists()
 
     fun exec(ctx: Context, store: FileStore, cwd: File, cmd: String, onProc: (Process?) -> Unit = {}, say: (String) -> Unit) {

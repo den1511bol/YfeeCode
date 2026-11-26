@@ -60,12 +60,21 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup (поставить Linux и инструменты), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
                     try { Linux.install(ctx) { print(it) } }
                     catch (e: Exception) { print("Ошибка установки: ${e.message}") }
+                }
+                return
+            }
+            cmd == "linux dotnet" -> {
+                // .NET SDK from the Alpine repository: lets the play button run C# offline
+                thread {
+                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache dotnet8-sdk icu-libs", { proc = it }) { print(it) }
+                        print(if (Linux.hasDotnet(ctx)) "Готово: .NET установлен, кнопка ▶ на .cs теперь работает офлайн" else "Не удалось поставить .NET (пакет dotnet8-sdk недоступен)") }
+                    catch (e: Exception) { print("Ошибка: ${e.message}") }
                 }
                 return
             }
@@ -174,6 +183,20 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             Lang.CPP, Lang.CSHARP -> {
                 val lang = Lang.fromName(f.name)
+                if (lang == Lang.CSHARP && Linux.installed(ctx) && Linux.hasDotnet(ctx)) {
+                    print("Сборка ${f.name} (.NET, офлайн), первый запуск может занять до минуты...")
+                    thread {
+                        try {
+                            val q = "'" + f.name.replace("'", "'\\''") + "'"
+                            val proj = "<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable><InvariantGlobalization>true</InvariantGlobalization></PropertyGroup></Project>"
+                            val cmdLine = "d=/tmp/yfeecs; mkdir -p \$d && cp $q \$d/Program.cs && cd \$d && " +
+                                "[ -f app.csproj ] || printf '%s' '" + proj + "' > app.csproj; " +
+                                "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1 DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 DOTNET_gcServer=0; dotnet run -v q"
+                            Linux.exec(ctx, store, f.parentFile ?: cwd, cmdLine, { proc = it }) { print(it) }
+                        } catch (e: Exception) { print("Ошибка: ${e.message}") }
+                    }
+                    return
+                }
                 if (lang == Lang.CPP && Linux.installed(ctx) && Linux.hasGpp(ctx)) {
                     print("Компиляция ${f.name} (g++, офлайн)...")
                     thread {
