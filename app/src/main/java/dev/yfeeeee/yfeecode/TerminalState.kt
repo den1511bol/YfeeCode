@@ -97,6 +97,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
                 return
             }
+            cmd == "lx" -> { print("Использование: lx команда (например: lx apk add git)"); return }
             cmd.startsWith("lx ") -> {
                 val c = cmd.removePrefix("lx ").trim()
                 thread {
@@ -155,6 +156,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         thread {
             try {
                 val p = ProcessBuilder("sh", "-c", cmd).directory(cwd).redirectErrorStream(true).start()
+                proc = p // «stop» теперь останавливает и обычные команды
                 p.inputStream.bufferedReader().forEachLine { print(it) }
                 p.waitFor()
             } catch (e: Exception) { print("Ошибка: ${e.message}") }
