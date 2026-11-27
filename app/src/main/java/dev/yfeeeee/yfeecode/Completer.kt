@@ -81,31 +81,84 @@ object Completer {
             "try" to "try {\n  |\n} catch (e) {\n  console.error(e);\n}",
             "fetch" to "const res = await fetch(\"|\");\nconst data = await res.json();",
             "class" to "class | {\n  constructor() {\n  }\n}",
-            "af" to "const | = () => {\n  \n};"
+            "af" to "const | = () => {\n  \n};",
+            "lsget" to "const v = JSON.parse(localStorage.getItem(\"|key\") || \"null\");",
+            "lsset" to "localStorage.setItem(\"|key\", JSON.stringify(value));",
+            "click" to "document.querySelector(\"|#id\").addEventListener(\"click\", () => {\n  \n});",
+            "qs" to "const el = document.querySelector(\"|.class\");",
+            "qsa" to "document.querySelectorAll(\"|.class\").forEach((el) => {\n  \n});",
+            "tmo" to "setTimeout(() => {\n  |\n}, 1000);",
+            "int" to "setInterval(() => {\n  |\n}, 1000);",
+            "map" to "const result = |arr.map((x) => x * 2);",
+            "filter" to "const result = |arr.filter((x) => x > 0);",
+            "fe" to "|arr.forEach((x) => {\n  \n});",
+            "tpl" to "`|Привет, \${name}`",
+            "async" to "async function |name() {\n  \n}",
+            "post" to "const res = await fetch(\"|url\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/json\" },\n  body: JSON.stringify({}),\n});"
         ),
         Lang.HTML to mapOf(
             "html" to "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"utf-8\">\n    <title>|</title>\n</head>\n<body>\n    \n</body>\n</html>\n",
             "ul" to "<ul>\n    <li>|</li>\n</ul>",
             "a" to "<a href=\"|\"></a>",
-            "img" to "<img src=\"|\">"
+            "img" to "<img src=\"|\">",
+            "form" to "<form>\n    <input type=\"text\" name=\"|name\" placeholder=\"Имя\">\n    <button type=\"submit\">Отправить</button>\n</form>",
+            "btn" to "<button type=\"button\" id=\"|btn\">Нажми</button>",
+            "input" to "<input type=\"text\" id=\"|id\" placeholder=\"Введите текст\">",
+            "table" to "<table>\n    <tr><th>|Заголовок</th><th>Колонка</th></tr>\n    <tr><td></td><td></td></tr>\n</table>",
+            "nav" to "<nav>\n    <a href=\"#\">|Главная</a>\n    <a href=\"#\">О нас</a>\n</nav>",
+            "meta" to "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+            "link" to "<link rel=\"stylesheet\" href=\"|style.css\">",
+            "script" to "<script src=\"|script.js\"></script>",
+            "div" to "<div class=\"|\">\n    \n</div>",
+            "sel" to "<select>\n    <option value=\"1\">|Один</option>\n    <option value=\"2\">Два</option>\n</select>"
         ),
         Lang.CSS to mapOf(
             "flex" to "display: flex;\njustify-content: center;\nalign-items: center;|",
-            "card" to ".card {\n    padding: 12px;\n    border-radius: 12px;\n    |\n}"
+            "card" to ".card {\n    padding: 12px;\n    border-radius: 12px;\n    |\n}",
+            "grid" to "display: grid;\ngrid-template-columns: repeat(|3, 1fr);\ngap: 12px;",
+            "center" to "display: flex;\njustify-content: center;\nalign-items: center;\nmin-height: 100vh;|",
+            "media" to "@media (max-width: 600px) {\n    |\n}",
+            "shadow" to "box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);|",
+            "anim" to "@keyframes |name {\n    from { opacity: 0; }\n    to { opacity: 1; }\n}",
+            "trans" to "transition: all 0.3s ease;|",
+            "var" to ":root {\n    --main: #b91c1c;\n}\n.x { color: var(--main);| }",
+            "hover" to ".|btn:hover {\n    opacity: 0.8;\n}",
+            "abs" to "position: absolute;\ntop: 0;\nleft: 0;|",
+            "reset" to "* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n}|"
         ),
         Lang.CPP to mapOf(
             "main" to "#include <iostream>\n\nint main() {\n    |\n    return 0;\n}",
             "for" to "for (int i = 0; i < |; i++) {\n    \n}",
             "cout" to "std::cout << | << std::endl;",
             "class" to "class | {\npublic:\n    \n};",
-            "vec" to "std::vector<int> | = {};"
+            "vec" to "std::vector<int> | = {};",
+            "cin" to "std::cin >> |x;",
+            "while" to "while (|) {\n    \n}",
+            "if" to "if (|) {\n    \n} else {\n    \n}",
+            "fn" to "int |name(int a, int b) {\n    return a + b;\n}",
+            "str" to "std::string |s = \"\";",
+            "map" to "std::map<std::string, int> |m;",
+            "rfor" to "for (auto& x : |v) {\n    \n}",
+            "sort" to "std::sort(|v.begin(), v.end());",
+            "struct" to "struct | {\n    int x;\n    int y;\n};",
+            "ptr" to "int* |p = nullptr;"
         ),
         Lang.CSHARP to mapOf(
             "main" to "using System;\n\nclass Program\n{\n    static void Main()\n    {\n        |\n    }\n}",
             "for" to "for (int i = 0; i < |; i++)\n{\n    \n}",
             "cw" to "Console.WriteLine(|);",
             "class" to "class |\n{\n    public string Name { get; set; }\n}",
-            "foreach" to "foreach (var x in |)\n{\n    \n}"
+            "foreach" to "foreach (var x in |)\n{\n    \n}",
+            "cr" to "var |x = Console.ReadLine();",
+            "if" to "if (|)\n{\n    \n}\nelse\n{\n    \n}",
+            "while" to "while (|)\n{\n    \n}",
+            "fn" to "static int |Name(int a, int b)\n{\n    return a + b;\n}",
+            "list" to "var |items = new List<string>();",
+            "dict" to "var |d = new Dictionary<string, int>();",
+            "try" to "try\n{\n    |\n}\ncatch (Exception e)\n{\n    Console.WriteLine(e.Message);\n}",
+            "switch" to "switch (|x)\n{\n    case 1:\n        break;\n    default:\n        break;\n}",
+            "linq" to "var r = |items.Where(x => x > 0).ToList();",
+            "prop" to "public string |Name { get; set; }"
         )
     )
 
