@@ -88,6 +88,8 @@ class MyMod(loader.Module):
         Template("Бот: aiogram 3 + .env", "bot_aiogram3.py", """
 # developer: @yfeeeee
 # Токен: в терминале выполни  env set BOT_TOKEN твой_токен
+# Нужен aiogram 3: вкладка Linux, pip install aiogram, запуск: lpy bot_aiogram3.py
+# (во встроенном Python стоит aiogram 2, там этот код не заработает)
 import asyncio
 import os
 

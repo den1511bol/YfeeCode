@@ -77,6 +77,8 @@ def _hint(e):
         return "Модуль Hikka с «from .. import loader» нельзя запускать как обычный скрипт. Проверь его командой: mod файл.py .команда"
     if "coroutine" in low and "never awaited" in low:
         return "Забыт await перед вызовом async-функции."
+    if isinstance(e, ImportError) and ("aiogram.filters" in msg or "aiogram.fsm" in msg or "cannot import name 'Router'" in msg or "cannot import name 'F'" in msg or "aiogram.enums" in msg):
+        return "Во встроенном Python стоит aiogram 2. Код на aiogram 3 запускай в Linux: вкладка Linux, pip install aiogram, затем в терминале команда lpy файл.py."
     if isinstance(e, ModuleNotFoundError):
         mod = getattr(e, "name", None) or msg
         return "Нет модуля «%s». Поставь его: вкладка Linux, затем pip install %s, и запусти файл кнопкой «Запуск в Linux»." % (mod, str(mod).split(".")[0])
@@ -111,7 +113,9 @@ def _load_env(path):
         if not os.path.exists(path):
             return
         n = 0
-        for line in open(path, encoding="utf-8").read().splitlines():
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        for line in text.splitlines():
             line = line.strip()
             if not line or line.startswith("#") or "=" not in line:
                 continue
