@@ -258,3 +258,4 @@
 - Сессия v4-6: шаблоны aiogram 3 + .env, Flask для Heroku, Hikka-модуль с конфигом и watcher
 - Сессия v4-7: сниппеты aiofsm, aiokb, tgkb, hinl
 - Сессия v4-8: новые подсказки ошибок (env, conflict, chat not found, parse entities, asyncio, Hikka)
+- Сессия v4-9: история команд в терминале уже была, пропущено
