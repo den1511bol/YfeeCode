@@ -475,6 +475,7 @@ fun EditorScreen(
                     MiniBtn("Aa", caseSens) { caseSens = !caseSens }
                     MiniBtn("заменить") { state.replaceCurrent(findQ, replQ, !caseSens) }
                     MiniBtn("все") { info = "заменено: " + state.replaceAllText(findQ, replQ, !caseSens) }
+                    MiniBtn("слово") { info = "переименовано целых слов: " + state.renameWord(findQ, replQ, !caseSens) }
                     MiniBtn("×") { findOpen = false }
                     Text(info, color = Color(0xFFE3B341), fontSize = 11.sp)
                 }

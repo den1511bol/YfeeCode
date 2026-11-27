@@ -145,6 +145,15 @@ class EditorState(val file: File, initial: String) {
         return n
     }
 
+    /** Renames a whole word everywhere (variable/function rename); does not touch longer words. Developer: @yfeeeee */
+    fun renameWord(q: String, r: String, ignoreCase: Boolean = false): Int {
+        if (q.isEmpty()) return 0
+        val rx = Regex("(?<![A-Za-z0-9_])" + Regex.escape(q) + "(?![A-Za-z0-9_])", if (ignoreCase) setOf(RegexOption.IGNORE_CASE) else emptySet())
+        val n = rx.findAll(text).count()
+        if (n > 0) { snapshot(); set(rx.replace(text) { r }, cursor) }
+        return n
+    }
+
     private val undo = ArrayDeque<Pair<String, Int>>()
     private val redo = ArrayDeque<Pair<String, Int>>()
 
