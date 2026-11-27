@@ -143,7 +143,15 @@ fun App(
                     },
                     goTerminal = { tab = 2 }
                 )
-                2 -> TerminalScreen(term, open.getOrNull(active)?.file, dir)
+                2 -> TerminalScreen(term, open.getOrNull(active)?.file, dir) { p, line ->
+                    val f = File(p).takeIf { it.isFile } ?: store.root.walkTopDown().firstOrNull { it.isFile && it.name == File(p).name }
+                    if (f != null) {
+                        val i = open.indexOfFirst { it.file == f }
+                        if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
+                        open[active].goToLine(line)
+                        tab = 1
+                    }
+                }
                 4 -> LinuxScreen(store)
                 else -> LearnScreen()
             }
@@ -583,7 +591,7 @@ private fun ToolIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, desc
 }
 
 @Composable
-fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
+fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (String, Int) -> Unit = { _, _ -> }) {
     var input by remember { mutableStateOf("") }
     // cursor distance from the end of the input line (0 = cursor at the end). Developer: @yfeeeee
     var gap by remember { mutableIntStateOf(0) }
@@ -618,7 +626,9 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                     l.startsWith("[") -> Color(0xFF79C0FF)
                     else -> Color(0xFFD0D7DE)
                 }
-                Text(l, color = c, fontFamily = FontFamily.Monospace, fontSize = 12.sp)
+                val tb = Regex("File \"([^\"]+)\", line (\\d+)").find(l)
+                Text(l, color = if (tb != null) Color(0xFF79C0FF) else c, fontFamily = FontFamily.Monospace, fontSize = 12.sp,
+                    modifier = if (tb != null) Modifier.clickable { onOpen(tb.groupValues[1], tb.groupValues[2].toInt()) } else Modifier)
             }
         }
         val dynamic = TermHints.suggest(input, term.mode, term.cwd, history)
