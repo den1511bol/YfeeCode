@@ -272,6 +272,22 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else print("Лог пуст. Запусти бота кнопкой ▶ или командой run файл.py")
                 return
             }
+            cmd.startsWith("find ") -> {
+                // find слово — search text in all project files (up to 40 hits)
+                val w = cmd.removePrefix("find ").trim()
+                if (w.isEmpty()) { print("Использование: find слово"); return }
+                var hits = 0
+                store.root.walkTopDown().filter { it.isFile && it.length() < 500_000 && !it.path.contains("/.") }.forEach { f ->
+                    if (hits >= 40) return@forEach
+                    try {
+                        f.readLines().forEachIndexed { n, l ->
+                            if (hits < 40 && l.contains(w, ignoreCase = true)) { hits++; print(f.relativeTo(store.root).path + ":" + (n + 1) + ": " + l.trim().take(80)) }
+                        }
+                    } catch (_: Exception) {}
+                }
+                print(if (hits == 0) "Ничего не найдено" else "Найдено строк: " + hits + (if (hits >= 40) " (показаны первые 40)" else ""))
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
