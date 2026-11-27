@@ -52,3 +52,4 @@
 - [x] N1. reqs файл.py (готово). [x] N2 tokencheck (готово).
 - [x] N3 procfile, gitignore (готово). [x] N4 справка (готово).
 - [x] N5 tree (готово). [x] N6 ver (готово).
+- [x] N7 addcmd (готово). [ ] N8 wc/head/tail.
