@@ -360,3 +360,4 @@
 - v5-N32: практика cs23 (LINQ Where и Select).
 - v5-N33: практика html21 (форма с email).
 - v5-N34: практика css21 (flex-контейнер).
+- v5-N35: практика py26 (sorted с lambda).
