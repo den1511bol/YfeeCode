@@ -10,7 +10,7 @@
 - [x] 4. LearnBots4.kt: aiogram 3: Bot, Dispatcher, Command, async/await, polling.
 - [x] 5. LearnBots5.kt: aiogram 3: фильтры, F-фильтры, inline-клавиатуры, callback, FSM.
 - [x] 6. LearnBots6.kt: хранение данных: json, sqlite3, .env и os.environ, логирование.
-- [ ] 7. LearnBots7.kt: модули Hikka/Heroku: структура, @loader.tds, strings, команды, utils.answer, get_args_raw.
+- [x] 7. LearnBots7.kt: модули Hikka/Heroku: структура, @loader.tds, strings, команды, utils.answer, get_args_raw.
 - [ ] 8. LearnBots8.kt: модули: ModuleConfig, watcher, self.db, inline-формы, тестирование командой mod.
 - [ ] 9. LearnBots9.kt: деплой на Heroku: Procfile, requirements.txt, runtime.txt, git push heroku, config:set, логи, webhook vs polling.
 - [ ] 10. BotsPractices.kt: 10-12 практик (regex-проверки) по всем темам + уроки-проекты (LearnBots10.kt: бот-заметки, модуль-счётчик).
