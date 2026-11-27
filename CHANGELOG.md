@@ -344,3 +344,4 @@
 - v5-N13: команда envinit (.env + защита в .gitignore).
 - v5-N14: команда grep слово файл.
 - v5-N15: команда check файл.py (синтаксис с русскими подсказками); подсказки терминала знают все новые команды.
+- v5-N16: сниппеты ikb, tbcb (telebot inline), aiocmd, aiocb, aiofsm (aiogram 2).
