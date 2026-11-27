@@ -145,7 +145,9 @@ object Practices {
             Practice("js24", "setTimeout", "Выведи в консоль текст через 1 секунду с помощью setTimeout.", "", Lang.JS,
                 listOf(must("""setTimeout\s*\(""", "Нужен setTimeout(...)"), must("""1000""", "Задержка 1 секунда это 1000 миллисекунд"))),
             Practice("js25", "fetch с try/catch", "Напиши async-функцию, которая через await fetch(url) получает ответ и ловит ошибку сети в try/catch.", "", Lang.JS,
-                listOf(must("""\basync\b""", "Нужна async-функция"), must("""await\s+fetch\s*\(""", "Используй await fetch(...)"), must("""\btry\b""", "Оберни вызов в try"), must("""\bcatch\b""", "Добавь блок catch")))
+                listOf(must("""\basync\b""", "Нужна async-функция"), must("""await\s+fetch\s*\(""", "Используй await fetch(...)"), must("""\btry\b""", "Оберни вызов в try"), must("""\bcatch\b""", "Добавь блок catch"))),
+            Practice("js26", "Деструктуризация и spread", "Из объекта user = {name, age} достань name через деструктуризацию, а затем создай копию объекта с новым полем через spread (три точки).", "", Lang.JS,
+                listOf(must("""(const|let)\s*\{[^}]*\}\s*=""", "Нужна деструктуризация: const { name } = user"), must("""\.\.\.\s*user""", "Скопируй объект через ...user")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
