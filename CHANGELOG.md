@@ -307,3 +307,4 @@
 - v5-U4: кнопка 💡 Подсказка в уроках, список тем для повтора в конце.
 - v5-U5b: подсказки HTML-тегов Telegram после < в строках Python/JS (blockquote, tg-emoji, tg-spoiler...).
 - v5-B2: log err / log find слово в терминале.
+- v5-B4: yfee-gitst, yfee-gitlog, yfee-gitpush.
