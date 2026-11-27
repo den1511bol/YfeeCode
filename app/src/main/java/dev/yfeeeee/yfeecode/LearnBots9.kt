@@ -30,7 +30,7 @@ fun botsLessons9(): List<Lesson> = listOf(
         build("Смотри логи в реальном времени", "heroku|logs|--tail", "log|30"),
         build("Передай переменные из .env", "yfee-heroku|config", "yfee-heroku|files")
     )),
-    Lesson("Webhook или polling", "Polling — бот сам спрашивает Telegram, подходит для процесса worker и тестов на телефоне.\nWebhook — Telegram сам присылает обновления на адрес приложения, нужен процесс web и сайт на Flask. На Heroku бесплатные процессы засыпают, поэтому webhook удобнее для web-приложений.\nПроверить, что бот работает: heroku ps.", listOf(
+    Lesson("Webhook или polling", "Polling — бот сам спрашивает Telegram, подходит для процесса worker и тестов на телефоне.\nWebhook — Telegram сам присылает обновления на адрес приложения, нужен процесс web и сайт на Flask. Webhook удобен, когда у приложения уже есть сайт.\nПроверить, что бот работает: heroku ps.", listOf(
         build("Тип процесса для polling", "worker", "web|cron"),
         build("Тип процесса для сайта и webhook", "web", "worker|bot"),
         type("Покажи запущенные процессы", "heroku ps"),
