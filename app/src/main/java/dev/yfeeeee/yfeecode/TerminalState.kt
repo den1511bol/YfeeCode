@@ -313,6 +313,25 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else print("Формат токена неверный. Должно быть: цифры, двоеточие, длинная строка. Проверь пробелы, переносы и лишние кавычки")
                 return
             }
+            cmd == "procfile" || cmd.startsWith("procfile ") -> {
+                // procfile [файл.py] — creates a Procfile for Heroku (worker: python файл.py)
+                val name = cmd.removePrefix("procfile").trim().ifEmpty { "main.py" }
+                val pf = File(cwd, "Procfile")
+                if (pf.exists()) { print("Procfile уже есть:"); print(pf.readText().trim()); return }
+                pf.writeText("worker: python " + name + "\n")
+                print("Создан Procfile: worker: python " + name)
+                return
+            }
+            cmd == "gitignore" -> {
+                // gitignore — adds token.txt, .env and caches to .gitignore so secrets do not reach GitHub
+                val gi = File(cwd, ".gitignore")
+                val have = if (gi.exists()) gi.readLines().map { it.trim() }.toSet() else emptySet()
+                val add = listOf("token.txt", ".env", "__pycache__/", "*.log", "*.session").filter { it !in have }
+                if (add.isEmpty()) { print(".gitignore уже защищает токены"); return }
+                gi.appendText((if (gi.exists() && gi.length() > 0 && !gi.readText().endsWith("\n")) "\n" else "") + add.joinToString("\n") + "\n")
+                print("Добавлено в .gitignore: " + add.joinToString(", "))
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
