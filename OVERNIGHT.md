@@ -49,4 +49,4 @@
 - [x] B17. Linux-скрипт yfee-clone <ссылка> [ветка]: клонирует (приватный репозиторий через токен, настроенный yfee-git-setup), создаёт venv, ставит requirements.txt (с понятными подсказками при ошибках сборки: gcc musl-dev python3-dev), подхватывает .env, спрашивает главный файл (main.py/bot.py/__main__.py ищет сам) и запускает через yfee-keepalive; yfee-pull для обновления и перезапуска. Добавить в yfee-help.
 
 Заметка к 10b: коммит апгрейда Python = 9747fab (build.gradle.kts, app/build.gradle.kts). Откат: git revert 9747fab (вернёт Chaquopy 16.0.0, Python 3.11, abiFilters arm64+armeabi-v7a и исходные install). yfee-python остаётся.
-- [x] N1. reqs файл.py (готово). [ ] N2 tokencheck.
+- [x] N1. reqs файл.py (готово). [x] N2 tokencheck (готово).

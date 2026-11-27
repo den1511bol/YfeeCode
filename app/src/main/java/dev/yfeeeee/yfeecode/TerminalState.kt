@@ -304,6 +304,15 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else { print("Поставь командой:"); print("pip install " + mods.joinToString(" ") { alias[it] ?: it }) }
                 return
             }
+            cmd == "tokencheck" -> {
+                // tokencheck — checks the format of token.txt (the token itself is never printed)
+                val f = File(cwd, "token.txt")
+                if (!f.isFile) { print("Нет файла token.txt в этой папке. Создай его и вставь токен от @BotFather"); return }
+                val t = f.readText().trim()
+                if (Regex("\\d{6,12}:[A-Za-z0-9_-]{30,}").matches(t)) print("Формат токена верный (id бота начинается с " + t.take(4) + "…). Токен не показываю")
+                else print("Формат токена неверный. Должно быть: цифры, двоеточие, длинная строка. Проверь пробелы, переносы и лишние кавычки")
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
