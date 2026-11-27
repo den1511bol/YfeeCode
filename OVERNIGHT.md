@@ -33,7 +33,7 @@
 - [x] B2 (log err, log find слово; кнопки в UI позже). Просмотр лога бота: поиск по логу, фильтр «только ошибки», кнопка «копировать».
 - [x] B3. Traceback кликабельный: в выводе ошибки «File "x.py", line N» нажатие открывает файл в редакторе на этой строке.
 - [x] B4. Git-помощники в Linux: yfee-gitpush (add, commit с сообщением, push), yfee-gitlog, yfee-gitst; подсказки в yfee-help.
-- [ ] B5. Мастер нового проекта: «Новый проект» (бот telebot / aiogram 3 / модуль Hikka / Flask для Heroku) создаёт папку с main-файлом, Procfile, requirements.txt, .gitignore, .env.
+- [x] B5 (команда new). Мастер нового проекта: «Новый проект» (бот telebot / aiogram 3 / модуль Hikka / Flask для Heroku) создаёт папку с main-файлом, Procfile, requirements.txt, .gitignore, .env.
 - [x] B6 (snip add|list|del). Свои сниппеты: пользователь сохраняет выделенный код как сниппет (имя) и вставляет по имени; хранение в SharedPreferences/файле.
 - [ ] B7. Редактор: переименование слова во всём файле (replace по целым словам), переход к определению def/class по тапу на имя + кнопка «назад» к месту.
 - [ ] B8. Тестер Hikka-модулей: mod файл.py .команда с аргументами и имитацией reply, self.db и config в песочнице (hikka_sandbox.py) — расширить и проверить на шаблонах.

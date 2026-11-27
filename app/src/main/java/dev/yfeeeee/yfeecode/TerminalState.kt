@@ -238,6 +238,28 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else print("Использование: theme red | theme green | theme light")
                 return
             }
+            cmd == "new" || cmd.startsWith("new ") -> {
+                // new telebot|aiogram|aiogram3|flask|hikka имя — project folder with main file, requirements, Procfile, .gitignore
+                val p = cmd.removePrefix("new").trim().split(Regex("\\s+"))
+                val kinds = mapOf("telebot" to 0, "aiogram" to 1, "aiogram3" to 4, "flask" to 5, "hikka" to 3)
+                val idx = kinds[p.getOrNull(0)]
+                val name = p.getOrNull(1)?.takeIf { Regex("[A-Za-z0-9_-]+").matches(it) }
+                if (idx == null || name == null) { print("Использование: new telebot|aiogram|aiogram3|flask|hikka имя_проекта"); return }
+                val dir = File(cwd, name)
+                if (dir.exists()) { print("Папка уже есть: " + name); return }
+                dir.mkdirs()
+                val t = Templates.all[idx]
+                val main = if (idx == 3) t.fileName else "main.py"
+                File(dir, main).writeText(t.body)
+                val req = mapOf(0 to "pyTelegramBotAPI", 1 to "aiogram==2.25.1", 4 to "aiogram>=3\npython-dotenv", 5 to "flask\ngunicorn", 3 to "")[idx] ?: ""
+                if (idx != 3) {
+                    File(dir, "requirements.txt").writeText(req + "\n")
+                    File(dir, "Procfile").writeText(if (idx == 5) "web: gunicorn main:app\n" else "worker: python main.py\n")
+                }
+                File(dir, ".gitignore").writeText("token.txt\n.env\n__pycache__/\n*.log\n")
+                print("Проект создан: " + name + " (файл " + main + "). Токен положи в token.txt. Войти: cd " + name)
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
