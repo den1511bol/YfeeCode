@@ -55,3 +55,4 @@
 - [x] N7 addcmd (готово). [x] N8 wc/head/tail (готово).
 - [x] N10 ip (готово). [x] N11 diff (готово).
 - [x] N12 open (готово).
+- [x] N13 envinit (готово).
