@@ -93,6 +93,12 @@ object Linux {
     fun installScripts(ctx: Context) {
         try {
             val bin = File(root(ctx), "usr/local/bin").also { it.mkdirs() }
+            // DNS must always work, otherwise pkg/pip/git fail (Developer: @yfeeeee)
+            val rc = File(root(ctx), "etc/resolv.conf")
+            if (!rc.exists() || rc.length() == 0L || !rc.readText().contains("nameserver")) {
+                rc.parentFile?.mkdirs()
+                rc.writeText("nameserver 1.1.1.1\nnameserver 8.8.8.8\n")
+            }
             val t = File(bin, "yfeecs")
             ctx.assets.open("yfeecs.sh").use { i -> t.outputStream().use { o -> i.copyTo(o) } }
             t.setExecutable(true, false)
