@@ -450,6 +450,8 @@ fun EditorScreen(
             MiniBtn("слово→") { state.wordRight() }
             MiniBtn("в начало") { state.fileStart() }
             MiniBtn("в конец") { state.fileEnd() }
+            MiniBtn("строка↑") { state.moveLine(-1) }
+            MiniBtn("строка↓") { state.moveLine(1) }
             MiniBtn("строка…") { gotoOpen = true }
             MiniBtn("символы") { symOpen = true }
             MiniBtn("отмена выд.") { state.clearSel() }

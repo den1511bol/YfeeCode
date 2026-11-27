@@ -2,8 +2,8 @@
 Цель: YfeeCode лучше Termux. 14 сессий по 10 минут. Работа в ветке dev (CI не собирает dev). Сессия 12 сливает dev в main (ff-only) и ждёт зелёную сборку, 13 чинит если красная, 14 финал (без нового напоминания, SendUserMessage по-русски с итогами и ссылкой на сборку).
 Правила: не ломать Updater.kt, app/yfecode.jks, applicationId, строку "Commit: <sha>" в build.yml, versionCode из GITHUB_RUN_NUMBER, AutoSpace.kt, TermHints.kt, WakeLock в BotService/LinuxService, шаг "Fetch proot". В Kotlin-строках `$` как `\$`. Kotlin локально не собрать: писать консервативно. Без вопросов, экономить лимит. Каждая сессия: ReadNotifications, поставить следующее напоминание, ОДИН пункт, коммит в dev, отметка [x].
 
-- [ ] 1. Редактор: подсветка парной скобки у курсора (EditorState + CodeEditor), мягко и безопасно.
-- [ ] 2. Редактор: кнопки «вверх/вниз» для перемещения строки (moveLineUp/Down) в мини-панели.
+- [x] 1. Редактор: подсветка парной скобки у курсора (EditorState + CodeEditor), мягко и безопасно.
+- [x] 2. Редактор: кнопки «вверх/вниз» для перемещения строки (moveLineUp/Down) в мини-панели.
 - [ ] 3. Терминал (TerminalState): команда `env` для токена бота (env set/list/del в файле .env проекта) и автоподхват .env при run.
 - [ ] 4. Linux-скрипты: yfee-update (pkg upgrade + проверка), yfee-ports (что слушает), yfee-tmux-подсказка; добавить в yfee-help.
 - [ ] 5. Heroku: yfee-heroku deploy (runtime.txt, app.json, .gitignore, Procfile) расширить.

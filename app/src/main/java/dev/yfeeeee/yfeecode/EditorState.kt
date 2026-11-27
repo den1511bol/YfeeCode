@@ -79,6 +79,27 @@ class EditorState(val file: File, initial: String) {
         snapshot(); set(text.substring(0, le) + "\n" + line + text.substring(le), cursor + line.length + 1)
     }
 
+    /** Moves the current line up (dir=-1) or down (dir=1). Developer: @yfeeeee */
+    fun moveLine(dir: Int) {
+        val ls = text.lastIndexOf('\n', cursor - 1) + 1
+        val le = text.indexOf('\n', cursor).let { if (it < 0) text.length else it }
+        val col = cursor - ls
+        if (dir < 0) {
+            if (ls == 0) return
+            val ps = text.lastIndexOf('\n', ls - 2) + 1
+            val prev = text.substring(ps, ls - 1)
+            val cur = text.substring(ls, le)
+            snapshot(); set(text.substring(0, ps) + cur + "\n" + prev + text.substring(le), ps + col.coerceAtMost(cur.length))
+        } else {
+            if (le >= text.length) return
+            val ne = text.indexOf('\n', le + 1).let { if (it < 0) text.length else it }
+            val next = text.substring(le + 1, ne)
+            val cur = text.substring(ls, le)
+            snapshot(); set(text.substring(0, ls) + next + "\n" + cur + text.substring(ne), ls + next.length + 1 + col.coerceAtMost(cur.length))
+        }
+        anchor = null
+    }
+
     fun goToLine(n: Int) {
         val lines = text.split("\n")
         val k = (n - 1).coerceIn(0, lines.size - 1)
