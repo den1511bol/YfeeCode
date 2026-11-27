@@ -21,6 +21,6 @@
 - [x] 9. Подсказки/сниппеты (Completer.kt/Hints.kt): добавить сниппеты для Hikka-модуля и aiogram, если структура позволяет простую вставку.
 - [x] 10. Обновить HelpScreen.kt, README.md, CHANGELOG.md, yfee-help под всё новое.
 - [x] 11. Ревизия: перечитай `git diff main..dev` по Kotlin и Python, найди ошибки компиляции и исправь.
-- [ ] 12. Влей dev в main (`git checkout main && git pull && git merge --ff-only dev`), push main, дождись сборки (gh run list --workflow build.yml --limit 1). Красная: `gh run view <id> --log-failed | grep -E " e: |error:"`, исправь, повтори.
+- [x] 12. Влей dev в main (`git checkout main && git pull && git merge --ff-only dev`), push main, дождись сборки (gh run list --workflow build.yml --limit 1). Красная: `gh run view <id> --log-failed | grep -E " e: |error:"`, исправь, повтори.
 - [ ] 13. Если сборка красная: довести до зелёной. Если зелёная: ничего не делай.
 - [ ] 14. Финал: НЕ ставь напоминаний. SendUserMessage с подробным итогом по-русски (что добавлено, как обновиться, что не проверено на телефоне) и ссылкой на последнюю успешную сборку (gh run list --workflow build.yml --status success --limit 1 --json url).
