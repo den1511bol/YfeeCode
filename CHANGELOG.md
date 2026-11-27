@@ -308,3 +308,4 @@
 - v5-U5b: подсказки HTML-тегов Telegram после < в строках Python/JS (blockquote, tg-emoji, tg-spoiler...).
 - v5-B2: log err / log find слово в терминале.
 - v5-B4: yfee-gitst, yfee-gitlog, yfee-gitpush.
+- v5-B17: yfee-clone URL.
