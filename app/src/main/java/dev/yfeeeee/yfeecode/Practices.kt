@@ -237,7 +237,15 @@ object Practices {
             Practice("cpp17", "Словарь", "Создай unordered_map из string в int и запиши значение 1 по ключу a.", "", Lang.CPP,
                 listOf(must("""unordered_map\s*<\s*(std::)?string\s*,\s*int\s*>""", "Нужен unordered_map<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1""", "Запиши m[\"a\"] = 1;"))),
             Practice("cpp18", "constexpr", "Объяви constexpr функцию sq, которая возвращает квадрат числа.", "", Lang.CPP,
-                listOf(must("""constexpr\s+int\s+sq\s*\(""", "Нужно: constexpr int sq(int x)"), must("""\breturn\b""", "Функция должна вернуть значение")))
+                listOf(must("""constexpr\s+int\s+sq\s*\(""", "Нужно: constexpr int sq(int x)"), must("""\breturn\b""", "Функция должна вернуть значение"))),
+            Practice("cpp19", "vector", "Создай std::vector<int> v и добавь в него 3 числа через push_back.", "", Lang.CPP,
+                listOf(must("""vector\s*<\s*int\s*>""", "Нужен std::vector<int>"), must("""push_back\s*\(""", "Добавь элементы через push_back(...)"))),
+            Practice("cpp20", "Цикл range-for", "Выведи все элементы вектора v через цикл for (auto x : v).", "", Lang.CPP,
+                listOf(must("""for\s*\(\s*(const\s+)?auto\s*&?\s*\w+\s*:\s*v\s*\)""", "Нужно: for (auto x : v)"), must("""cout""", "Выведи через std::cout"))),
+            Practice("cpp21", "Ссылка", "Напиши функцию inc, которая принимает int по ссылке и увеличивает его на 1.", "", Lang.CPP,
+                listOf(must("""void\s+inc\s*\(\s*int\s*&""", "Нужно: void inc(int& x)"), must("""\+\+|\+=\s*1""", "Увеличь значение на 1"))),
+            Practice("cpp22", "unique_ptr", "Создай умный указатель std::unique_ptr<int> через make_unique со значением 5.", "", Lang.CPP,
+                listOf(must("""unique_ptr\s*<\s*int\s*>""", "Нужен std::unique_ptr<int>"), must("""make_unique""", "Создай через std::make_unique<int>(5)")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
@@ -275,7 +283,15 @@ object Practices {
             Practice("cs17", "HashSet", "Создай HashSet<int> и добавь в него число 5 через Add.", "", Lang.CSHARP,
                 listOf(must("""HashSet\s*<\s*int\s*>""", "Нужен HashSet<int>"), must("""\.Add\s*\(\s*5\s*\)""", "Добавь число: set.Add(5);"))),
             Practice("cs18", "Паттерн is", "Проверь, что obj является строкой, и сразу положи её в переменную s через is.", "", Lang.CSHARP,
-                listOf(must("""\bis\s+string\s+\w+""", "Нужно: obj is string s")))
+                listOf(must("""\bis\s+string\s+\w+""", "Нужно: obj is string s"))),
+            Practice("cs19", "Dictionary", "Создай Dictionary<string, int> и запиши в него ключ a со значением 1.", "", Lang.CSHARP,
+                listOf(must("""Dictionary\s*<\s*string\s*,\s*int\s*>""", "Нужен Dictionary<string, int>"), must("""\[\s*"a"\s*\]\s*=\s*1|\.Add\s*\(\s*"a"\s*,\s*1\s*\)""", "Запиши: d[\"a\"] = 1;"))),
+            Practice("cs20", "Where", "Отбери из списка nums только числа больше 2 через LINQ Where.", "", Lang.CSHARP,
+                listOf(must("""\.Where\s*\(""", "Нужен nums.Where(...)"), must("""=>""", "Условие пишется лямбдой x => x > 2"))),
+            Practice("cs21", "try/catch", "Оберни int.Parse(text) в try и поймай FormatException.", "", Lang.CSHARP,
+                listOf(must("""try\s*\{""", "Нужен блок try { }"), must("""catch\s*\(\s*FormatException""", "Нужен catch (FormatException e)"), must("""int\.Parse\s*\(""", "Используй int.Parse(...)"))),
+            Practice("cs22", "async Task", "Напиши async-метод Run типа Task, который ждёт Task.Delay(100).", "", Lang.CSHARP,
+                listOf(must("""async\s+Task\s+Run""", "Нужно: async Task Run()"), must("""await\s+Task\.Delay\s*\(""", "Дождись: await Task.Delay(100);")))
         )
     )
 }
