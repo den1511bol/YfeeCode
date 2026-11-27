@@ -585,6 +585,8 @@ private fun ToolIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, desc
 @Composable
 fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
     var input by remember { mutableStateOf("") }
+    // cursor distance from the end of the input line (0 = cursor at the end). Developer: @yfeeeee
+    var gap by remember { mutableIntStateOf(0) }
     val history = remember { mutableStateListOf<String>() }
     var hIdx by remember { mutableIntStateOf(0) }
     val listState = rememberLazyListState()
@@ -626,7 +628,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
             if (dynamic.isNotEmpty()) {
                 // tapping a suggestion only writes the word into the input line, nothing is sent
                 dynamic.forEach { q ->
-                    TextButton(onClick = { input = TermHints.apply(input, q) }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
+                    TextButton(onClick = { input = TermHints.apply(input, q); gap = 0 }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
                         Text(q, color = Color(0xFFF48972), fontFamily = FontFamily.Monospace, fontSize = 13.sp)
                     }
                 }
@@ -634,6 +636,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
                 quick.forEach { q ->
                     TextButton(onClick = {
                         input = if (input.isBlank()) q else if (input.endsWith(" ")) input + q else "$input $q"
+                        gap = 0
                     }, contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp)) {
                         Text(q.trim(), color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 12.sp)
                     }
@@ -641,31 +644,57 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File) {
             }
         }
         Text(
-            term.prompt + input + "▏", color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
+            term.prompt + input.substring(0, (input.length - gap).coerceIn(0, input.length)) + "▏" + input.substring((input.length - gap).coerceIn(0, input.length)), color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
             modifier = Modifier.fillMaxWidth().background(Color(0xFF20090A)).padding(8.dp)
         )
         DevKeyboard(
             onText = { raw ->
                 val t = raw.replace("()", "(").replace("[]", "[").replace("{}", "{")
-                val e = if (term.mode == TermMode.PY && Settings.autoSpace) AutoSpace.apply(input, "", t, Lang.PYTHON) else null
-                input = if (e != null) input.dropLast(e.del) + e.ins else input + t
+                val p = (input.length - gap).coerceIn(0, input.length)
+                val before = input.substring(0, p)
+                val after = input.substring(p)
+                val closeOf = mapOf("(" to ")", "[" to "]", "{" to "}", "\"" to "\"", "'" to "'")
+                val isQuote = t == "\"" || t == "'"
+                if (t in setOf(")", "]", "}", "\"", "'") && after.startsWith(t)) {
+                    gap = (gap - 1).coerceAtLeast(0) // typed the closing char that is already there: jump over it
+                } else if (closeOf.containsKey(t) && !(isQuote && before.lastOrNull()?.isLetterOrDigit() == true)) {
+                    input = before + t + closeOf[t] + after // auto-close: cursor stays between the pair
+                    gap += 1
+                } else {
+                    val e = if (term.mode == TermMode.PY && Settings.autoSpace) AutoSpace.apply(before, after, t, Lang.PYTHON) else null
+                    input = (if (e != null) before.dropLast(e.del) + e.ins else before + t) + after
+                }
             },
             onCmd = { c ->
                 when (c) {
-                    Cmd.BACK -> input = input.dropLast(1)
+                    Cmd.BACK -> {
+                        val p = (input.length - gap).coerceIn(0, input.length)
+                        if (p > 0) {
+                            val l = input[p - 1]
+                            val r = input.getOrNull(p)
+                            val pairClose = mapOf('(' to ')', '[' to ']', '{' to '}', '"' to '"', '\'' to '\'')[l]
+                            if (pairClose != null && r == pairClose) {
+                                input = input.removeRange(p - 1, p + 1); gap = (gap - 1).coerceAtLeast(0)
+                            } else input = input.removeRange(p - 1, p)
+                        }
+                    }
+                    Cmd.LEFT -> gap = (gap + 1).coerceAtMost(input.length)
+                    Cmd.RIGHT -> gap = (gap - 1).coerceAtLeast(0)
+                    Cmd.HOME -> gap = input.length
+                    Cmd.END -> gap = 0
                     Cmd.ENTER -> {
                         if (input.isNotBlank()) history.add(input)
                         hIdx = history.size
-                        term.submit(input); input = ""
+                        term.submit(input); input = ""; gap = 0
                     }
                     Cmd.TAB -> if (term.mode == TermMode.SH) {
                         val r = tabComplete(input, term.cwd)
                         if (r.second.isNotEmpty()) term.print(r.second.joinToString("  "))
-                        input = r.first
-                    } else { input += "    " }
-                    Cmd.UP -> if (hIdx > 0) { hIdx--; input = history[hIdx] }
-                    Cmd.DOWN -> if (hIdx < history.size - 1) { hIdx++; input = history[hIdx] } else { hIdx = history.size; input = "" }
-                    Cmd.PASTE -> clip.getText()?.text?.let { input += it.replace("\n", " ") }
+                        input = r.first; gap = 0
+                    } else { input += "    "; gap = 0 }
+                    Cmd.UP -> if (hIdx > 0) { hIdx--; input = history[hIdx]; gap = 0 }
+                    Cmd.DOWN -> { if (hIdx < history.size - 1) { hIdx++; input = history[hIdx] } else { hIdx = history.size; input = "" }; gap = 0 }
+                    Cmd.PASTE -> clip.getText()?.text?.let { val p = (input.length - gap).coerceIn(0, input.length); input = input.substring(0, p) + it.replace("\n", " ") + input.substring(p) }
                     else -> {}
                 }
             }
