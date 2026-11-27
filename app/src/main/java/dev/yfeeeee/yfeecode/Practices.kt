@@ -167,7 +167,13 @@ object Practices {
             Practice("html16", "Обязательная почта", "Создай поле ввода почты (type=email), обязательное для заполнения.", "", Lang.HTML,
                 listOf(must("""<input[^>]*type\s*=\s*["\']email["\']""", "Нужен input с type=\"email\""), must("""\brequired\b""", "Добавь атрибут required"))),
             Practice("html17", "Раскрывающийся блок", "Сделай блок details с заголовком summary и текстом внутри.", "", Lang.HTML,
-                listOf(must("""<details""", "Нужен тег details"), must("""<summary""", "Нужен тег summary внутри details")))
+                listOf(must("""<details""", "Нужен тег details"), must("""<summary""", "Нужен тег summary внутри details"))),
+            Practice("html18", "Таблица", "Сделай таблицу table с одной строкой tr и двумя ячейками td.", "", Lang.HTML,
+                listOf(must("""<table""", "Нужен тег table"), must("""<tr""", "Нужна строка tr"), must("""<td[^>]*>.*</td>\s*<td""", "Нужны две ячейки td подряд"))),
+            Practice("html19", "Картинка со ссылкой", "Сделай ссылку a, внутри которой лежит картинка img с атрибутом alt.", "", Lang.HTML,
+                listOf(must("""<a[^>]*href""", "Нужна ссылка a с href"), must("""<img[^>]*alt\s*=""", "У картинки нужен alt"))),
+            Practice("html20", "Список ссылок", "Сделай меню: ul с тремя li, в каждом li ссылка a.", "", Lang.HTML,
+                listOf(must("""<ul""", "Нужен тег ul"), must("""<li[^>]*>\s*<a""", "В li нужна ссылка a")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
@@ -199,7 +205,13 @@ object Practices {
             Practice("css16", "Гибкий шрифт", "Задай заголовку h1 размер шрифта через функцию clamp.", "", Lang.CSS,
                 listOf(must("""h1\s*\{""", "Нужен селектор h1"), must("""font-size\s*:\s*clamp\s*\(""", "Используй font-size: clamp(...)"))),
             Practice("css17", "Тёмная тема", "Сделай медиа-запрос prefers-color-scheme: dark с тёмным фоном body.", "", Lang.CSS,
-                listOf(must("""prefers-color-scheme\s*:\s*dark""", "Нужен @media (prefers-color-scheme: dark)"), must("""background""", "Задай background")))
+                listOf(must("""prefers-color-scheme\s*:\s*dark""", "Нужен @media (prefers-color-scheme: dark)"), must("""background""", "Задай background"))),
+            Practice("css18", "Центрирование", "Отцентрируй содержимое блока .box по центру через flex: display, justify-content и align-items.", "", Lang.CSS,
+                listOf(must("""display\s*:\s*flex""", "Нужен display: flex"), must("""justify-content\s*:\s*center""", "Нужен justify-content: center"), must("""align-items\s*:\s*center""", "Нужен align-items: center"))),
+            Practice("css19", "Сетка", "Сделай сетку .grid из трёх равных колонок через display: grid и grid-template-columns.", "", Lang.CSS,
+                listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"))),
+            Practice("css20", "Наведение", "Сделай так, чтобы кнопка .btn меняла фон при наведении мыши через :hover.", "", Lang.CSS,
+                listOf(must("""\.btn\s*:hover""", "Нужен селектор .btn:hover"), must("""background""", "Измени background")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
