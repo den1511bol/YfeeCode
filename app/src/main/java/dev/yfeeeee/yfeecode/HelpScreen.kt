@@ -100,6 +100,7 @@ private val SECTIONS = listOf(
 • Новое: yfee-heroku (деплой бота на Heroku), yfee-doctor (диагностика, отчёт /work/yfee-doctor.txt), команда log [N] во встроенном терминале, mod файл.py без команды показывает команды модуля, клавиши ^Z ^L ^R ^A ^E ^W ^U, в редакторе кнопки ←слово / слово→ / в начало / в конец, автозакрытие HTML-тегов, сниппеты hcmd, hwatch, hcfg, aio, aiomsg, tgcb.
 • Новое v4: команда env (env set BOT_TOKEN значение, файл .env подхватывается при запуске бота), yfee-update, yfee-ports, yfee-heroku files / config, кнопки строка↑ / строка↓ в редакторе, шаблоны «aiogram 3 + .env», «Flask для Heroku», «Модуль с конфигом и watcher», сниппеты aiofsm, aiokb, tgkb, hinl, новые подсказки ошибок.
 • Новое v5: курс «Боты и Heroku» (45 уроков, 13 практик), Python 3.13 во встроенной среде, yfee-all (весь набор в Linux одной командой), yfee-python, автозакрытие скобок в терминале.
+• Сниппеты Python (набери слово целиком, нажми ⚡ над клавиатурой): quote, bq, bqx (цитата и сворачиваемая цитата), capq (подпись-цитата), emoji, bold, ital, under, strike, spoiler, link, mention, code, pre, esc (html.escape), sfile, sphoto, saudio, edit, reply, del, sleep, json, jsave, env, log, fstr, multi, tryx, dl, reqget, sql.
 • Кнопки A− / A+ меняют размер шрифта. В панели клавиш есть Ctrl, Alt, Esc, Tab, стрелки, Home, End, Del, F1-F12.
 • Разреши работу в фоне, когда Android спросит, и отключи экономию батареи для YfeeCode, иначе производитель телефона может закрыть приложение.
 • Чтобы выйти из сессии насовсем, напиши exit. Тогда фоновая служба выключится.
