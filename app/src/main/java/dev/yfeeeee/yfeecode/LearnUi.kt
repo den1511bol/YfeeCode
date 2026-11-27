@@ -213,6 +213,8 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
     val picked = remember { mutableStateListOf<Int>() }
     var input by remember { mutableStateOf("") }
     var result by remember { mutableStateOf<Boolean?>(null) }
+    var hint by remember { mutableStateOf("") }
+    val missed = remember { mutableStateListOf<String>() }
     val total = lesson.exercises.size
 
     BackHandler { onExit() }
@@ -225,13 +227,13 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
             else -> Checker.typed(input, ex)
         }
         result = ok
-        if (ok) solved++ else mistakes++
+        if (ok) solved++ else { mistakes++; missed.add(ex.prompt.lines().first().take(60)) }
     }
 
     fun next() {
         val cur = queue.removeAt(0)
         if (result == false) queue.add(cur)
-        picked.clear(); input = ""; result = null
+        picked.clear(); input = ""; result = null; hint = ""
         if (queue.isEmpty()) {
             gained = 10 + (total - mistakes).coerceAtLeast(0) * 2
             prog.complete(c.id, idx, gained)
@@ -319,6 +321,18 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                         }
                     }
                 }
+                if (result == null) {
+                    if (hint.isNotEmpty()) Text("💡 " + hint, color = Color(0xFFFDE68A), fontSize = 14.sp,
+                        modifier = Modifier.padding(horizontal = 16.dp))
+                    else TextButton(onClick = {
+                        val a = ex.answers[0]
+                        hint = when (ex.kind) {
+                            Kind.CHOICE -> "Читай вопрос внимательно. Верный вариант начинается с «" + a.take(2) + "»"
+                            Kind.BUILD -> "Начни с блока «" + a + "»"
+                            else -> "Ответ начинается с «" + a.take(3) + "», всего символов: " + a.length
+                        }
+                    }, modifier = Modifier.padding(horizontal = 8.dp)) { Text("💡 Подсказка", color = Muted, fontSize = 13.sp) }
+                }
                 val canCheck = if (ex.kind == Kind.BUILD || ex.kind == Kind.CHOICE) picked.isNotEmpty() else input.isNotBlank()
                 Button(
                     onClick = { if (result == null) check() else next() },
@@ -344,6 +358,11 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                 Text("🎉", fontSize = 64.sp)
                 Text("Урок пройден!", color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
                 Text("+$gained XP · ошибок: $mistakes", color = Violet, fontSize = 16.sp, modifier = Modifier.padding(vertical = 10.dp))
+                if (missed.isNotEmpty()) {
+                    Text("Повтори тему:", color = Muted, fontSize = 13.sp)
+                    missed.distinct().take(5).forEach { Text("• " + it, color = Color.White, fontSize = 13.sp) }
+                    Spacer(Modifier.height(10.dp))
+                }
                 Button(onClick = onExit, colors = ButtonDefaults.buttonColors(containerColor = Violet, contentColor = Color.Black)) {
                     Text("Продолжить")
                 }
