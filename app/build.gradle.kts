@@ -81,7 +81,6 @@ chaquopy {
             install("yarl")
             install("propcache")
             install("pyrogram==2.0.106")
-            install("pyaes")
             install("pysocks")
         }
     }
