@@ -50,4 +50,4 @@
 
 Заметка к 10b: коммит апгрейда Python = 9747fab (build.gradle.kts, app/build.gradle.kts). Откат: git revert 9747fab (вернёт Chaquopy 16.0.0, Python 3.11, abiFilters arm64+armeabi-v7a и исходные install). yfee-python остаётся.
 - [x] N1. reqs файл.py (готово). [x] N2 tokencheck (готово).
-- [x] N3 procfile, gitignore (готово). [ ] N4 обновить help в терминале и README.
+- [x] N3 procfile, gitignore (готово). [x] N4 справка (готово).

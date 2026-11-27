@@ -332,3 +332,4 @@
 - v5-N1: команда reqs файл.py — какие пакеты нужны (pip install ...).
 - v5-N2: команда tokencheck — проверка формата token.txt без показа токена.
 - v5-N3: команды procfile [файл.py] и gitignore (защита token.txt/.env/*.session).
+- v5-N4: справка help и README: все новые команды.

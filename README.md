@@ -17,6 +17,7 @@
   кнопка «Исправить файл» (табы, хвостовые пробелы, кривые отступы Python).
 - Офлайн-подсказки по Python, JS, HTML, CSS, C++, C#.
 - Терминал: `sh`-команды, Python REPL, `run файл`, `stop`, `mod файл.py .cmd`.
+- Команды для ботов: `status`, `log err`, `log find слово`, `autorestart on|off`, `backup`, `new telebot|aiogram|aiogram3|flask|hikka имя`, `find слово`, `reqs файл.py`, `tokencheck`, `procfile`, `gitignore`, `snip`, `theme`; в Linux: `yfee-clone`, `yfee-gitpush`, `yfee-py`.
 - Python-боты (pyTelegramBotAPI, aiogram 2.x, pyrogram, requests) запускаются в отдельном
   процессе с уведомлением; «стоп» убивает процесс.
 - JS запускается в WebView (fetch есть, Node/npm — нет). HTML — кнопка «Просмотр».
