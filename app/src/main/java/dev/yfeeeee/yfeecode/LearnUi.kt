@@ -219,7 +219,11 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
 
     fun check() {
         val ex = queue.first()
-        val ok = if (ex.kind == Kind.BUILD) Checker.built(picked.map { ex.blocks[it] }, ex) else Checker.typed(input, ex)
+        val ok = when (ex.kind) {
+            Kind.BUILD -> Checker.built(picked.map { ex.blocks[it] }, ex)
+            Kind.CHOICE -> picked.firstOrNull()?.let { ex.blocks[it] == ex.answers[0] } == true
+            else -> Checker.typed(input, ex)
+        }
         result = ok
         if (ok) solved++ else mistakes++
     }
@@ -257,12 +261,28 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
             1 -> {
                 val ex = queue.first()
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(16.dp)) {
-                    Text(if (ex.kind == Kind.BUILD) "Собери команду из блоков" else "Впиши команду сам",
+                    Text(when (ex.kind) { Kind.BUILD -> "Собери команду из блоков"; Kind.CHOICE -> "Выбери верный ответ"; else -> "Впиши команду сам" },
                         color = Muted, fontSize = 12.sp)
                     Spacer(Modifier.height(6.dp))
                     Text(ex.prompt, color = Color.White, fontSize = 18.sp, lineHeight = 26.sp)
                     Spacer(Modifier.height(16.dp))
-                    if (ex.kind == Kind.BUILD) {
+                    if (ex.kind == Kind.CHOICE) {
+                        ex.blocks.forEachIndexed { bi, b ->
+                            val sel = bi in picked
+                            val shown = result != null
+                            val col = when {
+                                shown && b == ex.answers[0] -> Good
+                                shown && sel -> Bad
+                                sel -> Violet
+                                else -> Color(0x55B91C1C)
+                            }
+                            Box(
+                                Modifier.fillMaxWidth().padding(bottom = 8.dp).background(if (sel) Chip else Panel, RoundedCornerShape(12.dp))
+                                    .border(2.dp, col, RoundedCornerShape(12.dp))
+                                    .clickable { if (result == null) { picked.clear(); picked.add(bi) } }.padding(14.dp)
+                            ) { Text(b, color = Color.White, fontFamily = FontFamily.Monospace, fontSize = 15.sp) }
+                        }
+                    } else if (ex.kind == Kind.BUILD) {
                         FlowRow(
                             Modifier.fillMaxWidth().heightIn(min = 64.dp).background(Panel, RoundedCornerShape(12.dp))
                                 .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(12.dp)).padding(8.dp),
@@ -299,7 +319,7 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                         }
                     }
                 }
-                val canCheck = if (ex.kind == Kind.BUILD) picked.isNotEmpty() else input.isNotBlank()
+                val canCheck = if (ex.kind == Kind.BUILD || ex.kind == Kind.CHOICE) picked.isNotEmpty() else input.isNotBlank()
                 Button(
                     onClick = { if (result == null) check() else next() },
                     enabled = result != null || canCheck,

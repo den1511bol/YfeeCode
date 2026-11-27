@@ -3,7 +3,7 @@ package dev.yfeeeee.yfeecode
 
 import android.content.Context
 
-enum class Kind { BUILD, TYPE }
+enum class Kind { BUILD, TYPE, CHOICE }
 
 data class Exercise(
     val kind: Kind,
@@ -28,6 +28,18 @@ fun build(prompt: String, tokens: String, extra: String = "", explain: String = 
 /** Type the command manually. First answer is shown as the reference when wrong. */
 fun type(prompt: String, vararg answers: String, explain: String = ""): Exercise =
     Exercise(Kind.TYPE, prompt, answers.toList(), emptyList(), explain)
+
+/** Multiple choice: pick the right option out of several. */
+fun choice(prompt: String, correct: String, vararg wrong: String, explain: String = ""): Exercise =
+    Exercise(Kind.CHOICE, prompt, listOf(correct), (listOf(correct) + wrong.toList()).shuffled(java.util.Random(prompt.hashCode().toLong())), explain)
+
+/** Fill the gap: [template] contains ___ where the blocks go. */
+fun gap(prompt: String, template: String, answers: String, extra: String = "", explain: String = ""): Exercise =
+    build(prompt + "\n\n" + template, answers, extra, explain)
+
+/** Find the mistake: the learner types the corrected line. */
+fun fix(prompt: String, broken: String, vararg answers: String, explain: String = ""): Exercise =
+    type(prompt + "\n\n" + broken, *answers, explain = explain)
 
 object Checker {
     private val tok = Regex("[A-Za-z_0-9]+|[^\\sA-Za-z_0-9]")
