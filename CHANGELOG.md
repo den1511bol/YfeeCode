@@ -279,3 +279,4 @@
 - v5-11: README/HelpScreen обновлены (214 уроков, 117 практик, блок v5).
 - v5-13: build.yml: сборочный Python 3.13 (Chaquopy требует той же версии).
 - v5-13b: pyaes (sdist, нет колеса) вшит в app/src/main/python/pyaes (MIT, ricmoo).
+- v5-12/13/14: слияние в main, зелёная сборка (Python 3.13 прошёл, откат не нужен); чекпоинт отправлен.
