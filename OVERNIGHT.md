@@ -57,3 +57,4 @@
 - [x] N12 open (готово).
 - [x] N13 envinit (готово).
 - [x] N14 grep (готово). [ ] N15 check файл.py.
+- [x] N15 check (готово).

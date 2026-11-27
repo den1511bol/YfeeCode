@@ -65,7 +65,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP), diff файл1 файл2, open файл (открыть в редакторе), envinit (создать .env), grep слово файл"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP), diff файл1 файл2, open файл (открыть в редакторе), envinit (создать .env), grep слово файл, check файл.py (проверка синтаксиса)"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -445,6 +445,17 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                     if (n < 40 && l.contains(p[0], ignoreCase = true)) { n++; print((i + 1).toString() + ": " + l.trim().take(100)) }
                 }
                 if (n == 0) print("Не найдено")
+                return
+            }
+            cmd.startsWith("check ") -> {
+                // check файл.py — syntax check with Russian hints (same as the editor)
+                val f = File(cwd, cmd.removePrefix("check ").trim())
+                if (!f.isFile) { print("check: нет такого файла"); return }
+                if (f.extension != "py") { print("check: пока только для .py"); return }
+                thread {
+                    val r = try { Python.getInstance().getModule("syntax_check").callAttr("check", f.readText()).toString() } catch (e: Throwable) { "Не удалось проверить: " + e.message }
+                    print(if (r.isBlank()) "Синтаксис в порядке" else if ('|' in r) "Строка " + r.substringBefore('|') + ": " + r.substringAfter('|') else r)
+                }
                 return
             }
             cmd == "stop" -> { stopAll(); return }

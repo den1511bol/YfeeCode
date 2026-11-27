@@ -6,8 +6,9 @@ import java.io.File
 /** Clickable word suggestions for the terminal input line. Tapping one appends the word to the line (it is not sent). */
 object TermHints {
     private val shCommands = listOf("ls", "ls -la", "pwd", "cd", "cat", "echo", "mkdir", "rm", "cp", "mv", "clear", "help",
-        "run", "stop", "mod", "token", "get", "py", "sh")
-    private val fileCommands = setOf("run", "mod", "cat", "rm", "cp", "mv", "cd", "ls")
+        "run", "stop", "mod", "token", "get", "py", "sh", "status", "log", "backup", "tree", "reqs", "tokencheck", "procfile", "gitignore",
+        "envinit", "grep", "diff", "open", "ver", "ip", "wc", "head", "tail", "theme", "snip", "new", "find", "addcmd", "autorestart", "check")
+    private val fileCommands = setOf("run", "mod", "cat", "rm", "cp", "mv", "cd", "ls", "reqs", "open", "wc", "head", "tail", "diff", "addcmd", "check")
 
     private val pyWords = listOf("print(", "input(", "len(", "range(", "int(", "str(", "float(", "list(", "dict(", "set(", "tuple(",
         "open(", "sorted(", "sum(", "min(", "max(", "abs(", "type(", "isinstance(", "enumerate(", "zip(", "map(", "filter(", "dir(", "help(",
