@@ -27,7 +27,10 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
 
     val prompt: String
         get() = if (mode == TermMode.PY) (if (pyMore) "... " else ">>> ")
-        else cwd.relativeToOrSelf(store.root).path.ifEmpty { "~" } + " $ "
+        else {
+            val rel = cwd.relativeToOrSelf(store.root).path
+            (if (rel.startsWith("..")) "~/" + cwd.name else rel.ifEmpty { "~" }) + " $ "
+        }
 
     @Volatile private var proc: Process? = null
 
@@ -223,6 +226,8 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                     logOffset = 0
                     BotService.start(ctx, f.absolutePath, store.logFile.absolutePath)
                     tailLog()
+                    Thread.sleep(10000)
+                    if (store.logFile.length() == 0L) print("Бот не ответил за 10 секунд. Проверь: уведомления Android разрешены, работа в фоне разрешена, в списке уведомлений есть «Бот». Попробуй run на простом файле print(\"hi\").")
                 }
             }
             Lang.JS -> ui.post {
