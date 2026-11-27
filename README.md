@@ -74,3 +74,6 @@ Alpine через proot: `pkg install`, `apt install`, несколько сес
 
 ## Ночное обновление v3
 `log [N]`, список команд модуля (`mod файл.py`), `yfee-heroku`, `yfee-doctor`, клавиши ^Z ^L ^R ^A ^E ^W ^U, переходы по словам, автозакрытие HTML-тегов, сниппеты Hikka/aiogram/telebot, надёжный DNS в Linux. Разработчик: @yfeeeee.
+
+## Ночное обновление v4
+Команда `env` и файл `.env` для токенов, `yfee-update`, `yfee-ports`, `yfee-heroku files|config`, перемещение строк в редакторе, новые шаблоны (aiogram 3, Flask для Heroku, Hikka с конфигом), сниппеты FSM и inline-клавиатур, больше подсказок об ошибках. Разработчик: @yfeeeee.

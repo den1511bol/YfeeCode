@@ -11,7 +11,7 @@
 - [x] 7. Сниппеты: aiogram FSM, inline-клавиатура, telebot inline, Hikka inline.
 - [x] 8. Подсказки ошибок (runner.py _hint): добавить частые ошибки aiogram/telebot/Hikka.
 - [x] 9. Терминал: история команд стрелками вверх/вниз во встроенном терминале, если ещё нет; иначе пропустить. (пропущено: история стрелками уже есть)
-- [ ] 10. Обновить HelpScreen.kt, README.md, CHANGELOG.md, yfee-help.
+- [x] 10. Обновить HelpScreen.kt, README.md, CHANGELOG.md, yfee-help.
 - [ ] 11. Ревью `git diff main..dev` на ошибки компиляции (скобки, импорты, `$`, типы).
 - [ ] 12. Слить dev в main (checkout main, pull, merge --ff-only dev, push), ждать сборку (gh run list --workflow build.yml --limit 1).
 - [ ] 13. Если красная: gh run view <id> --log-failed | grep -E " e: |error:", починить, повторить; если зелёная ничего.
