@@ -63,7 +63,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka)"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N]"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -367,6 +367,21 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 if (Regex("def\\s+" + name + "cmd\\b").containsMatchIn(f.readText())) { print("Команда ." + name + " уже есть"); return }
                 f.appendText("\n    @loader.command()\n    async def " + name + "cmd(self, message):\n        \"\"\"Описание команды\"\"\"\n        args = utils.get_args_raw(message)\n        await utils.answer(message, \"Команда " + name + ": \" + args)\n")
                 print("Добавлена команда ." + name + " в " + f.name + ". Проверь: mod " + f.name + " ." + name + " привет")
+                return
+            }
+            cmd.startsWith("wc ") || cmd.startsWith("head ") || cmd.startsWith("tail ") -> {
+                // wc файл | head файл [N] | tail файл [N]
+                val p = cmd.trim().split(Regex("\\s+"))
+                val f = File(cwd, p.getOrNull(1) ?: "")
+                if (!f.isFile) { print(p[0] + ": нет такого файла"); return }
+                val text = f.readText()
+                if (p[0] == "wc") {
+                    print(text.lines().size.toString() + " строк, " + text.split(Regex("\\s+")).count { it.isNotEmpty() } + " слов, " + f.length() + " байт")
+                } else {
+                    val n = (p.getOrNull(2)?.toIntOrNull() ?: 10).coerceIn(1, 500)
+                    val ls = text.lines()
+                    (if (p[0] == "head") ls.take(n) else ls.takeLast(n)).forEach { print(it) }
+                }
                 return
             }
             cmd == "stop" -> { stopAll(); return }
