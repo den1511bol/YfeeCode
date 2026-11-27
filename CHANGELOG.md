@@ -249,3 +249,4 @@
 - Сессия v3-7: Linux: yfee-doctor (диагностика сети, DNS, пакетов, отчёт в /work/yfee-doctor.txt). @yfeeeee
 - Сессия v3-8: редактор HTML: при вводе «>» открывающего тега автоматически добавляется закрывающий. @yfeeeee
 - Сессия v3-9: сниппеты Hikka (hcmd, hwatch, hcfg), aiogram 3 (aio, aiomsg), telebot (tgcb)
+- Сессия v3-10: справка и README обновлены

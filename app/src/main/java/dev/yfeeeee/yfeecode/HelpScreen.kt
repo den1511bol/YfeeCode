@@ -97,6 +97,7 @@ private val SECTIONS = listOf(
 • Ещё в Linux: yfee-sshd (SSH-сервер на порту 8022), langs node|go|rust|ruby|php|java (установка языка), yfee-backup / yfee-restore (копия системы в /sdcard/Download), termux-clipboard-set/get (кнопка «Буфер»), termux-open, termux-setup-storage.
 • Кнопка ⌨↓ прячет встроенную клавиатуру (⌨↑ возвращает), «Копир. вывод» копирует вывод терминала в буфер. Вкладки сессий показывают имя папки.
 • Команды: yfee-help (шпаргалка), yfee-git-setup (git и токен GitHub), yfee-bot имя (шаблон Telegram-бота на aiogram 3), yfee-hikka имя (шаблон модуля Heroku/Hikka). yfee-venv (виртуальное окружение), yfee-keepalive команда (перезапуск упавшего бота), yfee-pg start|stop|status|psql (PostgreSQL, экспериментально). pkg сам обновляет индекс раз в сутки.
+• Новое: yfee-heroku (деплой бота на Heroku), yfee-doctor (диагностика, отчёт /work/yfee-doctor.txt), команда log [N] во встроенном терминале, mod файл.py без команды показывает команды модуля, клавиши ^Z ^L ^R ^A ^E ^W ^U, в редакторе кнопки ←слово / слово→ / в начало / в конец, автозакрытие HTML-тегов, сниппеты hcmd, hwatch, hcfg, aio, aiomsg, tgcb.
 • Кнопки A− / A+ меняют размер шрифта. В панели клавиш есть Ctrl, Alt, Esc, Tab, стрелки, Home, End, Del, F1-F12.
 • Разреши работу в фоне, когда Android спросит, и отключи экономию батареи для YfeeCode, иначе производитель телефона может закрыть приложение.
 • Чтобы выйти из сессии насовсем, напиши exit. Тогда фоновая служба выключится.

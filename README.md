@@ -71,3 +71,6 @@
 
 ## Linux в приложении (как Termux)
 Alpine через proot: `pkg install`, `apt install`, несколько сессий, `/sdcard`, `yfee-sshd` (SSH на порту 8022), `langs node|go|rust|ruby|php|java`, `yfee-backup` / `yfee-restore`, `termux-clipboard-set/get`, `termux-open`. Разработчик: @yfeeeee.
+
+## Ночное обновление v3
+`log [N]`, список команд модуля (`mod файл.py`), `yfee-heroku`, `yfee-doctor`, клавиши ^Z ^L ^R ^A ^E ^W ^U, переходы по словам, автозакрытие HTML-тегов, сниппеты Hikka/aiogram/telebot, надёжный DNS в Linux. Разработчик: @yfeeeee.
