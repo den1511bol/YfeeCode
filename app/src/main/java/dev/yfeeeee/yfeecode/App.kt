@@ -374,6 +374,7 @@ fun EditorScreen(
     var preview by remember { mutableStateOf(false) }
     var findOpen by remember { mutableStateOf(false) }
     var gotoOpen by remember { mutableStateOf(false) }
+    var cheatOpen by remember { mutableStateOf(false) }
     var symOpen by remember { mutableStateOf(false) }
     var findQ by remember { mutableStateOf("") }
     var replQ by remember { mutableStateOf("") }
@@ -437,6 +438,7 @@ fun EditorScreen(
             if (state.lang == Lang.HTML) ToolIcon(Icons.Default.Language, "Просмотр") { save(); preview = true }
             ToolIcon(Icons.Default.Search, "Поиск") { findOpen = !findOpen }
             ToolIcon(Icons.Default.Share, "Экспорт") { save(); onExport(state.file) }
+            ToolIcon(Icons.Default.Info, "Шпаргалка") { cheatOpen = true }
             ToolIcon(Icons.Default.Keyboard, "Клавиатура") { showKb = !showKb }
         }
         Row(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).horizontalScroll(rememberScrollState()),
@@ -544,6 +546,12 @@ fun EditorScreen(
     }
 
     if (preview) HtmlPreview(state.text) { preview = false }
+    if (cheatOpen) AlertDialog(
+        onDismissRequest = { cheatOpen = false },
+        confirmButton = { TextButton(onClick = { cheatOpen = false }) { Text("Закрыть") } },
+        title = { Text("Шпаргалка: " + state.lang.label) },
+        text = { Text(Cheats.forLang(state.lang), fontFamily = FontFamily.Monospace, fontSize = 12.sp, modifier = Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState())) }
+    )
     if (symOpen) {
         val syms = remember(state.text, state.lang) { Symbols.list(state.text, state.lang) }
         AlertDialog(
