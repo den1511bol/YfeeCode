@@ -61,3 +61,4 @@
 - [x] N16 сниппеты (готово: hcmd/hwatch/hcfg/quote/emoji/sphoto уже были; добавлены ikb, tbcb, aiocmd, aiocb, aiofsm).
 - [x] N18 справка в приложении (готово).
 - [x] N19 слова Telethon (готово).
+- [x] N20 cat -n (работает через sh, правка не нужна). [x] N21 аудит: флаги передаются в sh.

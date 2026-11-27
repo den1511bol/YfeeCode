@@ -61,6 +61,9 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         }
     }
 
+    /** True when the command has no -flags: such commands are ours, with flags they go to the system sh. */
+    private fun noFlags(cmd: String) = cmd.split(Regex("\\s+")).drop(1).none { it.startsWith("-") }
+
     private fun shell(cmd: String) {
         if (cmd.isEmpty()) return
         when {
@@ -274,7 +277,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else print("Лог пуст. Запусти бота кнопкой ▶ или командой run файл.py")
                 return
             }
-            cmd.startsWith("find ") -> {
+            cmd.startsWith("find ") && noFlags(cmd) && !cmd.removePrefix("find ").trim().let { it.startsWith(".") || it.startsWith("/") } -> {
                 // find слово — search text in all project files (up to 40 hits)
                 val w = cmd.removePrefix("find ").trim()
                 if (w.isEmpty()) { print("Использование: find слово"); return }
@@ -334,7 +337,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 print("Добавлено в .gitignore: " + add.joinToString(", "))
                 return
             }
-            cmd == "tree" || cmd.startsWith("tree ") -> {
+            (cmd == "tree" || cmd.startsWith("tree ")) && noFlags(cmd) -> {
                 // tree [папка] — file tree (depth up to 3, up to 80 lines)
                 val sub = cmd.removePrefix("tree").trim()
                 val base = (if (sub.isEmpty()) cwd else File(cwd, sub)).canonicalFile
@@ -371,7 +374,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 print("Добавлена команда ." + name + " в " + f.name + ". Проверь: mod " + f.name + " ." + name + " привет")
                 return
             }
-            cmd.startsWith("wc ") || cmd.startsWith("head ") || cmd.startsWith("tail ") -> {
+            (cmd.startsWith("wc ") || cmd.startsWith("head ") || cmd.startsWith("tail ")) && noFlags(cmd) -> {
                 // wc файл | head файл [N] | tail файл [N]
                 val p = cmd.trim().split(Regex("\\s+"))
                 val f = File(cwd, p.getOrNull(1) ?: "")
@@ -398,7 +401,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
                 return
             }
-            cmd.startsWith("diff ") -> {
+            cmd.startsWith("diff ") && noFlags(cmd) -> {
                 // diff файл1 файл2 — first 40 differing lines
                 val p = cmd.removePrefix("diff ").trim().split(Regex("\\s+"))
                 val a = File(cwd, p.getOrNull(0) ?: ""); val b = File(cwd, p.getOrNull(1) ?: "")
@@ -435,7 +438,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
                 return
             }
-            cmd.startsWith("grep ") -> {
+            cmd.startsWith("grep ") && noFlags(cmd) -> {
                 // grep слово файл — lines of the file containing the word (up to 40)
                 val p = cmd.removePrefix("grep ").trim().split(Regex("\\s+"))
                 val f = File(cwd, p.getOrNull(1) ?: "")
