@@ -180,6 +180,16 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 else print(f.readText().takeLast(60000).trimEnd('\n').split("\n").takeLast(n).joinToString("\n"))
                 return
             }
+            cmd == "autorestart" || cmd.startsWith("autorestart ") -> {
+                // autorestart on|off — restart the bot after a crash (up to 5 times)
+                val sp = ctx.getSharedPreferences("bot_state", Context.MODE_PRIVATE)
+                when (cmd.removePrefix("autorestart").trim()) {
+                    "on" -> sp.edit().putBoolean("autorestart", true).apply()
+                    "off" -> sp.edit().putBoolean("autorestart", false).apply()
+                }
+                print("Автоперезапуск после падения: " + if (sp.getBoolean("autorestart", true)) "включён" else "выключен (autorestart on / off)")
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {

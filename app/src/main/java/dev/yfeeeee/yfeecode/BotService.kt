@@ -73,10 +73,28 @@ class BotService : Service() {
         }.apply { isDaemon = true }.start()
         if (intent == null) java.io.File(log).appendText("[run] Бот перезапущен после остановки системой\n")
         Thread {
-            try {
-                Python.getInstance().getModule("runner").callAttr("run", script, log)
-            } catch (e: Throwable) {
-                java.io.File(log).appendText("[error] " + e.message + "\n")
+            var attempts = 0
+            while (true) {
+                val t0 = System.currentTimeMillis()
+                try {
+                    Python.getInstance().getModule("runner").callAttr("run", script, log)
+                } catch (e: Throwable) {
+                    java.io.File(log).appendText("[error] " + e.message + "\n")
+                }
+                // auto-restart only after a crash, never after a normal exit or the stop button
+                val crashed = try {
+                    java.io.File(log).readText().takeLast(4000).trimEnd().lines().lastOrNull()?.startsWith("[done] crashed") == true
+                } catch (_: Throwable) { false }
+                if (!crashed || !state().getBoolean("running", false) || !state().getBoolean("autorestart", true)) break
+                if (System.currentTimeMillis() - t0 > 120000) attempts = 0
+                attempts++
+                if (attempts > 5) {
+                    java.io.File(log).appendText("[restart] 5 падений подряд, автоперезапуск остановлен\n")
+                    break
+                }
+                val wait = minOf(5 * (1 shl (attempts - 1)), 60)
+                java.io.File(log).appendText("[restart] бот упал, перезапуск через $wait с (попытка $attempts из 5)\n")
+                try { Thread.sleep(wait * 1000L) } catch (_: InterruptedException) { break }
             }
             // script finished by itself
             state().edit().putBoolean("running", false).apply()
