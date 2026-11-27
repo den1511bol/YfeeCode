@@ -276,6 +276,27 @@ class EditorState(val file: File, initial: String) {
         set(nt, i + s.insert.length - s.cursorBack)
     }
 
+    private fun isWordCh(c: Char) = c.isLetterOrDigit() || c == '_'
+
+    /** Jumps to the start of the previous word. Developer: @yfeeeee */
+    fun wordLeft() {
+        var i = cursor
+        while (i > 0 && !isWordCh(text[i - 1])) i--
+        while (i > 0 && isWordCh(text[i - 1])) i--
+        cursor = i; afterMove()
+    }
+
+    /** Jumps to the end of the next word. */
+    fun wordRight() {
+        var i = cursor
+        while (i < text.length && !isWordCh(text[i])) i++
+        while (i < text.length && isWordCh(text[i])) i++
+        cursor = i; afterMove()
+    }
+
+    fun fileStart() { cursor = 0; afterMove() }
+    fun fileEnd() { cursor = text.length; afterMove() }
+
     fun left() { if (cursor > 0) cursor -= 1; afterMove() }
     fun right() { if (cursor < text.length) cursor += 1; afterMove() }
 

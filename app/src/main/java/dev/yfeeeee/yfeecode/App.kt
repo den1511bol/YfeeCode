@@ -446,6 +446,10 @@ fun EditorScreen(
             MiniBtn("⇥") { state.indentSel() }
             MiniBtn("⇤") { state.dedentSel() }
             MiniBtn("удалить строку") { state.deleteLine() }
+            MiniBtn("←слово") { state.wordLeft() }
+            MiniBtn("слово→") { state.wordRight() }
+            MiniBtn("в начало") { state.fileStart() }
+            MiniBtn("в конец") { state.fileEnd() }
             MiniBtn("строка…") { gotoOpen = true }
             MiniBtn("символы") { symOpen = true }
             MiniBtn("отмена выд.") { state.clearSel() }
