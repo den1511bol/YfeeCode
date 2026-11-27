@@ -12,7 +12,7 @@
 ## Пункты плана
 - [x] 1. Терминал-вкладка (TerminalState.kt): команда `log [N]` печатает последние N строк лога бота (по умолчанию 30, файл store.logFile); добавь `log` в быстрые кнопки терминала (App.kt, список quick) и в help.
 - [x] 2. Терминал: `mod файл.py` без команды печатает список команд модуля (hikka_sandbox.commands(path) через Chaquopy), вместо подсказки «Использование».
-- [ ] 3. Linux: скрипт `yfee-heroku` (установка Heroku CLI через npm, login, подсказки по деплою Procfile + git push heroku main).
+- [x] 3. Linux: скрипт `yfee-heroku` (установка Heroku CLI через npm, login, подсказки по деплою Procfile + git push heroku main).
 - [ ] 4. Linux-вкладка: в ряд клавиш добавить ^Z ^L ^R ^A ^E ^W ^U.
 - [ ] 5. Редактор: кнопки перехода по словам («←слово», «слово→») и «в начало», «в конец» файла (EditorState + мини-панель).
 - [ ] 6. Linux: при каждом запуске оболочки гарантировать /etc/resolv.conf с DNS (1.1.1.1, 8.8.8.8), если файла нет или он пуст (Linux.kt, installScripts).

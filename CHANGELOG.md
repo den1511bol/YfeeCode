@@ -242,3 +242,4 @@
 - Сессия v2-18: второе слияние dev в main (yfeе-venv, keepalive, pg, справка). @yfeeeee
 - Сессия v3-1: терминал: команда log [N] печатает последние строки лога бота, кнопка log. @yfeeeee
 - Сессия v3-2: терминал: «mod файл.py» без команды печатает список команд модуля. @yfeeeee
+- Сессия v3-3: Linux: yfee-heroku install|login|init (деплой бота на Heroku, подсказки). @yfeeeee
