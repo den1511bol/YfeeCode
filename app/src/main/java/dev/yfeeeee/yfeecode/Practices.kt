@@ -7,7 +7,7 @@ import com.chaquo.python.Python
 import kotlin.concurrent.thread
 
 object Practices {
-    fun forCourse(id: String): List<Practice> = all[id] ?: emptyList()
+    fun forCourse(id: String): List<Practice> = if (id == "bots") botsPractices() else (all[id] ?: emptyList())
 
     fun verify(p: Practice, code: String, onResult: (Boolean, String) -> Unit) {
         val ui = Handler(Looper.getMainLooper())

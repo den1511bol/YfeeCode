@@ -92,7 +92,7 @@ class Progress(ctx: Context) {
 
 object Courses {
     val all: List<Course> by lazy {
-        listOf(pythonCourse(), jsCourse(), htmlCourse(), cssCourse(), cppCourse(), csCourse())
+        listOf(pythonCourse(), jsCourse(), htmlCourse(), cssCourse(), cppCourse(), csCourse(), botsCourse())
     }
 }
 

@@ -4,7 +4,7 @@
 Файлы: LearnBots1.kt, LearnBots2.kt ... каждый содержит `fun botsLessonsN(): List<Lesson>`. LearnBots.kt: `fun botsCourse() = Course("bots", "Боты и Heroku", "🤖", botsLessons1() + ...)`. Практика: BotsPractices.kt `fun botsPractices(): List<Practice>` (Lang.PYTHON, без expectOut, только must()-проверки regex); подключить в Practices.forCourse для id "bots". Добавить botsCourse() в Courses.all (LearnModel.kt).
 Правила: не ломать Updater.kt, app/yfeecode.jks, applicationId, строку "Commit: <sha>" в build.yml, versionCode из GITHUB_RUN_NUMBER, AutoSpace.kt, TermHints.kt, WakeLock, шаг "Fetch proot". Kotlin локально не собрать: писать консервативно, скобки считать. Без вопросов, экономить лимит. Каждая сессия: ReadNotifications, поставить следующее напоминание, ОДИН пункт, коммит в dev, отметка [x].
 
-- [ ] 1. Каркас (LearnBots.kt, подключение в Courses и Practices) + LearnBots1.kt: что такое бот, BotFather и токен, pip install, первый бот telebot (4-5 уроков).
+- [x] 1. Каркас (LearnBots.kt, подключение в Courses и Practices) + LearnBots1.kt: что такое бот, BotFather и токен, pip install, первый бот telebot (4-5 уроков).
 - [ ] 2. LearnBots2.kt: telebot: команды, обработчики текста, reply_to, клавиатуры (reply и inline).
 - [ ] 3. LearnBots3.kt: telebot: callback_query, register_next_step_handler, отправка фото/файлов, parse_mode, обработка ошибок.
 - [ ] 4. LearnBots4.kt: aiogram 3: Bot, Dispatcher, Command, async/await, polling.
