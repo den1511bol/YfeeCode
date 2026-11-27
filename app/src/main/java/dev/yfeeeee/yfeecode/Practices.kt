@@ -79,7 +79,15 @@ object Practices {
             Practice("py18", "Дата из строки", "Разбери строку \"01.02.2026\" через datetime.strptime (формат %d.%m.%Y) и выведи дату в виде год-месяц-день через strftime.", "", Lang.PYTHON,
                 listOf(must("""strptime""", "Нужен datetime.strptime"), must("""strftime""", "Нужен strftime")), "2026-02-01"),
             Practice("py19", "argparse", "Создай ArgumentParser, добавь параметр --name со значением по умолчанию \"мир\" и выведи \"Привет, мир\" с именем из аргументов (parse_args без параметров).", "", Lang.PYTHON,
-                listOf(must("""ArgumentParser\s*\(""", "Нужен argparse.ArgumentParser()"), must("""add_argument\s*\(""", "Нужен add_argument(...)"), must("""parse_args\s*\(""", "Нужен parse_args()")), "Привет, мир")
+                listOf(must("""ArgumentParser\s*\(""", "Нужен argparse.ArgumentParser()"), must("""add_argument\s*\(""", "Нужен add_argument(...)"), must("""parse_args\s*\(""", "Нужен parse_args()")), "Привет, мир"),
+            Practice("py20", "asyncio: две задачи", "Напиши async-функцию hello(name), которая печатает \"Привет, \" и имя. Через asyncio.run и asyncio.gather запусти её для Аня и Борис (порядок вывода: Аня, потом Борис).", "", Lang.PYTHON,
+                listOf(must("""async\s+def\s+hello""", "Нужна async def hello(name)"), must("""asyncio\.gather""", "Нужен asyncio.gather(...)"), must("""asyncio\.run""", "Запусти через asyncio.run(...)")), "Привет, Аня\nПривет, Борис"),
+            Practice("py21", "sqlite3 в памяти", "Создай базу sqlite3 в памяти (\":memory:\"), таблицу users(name), добавь Аню и Бориса и выведи количество строк (SELECT COUNT(*)).", "", Lang.PYTHON,
+                listOf(must("""sqlite3\.connect""", "Нужен sqlite3.connect(\":memory:\")"), must("""INSERT""", "Добавь строки через INSERT"), must("""COUNT""", "Посчитай строки через COUNT(*)")), "2"),
+            Practice("py22", "Counter", "Подсчитай буквы в строке \"banana\" через collections.Counter и выведи, сколько раз встречается a.", "", Lang.PYTHON,
+                listOf(must("""Counter""", "Нужен collections.Counter")), "3"),
+            Practice("py23", "JSON туда и обратно", "Преврати словарь {\"name\": \"Аня\"} в строку через json.dumps (ensure_ascii=False), затем обратно через json.loads и выведи имя.", "", Lang.PYTHON,
+                listOf(must("""json\.dumps""", "Нужен json.dumps(...)"), must("""json\.loads""", "Нужен json.loads(...)")), "Аня")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,

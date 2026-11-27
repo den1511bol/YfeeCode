@@ -321,3 +321,4 @@
 - v5-B12: подсказки методов после точки (bot., message., utils., self., client., asyncio. и др.).
 - v5-B8: песочница Hikka: answer_file, run_sync, get_user, get_args_split_by, inline/callback handlers, поля Message.
 - v5-B14a: команда find слово — поиск по всем файлам проектов (до 40 строк).
+- v5-B9a: +4 практики Python (asyncio.gather, sqlite3, Counter, json).
