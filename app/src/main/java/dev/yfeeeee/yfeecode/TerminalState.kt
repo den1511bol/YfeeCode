@@ -108,6 +108,32 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             cmd == "py" -> { mode = TermMode.PY; return }
             cmd == "sh" -> { mode = TermMode.SH; return }
+            cmd == "env" || cmd.startsWith("env ") -> {
+                // env | env set KEY значение | env del KEY  — переменные бота в файле .env (Developer: @yfeeeee)
+                val envF = File(cwd, ".env")
+                val parts = cmd.removePrefix("env").trim().split(Regex("\\s+"), 3)
+                val sub = parts.getOrNull(0).orEmpty()
+                val lines0 = if (envF.exists()) envF.readLines().filter { it.isNotBlank() } else emptyList()
+                when (sub) {
+                    "", "list" -> print(if (lines0.isEmpty()) "Файл .env пуст. Добавь: env set BOT_TOKEN 123:ABC" else lines0.joinToString("\n") { l -> val i = l.indexOf('='); if (i > 0) l.substring(0, i + 1) + "***" else l })
+                    "set" -> {
+                        val key = parts.getOrNull(1).orEmpty()
+                        val v = parts.getOrNull(2).orEmpty()
+                        if (key.isEmpty() || v.isEmpty()) print("Использование: env set КЛЮЧ значение")
+                        else {
+                            envF.writeText((lines0.filter { !it.startsWith("$key=") } + "$key=$v").joinToString("\n") + "\n")
+                            print("Сохранено в .env: $key. В боте: os.environ[\"$key\"]. Не заливай .env в git!")
+                        }
+                    }
+                    "del" -> {
+                        val key = parts.getOrNull(1).orEmpty()
+                        envF.writeText(lines0.filter { !it.startsWith("$key=") }.joinToString("\n") + "\n")
+                        print("Удалено: $key")
+                    }
+                    else -> print("Использование: env | env set КЛЮЧ значение | env del КЛЮЧ")
+                }
+                return
+            }
             cmd.startsWith("token ") -> {
                 // token 123:ABC — saves the bot token to token.txt in the current folder
                 File(cwd, "token.txt").writeText(cmd.removePrefix("token ").trim())

@@ -91,6 +91,24 @@ def _hint(e):
     return ""
 
 
+def _load_env(path):
+    """Loads KEY=VALUE lines from .env into os.environ. Developer: @yfeeeee"""
+    try:
+        if not os.path.exists(path):
+            return
+        n = 0
+        for line in open(path, encoding="utf-8").read().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            os.environ[k.strip()] = v.strip().strip('"').strip("'")
+            n += 1
+        print("[env] загружено переменных из .env: " + str(n))
+    except Exception as e:
+        print("[env] ошибка чтения .env: " + str(e))
+
+
 def run(script_path, log_path):
     w = _LogWriter(log_path)
     sys.stdout = w
@@ -100,6 +118,7 @@ def run(script_path, log_path):
     if workdir not in sys.path:
         sys.path.insert(0, workdir)
     print("[run] " + os.path.basename(script_path))
+    _load_env(os.path.join(workdir, ".env"))
     try:
         _prepare_thread_env()
         runpy.run_path(script_path, run_name="__main__")

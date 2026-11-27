@@ -4,7 +4,7 @@
 
 - [x] 1. Редактор: подсветка парной скобки у курсора (EditorState + CodeEditor), мягко и безопасно.
 - [x] 2. Редактор: кнопки «вверх/вниз» для перемещения строки (moveLineUp/Down) в мини-панели.
-- [ ] 3. Терминал (TerminalState): команда `env` для токена бота (env set/list/del в файле .env проекта) и автоподхват .env при run.
+- [x] 3. Терминал (TerminalState): команда `env` для токена бота (env set/list/del в файле .env проекта) и автоподхват .env при run.
 - [ ] 4. Linux-скрипты: yfee-update (pkg upgrade + проверка), yfee-ports (что слушает), yfee-tmux-подсказка; добавить в yfee-help.
 - [ ] 5. Heroku: yfee-heroku deploy (runtime.txt, app.json, .gitignore, Procfile) расширить.
 - [ ] 6. Шаблоны (Templates.kt): FastAPI/Flask-бот вебхук для Heroku, Hikka-модуль с конфигом и watcher.
