@@ -614,6 +614,25 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
     var hIdx by remember { mutableIntStateOf(0) }
     val listState = rememberLazyListState()
     val clip = LocalClipboardManager.current
+    var botsOpen by remember { mutableStateOf(false) }
+    if (botsOpen) AlertDialog(
+        onDismissRequest = { botsOpen = false },
+        confirmButton = { TextButton(onClick = { botsOpen = false }) { Text("Закрыть") } },
+        title = { Text("Боты") },
+        text = {
+            Column {
+                @Composable
+                fun act(label: String, cmd: String) = TextButton(onClick = { term.mode = TermMode.SH; term.submit(cmd); botsOpen = false }) { Text(label) }
+                TextButton(onClick = { current?.let { term.runFile(it) }; botsOpen = false }) { Text("▶ Запустить открытый файл") }
+                TextButton(onClick = { term.stopAll(); botsOpen = false }) { Text("■ Остановить") }
+                act("Состояние бота", "status")
+                act("Лог (последние 30 строк)", "log 30")
+                act("Лог: только ошибки", "log err")
+                act("Автоперезапуск: включить", "autorestart on")
+                act("Автоперезапуск: выключить", "autorestart off")
+            }
+        }
+    )
 
     LaunchedEffect(term.lines.size) {
         if (term.lines.isNotEmpty()) listState.scrollToItem(term.lines.size - 1)
@@ -632,6 +651,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
             }
             TextButton(onClick = { term.lines.clear() }) { Text("очистить", color = Color(0xFFA87F81)) }
             TextButton(onClick = { current?.let { term.runFile(it) } }) { Text("▶ файл") }
+            TextButton(onClick = { botsOpen = true }) { Text("Боты", color = Color(0xFFA87F81)) }
             TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFF48972)) }
         }
         LazyColumn(Modifier.weight(1f).fillMaxWidth().diamondPattern(Settings.termBg, Color(0x14B91C1C), 32.dp).padding(6.dp), state = listState) {
