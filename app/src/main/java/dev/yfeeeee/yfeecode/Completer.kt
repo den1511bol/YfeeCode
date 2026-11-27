@@ -20,7 +20,8 @@ object Completer {
     private val words: Map<Lang, List<String>> = mapOf(
         Lang.PYTHON to listOf("def", "class", "import", "from", "return", "print", "range", "len", "self", "async", "await",
             "elif", "else", "while", "for", "try", "except", "finally", "with", "lambda", "None", "True", "False", "isinstance",
-            "enumerate", "append", "asyncio", "telebot", "aiogram", "loader", "utils", "message", "strings", "pass", "break", "continue"),
+            "enumerate", "append", "asyncio", "telebot", "aiogram", "loader", "utils", "message", "strings", "pass", "break", "continue",
+            "telethon", "TelegramClient", "events", "NewMessage", "StringSession", "iter_messages", "get_entity", "Button", "run_until_disconnected"),
         Lang.JS to listOf("function", "const", "let", "var", "return", "console", "async", "await", "fetch", "await", "document",
             "addEventListener", "querySelector", "JSON", "stringify", "Promise", "setTimeout", "length", "push", "forEach", "map", "filter"),
         Lang.HTML to listOf("div", "span", "section", "header", "footer", "button", "input", "form", "script", "style", "class", "href", "src"),
