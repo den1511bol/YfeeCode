@@ -288,6 +288,22 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 print(if (hits == 0) "Ничего не найдено" else "Найдено строк: " + hits + (if (hits >= 40) " (показаны первые 40)" else ""))
                 return
             }
+            cmd.startsWith("reqs ") -> {
+                // reqs файл.py — which pip packages the file needs
+                val f = File(cwd, cmd.removePrefix("reqs ").trim())
+                if (!f.isFile) { print("Нет такого файла"); return }
+                val std = setOf("os", "sys", "re", "json", "time", "asyncio", "random", "math", "datetime", "collections", "itertools", "functools",
+                    "typing", "logging", "sqlite3", "pathlib", "subprocess", "threading", "io", "string", "base64", "hashlib", "html", "urllib",
+                    "uuid", "copy", "traceback", "contextlib", "dataclasses", "enum", "shutil", "tempfile", "csv", "argparse", "inspect", "types",
+                    "abc", "secrets", "textwrap", "zipfile", "struct", "socket", "ssl", "signal", "queue", "statistics", "decimal", "heapq", "operator")
+                val alias = mapOf("telebot" to "pyTelegramBotAPI", "PIL" to "pillow", "bs4" to "beautifulsoup4", "yaml" to "pyyaml", "dotenv" to "python-dotenv", "cv2" to "opencv-python")
+                val mods = Regex("^\\s*(?:from\\s+([A-Za-z_][A-Za-z0-9_]*)[\\w.]*\\s+import|import\\s+([A-Za-z_][A-Za-z0-9_]*))", RegexOption.MULTILINE)
+                    .findAll(f.readText()).mapNotNull { it.groupValues[1].ifEmpty { it.groupValues[2] } }
+                    .filter { it !in std && it != "loader" && it != "utils" }.distinct().toList()
+                if (mods.isEmpty()) print("Сторонние пакеты не нужны")
+                else { print("Поставь командой:"); print("pip install " + mods.joinToString(" ") { alias[it] ?: it }) }
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
