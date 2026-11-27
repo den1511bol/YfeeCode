@@ -231,6 +231,13 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
                 return
             }
+            cmd == "theme" || cmd.startsWith("theme ") -> {
+                // theme red|green|light — terminal colors
+                val n = listOf("red", "green", "light").indexOf(cmd.removePrefix("theme").trim())
+                if (n >= 0) { Settings.termTheme = n; Settings.save(ctx); print("Тема терминала включена") }
+                else print("Использование: theme red | theme green | theme light")
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {

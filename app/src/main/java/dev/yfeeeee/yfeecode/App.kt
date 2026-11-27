@@ -619,12 +619,12 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
             TextButton(onClick = { current?.let { term.runFile(it) } }) { Text("▶ файл") }
             TextButton(onClick = { term.stopAll() }) { Text("■ стоп", color = Color(0xFFF48972)) }
         }
-        LazyColumn(Modifier.weight(1f).fillMaxWidth().diamondPattern(Color(0xFF0D0404), Color(0x14B91C1C), 32.dp).padding(6.dp), state = listState) {
+        LazyColumn(Modifier.weight(1f).fillMaxWidth().diamondPattern(Settings.termBg, Color(0x14B91C1C), 32.dp).padding(6.dp), state = listState) {
             items(term.lines) { l ->
                 val c = when {
                     l.startsWith("[error]") || l.contains("Traceback") || l.contains("Error") -> Color(0xFFF48972)
                     l.startsWith("[") -> Color(0xFF79C0FF)
-                    else -> Color(0xFFD0D7DE)
+                    else -> Settings.termFg
                 }
                 val tb = Regex("File \"([^\"]+)\", line (\\d+)").find(l)
                 Text(l, color = if (tb != null) Color(0xFF79C0FF) else c, fontFamily = FontFamily.Monospace, fontSize = 12.sp,
