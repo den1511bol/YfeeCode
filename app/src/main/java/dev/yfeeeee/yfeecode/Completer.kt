@@ -29,7 +29,13 @@ object Completer {
             "main" to "if __name__ == \"__main__\":\n    |",
             "async" to "async def |():\n    pass",
             "tg" to "import telebot\n\nTOKEN = open(\"token.txt\").read().strip()\nbot = telebot.TeleBot(TOKEN)\n\n\n@bot.message_handler(commands=[\"start\"])\ndef start(message):\n    bot.reply_to(message, \"|\")\n\n\nbot.infinity_polling()\n",
-            "mod" to "from .. import loader, utils\n\n\n@loader.tds\nclass |Mod(loader.Module):\n    \"\"\"Описание\"\"\"\n\n    strings = {\"name\": \"\"}\n\n    @loader.command()\n    async def hellocmd(self, message):\n        \"\"\"Команда\"\"\"\n        await utils.answer(message, \"Привет\")\n"
+            "mod" to "from .. import loader, utils\n\n\n@loader.tds\nclass |Mod(loader.Module):\n    \"\"\"Описание\"\"\"\n\n    strings = {\"name\": \"\"}\n\n    @loader.command()\n    async def hellocmd(self, message):\n        \"\"\"Команда\"\"\"\n        await utils.answer(message, \"Привет\")\n",
+            "hcmd" to "@loader.command()\nasync def |cmd(self, message):\n    \"\"\"Описание команды\"\"\"\n    args = utils.get_args_raw(message)\n    await utils.answer(message, args)\n",
+            "hwatch" to "@loader.watcher(only_messages=True)\nasync def watcher(self, message):\n    if |:\n        return\n",
+            "hcfg" to "self.config = loader.ModuleConfig(\n    loader.ConfigValue(\"|\", \"\", \"Описание\"),\n)\n",
+            "aio" to "import asyncio\nfrom aiogram import Bot, Dispatcher, types\nfrom aiogram.filters import Command\n\nbot = Bot(token=open(\"token.txt\").read().strip())\ndp = Dispatcher()\n\n\n@dp.message(Command(\"start\"))\nasync def start(message: types.Message):\n    await message.answer(\"|\")\n\n\nasync def main():\n    await dp.start_polling(bot)\n\n\nasyncio.run(main())\n",
+            "aiomsg" to "@dp.message()\nasync def |handler(message: types.Message):\n    await message.answer(message.text)\n",
+            "tgcb" to "@bot.callback_query_handler(func=lambda c: True)\ndef |callback(call):\n    bot.answer_callback_query(call.id)\n"
         ),
         Lang.JS to mapOf(
             "fn" to "function |() {\n  \n}",

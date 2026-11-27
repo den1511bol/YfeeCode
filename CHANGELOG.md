@@ -248,3 +248,4 @@
 - Сессия v3-6: Linux: при каждом запуске оболочки проверяется resolv.conf, при пустом файле записываются DNS 1.1.1.1 и 8.8.8.8. @yfeeeee
 - Сессия v3-7: Linux: yfee-doctor (диагностика сети, DNS, пакетов, отчёт в /work/yfee-doctor.txt). @yfeeeee
 - Сессия v3-8: редактор HTML: при вводе «>» открывающего тега автоматически добавляется закрывающий. @yfeeeee
+- Сессия v3-9: сниппеты Hikka (hcmd, hwatch, hcfg), aiogram 3 (aio, aiomsg), telebot (tgcb)
