@@ -3,6 +3,11 @@ package dev.yfeeeee.yfeecode
 
 fun cssCourse() = Course("css", "CSS", "🎨", listOf(
     Lesson("Правило CSS", "CSS состоит из селектора и блока свойств. Каждое свойство заканчивается точкой с запятой.\n>p {\n>  color: red;\n>}", listOf(
+        choice("Чем заканчивается свойство CSS?", "Точкой с запятой", "Запятой", "Двоеточием"),
+        choice("Из чего состоит правило CSS?", "Из селектора и блока свойств", "Из тегов", "Из функций"),
+        gap("Дополни: цвет текста", "p { ___: red; }", "color", "text|font"),
+        fix("Исправь: нужна точка с запятой", "p { color: red }", "p { color: red; }"),
+        fix("Исправь: между свойством и значением двоеточие", "p { color = red; }", "p { color: red; }"),
         build("Покрась текст p в красный", "p|{|color|:|red|;|}", "=|("),
         type("Цвет текста blue", "color: blue;"),
         build("Размер шрифта 16px", "font-size|:|16px|;", "=|size"),
@@ -11,6 +16,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Закрой блок правила", "}")
     )),
     Lesson("Селекторы", "Тег пишут как есть, класс — с точкой, id — с решёткой.\n>p { }\n>.box { }\n>#main { }", listOf(
+        choice("Чем обозначают класс в селекторе?", "Точкой", "Решёткой", "Звёздочкой"),
+        choice("Чем обозначают id в селекторе?", "Решёткой", "Точкой", "Двоеточием"),
+        gap("Дополни: селектор класса box", "___box { color: red; }", ".", "#|*"),
+        fix("Исправь: id пишут с решёткой", ".main { color: red; }", "#main { color: red; }"),
         build("Селектор класса box", ".|box|{", "#|box"),
         build("Селектор id main", "#|main|{", ".|main"),
         type("Селектор тега div", "div {"),
@@ -19,6 +28,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Селектор id header", "#header {")
     )),
     Lesson("Отступы и рамки", "margin — внешний отступ, padding — внутренний, border — рамка.\n>margin: 10px;\n>padding: 5px;\n>border: 1px solid white;", listOf(
+        choice("Что делает padding?", "Внутренний отступ", "Внешний отступ", "Рамка"),
+        choice("Что делает margin?", "Внешний отступ", "Внутренний отступ", "Тень"),
+        gap("Дополни: рамка", "___: 1px solid white;", "border", "frame|outline2"),
+        fix("Исправь: у чисел нужна единица px", "margin: 10;", "margin: 10px;"),
         build("Внешний отступ 10px", "margin|:|10px|;", "padding|="),
         build("Внутренний отступ 5px", "padding|:|5px|;", "margin|="),
         type("Рамка 1px solid white", "border: 1px solid white;"),
@@ -27,6 +40,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Высота 50px", "height: 50px;")
     )),
     Lesson("Текст и цвета", "Свойства текста: color, font-size, font-weight, text-align.\n>text-align: center;\n>font-weight: bold;", listOf(
+        choice("Чем выравнивают текст по центру?", "text-align: center;", "align: middle;", "center: text;"),
+        choice("Что делает font-weight: bold?", "Делает текст жирным", "Увеличивает текст", "Меняет цвет"),
+        gap("Дополни: размер шрифта", "___: 16px;", "font-size", "text-size|size"),
+        fix("Исправь: свойство через дефис", "fontsize: 16px;", "font-size: 16px;"),
         build("Текст по центру", "text-align|:|center|;", "align|="),
         type("Жирный шрифт", "font-weight: bold;"),
         build("Цвет в hex", "color|:|#ff00aa|;", "=|("),
@@ -35,6 +52,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Размер шрифта 20px", "font-size: 20px;")
     )),
     Lesson("Flex-раскладка", "display: flex выстраивает элементы в ряд. justify-content и align-items управляют выравниванием.\n>display: flex;\n>justify-content: center;\n>align-items: center;", listOf(
+        choice("Что делает display: flex?", "Выстраивает элементы в ряд", "Прячет элементы", "Рисует тень"),
+        choice("Чем центрируют по горизонтали во flex?", "justify-content: center;", "align-items: center;", "text-align: flex;"),
+        gap("Дополни: центр по вертикали", "___: center;", "align-items", "justify-content|align-text"),
+        fix("Исправь: значение display", "display: flexible;", "display: flex;"),
         build("Включи flex", "display|:|flex|;", "block|="),
         build("Центр по горизонтали", "justify-content|:|center|;", "align-items|="),
         type("Центр по вертикали", "align-items: center;"),
@@ -43,6 +64,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Пусть элементы переносятся", "flex-wrap: wrap;")
     )),
     Lesson("Grid и адаптивность", "Grid строит сетку, media-запрос меняет стили для узких экранов.\n>display: grid;\n>grid-template-columns: 1fr 1fr;\n>@media (max-width: 600px) {\n>  .box { display: block; }\n>}", listOf(
+        choice("Что строит grid?", "Сетку", "Анимацию", "Тень"),
+        choice("Для чего нужен @media?", "Менять стили на узких экранах", "Подключать шрифты", "Рисовать"),
+        gap("Дополни: две равные колонки", "grid-template-columns: 1fr ___;", "1fr", "2px|auto2"),
+        fix("Исправь: media-запрос с @", "media (max-width: 600px) { }", "@media (max-width: 600px) { }"),
         build("Включи grid", "display|:|grid|;", "flex|="),
         type("Две равные колонки", "grid-template-columns: 1fr 1fr;"),
         build("Для экранов уже 600px", "@|media|(|max-width|:|600px|)|{", "min-width|media"),
@@ -51,6 +76,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Скрой элемент", "display: none;")
     )),
     Lesson("Переходы и анимации", "transition плавно меняет свойство, а @keyframes описывает свою анимацию, которую запускает свойство animation.\n>.btn { transition: 0.3s; }\n>.btn:hover { transform: scale(1.1); }", listOf(
+        choice("Что делает transition?", "Плавно меняет свойство", "Мгновенно меняет цвет", "Удаляет элемент"),
+        choice("Что описывает @keyframes?", "Шаги анимации", "Цвета", "Шрифты"),
+        gap("Дополни: запуск анимации", "animation: ___ 2s;", "name", "play|run"),
+        fix("Исправь: время с единицей", "transition: 0.3;", "transition: 0.3s;"),
         build("Плавное изменение за 0.3 секунды", "transition|:|0.3s|;", "animation|color"),
         type("Увеличь элемент при наведении", ".btn:hover { transform: scale(1.1); }"),
         build("Объяви анимацию pulse", "@keyframes|pulse|{", "animation|from"),
@@ -59,6 +88,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Измени прозрачность до половины", "opacity: 0.5;")
     )),
     Lesson("Переменные и media", "CSS-переменные задают значение один раз: объявляют в :root, используют через var(). @media применяет стили только на нужной ширине экрана.\n>:root { --main: #C084FC; }\n>a { color: var(--main); }\n>@media (max-width: 600px) { }", listOf(
+        choice("Где объявляют CSS-переменные?", "В :root", "В body", "В head"),
+        choice("Как использовать переменную --main?", "var(--main)", "--main()", "main()"),
+        gap("Дополни: используй переменную", "color: ___(--main);", "var", "use|get"),
+        fix("Исправь: имя переменной начинается с --", ":root { main: red; }", ":root { --main: red; }"),
         type("Объяви переменную --main", ":root { --main: #C084FC; }"),
         type("Используй переменную --main как цвет", "color: var(--main);"),
         build("Стили только для узких экранов", "@media|(|max-width|:|600px|)|{", "@keyframes|from"),
@@ -67,6 +100,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Подключи шрифт по умолчанию без засечек", "font-family: sans-serif;")
     )),
     Lesson("Блочная модель и box-sizing", "У блока есть content, padding, border и margin. box-sizing: border-box включает padding и рамку в ширину, так считать проще всего.\n>* { box-sizing: border-box; }\n>.card { width: 200px; padding: 10px; border: 1px solid #ccc; margin: 8px; }", listOf(
+        choice("Что делает box-sizing: border-box?", "Включает padding и рамку в ширину", "Убирает рамку", "Меняет цвет"),
+        choice("Из чего состоит блок?", "content, padding, border, margin", "head, body, footer", "h1, p, a"),
+        gap("Дополни: для всех элементов", "___ { box-sizing: border-box; }", "*", ".|#"),
+        fix("Исправь: значение box-sizing", "box-sizing: border;", "box-sizing: border-box;"),
         type("Включи border-box для всех", "* { box-sizing: border-box; }"),
         type("Внутренний отступ 10px", "padding: 10px;"),
         type("Внешний отступ 8px", "margin: 8px;"),
@@ -75,6 +112,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Центрируй блок по горизонтали", "margin: 0 auto;")
     )),
     Lesson("Позиционирование", "position задаёт способ размещения: relative сдвигает от своего места, absolute относительно родителя с position, fixed прилипает к окну, sticky залипает при прокрутке. z-index управляет слоями.\n>.box { position: absolute; top: 10px; right: 10px; z-index: 5; }", listOf(
+        choice("Что делает position: fixed?", "Прилипает к окну", "Сдвигает от своего места", "Прячет блок"),
+        choice("Что управляет слоями?", "z-index", "layer", "top"),
+        gap("Дополни: абсолютное положение", "position: ___;", "absolute", "relative2|fixing"),
+        fix("Исправь: top работает вместе с position", ".box { top: 0; }", ".box { position: absolute; top: 0; }"),
         type("Абсолютное позиционирование", "position: absolute;"),
         type("Родитель для absolute", "position: relative;"),
         type("Прилепи к окну", "position: fixed;"),
@@ -83,6 +124,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Отступ сверху 10px у позиционированного блока", "top: 10px;")
     )),
     Lesson("Псевдоклассы и псевдоэлементы", "Псевдокласс реагирует на состояние: :hover, :focus, :first-child, :nth-child(2). Псевдоэлемент создаёт часть элемента: ::before и ::after с полем content.\n>a:hover { color: red; }\n>li:first-child { font-weight: bold; }\n>p::after { content: \"!\"; }", listOf(
+        choice("Что делает :hover?", "Реагирует на наведение", "Прячет элемент", "Добавляет текст"),
+        choice("Чем создают элемент до содержимого?", "::before", ":before2", "::first"),
+        gap("Дополни: первый элемент", "li:___ { font-weight: bold; }", "first-child", "first|top"),
+        fix("Исправь: у псевдоэлемента нужен content", "a::after { color: red; }", "a::after { content: \"\"; color: red; }"),
         type("Цвет ссылки при наведении красный", "a:hover { color: red; }"),
         type("Первый элемент списка жирный", "li:first-child { font-weight: bold; }"),
         type("Каждый второй элемент", "li:nth-child(2n)"),
@@ -91,6 +136,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Последний элемент", "li:last-child")
     )),
     Lesson("Display, overflow, visibility", "display задаёт тип блока: block, inline, none, flex, grid. none убирает элемент совсем, visibility: hidden прячет, но место оставляет. overflow управляет содержимым, которое не влезло.\n>.a { display: none; }\n>.b { visibility: hidden; }\n>.c { overflow: auto; }", listOf(
+        choice("Что делает display: none?", "Убирает элемент совсем", "Прячет, но оставляет место", "Делает прозрачным"),
+        choice("Что делает visibility: hidden?", "Прячет, но оставляет место", "Убирает совсем", "Меняет цвет"),
+        gap("Дополни: прокрутка", "overflow: ___;", "auto", "scroll2|max"),
+        fix("Исправь: значение display", "display: hide;", "display: none;"),
         type("Убери элемент совсем", "display: none;"),
         type("Спрячь, но оставь место", "visibility: hidden;"),
         type("Прокрутка при переполнении", "overflow: auto;"),
@@ -99,6 +148,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Курсор-рука", "cursor: pointer;")
     )),
     Lesson("Единицы и шрифты", "px фиксированный размер, rem зависит от размера шрифта страницы, em от родителя, % от родителя, vw и vh от окна. font-family задаёт шрифт, line-height высоту строки.\n>html { font-size: 16px; }\n>h1 { font-size: 2rem; }\n>body { font-family: Arial, sans-serif; line-height: 1.5; }", listOf(
+        choice("От чего зависит rem?", "От размера шрифта страницы", "От ширины окна", "От родителя"),
+        choice("Что делает line-height?", "Задаёт высоту строки", "Задаёт шрифт", "Задаёт цвет"),
+        gap("Дополни: относительно окна", "width: 50___;", "vw", "px2|rem2"),
+        fix("Исправь: свойство шрифта", "font: Arial;", "font-family: Arial;"),
         type("Размер шрифта 2rem", "font-size: 2rem;"),
         type("Шрифт Arial, запасной sans-serif", "font-family: Arial, sans-serif;"),
         type("Высота строки 1.5", "line-height: 1.5;"),
@@ -107,6 +160,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Жирный шрифт", "font-weight: bold;")
     )),
     Lesson("Тени, градиенты, transform", "box-shadow даёт тень, linear-gradient плавный переход цветов, border-radius скругляет углы, transform поворачивает и масштабирует.\n>.card { box-shadow: 0 4px 10px rgba(0,0,0,0.3); border-radius: 12px; }\n>.bg { background: linear-gradient(to right, red, black); }\n>.r { transform: rotate(10deg); }", listOf(
+        choice("Что делает border-radius?", "Скругляет углы", "Рисует рамку", "Делает тень"),
+        choice("Что делает box-shadow?", "Рисует тень", "Скругляет углы", "Задаёт цвет"),
+        gap("Дополни: градиент", "background: ___(red, blue);", "linear-gradient", "gradient|mix"),
+        fix("Исправь: поворот через transform", "rotate: 45deg;", "transform: rotate(45deg);"),
         type("Тень со смещением вниз 4px и размытием 10px", "box-shadow: 0 4px 10px rgba(0,0,0,0.3);"),
         type("Скругли углы 12px", "border-radius: 12px;"),
         type("Градиент слева направо от красного к чёрному", "background: linear-gradient(to right, red, black);"),
@@ -115,6 +172,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Круг из квадрата", "border-radius: 50%;")
     )),
     Lesson("Каскад и специфичность", "Когда правила конфликтуют, побеждает более специфичный селектор: id сильнее класса, класс сильнее тега. При равенстве выигрывает правило ниже. !important ломает порядок, пользоваться им лучше редко.\n>p { color: blue; }\n>.t { color: green; }\n>#x { color: red; }", listOf(
+        choice("Что сильнее: id или класс?", "id", "класс", "Одинаково"),
+        choice("Что победит при равной специфичности?", "Правило ниже", "Правило выше", "Случайное"),
+        gap("Дополни: самое сильное правило", "color: red ___;", "!important", "!strong|!force"),
+        fix("Исправь: !important пишут после значения", "color: !important red;", "color: red !important;"),
         type("Селектор по id x", "#x"),
         type("Селектор по классу t", ".t"),
         type("Селектор тега p", "p"),
@@ -123,6 +184,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Усиль правило", "color: red !important;")
     )),
     Lesson("Flex и Grid подробнее", "Во flex есть justify-content (по основной оси), align-items (по поперечной), flex-wrap (перенос), gap (промежутки). В grid задают колонки: grid-template-columns, и промежутки gap.\n>.row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }\n>.grid { display: grid; grid-template-columns: repeat(3, 1fr); }", listOf(
+        choice("Что делает flex-wrap?", "Переносит элементы на новую строку", "Выравнивает по центру", "Скрывает лишние"),
+        choice("Что задаёт gap?", "Промежутки между элементами", "Рамку", "Цвет"),
+        gap("Дополни: промежутки", "___: 10px;", "gap", "space|margin2"),
+        fix("Исправь: колонки grid", "grid-columns: 1fr 1fr;", "grid-template-columns: 1fr 1fr;"),
         type("Разнеси элементы по краям", "justify-content: space-between;"),
         type("Выровняй по центру по вертикали", "align-items: center;"),
         type("Разреши перенос", "flex-wrap: wrap;"),
@@ -131,6 +196,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Элемент занимает свободное место", "flex: 1;")
     )),
     Lesson("Grid areas и clamp", "grid-template-areas описывает раскладку словами: каждой области даёшь имя, а элементу задаёшь grid-area. Функция clamp(мин, желаемое, макс) делает размер гибким в заданных пределах, например для шрифта.\n>.page { display: grid; grid-template-areas: \"head head\" \"menu main\"; }\n>.head { grid-area: head; }\n>h1 { font-size: clamp(20px, 5vw, 40px); }", listOf(
+        choice("Что делает clamp(мин, желаемое, макс)?", "Ограничивает размер в пределах", "Скругляет", "Копирует"),
+        choice("Что описывает grid-template-areas?", "Раскладку областями с именами", "Цвета", "Шрифты"),
+        gap("Дополни: размер шрифта", "font-size: ___(1rem, 4vw, 2rem);", "clamp", "min2|range"),
+        fix("Исправь: элементу область задаёт grid-area", "grid-zone: header;", "grid-area: header;"),
         type("Задай области сетки", "grid-template-areas: \"head head\" \"menu main\";"),
         type("Помести элемент в область head", "grid-area: head;"),
         type("Шрифт от 20px до 40px, гибкий", "font-size: clamp(20px, 5vw, 40px);"),
@@ -139,6 +208,10 @@ fun cssCourse() = Course("css", "CSS", "🎨", listOf(
         type("Центрируй блок по горизонтали", "margin: 0 auto;")
     )),
     Lesson("Тёмная тема и keyframes", "Медиа-запрос prefers-color-scheme позволяет сделать тёмную тему по настройке телефона. @keyframes описывает шаги анимации, а свойство animation подключает её с длительностью и повторением.\n>@media (prefers-color-scheme: dark) { body { background: #111; color: #eee; } }\n>@keyframes pulse { from { opacity: 1; } to { opacity: 0.4; } }\n>.dot { animation: pulse 1s infinite; }", listOf(
+        choice("Что проверяет prefers-color-scheme?", "Тёмная ли тема на телефоне", "Ширину экрана", "Язык"),
+        choice("Что подключает анимацию к элементу?", "animation", "keyframes2", "transition"),
+        gap("Дополни: тёмная тема", "@media (prefers-color-scheme: ___) { }", "dark", "black|night"),
+        fix("Исправь: @keyframes с собакой", "keyframes pulse { }", "@keyframes pulse { }"),
         type("Тёмная тема по настройке системы", "@media (prefers-color-scheme: dark) {"),
         type("Тёмный фон", "background: #111;"),
         type("Объяви анимацию pulse", "@keyframes pulse {"),
