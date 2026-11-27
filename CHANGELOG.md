@@ -290,3 +290,4 @@
 - 27.11: U5: 35 новых Python-сниппетов (цитаты, теги Telegram, файлы, json, sql...), описание в HelpScreen.
 - v5-U2.6: LearnBots6: +25 заданий.
 - v5-U2.7: LearnBots7: +25 заданий.
+- v5-U2.8: LearnBots8: +25 заданий.
