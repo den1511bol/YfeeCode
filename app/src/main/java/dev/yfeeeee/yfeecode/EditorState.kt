@@ -183,6 +183,20 @@ class EditorState(val file: File, initial: String) {
         if (autoFix && s.length == 1 && s[0] in ")]}\"'" && text.getOrNull(cursor) == s[0]) {
             undo.removeLastOrNull(); cursor += 1; return // step over auto-closed char
         }
+        // HTML: typing ">" of an opening tag also writes the closing tag (Developer: @yfeeeee)
+        if (autoFix && lang == Lang.HTML && s == ">") {
+            val before = text.substring(0, cursor)
+            val lt = before.lastIndexOf('<')
+            if (lt >= 0 && before.indexOf('>', lt) < 0) {
+                val tag = before.substring(lt + 1)
+                val name = Regex("^[A-Za-z][A-Za-z0-9-]*").find(tag)?.value
+                val voidTags = setOf("br", "hr", "img", "input", "meta", "link", "area", "base", "col", "embed", "source", "track", "wbr", "param")
+                if (name != null && name.lowercase() !in voidTags && !tag.trimEnd().endsWith("/")) {
+                    set(text.substring(0, cursor) + ">" + "</" + name + ">" + text.substring(cursor), cursor + 1)
+                    return
+                }
+            }
+        }
         set(text.substring(0, cursor) + s + text.substring(cursor), cursor + s.length)
     }
 
