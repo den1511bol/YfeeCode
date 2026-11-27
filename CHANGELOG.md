@@ -266,3 +266,4 @@
 - Фикс: закрытие .env, подсказка про aiogram 2/3, пометка в шаблоне aiogram 3
 - Фикс: PIP_BREAK_SYSTEM_PACKAGES=1 в Linux (pip install без ошибки PEP 668)
 - Сессия v5-3: уроки telebot (callback, шаги диалога, файлы, parse_mode, ошибки)
+- Сессия v5-4: уроки aiogram 3 (основы, первый бот, обработчики, фильтры, async)
