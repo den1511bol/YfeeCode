@@ -81,6 +81,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Выведи последний элемент nums", "print(nums[-1])")
     )),
     Lesson("Telegram-боты и модули", "Для бота на pyTelegramBotAPI нужен токен, объект бота и обработчики сообщений.\n>import telebot\n>bot = telebot.TeleBot(TOKEN)\n>@bot.message_handler(commands=[\"start\"])\n>bot.infinity_polling()\nМодуль Heroku — класс от loader.Module с командами.\n>@loader.command()", listOf(
+        choice("Что такое токен бота?", "Пароль, по которому Telegram узнаёт бота", "Имя бота", "Файл с кодом", explain = "Токен выдаёт @BotFather."),
+        choice("Что делает bot.infinity_polling()?", "Постоянно ждёт новые сообщения", "Отправляет сообщение", "Создаёт бота"),
+        gap("Дополни: создай бота", "bot = telebot.___(TOKEN)", "TeleBot", "Bot|Telegram"),
+        fix("Исправь: в commands пишут без слеша", "@bot.message_handler(commands=[\"/start\"])", "@bot.message_handler(commands=[\"start\"])"),
+        fix("Исправь: нужен импорт библиотеки", "import telegram", "import telebot"),
         build("Подключи библиотеку telebot", "import|telebot", "from|bot"),
         type("Создай бота из TOKEN", "bot = telebot.TeleBot(TOKEN)"),
         build("Обработчик команды /start", "@|bot|.|message_handler|(|commands|=|[|\"start\"|]|)", "def|:"),
@@ -89,6 +94,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Объяви класс модуля MyMod", "class MyMod(loader.Module):")
     )),
     Lesson("Словари и файлы", "Словарь хранит пары «ключ: значение». Файлы читают и пишут через open и with.\n>user = {\"name\": \"Аня\", \"age\": 18}\n>print(user[\"name\"])\n>with open(\"a.txt\", \"w\") as f:\n>    f.write(\"Привет\")", listOf(
+        choice("Как получить значение по ключу из словаря user?", "user[\"name\"]", "user(0)", "user.name()"),
+        choice("Что хранит словарь?", "Пары ключ и значение", "Только числа", "Только текст", explain = "Ключ нужен, чтобы найти значение."),
+        gap("Дополни: открой файл на запись", "with open(\"a.txt\", \"___\") as f:", "w", "r|x"),
+        fix("Исправь: словарь пишут в фигурных скобках", "user = [\"name\": \"Аня\"]", "user = {\"name\": \"Аня\"}"),
+        fix("Исправь: между ключом и значением двоеточие", "user = {\"name\", \"Аня\"}", "user = {\"name\": \"Аня\"}"),
         build("Создай словарь с ключом name", "user|=|{|\"name\"|:|\"Аня\"|}", "[|(|=="),
         type("Выведи значение по ключу name", "print(user[\"name\"])"),
         build("Открой файл на запись", "with|open|(|\"a.txt\"|,|\"w\"|)|as|f|:", "def|import"),
@@ -97,6 +107,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Пройди по парам словаря user", "for k, v in user.items():")
     )),
     Lesson("Классы и объекты", "Класс описывает объект. Метод __init__ вызывается при создании, self — сам объект.\n>class Dog:\n>    def __init__(self, name):\n>        self.name = name\n>    def bark(self):\n>        print(self.name)\n>d = Dog(\"Рекс\")", listOf(
+        choice("Что такое self?", "Сам объект, у которого вызван метод", "Название класса", "Имя файла", explain = "Через self метод обращается к полям объекта."),
+        choice("Когда вызывается __init__?", "При создании объекта", "При удалении объекта", "Никогда сам"),
+        gap("Дополни: объяви класс", "___ Dog:", "class", "def|object"),
+        fix("Исправь: у метода должен быть параметр self", "def bark():", "def bark(self):"),
+        fix("Исправь: класс объявляют ключевым словом class", "def Dog:", "class Dog:"),
         build("Объяви класс Dog", "class|Dog|:", "def|object"),
         type("Метод __init__ с параметром name", "def __init__(self, name):"),
         build("Сохрани имя в объекте", "self|.|name|=|name", "def|=="),
@@ -105,6 +120,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Метод bark с параметром self", "def bark(self):")
     )),
     Lesson("Асинхронность и aiogram", "async def создаёт корутину, await ждёт её результат. На этом построены aiogram и pyrogram.\n>import asyncio\n>async def main():\n>    await asyncio.sleep(1)\n>asyncio.run(main())\n>from aiogram import Bot, Dispatcher, executor", listOf(
+        choice("Что делает await?", "Ждёт результат корутины", "Создаёт функцию", "Выводит текст", explain = "Использовать можно только внутри async def."),
+        choice("Чем asyncio.sleep лучше time.sleep?", "Не блокирует остальных", "Короче пишется", "Ничем"),
+        gap("Дополни: асинхронная функция", "___ def main():", "async", "await|sync"),
+        fix("Исправь: перед sleep нужен await", "asyncio.sleep(1)", "await asyncio.sleep(1)"),
+        fix("Исправь: запуск корутины", "asyncio.start(main())", "asyncio.run(main())"),
         build("Объяви асинхронную функцию main", "async|def|main|(|)|:", "await|class"),
         type("Подожди 1 секунду", "await asyncio.sleep(1)"),
         build("Запусти main", "asyncio|.|run|(|main|(|)|)", "await|def"),
@@ -113,6 +133,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Ответь пользователю в aiogram", "await message.answer(\"Привет\")")
     )),
     Lesson("Ошибки: try/except", "try пробует выполнить код, а except ловит ошибку, чтобы программа не упала. finally выполняется всегда.\n>try:\n>    x = int(\"abc\")\n>except ValueError:\n>    print(\"Не число\")\n>finally:\n>    print(\"Готово\")", listOf(
+        choice("Для чего нужен except?", "Поймать ошибку, чтобы программа не упала", "Создать ошибку", "Остановить цикл"),
+        choice("Когда выполняется finally?", "Всегда", "Только при ошибке", "Только без ошибки"),
+        gap("Дополни: ловим ошибку преобразования", "try:\n    x = int(\"abc\")\n___ ValueError:\n    print(1)", "except", "catch|finally"),
+        fix("Исправь: в Python нет catch", "catch ValueError:", "except ValueError:"),
+        fix("Исправь: после except нужно двоеточие", "except ValueError", "except ValueError:"),
         build("Начни блок try", "try|:", "except|def"),
         type("Лови ошибку ValueError", "except ValueError:"),
         build("Лови любую ошибку и сохрани в e", "except|Exception|as|e|:", "try|finally"),
@@ -121,6 +146,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Выведи текст ошибки e", "print(e)")
     )),
     Lesson("Модули и импорт", "Модуль — это файл с кодом. import подключает его, from … import берёт отдельные имена.\n>import math\n>print(math.sqrt(16))\n>from random import randint\n>import requests", listOf(
+        choice("Что делает import math?", "Подключает модуль math", "Создаёт файл math", "Удаляет math"),
+        choice("Чем from random import randint отличается от import random?", "Берёт только имя randint", "Ничем", "Удаляет random"),
+        gap("Дополни: подключи модуль", "___ math", "import", "from|use"),
+        fix("Исправь: импорт пишется с import", "include math", "import math"),
+        fix("Исправь: точка между модулем и функцией", "print(math sqrt(16))", "print(math.sqrt(16))"),
         build("Подключи модуль math", "import|math", "from|def"),
         type("Выведи корень из 16", "print(math.sqrt(16))"),
         build("Возьми randint из random", "from|random|import|randint", "import|as"),
@@ -129,6 +159,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Подключи json", "import json")
     )),
     Lesson("Сортировка и поиск", "sorted() возвращает отсортированный список, .sort() сортирует на месте. min и max находят крайние значения, in проверяет наличие.\n>nums = [3, 1, 2]\n>print(sorted(nums))\n>print(max(nums))", listOf(
+        choice("Чем sorted отличается от .sort()?", "sorted возвращает новый список", ".sort() возвращает новый список", "Ничем", explain = ".sort() меняет сам список."),
+        choice("Что делает max(nums)?", "Находит наибольшее значение", "Находит длину", "Сортирует список"),
+        gap("Дополни: отсортируй", "print(___(nums))", "sorted", "sort|order"),
+        fix("Исправь: проверка наличия пишется через in", "if 2 on nums:", "if 2 in nums:"),
+        fix("Исправь: sorted это функция", "print(nums.sorted())", "print(sorted(nums))"),
         build("Отсортируй список nums", "sorted|(|nums|)", "sort|len"),
         type("Отсортируй по убыванию", "sorted(nums, reverse=True)"),
         build("Найди наибольшее число", "max|(|nums|)", "min|sum"),
@@ -137,6 +172,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Найди позицию числа 2 в списке", "nums.index(2)")
     )),
     Lesson("Включения и файлы", "Списковое включение создаёт список в одну строку. Файлы читают через with open(...), он сам закрывает файл.\n>sq = [x * x for x in range(5)]\n>with open(\"a.txt\") as f:\n>    data = f.read()", listOf(
+        choice("Что такое списковое включение?", "Создание списка в одну строку", "Способ удалить список", "Вид функции"),
+        choice("Что даёт [x * x for x in range(3)]?", "[0, 1, 4]", "[1, 4, 9]", "[0, 1, 2]", explain = "range(3) даёт 0, 1, 2, квадраты: 0, 1, 4."),
+        gap("Дополни: включение", "sq = [x * x ___ x in range(5)]", "for", "if|in"),
+        fix("Исправь: нужны квадратные скобки", "sq = (x * x for x in range(5))", "sq = [x * x for x in range(5)]", explain = "В круглых скобках получится генератор, а не список."),
+        fix("Исправь: with открывает файл", "width open(\"a.txt\") as f:", "with open(\"a.txt\") as f:"),
         build("Квадраты чисел от 0 до 4", "[|x|*|x|for|x|in|range|(|5|)|]", "while|def"),
         type("Только чётные из nums", "[x for x in nums if x % 2 == 0]"),
         build("Открой файл a.txt на чтение", "with|open|(|\"a.txt\"|)|as|f|:", "def|import"),

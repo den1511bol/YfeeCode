@@ -295,3 +295,4 @@
 - v5-U5b: +51 сниппет для JS/HTML/CSS/C++/C#, список в HelpScreen.
 - v5-U5c: syntax_check: compile вместо ast.parse + 17 новых русских пояснений ошибок новичка.
 - v5-U3.1: Python, уроки 1-6: +30 заданий (choice/gap/fix).
+- v5-U3.2: Python, уроки 7-14: +40 заданий.
