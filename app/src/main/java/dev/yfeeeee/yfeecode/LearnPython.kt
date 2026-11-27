@@ -419,6 +419,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Декоратор перевода строк над классом", "@loader.tds")
     )),
     Lesson("Бот на telebot", "Библиотека pyTelegramBotAPI (импорт telebot) самая простая для старта. Создаёшь бота с токеном, обработчик команды вешается декоратором message_handler, ответ шлёт reply_to или send_message. infinity_polling держит бота запущенным.\n>import telebot\n>bot = telebot.TeleBot(TOKEN)\n>@bot.message_handler(commands=[\"start\"])\n>def start(m):\n>    bot.reply_to(m, \"Привет\")\n>bot.infinity_polling()", listOf(
+        choice("Чем отвечают на сообщение в telebot?", "bot.reply_to(m, \"текст\")", "bot.say(m)", "m.answer()"),
+        choice("Что делает infinity_polling?", "Держит бота запущенным", "Создаёт токен", "Закрывает бота"),
+        gap("Дополни: обработчик /start", "@bot.message_handler(commands=[\"___\"])", "start", "help|run"),
+        fix("Исправь: класс называется TeleBot", "bot = telebot.Telebot(TOKEN)", "bot = telebot.TeleBot(TOKEN)"),
+        fix("Исправь: у обработчика есть параметр сообщения", "def start():", "def start(m):"),
         type("Установи библиотеку", "pip install pyTelegramBotAPI"),
         type("Подключи telebot", "import telebot"),
         type("Создай бота с токеном", "bot = telebot.TeleBot(TOKEN)"),
@@ -427,6 +432,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Запусти бота", "bot.infinity_polling()")
     )),
     Lesson("aiogram: кнопки и состояния", "В aiogram 3 команды ловит Router с фильтром Command. Кнопки создаются через InlineKeyboardMarkup, нажатие приходит как callback_query. Состояния FSM помнят шаг диалога: StatesGroup описывает шаги, state.set_state переключает.\n>from aiogram import Router, F\n>from aiogram.filters import Command\n>router = Router()\n>@router.message(Command(\"start\"))\n>async def start(m):\n>    await m.answer(\"Привет\")\n>@router.callback_query(F.data == \"ok\")", listOf(
+        choice("Что такое FSM в aiogram?", "Память о шаге диалога", "Вид кнопок", "База данных"),
+        choice("Как приходит нажатие inline-кнопки?", "Как callback_query", "Как фото", "Как команда"),
+        gap("Дополни: фильтр команды", "@router.message(___(\"start\"))", "Command", "F|Filter"),
+        fix("Исправь: обработчик aiogram асинхронный", "def start(m):", "async def start(m):"),
+        fix("Исправь: перед answer нужен await", "m.answer(\"Привет\")", "await m.answer(\"Привет\")"),
         type("Подключи Router и F", "from aiogram import Router, F"),
         type("Подключи фильтр Command", "from aiogram.filters import Command"),
         type("Создай роутер", "router = Router()"),
@@ -435,6 +445,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Ловить нажатие кнопки с данными ok", "@router.callback_query(F.data == \"ok\")")
     )),
     Lesson("ООП: методы класса и __str__", "Особые методы с двойным подчёркиванием настраивают поведение объекта. __str__ задаёт текст для print, __len__ даёт длину, __eq__ сравнивает. @classmethod получает сам класс и часто служит альтернативным конструктором, @staticmethod не получает ничего.\n>class User:\n>    def __init__(self, name):\n>        self.name = name\n>    def __str__(self):\n>        return self.name\n>    @classmethod\n>    def guest(cls):\n>        return cls(\"гость\")", listOf(
+        choice("Что делает __str__?", "Задаёт текст для print", "Создаёт объект", "Сравнивает объекты"),
+        choice("Чем @classmethod отличается от обычного метода?", "Получает сам класс, а не объект", "Работает быстрее", "Не может вызываться"),
+        gap("Дополни: метод для print", "def ___(self):\n    return self.name", "__str__", "__init__|__len__"),
+        fix("Исправь: у методов нужен параметр self", "def __str__():", "def __str__(self):"),
+        fix("Исправь: декоратор статического метода", "#staticmethod", "@staticmethod"),
         type("Метод текста для print", "def __str__(self):"),
         type("Метод длины объекта", "def __len__(self):"),
         type("Метод сравнения объектов", "def __eq__(self, other):"),
@@ -443,6 +458,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Декоратор статического метода", "@staticmethod")
     )),
     Lesson("Даты и время: datetime", "Модуль datetime работает с датами. now даёт текущее время, timedelta добавляет интервал, strftime превращает дату в строку по шаблону, strptime разбирает строку в дату.\n>from datetime import datetime, timedelta\n>now = datetime.now()\n>tomorrow = now + timedelta(days=1)\n>text = now.strftime(\"%d.%m.%Y %H:%M\")\n>d = datetime.strptime(\"01.01.2026\", \"%d.%m.%Y\")", listOf(
+        choice("Что даёт datetime.now()?", "Текущие дату и время", "Случайную дату", "Дату рождения"),
+        choice("Что делает timedelta(days=1)?", "Задаёт интервал в один день", "Создаёт дату", "Удаляет дату"),
+        gap("Дополни: дата в строку", "now.___(\"%d.%m.%Y\")", "strftime", "strptime|format"),
+        gap("Дополни: строка в дату", "datetime.___(\"01.01.2026\", \"%d.%m.%Y\")", "strptime", "strftime|parse"),
+        fix("Исправь: нужен импорт", "from datetime import date_time", "from datetime import datetime"),
         type("Подключи datetime и timedelta", "from datetime import datetime, timedelta"),
         type("Получи текущее время", "now = datetime.now()"),
         type("Прибавь один день", "tomorrow = now + timedelta(days=1)"),
@@ -451,6 +471,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Получи год из даты now", "now.year")
     )),
     Lesson("Подсказки типов: typing", "Подсказки типов не меняют работу программы, но помогают читать код и ловить ошибки в редакторе. Тип параметра пишут после двоеточия, тип результата после стрелки. Optional значит значение или None, list[int] это список целых.\n>def add(a: int, b: int) -> int:\n>    return a + b\n>from typing import Optional\n>def find(x: int) -> Optional[str]:\n>    return None", listOf(
+        choice("Меняют ли подсказки типов работу программы?", "Нет, они помогают читать код", "Да, ускоряют код", "Да, запрещают другие типы"),
+        choice("Что значит Optional[str]?", "Строка или None", "Только строка", "Список строк"),
+        gap("Дополни: тип результата", "def add(a: int, b: int) ___ int:", "->", "=>|:"),
+        fix("Исправь: тип параметра пишут через двоеточие", "def add(a int, b int):", "def add(a: int, b: int):"),
+        fix("Исправь: стрелка пишется ->", "def add(a: int) => int:", "def add(a: int) -> int:"),
         type("Параметр a типа int", "a: int"),
         type("Функция add возвращает int", "def add(a: int, b: int) -> int:"),
         type("Подключи Optional", "from typing import Optional"),
@@ -459,6 +484,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Тип значение или None для строки", "Optional[str]")
     )),
     Lesson("Абстрактные классы: abc", "Абстрактный класс задаёт обязательные методы для потомков. Его нельзя создать напрямую. Класс наследуют от ABC, а обязательные методы помечают @abstractmethod. Если потомок не реализует метод, Python выдаст ошибку.\n>from abc import ABC, abstractmethod\n>class Shape(ABC):\n>    @abstractmethod\n>    def area(self):\n>        pass\n>class Square(Shape):\n>    def area(self):\n>        return 4", listOf(
+        choice("Можно ли создать объект абстрактного класса?", "Нет, только потомка", "Да", "Только в Heroku"),
+        choice("Чем помечают обязательный метод?", "@abstractmethod", "@required", "@must"),
+        gap("Дополни: абстрактный класс", "class Shape(___):", "ABC", "Abstract|object"),
+        fix("Исправь: нужен импорт", "from abc import Abstract", "from abc import ABC, abstractmethod"),
+        fix("Исправь: класс наследуют от ABC", "class Shape:\n    @abstractmethod", "class Shape(ABC):\n    @abstractmethod"),
         type("Подключи ABC и abstractmethod", "from abc import ABC, abstractmethod"),
         type("Абстрактный класс Shape", "class Shape(ABC):"),
         type("Декоратор обязательного метода", "@abstractmethod"),
@@ -467,6 +497,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Вернуть 4", "return 4")
     )),
     Lesson("Логи: logging", "Модуль logging лучше print для бота: у сообщений есть уровни важности и время. basicConfig настраивает вывод, level задаёт минимальный уровень, а info, warning и error пишут сообщения. Логи можно писать в файл.\n>import logging\n>logging.basicConfig(level=logging.INFO)\n>logging.info(\"бот запущен\")\n>logging.error(\"ошибка\")", listOf(
+        choice("Чем logging лучше print?", "Есть уровни и время", "Он быстрее", "Он красивее"),
+        choice("Какой метод пишет сообщение об ошибке?", "logging.error", "logging.fail", "logging.bad"),
+        gap("Дополни: настройка уровня", "logging.___(level=logging.INFO)", "basicConfig", "config|setup"),
+        fix("Исправь: нужен импорт logging", "import logger", "import logging"),
+        fix("Исправь: уровень задаётся как level=", "logging.basicConfig(logging.INFO)", "logging.basicConfig(level=logging.INFO)"),
         type("Подключи logging", "import logging"),
         type("Настрой вывод от уровня INFO", "logging.basicConfig(level=logging.INFO)"),
         type("Запиши информацию бот запущен", "logging.info(\"бот запущен\")"),
@@ -475,6 +510,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Писать логи в файл bot.log", "logging.basicConfig(filename=\"bot.log\")")
     )),
     Lesson("Аргументы командной строки", "Скрипт может принимать параметры при запуске. sys.argv хранит список аргументов, где нулевой элемент это имя файла. argparse делает это удобнее: описываешь параметры, а он разбирает их и показывает справку.\n>import sys\n>name = sys.argv[1]\n>import argparse\n>p = argparse.ArgumentParser()\n>p.add_argument(\"--name\")\n>args = p.parse_args()", listOf(
+        choice("Что лежит в sys.argv[0]?", "Имя файла скрипта", "Первый аргумент", "Пустая строка"),
+        choice("Для чего argparse?", "Удобно разбирать параметры запуска", "Чтобы читать файлы", "Чтобы запускать сервер"),
+        gap("Дополни: первый аргумент", "name = sys.___[1]", "argv", "args|params"),
+        fix("Исправь: нужен импорт sys", "import system", "import sys"),
+        fix("Исправь: параметры читаются через parse_args", "args = p.parse()", "args = p.parse_args()"),
         type("Подключи sys", "import sys"),
         type("Первый аргумент после имени файла", "name = sys.argv[1]"),
         type("Подключи argparse", "import argparse"),
@@ -483,6 +523,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Разбери аргументы", "args = p.parse_args()")
     )),
     Lesson("Веб-сервер на aiohttp", "Библиотека aiohttp умеет и запросы, и серверы, всё асинхронно. Обработчик это async-функция, которая получает request и возвращает web.Response. Маршруты добавляют в приложение, run_app запускает сервер.\n>from aiohttp import web\n>async def hello(request):\n>    return web.Response(text=\"Привет\")\n>app = web.Application()\n>app.add_routes([web.get(\"/\", hello)])\n>web.run_app(app)", listOf(
+        choice("Что должен вернуть обработчик aiohttp?", "web.Response", "print", "None"),
+        choice("Чем запускают сервер?", "web.run_app(app)", "app.go()", "run(web)"),
+        gap("Дополни: ответ сервера", "return web.___(text=\"Привет\")", "Response", "Answer|Reply"),
+        fix("Исправь: обработчик асинхронный", "def hello(request):", "async def hello(request):"),
+        fix("Исправь: нужен импорт web", "from aiohttp import webserver", "from aiohttp import web"),
         type("Подключи web из aiohttp", "from aiohttp import web"),
         type("Объяви обработчик hello", "async def hello(request):"),
         type("Верни текстовый ответ", "return web.Response(text=\"Привет\")"),
