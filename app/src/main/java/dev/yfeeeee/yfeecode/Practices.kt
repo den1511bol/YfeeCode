@@ -129,7 +129,15 @@ object Practices {
             Practice("js19", "Бросок кубика", "Получи случайное целое число от 1 до 6 через Math.random и Math.floor и выведи его в консоль.", "", Lang.JS,
                 listOf(must("""Math\.random\s*\(""", "Нужен Math.random()"), must("""Math\.floor\s*\(""", "Нужен Math.floor(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"))),
             Practice("js20", "Год", "Создай текущую дату через new Date и выведи год через getFullYear.", "", Lang.JS,
-                listOf(must("""new\s+Date\s*\(""", "Нужен new Date()"), must("""getFullYear\s*\(""", "Нужен getFullYear()")))
+                listOf(must("""new\s+Date\s*\(""", "Нужен new Date()"), must("""getFullYear\s*\(""", "Нужен getFullYear()"))),
+            Practice("js21", "map", "Из массива nums = [1, 2, 3] получи новый массив с удвоенными числами через map.", "const nums = [1, 2, 3];\n", Lang.JS,
+                listOf(must("""\.map\s*\(""", "Используй nums.map(...)"), must("""=>|function""", "Передай функцию в map"))),
+            Practice("js22", "reduce", "Посчитай сумму чисел массива nums через reduce.", "const nums = [1, 2, 3];\n", Lang.JS,
+                listOf(must("""\.reduce\s*\(""", "Используй nums.reduce(...)"))),
+            Practice("js23", "Promise.all", "Дождись двух промисов одновременно через Promise.all и выведи результат.", "", Lang.JS,
+                listOf(must("""Promise\.all\s*\(""", "Нужен Promise.all([...])"), must("""await|\.then""", "Дождись результата: await или then"))),
+            Practice("js24", "setTimeout", "Выведи в консоль текст через 1 секунду с помощью setTimeout.", "", Lang.JS,
+                listOf(must("""setTimeout\s*\(""", "Нужен setTimeout(...)"), must("""1000""", "Задержка 1 секунда это 1000 миллисекунд")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
