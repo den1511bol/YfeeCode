@@ -12,7 +12,7 @@ fun botsLessons1(): List<Lesson> = listOf(
     Lesson("BotFather и токен", "Чтобы создать бота, напиши в Telegram пользователю @BotFather и отправь команду /newbot.\nBotFather спросит имя и username (username заканчивается на bot) и выдаст токен — длинную строку вида 123456:ABC-DEF.\nТокен — это пароль бота. Не показывай его другим и не загружай в публичный git. Храни токен в файле token.txt или в переменной окружения.", listOf(
         build("Команда BotFather для создания бота", "/newbot", "/start|/help", "Создание бота начинается командой /newbot."),
         build("Прочитай токен из файла token.txt", "TOKEN|=|open|(|\"token.txt\"|)|.|read|(|)", "write|input", "open открывает файл, read читает всё содержимое."),
-        type("Положи токен из файла в переменную TOKEN", "TOKEN = open(\"token.txt\").read().strip()", "TOKEN = open('token.txt').read().strip()", explain: "strip() убирает пробелы и перевод строки."),
+        type("Положи токен из файла в переменную TOKEN", "TOKEN = open(\"token.txt\").read().strip()", "TOKEN = open('token.txt').read().strip()", explain = "strip() убирает пробелы и перевод строки."),
         build("Прочитай токен из окружения", "import|os", "from|sys"),
         type("Возьми токен из переменной окружения BOT_TOKEN", "TOKEN = os.environ[\"BOT_TOKEN\"]", "TOKEN = os.getenv(\"BOT_TOKEN\")")
     )),
@@ -28,13 +28,13 @@ fun botsLessons1(): List<Lesson> = listOf(
         type("Создай бота: bot с токеном TOKEN", "bot = telebot.TeleBot(TOKEN)"),
         build("Обработчик команды /start", "@bot|.|message_handler|(|commands|=|[|\"start\"|]|)", "on_message|handler", "commands принимает список команд без слеша."),
         build("Ответь на сообщение", "bot|.|reply_to|(|message|,|\"Привет!\"|)", "send|answer"),
-        type("Запусти бесконечный опрос", "bot.infinity_polling()", explain: "Эта строка идёт в конце файла: она не завершается, пока бот работает.")
+        type("Запусти бесконечный опрос", "bot.infinity_polling()", explain = "Эта строка идёт в конце файла: она не завершается, пока бот работает.")
     )),
     Lesson("Запуск и остановка", "В приложении YfeeCode запусти файл кнопкой ▶ или командой run bot.py. Бот работает в фоне, даже когда экран выключен.\nЛог смотри командой log, остановка — stop.\nЕсли в логе ошибка про токен, проверь token.txt: в нём должен быть только токен, без пробелов.", listOf(
         build("Запустить файл bot.py в терминале", "run|bot.py", "stop|log"),
         build("Показать лог бота", "log", "run|stop", "log показывает последние строки лога бота."),
         type("Остановить бота", "stop"),
         build("Показать последние 50 строк лога", "log|50", "stop|run"),
-        type("Сохранить токен командой терминала", "env set BOT_TOKEN 123:ABC", explain: "Файл .env подхватывается при запуске бота.")
+        type("Сохранить токен командой терминала", "env set BOT_TOKEN 123:ABC", explain = "Файл .env подхватывается при запуске бота.")
     ))
 )

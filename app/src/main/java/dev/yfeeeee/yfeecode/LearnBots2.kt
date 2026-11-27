@@ -28,7 +28,7 @@ fun botsLessons2(): List<Lesson> = listOf(
         build("Создай кнопку «Нажми»", "types|.|InlineKeyboardButton|(|\"Нажми\"|,|callback_data|=|\"btn1\"|)", "text|data"),
         type("Добавь кнопку btn на клавиатуру kb", "kb.add(btn)"),
         build("Кнопка-ссылка", "types|.|InlineKeyboardButton|(|\"Сайт\"|,|url|=|\"https://example.com\"|)", "callback_data|link"),
-        type("Две кнопки в одном ряду", "kb.row(btn1, btn2)", explain: "row кладёт кнопки в одну строку, add — по умолчанию по одной в строке.")
+        type("Две кнопки в одном ряду", "kb.row(btn1, btn2)", explain = "row кладёт кнопки в одну строку, add — по умолчанию по одной в строке.")
     )),
     Lesson("Тип сообщения и ответы", "Бот может получить не только текст: фото, документ, голос. Обработчик выбирают по content_types.\n>@bot.message_handler(content_types=[\"photo\"])\n>def photo(message):\n>    bot.reply_to(message, \"Красивое фото\")\nОтветить можно разными способами: reply_to отвечает цитатой, send_message просто пишет в чат.", listOf(
         build("Обработчик фотографий", "@bot|.|message_handler|(|content_types|=|[|\"photo\"|]|)", "commands|=|text"),
