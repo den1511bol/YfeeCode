@@ -311,3 +311,4 @@
 - v5-B17: yfee-clone URL.
 - v5-B13: yfee-py файл.py с подсказкой pip install.
 - v5-B15: подсказка про py, если в sh введён Python-код.
+- v5-B10: команда backup в терминале.

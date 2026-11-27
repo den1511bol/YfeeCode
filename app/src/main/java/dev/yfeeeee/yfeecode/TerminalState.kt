@@ -202,6 +202,17 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 print("Автоперезапуск после падения: " + if (sp.getBoolean("autorestart", true)) "включён" else "выключен (autorestart on / off)")
                 return
             }
+            cmd == "backup" -> {
+                // backup — zip all projects into the app's external folder (Android/data/<app>/files)
+                try {
+                    val dir = ctx.getExternalFilesDir(null) ?: ctx.filesDir
+                    val name = "yfeecode-backup-" + java.text.SimpleDateFormat("yyyyMMdd-HHmm", java.util.Locale.US).format(java.util.Date()) + ".zip"
+                    val out = File(dir, name)
+                    store.zipTo(android.net.Uri.fromFile(out))
+                    print("Копия готова: " + out.absolutePath + " (" + out.length() / 1024 + " КБ). Скачать zip можно кнопкой ZIP↑ в Файлах.")
+                } catch (e: Exception) { print("Не вышло: " + e.message) }
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
