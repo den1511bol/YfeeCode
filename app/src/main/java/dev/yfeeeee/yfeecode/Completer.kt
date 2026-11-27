@@ -166,6 +166,21 @@ object Completer {
         var i = cursor
         while (i > 0 && (text[i - 1].isLetterOrDigit() || text[i - 1] == '_')) i--
         val prefix = text.substring(i, cursor)
+        if (i > 0 && text[i - 1] == '<' && (lang == Lang.PYTHON || lang == Lang.JS)) {
+            val tags = listOf(
+                "b" to "b>|</b>", "i" to "i>|</i>", "u" to "u>|</u>", "s" to "s>|</s>",
+                "code" to "code>|</code>", "pre" to "pre>|</pre>",
+                "blockquote" to "blockquote>|</blockquote>",
+                "a" to "a href=\"|\"></a>",
+                "tg-spoiler" to "tg-spoiler>|</tg-spoiler>",
+                "tg-emoji" to "tg-emoji emoji-id=\"|\">🙂</tg-emoji>"
+            )
+            val hit = tags.filter { it.first.startsWith(prefix) }.map { (n, raw) ->
+                val pos = raw.indexOf('|'); val clean = raw.replace("|", "")
+                Suggestion("<" + n + ">", clean, clean.length - pos, snippet = true)
+            }
+            if (hit.isNotEmpty()) return hit
+        }
         if (prefix.isEmpty()) return emptyList()
         val out = mutableListOf<Suggestion>()
         snippets[lang]?.get(prefix)?.let { raw ->
