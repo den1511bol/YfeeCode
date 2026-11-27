@@ -17,6 +17,8 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     var mode by mutableStateOf(TermMode.SH)
     var cwd: File by mutableStateOf(store.root)
     var pyMore by mutableStateOf(false)
+    /** Set by the terminal screen: opens a file in the editor (command "open"). */
+    var openHook: ((File) -> Unit)? = null
     private var logOffset = 0L
     private var js: JsRunner? = null
     private val ui = android.os.Handler(android.os.Looper.getMainLooper())
@@ -63,7 +65,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP), diff файл1 файл2"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP), diff файл1 файл2, open файл (открыть в редакторе)"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -413,6 +415,13 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                     }
                 }
                 if (shown == 0) print("Файлы одинаковые")
+                return
+            }
+            cmd.startsWith("open ") -> {
+                val f = File(cwd, cmd.removePrefix("open ").trim())
+                if (!f.isFile) { print("open: нет такого файла"); return }
+                val h = openHook
+                if (h == null) print("open: редактор сейчас недоступен") else { h(f); print("Открываю " + f.name + " в редакторе") }
                 return
             }
             cmd == "stop" -> { stopAll(); return }

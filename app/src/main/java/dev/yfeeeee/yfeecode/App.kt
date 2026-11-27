@@ -615,6 +615,10 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
     val listState = rememberLazyListState()
     val clip = LocalClipboardManager.current
     var botsOpen by remember { mutableStateOf(false) }
+    androidx.compose.runtime.DisposableEffect(term) {
+        term.openHook = { f -> onOpen(f.absolutePath, 1) }
+        onDispose { term.openHook = null }
+    }
     if (botsOpen) AlertDialog(
         onDismissRequest = { botsOpen = false },
         confirmButton = { TextButton(onClick = { botsOpen = false }) { Text("Закрыть") } },

@@ -54,3 +54,4 @@
 - [x] N5 tree (готово). [x] N6 ver (готово).
 - [x] N7 addcmd (готово). [x] N8 wc/head/tail (готово).
 - [x] N10 ip (готово). [x] N11 diff (готово).
+- [x] N12 open (готово).
