@@ -323,7 +323,9 @@ object Practices {
             Practice("cs22", "async Task", "Напиши async-метод Run типа Task, который ждёт Task.Delay(100).", "", Lang.CSHARP,
                 listOf(must("""async\s+Task\s+Run""", "Нужно: async Task Run()"), must("""await\s+Task\.Delay\s*\(""", "Дождись: await Task.Delay(100);"))),
             Practice("cs23", "LINQ: Where и Select", "Из списка чисел var nums = new List<int>{1,2,3,4} возьми чётные через Where и удвой их через Select.", "using System.Linq;\n", Lang.CSHARP,
-                listOf(must("""\.Where\s*\(""", "Нужен .Where(...)"), must("""\.Select\s*\(""", "Нужен .Select(...)"), must("""%\s*2""", "Чётность проверяй через % 2")))
+                listOf(must("""\.Where\s*\(""", "Нужен .Where(...)"), must("""\.Select\s*\(""", "Нужен .Select(...)"), must("""%\s*2""", "Чётность проверяй через % 2"))),
+            Practice("cs24", "switch-выражение", "Напиши метод Name(int n), который возвращает строку через switch-выражение со стрелками =>: 1 даёт one, остальные other.", "", Lang.CSHARP,
+                listOf(must("""switch\s*\{""", "Нужно switch-выражение: n switch { ... }"), must("""=>""", "Ветки пишутся через =>"), must("""_\s*=>""", "Добавь ветку по умолчанию: _ => ...")))
         )
     )
 }
