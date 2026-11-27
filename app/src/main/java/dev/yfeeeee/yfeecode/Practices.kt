@@ -263,7 +263,9 @@ object Practices {
             Practice("cpp21", "Ссылка", "Напиши функцию inc, которая принимает int по ссылке и увеличивает его на 1.", "", Lang.CPP,
                 listOf(must("""void\s+inc\s*\(\s*int\s*&""", "Нужно: void inc(int& x)"), must("""\+\+|\+=\s*1""", "Увеличь значение на 1"))),
             Practice("cpp22", "unique_ptr", "Создай умный указатель std::unique_ptr<int> через make_unique со значением 5.", "", Lang.CPP,
-                listOf(must("""unique_ptr\s*<\s*int\s*>""", "Нужен std::unique_ptr<int>"), must("""make_unique""", "Создай через std::make_unique<int>(5)")))
+                listOf(must("""unique_ptr\s*<\s*int\s*>""", "Нужен std::unique_ptr<int>"), must("""make_unique""", "Создай через std::make_unique<int>(5)"))),
+            Practice("cpp23", "Поиск подстроки", "Найди в строке std::string s подстроку \"bot\" через s.find и выведи позицию через std::cout.", "", Lang.CPP,
+                listOf(must("""\.find\s*\(""", "Нужен s.find(...)"), must("""bot""", "Ищи подстроку bot"), must("""cout""", "Выведи позицию через std::cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
