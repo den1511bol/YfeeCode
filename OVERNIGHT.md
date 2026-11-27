@@ -8,7 +8,7 @@
 - [x] 4. Linux-скрипты: yfee-update (pkg upgrade + проверка), yfee-ports (что слушает), yfee-tmux-подсказка; добавить в yfee-help.
 - [x] 5. Heroku: yfee-heroku deploy (runtime.txt, app.json, .gitignore, Procfile) расширить.
 - [x] 6. Шаблоны (Templates.kt): FastAPI/Flask-бот вебхук для Heroku, Hikka-модуль с конфигом и watcher.
-- [ ] 7. Сниппеты: aiogram FSM, inline-клавиатура, telebot inline, Hikka inline.
+- [x] 7. Сниппеты: aiogram FSM, inline-клавиатура, telebot inline, Hikka inline.
 - [ ] 8. Подсказки ошибок (runner.py _hint): добавить частые ошибки aiogram/telebot/Hikka.
 - [ ] 9. Терминал: история команд стрелками вверх/вниз во встроенном терминале, если ещё нет; иначе пропустить.
 - [ ] 10. Обновить HelpScreen.kt, README.md, CHANGELOG.md, yfee-help.

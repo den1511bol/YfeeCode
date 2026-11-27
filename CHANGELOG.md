@@ -256,3 +256,4 @@
 - Сессия v4-4: yfee-update, yfee-ports
 - Сессия v4-5: yfee-heroku files / config
 - Сессия v4-6: шаблоны aiogram 3 + .env, Flask для Heroku, Hikka-модуль с конфигом и watcher
+- Сессия v4-7: сниппеты aiofsm, aiokb, tgkb, hinl
