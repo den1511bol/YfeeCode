@@ -63,6 +63,20 @@ def _hint(e):
     low = msg.lower()
     if "invalidtoken" in name.lower() or "unauthorized" in low or "token is invalid" in low or "invalid token" in low:
         return "Telegram не принял токен: проверь token.txt (токен из @BotFather, без пробелов и лишних строк)."
+    if isinstance(e, KeyError) and msg.strip("'\"").isupper():
+        return "Нет переменной окружения %s. В терминале приложения: env set %s значение (файл .env)." % (msg, msg.strip("'\""))
+    if "terminated by other getupdates" in low or "conflict" in low and "getupdates" in low:
+        return "Бот уже запущен где-то ещё (Heroku, другой телефон или процесс). Останови второй экземпляр: stop."
+    if "chat not found" in low or "bot was blocked" in low or "forbidden" in low:
+        return "Telegram не даёт писать в этот чат: пользователь должен сначала нажать Start у бота, или бот заблокирован/не в чате."
+    if "can't parse entities" in low or "can not parse entities" in low:
+        return "Ошибка разметки: в тексте есть незакрытые HTML/Markdown-теги. Экранируй спецсимволы или убери parse_mode."
+    if "no running event loop" in low or "event loop is already running" in low:
+        return "Проблема с asyncio: запускай бота через asyncio.run(main()), не вызывай async-функции без await."
+    if "attempted relative import" in low:
+        return "Модуль Hikka с «from .. import loader» нельзя запускать как обычный скрипт. Проверь его командой: mod файл.py .команда"
+    if "coroutine" in low and "never awaited" in low:
+        return "Забыт await перед вызовом async-функции."
     if isinstance(e, ModuleNotFoundError):
         mod = getattr(e, "name", None) or msg
         return "Нет модуля «%s». Поставь его: вкладка Linux, затем pip install %s, и запусти файл кнопкой «Запуск в Linux»." % (mod, str(mod).split(".")[0])
