@@ -145,6 +145,25 @@ class EditorState(val file: File, initial: String) {
         return n
     }
 
+    /** Position to return to after [gotoDefinition]. Developer: @yfeeeee */
+    var backPos: Int = -1
+
+    /** Jumps to the def/class/function of the word under the cursor. Returns false if not found. */
+    fun gotoDefinition(): Boolean {
+        var a = cursor; var b = cursor
+        while (a > 0 && (text[a - 1].isLetterOrDigit() || text[a - 1] == '_')) a--
+        while (b < text.length && (text[b].isLetterOrDigit() || text[b] == '_')) b++
+        if (a == b) return false
+        val w = Regex.escape(text.substring(a, b))
+        val rx = Regex("(?m)^[ \\t]*(?:async\\s+def|def|class|function|async\\s+function|(?:public|private|static|protected|internal|void|int|string|bool|auto|const|let|var)\\s+)[^\\n]*?\\b" + w + "\\b")
+        val m = rx.find(text) ?: return false
+        if (m.range.first <= cursor && cursor <= m.range.last + 1) return false
+        backPos = cursor
+        val at = text.indexOf(text.substring(a, b), m.range.first)
+        moveTo(if (at >= 0) at else m.range.first)
+        return true
+    }
+
     /** Renames a whole word everywhere (variable/function rename); does not touch longer words. Developer: @yfeeeee */
     fun renameWord(q: String, r: String, ignoreCase: Boolean = false): Int {
         if (q.isEmpty()) return 0

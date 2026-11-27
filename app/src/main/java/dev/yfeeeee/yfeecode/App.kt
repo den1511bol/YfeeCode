@@ -439,6 +439,12 @@ fun EditorScreen(
             ToolIcon(Icons.Default.Search, "Поиск") { findOpen = !findOpen }
             ToolIcon(Icons.Default.Share, "Экспорт") { save(); onExport(state.file) }
             ToolIcon(Icons.Default.Info, "Шпаргалка") { cheatOpen = true }
+            ToolIcon(Icons.Default.ArrowForward, "К определению слова под курсором") {
+                if (!state.gotoDefinition()) info = "определение не найдено"
+            }
+            ToolIcon(Icons.Default.ArrowBack, "Назад к месту вызова") {
+                if (state.backPos >= 0) { state.moveTo(state.backPos); state.backPos = -1 }
+            }
             ToolIcon(Icons.Default.Keyboard, "Клавиатура") { showKb = !showKb }
         }
         Row(Modifier.fillMaxWidth().background(Color(0xFF240B0B)).horizontalScroll(rememberScrollState()),
