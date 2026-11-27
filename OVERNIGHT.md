@@ -59,3 +59,4 @@
 - [x] N14 grep (готово). [ ] N15 check файл.py.
 - [x] N15 check (готово).
 - [x] N16 сниппеты (готово: hcmd/hwatch/hcfg/quote/emoji/sphoto уже были; добавлены ikb, tbcb, aiocmd, aiocb, aiofsm).
+- [x] N18 справка в приложении (готово).
