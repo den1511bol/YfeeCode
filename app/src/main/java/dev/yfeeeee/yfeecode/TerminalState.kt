@@ -109,6 +109,10 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 }
                 return
             }
+            Regex("^(print\\(|import \\w+|from \\w+ import |def \\w+|async def |class \\w+).*").matches(cmd) -> {
+                print("Это похоже на Python. Набери py (или нажми кнопку py вверху), потом вводи код. Назад: sh")
+                return
+            }
             cmd == "py" -> { mode = TermMode.PY; return }
             cmd == "sh" -> { mode = TermMode.SH; return }
             cmd == "env" || cmd.startsWith("env ") -> {
