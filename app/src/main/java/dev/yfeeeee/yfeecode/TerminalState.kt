@@ -63,7 +63,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP)"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов), ver (версия), addcmd Модуль.py имя (новая команда Hikka), wc / head / tail файл [N], ip (внешний IP), diff файл1 файл2"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -394,6 +394,25 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                         print("Внешний IP: " + c.inputStream.bufferedReader().readText().trim())
                     } catch (e: Exception) { print("Не вышло: " + e.message) }
                 }
+                return
+            }
+            cmd.startsWith("diff ") -> {
+                // diff файл1 файл2 — first 40 differing lines
+                val p = cmd.removePrefix("diff ").trim().split(Regex("\\s+"))
+                val a = File(cwd, p.getOrNull(0) ?: ""); val b = File(cwd, p.getOrNull(1) ?: "")
+                if (p.size < 2 || !a.isFile || !b.isFile) { print("Использование: diff файл1 файл2"); return }
+                val la = a.readLines(); val lb = b.readLines()
+                var shown = 0
+                for (i in 0 until maxOf(la.size, lb.size)) {
+                    val x = la.getOrNull(i); val y = lb.getOrNull(i)
+                    if (x != y) {
+                        if (shown >= 40) { print("… (показаны первые 40 различий)"); break }
+                        shown++
+                        if (x != null) print((i + 1).toString() + " - " + x)
+                        if (y != null) print((i + 1).toString() + " + " + y)
+                    }
+                }
+                if (shown == 0) print("Файлы одинаковые")
                 return
             }
             cmd == "stop" -> { stopAll(); return }
