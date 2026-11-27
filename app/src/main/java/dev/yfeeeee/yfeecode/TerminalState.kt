@@ -20,7 +20,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     private var logOffset = 0L
     private var js: JsRunner? = null
     private val ui = android.os.Handler(android.os.Looper.getMainLooper())
-    init { CloudRunner.prefetch() }
+    init { CloudRunner.prefetch(); Completer.loadUser(ctx) }
 
     fun print(s: String) { ui.post { s.split("\n").forEach { lines.add(it) }; trim() } }
     private fun trim() { while (lines.size > 1500) lines.removeAt(0) }
@@ -211,6 +211,24 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                     store.zipTo(android.net.Uri.fromFile(out))
                     print("Копия готова: " + out.absolutePath + " (" + out.length() / 1024 + " КБ). Скачать zip можно кнопкой ZIP↑ в Файлах.")
                 } catch (e: Exception) { print("Не вышло: " + e.message) }
+                return
+            }
+            cmd == "snip" || cmd.startsWith("snip ") -> {
+                // snip add имя текст (\\n = новая строка, | = курсор) | snip list | snip del имя
+                val a = cmd.removePrefix("snip").trim()
+                val name = a.substringAfter(' ').substringBefore(' ')
+                when {
+                    a.startsWith("add ") && a.split(' ').size >= 3 -> {
+                        val text = a.removePrefix("add ").substringAfter(' ').replace("\\n", "\n")
+                        Completer.user[name] = text; Completer.saveUser(ctx)
+                        print("Сниппет сохранён: набери " + name + " в редакторе и нажми подсказку ⚡")
+                    }
+                    a.startsWith("del ") -> {
+                        if (Completer.user.remove(name) != null) { Completer.saveUser(ctx); print("Удалён: " + name) } else print("Нет такого сниппета")
+                    }
+                    a == "list" -> print(if (Completer.user.isEmpty()) "Своих сниппетов нет" else Completer.user.keys.joinToString("\n") { "• " + it })
+                    else -> print("snip add имя текст | snip list | snip del имя. В тексте: \\n = новая строка, | = где встанет курсор")
+                }
                 return
             }
             cmd == "stop" -> { stopAll(); return }

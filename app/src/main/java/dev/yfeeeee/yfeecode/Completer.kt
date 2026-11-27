@@ -5,6 +5,18 @@ data class Suggestion(val label: String, val insert: String, val cursorBack: Int
 
 /** Word completion + snippets. In snippets '|' marks where the cursor ends up; '\n' keeps current indent. */
 object Completer {
+    /** User snippets (name -> text), saved in SharedPreferences "user_snippets". Developer: @yfeeeee */
+    val user = LinkedHashMap<String, String>()
+    fun loadUser(ctx: android.content.Context) {
+        user.clear()
+        ctx.getSharedPreferences("user_snippets", android.content.Context.MODE_PRIVATE).getStringSet("all", emptySet())
+            ?.forEach { e -> val k = e.substringBefore('\u0001'); if (k.isNotEmpty() && '\u0001' in e) user[k] = e.substringAfter('\u0001') }
+    }
+    fun saveUser(ctx: android.content.Context) {
+        ctx.getSharedPreferences("user_snippets", android.content.Context.MODE_PRIVATE).edit()
+            .putStringSet("all", user.map { it.key + "\u0001" + it.value }.toSet()).apply()
+    }
+
     private val words: Map<Lang, List<String>> = mapOf(
         Lang.PYTHON to listOf("def", "class", "import", "from", "return", "print", "range", "len", "self", "async", "await",
             "elif", "else", "while", "for", "try", "except", "finally", "with", "lambda", "None", "True", "False", "isinstance",
@@ -183,7 +195,7 @@ object Completer {
         }
         if (prefix.isEmpty()) return emptyList()
         val out = mutableListOf<Suggestion>()
-        snippets[lang]?.get(prefix)?.let { raw ->
+        (user[prefix] ?: snippets[lang]?.get(prefix))?.let { raw ->
             val lineStart = text.lastIndexOf('\n', i - 1) + 1
             val indent = text.substring(lineStart, i).takeWhile { it == ' ' }
             val body = raw.replace("\n", "\n$indent")
