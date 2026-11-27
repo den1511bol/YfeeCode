@@ -19,7 +19,7 @@ android {
         versionName = "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
         buildConfigField("String", "GIT_SHA", "\"" + (System.getenv("GITHUB_SHA") ?: "dev") + "\"")
         ndk {
-            abiFilters += listOf("arm64-v8a", "armeabi-v7a")
+            abiFilters += listOf("arm64-v8a")
         }
     }
 
@@ -57,12 +57,32 @@ android {
 
 chaquopy {
     defaultConfig {
-        version = "3.11"
+        version = "3.13"
         pip {
+            // aiogram 2 pins aiohttp<3.9, which has no wheel for Python 3.13 in the Chaquopy repository,
+            // so dependencies are listed by hand (--no-deps). Developer: @yfeeeee
+            options("--no-deps")
             install("requests")
+            install("urllib3")
+            install("charset-normalizer")
+            install("idna")
+            install("certifi")
             install("pyTelegramBotAPI==4.21.0")
             install("aiogram==2.25.2")
+            install("Babel<2.12")
+            install("pytz")
+            install("magic-filter")
+            install("aiohttp==3.10.10")
+            install("aiohappyeyeballs")
+            install("aiosignal")
+            install("attrs")
+            install("frozenlist")
+            install("multidict")
+            install("yarl")
+            install("propcache")
             install("pyrogram==2.0.106")
+            install("pyaes")
+            install("pysocks")
         }
     }
 }
