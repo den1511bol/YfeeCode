@@ -89,7 +89,9 @@ object Practices {
             Practice("py23", "JSON туда и обратно", "Преврати словарь {\"name\": \"Аня\"} в строку через json.dumps (ensure_ascii=False), затем обратно через json.loads и выведи имя.", "", Lang.PYTHON,
                 listOf(must("""json\.dumps""", "Нужен json.dumps(...)"), must("""json\.loads""", "Нужен json.loads(...)")), "Аня"),
             Practice("py24", "logging: сообщение INFO", "Настрой logging на уровень INFO через basicConfig и запиши сообщение через logging.info (например, Бот запущен).", "import logging\n", Lang.PYTHON,
-                listOf(must("""logging\.basicConfig\s*\(""", "Нужен logging.basicConfig(...)"), must("""logging\.info\s*\(""", "Запиши сообщение через logging.info(...)")))
+                listOf(must("""logging\.basicConfig\s*\(""", "Нужен logging.basicConfig(...)"), must("""logging\.info\s*\(""", "Запиши сообщение через logging.info(...)"))),
+            Practice("py25", "Настройки пользователей в JSON", "Настройки бота хранятся словарём по user_id. Сохрани словарь в f через json.dump, перемотай f на начало (f.seek(0)), прочитай через json.load и выведи язык пользователя \"1\".", "import io\nimport json\n\nsettings = {\"1\": {\"lang\": \"ru\"}, \"2\": {\"lang\": \"en\"}}\nf = io.StringIO()\n", Lang.PYTHON,
+                listOf(must("""json\.dump\s*\(""", "Нужен json.dump(settings, f)"), must("""json\.load\s*\(""", "Нужен json.load(f)"), must("""print\s*\(""", "Выведи язык через print")), "ru")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
