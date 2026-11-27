@@ -260,6 +260,18 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 print("Проект создан: " + name + " (файл " + main + "). Токен положи в token.txt. Войти: cd " + name)
                 return
             }
+            cmd == "status" || cmd == "bots" -> {
+                // status — what the background bot is doing
+                val sp = ctx.getSharedPreferences("bot_state", Context.MODE_PRIVATE)
+                val last = store.logFile.takeIf { it.exists() && it.length() > 0 }?.readText()?.takeLast(20000)?.trimEnd('\n')?.split("\n")?.takeLast(3)
+                val done = last?.lastOrNull()?.startsWith("[done]") == true
+                print("Бот: " + (if (sp.getBoolean("running", false) && !done) "работает" else "остановлен") +
+                    (sp.getString("script", null)?.let { " (" + File(it).name + ")" } ?: ""))
+                print("Автоперезапуск: " + if (sp.getBoolean("autorestart", true)) "включён" else "выключен")
+                if (last != null) { print("Последние строки лога:"); last.forEach { print("  " + it) } }
+                else print("Лог пуст. Запусти бота кнопкой ▶ или командой run файл.py")
+                return
+            }
             cmd == "stop" -> { stopAll(); return }
             cmd.startsWith("run ") -> { runFile(File(cwd, cmd.removePrefix("run ").trim())); return }
             cmd == "cd" || cmd.startsWith("cd ") -> {
