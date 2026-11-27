@@ -324,3 +324,4 @@
 - v5-B9a: +4 практики Python (asyncio.gather, sqlite3, Counter, json).
 - v5-B9b: +4 практики JS (map, reduce, Promise.all, setTimeout).
 - v5-B9c: +4 практики C# (cs19-cs22) и +4 C++ (cpp19-cpp22).
+- v5-B16: автозакрытие скобок и двойных кавычек во вкладке Linux (с перепрыгиванием закрывающей).

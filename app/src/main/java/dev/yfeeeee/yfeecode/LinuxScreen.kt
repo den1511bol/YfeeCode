@@ -31,6 +31,8 @@ object LinuxTerm {
     var view: TerminalView? = null
     var ctrl by mutableStateOf(false)
     var alt by mutableStateOf(false)
+    /** closing chars waiting after auto-paired brackets (auto-close in the Linux tab). Developer: @yfeeeee */
+    var pending = StringBuilder()
     var titleTick by mutableStateOf(0)
     var fontSp = 13
 
@@ -235,11 +237,20 @@ fun LinuxScreen(store: FileStore) {
                         sess.write(String(charArrayOf((t[0].lowercaseChar().code and 0x1f).toChar())))
                         LinuxTerm.ctrl = false
                     } else if (LinuxTerm.alt) { sess.write("\u001b" + t); LinuxTerm.alt = false }
+                    else if (t.length == 1 && t[0] in "([{\"" && !LinuxTerm.ctrl) {
+                        val close = when (t[0]) { '(' -> ')'; '[' -> ']'; '{' -> '}'; else -> '"' }
+                        if (t[0] == '"' && LinuxTerm.pending.lastOrNull() == '"') { sess.write("\u001b[C"); LinuxTerm.pending.setLength(LinuxTerm.pending.length - 1) }
+                        else { sess.write(t + close + "\u001b[D"); LinuxTerm.pending.append(close) }
+                    }
+                    else if (t.length == 1 && t[0] in ")]}" && LinuxTerm.pending.lastOrNull() == t[0]) {
+                        sess.write("\u001b[C"); LinuxTerm.pending.setLength(LinuxTerm.pending.length - 1)
+                    }
                     else sess.write(t)
                 }
             },
             onCmd = { c ->
                 val sess = LinuxTerm.session
+                if (c != Cmd.LEFT && c != Cmd.RIGHT) LinuxTerm.pending.setLength(0)
                 if (sess != null) when (c) {
                     Cmd.BACK -> sess.write("\u007f")
                     Cmd.ENTER -> sess.write("\r")
