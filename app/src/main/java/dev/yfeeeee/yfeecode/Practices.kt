@@ -179,7 +179,9 @@ object Practices {
             Practice("html19", "Картинка со ссылкой", "Сделай ссылку a, внутри которой лежит картинка img с атрибутом alt.", "", Lang.HTML,
                 listOf(must("""<a[^>]*href""", "Нужна ссылка a с href"), must("""<img[^>]*alt\s*=""", "У картинки нужен alt"))),
             Practice("html20", "Список ссылок", "Сделай меню: ul с тремя li, в каждом li ссылка a.", "", Lang.HTML,
-                listOf(must("""<ul""", "Нужен тег ul"), must("""<li[^>]*>\s*<a""", "В li нужна ссылка a")))
+                listOf(must("""<ul""", "Нужен тег ul"), must("""<li[^>]*>\s*<a""", "В li нужна ссылка a"))),
+            Practice("html21", "Форма с email", "Сделай форму: label для поля, input type=\"email\" и кнопку button.", "", Lang.HTML,
+                listOf(must("""<form""", "Нужен тег form"), must("""<label""", "Нужна подпись label"), must("""<input[^>]*type\s*=\s*["']email["']""", "Нужен input с type=\"email\""), must("""<button""", "Нужна кнопка button")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
