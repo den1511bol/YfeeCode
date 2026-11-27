@@ -3,6 +3,10 @@ package dev.yfeeeee.yfeecode
 
 fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
     Lesson("Первая программа", "Программа на C++ начинается с функции main. Для вывода подключают iostream.\n>#include <iostream>\n>int main() {\n>    std::cout << \"Hello\" << std::endl;\n>    return 0;\n>}", listOf(
+        choice("С какой функции начинается программа на C++?", "main", "start", "begin"),
+        choice("Что подключают для вывода?", "iostream", "stdio2", "output"),
+        gap("Дополни: вывод", "std::___ << \"Hello\" << std::endl;", "cout", "cin|print"),
+        fix("Исправь: у оператора return нужна точка с запятой", "return 0", "return 0;"),
         build("Подключи iostream", "#|include|<|iostream|>", "import|using"),
         build("Объяви функцию main", "int|main|(|)|{", "void|def"),
         type("Выведи Hello", "std::cout << \"Hello\" << std::endl;"),
@@ -11,6 +15,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Закрой функцию", "}")
     )),
     Lesson("Переменные и типы", "У каждой переменной есть тип: int — целое, double — дробное, string — текст, bool — логическое.\n>int age = 18;\n>double pi = 3.14;\n>std::string name = \"Аня\";", listOf(
+        choice("Какой тип хранит целое число?", "int", "double", "string"),
+        choice("Какой тип хранит дробное число?", "double", "int", "bool"),
+        gap("Дополни: переменная возраста", "___ age = 18;", "int", "string|double"),
+        fix("Исправь: текст в двойных кавычках", "std::string name = 'Аня';", "std::string name = \"Аня\";"),
         build("Целое age = 18", "int|age|=|18|;", "double|string"),
         type("Дробное pi = 3.14", "double pi = 3.14;"),
         build("Строка name", "std|::|string|name|=|\"Anna\"|;", "int|char"),
@@ -19,6 +27,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Объяви int x = 5", "int x = 5;")
     )),
     Lesson("Условия", "if проверяет условие в скобках, тело блока пишут в фигурных.\n>if (x > 5) {\n>    std::cout << \"много\";\n>} else {\n>    std::cout << \"мало\";\n>}", listOf(
+        choice("В каких скобках пишут условие if?", "В круглых", "В квадратных", "В угловых"),
+        choice("Какое слово означает «иначе»?", "else", "elif", "other"),
+        gap("Дополни: иначе", "if (x > 5) { a(); } ___ { b(); }", "else", "elif|then"),
+        fix("Исправь: условие в скобках", "if x > 5 {", "if (x > 5) {"),
         build("Если x больше 5", "if|(|x|>|5|)|{", "elif|then"),
         type("Если age >= 18", "if (age >= 18) {"),
         build("Сравни a и b на равенство", "if|(|a|==|b|)|{", "=|:"),
@@ -27,6 +39,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Логическое ИЛИ", "if (a || b) {")
     )),
     Lesson("Циклы", "for повторяет код по счётчику, while — пока условие верно.\n>for (int i = 0; i < 3; i++) {\n>}\n>while (n < 10) { n++; }", listOf(
+        choice("Что делает i++?", "Увеличивает i на 1", "Уменьшает i на 1", "Обнуляет i"),
+        choice("Когда выполняется while?", "Пока условие верно", "Один раз", "Никогда"),
+        gap("Дополни: цикл до 3", "for (int i = 0; i ___ 3; i++) {", "<", ">|=="),
+        fix("Исправь: части for разделяют ; ", "for (int i = 0, i < 3, i++) {", "for (int i = 0; i < 3; i++) {"),
         build("Цикл от 0 до 2", "for|(|int|i|=|0|;|i|<|3|;|i|++|)|{", "in|range"),
         type("Пока n меньше 10", "while (n < 10) {"),
         build("Прерви цикл", "break|;", "stop|exit"),
@@ -35,6 +51,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Увеличь i на 2", "i += 2;")
     )),
     Lesson("Функции", "Функция объявляется с типом результата. void — ничего не возвращает.\n>int add(int a, int b) {\n>    return a + b;\n>}\n>void hello() { }", listOf(
+        choice("Что значит void?", "Функция ничего не возвращает", "Функция возвращает 0", "Функция приватная"),
+        choice("Что делает return?", "Возвращает результат", "Выводит текст", "Завершает ввод"),
+        gap("Дополни: функция сложения", "___ add(int a, int b) { return a + b; }", "int", "void|add"),
+        fix("Исправь: у параметров нужны типы", "int add(a, b) {", "int add(int a, int b) {"),
         build("Функция add двух чисел", "int|add|(|int|a|,|int|b|)|{", "def|void"),
         type("Объяви void hello()", "void hello() {"),
         build("Верни сумму", "return|a|+|b|;", "print|=="),
@@ -43,6 +63,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Прочитай число в x", "std::cin >> x;")
     )),
     Lesson("Массивы и vector", "Массив имеет фиксированный размер, vector растёт. Для vector подключают библиотеку.\n>#include <vector>\n>std::vector<int> v = {1, 2, 3};\n>v.push_back(4);", listOf(
+        choice("Чем vector лучше массива?", "Он растёт", "Он быстрее", "Он короче"),
+        choice("Что нужно подключить для vector?", "#include <vector>", "#include <array2>", "using vector"),
+        gap("Дополни: добавь в конец", "v.___(4);", "push_back", "append|add"),
+        fix("Исправь: у vector есть push_back", "v.push(4);", "v.push_back(4);"),
         build("Подключи vector", "#|include|<|vector|>", "import|array"),
         type("Добавь 4 в vector v", "v.push_back(4);"),
         build("Размер vector v", "v|.|size|(|)", "len|length"),
@@ -51,6 +75,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Объяви vector чисел v", "std::vector<int> v;")
     )),
     Lesson("Указатели и классы", "Указатель хранит адрес переменной: & берёт адрес, * разыменовывает. Класс описывает объект.\n>int x = 5;\n>int* p = &x;\n>*p = 7;\n>class Dog {\n>public:\n>    std::string name;\n>};", listOf(
+        choice("Что хранит указатель?", "Адрес переменной", "Значение", "Тип"),
+        choice("Что делает & перед переменной?", "Берёт адрес", "Разыменовывает", "Удаляет"),
+        gap("Дополни: указатель на x", "int* p = ___x;", "&", "*|#"),
+        fix("Исправь: после класса нужна ; ", "class Dog { public: std::string name; }", "class Dog { public: std::string name; };"),
         build("Возьми адрес x", "int|*|p|=|&|x|;", "int|x|=="),
         type("Запиши 7 по указателю p", "*p = 7;"),
         build("Объяви класс Dog", "class|Dog|{", "def|struct"),
@@ -59,6 +87,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай объект Dog с именем d", "Dog d;")
     )),
     Lesson("Наследование", "Класс-наследник получает поля и методы родителя. Двоеточие и public указывают базовый класс. virtual позволяет переопределять метод.\n>class Animal {\n>public:\n>    virtual void speak() { }\n>};\n>class Dog : public Animal {\n>};", listOf(
+        choice("Что делает virtual?", "Позволяет переопределять метод", "Прячет метод", "Удаляет метод"),
+        choice("Как записывают наследование?", "class Dog : public Animal", "class Dog -> Animal", "class Dog(Animal)"),
+        gap("Дополни: наследование", "class Dog : ___ Animal {", "public", "private2|extends"),
+        fix("Исправь: наследование через двоеточие", "class Dog extends Animal {", "class Dog : public Animal {"),
         build("Наследуй Dog от Animal", "class|Dog|:|public|Animal|{", "extends|struct"),
         type("Виртуальный метод speak", "virtual void speak() { }"),
         build("Переопредели speak в наследнике", "void|speak|(|)|override|{", "virtual|class"),
@@ -67,6 +99,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай указатель на Animal", "Animal* a = new Dog();")
     )),
     Lesson("Строки и ввод", "std::string хранит текст, cin читает ввод, getline читает строку целиком вместе с пробелами.\n>std::string s;\n>std::cin >> s;\n>std::cout << s.size();", listOf(
+        choice("Что делает cin?", "Читает ввод", "Выводит текст", "Удаляет строку"),
+        choice("Что даёт s.size()?", "Длину строки", "Первую букву", "Копию"),
+        gap("Дополни: чтение слова", "std::cin ___ s;", ">>", "<<|=="),
+        fix("Исправь: cin читает через >>", "std::cin << s;", "std::cin >> s;"),
         type("Объяви строку name", "std::string name;"),
         type("Прочитай слово в name", "std::cin >> name;"),
         type("Прочитай строку целиком", "std::getline(std::cin, name);"),
@@ -75,6 +111,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи заголовок строк", "#include <string>")
     )),
     Lesson("Ссылки и const", "Ссылка (&) даёт другое имя той же переменной, поэтому функция может её менять без копирования. const запрещает менять значение.\n>void inc(int& x) { x++; }\n>const int N = 10;", listOf(
+        choice("Что даёт ссылка (&)?", "Другое имя той же переменной", "Копию значения", "Адрес памяти"),
+        choice("Что делает const?", "Запрещает менять значение", "Ускоряет код", "Удаляет значение"),
+        gap("Дополни: ссылка в параметре", "void inc(int___ x) { x++; }", "&", "*|#"),
+        fix("Исправь: const пишут перед типом", "int const2 N = 10;", "const int N = 10;"),
         type("Параметр-ссылка на int", "void inc(int& x)"),
         type("Константа N равна 10", "const int N = 10;"),
         build("Передай строку по константной ссылке", "const|std::string|&|s", "int|void"),
@@ -83,6 +123,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи заголовок vector", "#include <vector>")
     )),
     Lesson("Ввод: cin и getline", "cin читает слово или число, getline читает всю строку с пробелами. После cin перед getline нужно убрать перевод строки: cin.ignore().\n>int a;\n>cin >> a;\n>string s;\n>getline(cin, s);", listOf(
+        choice("Что читает getline?", "Всю строку с пробелами", "Одно слово", "Одно число"),
+        choice("Зачем cin.ignore() перед getline?", "Убрать перевод строки после cin", "Очистить экран", "Закрыть ввод"),
+        gap("Дополни: читаем строку", "___(cin, s);", "getline", "readline|getstr"),
+        fix("Исправь: строка читается через getline", "cin.getline2(s);", "getline(cin, s);"),
         type("Прочитай число в переменную a", "cin >> a;"),
         type("Прочитай две переменные a и b", "cin >> a >> b;"),
         type("Прочитай строку целиком в s", "getline(cin, s);"),
@@ -91,6 +135,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи ввод-вывод", "#include <iostream>")
     )),
     Lesson("Switch и тернарный оператор", "switch выбирает ветку по значению, break выходит из switch, default срабатывает, если ничего не подошло. Тернарный оператор: условие ? да : нет.\n>switch (x) {\n>  case 1: cout << \"один\"; break;\n>  default: cout << \"другое\";\n>}\n>int m = a > b ? a : b;", listOf(
+        choice("Что делает break в switch?", "Выходит из switch", "Повторяет ветку", "Удаляет ветку"),
+        choice("Когда срабатывает default?", "Если ни одна ветка не подошла", "Всегда", "Никогда"),
+        gap("Дополни: тернарный оператор", "int m = a > b ___ a : b;", "?", ":|!"),
+        fix("Исправь: у case двоеточие", "case 1 cout << 1;", "case 1: cout << 1;"),
         type("Начни switch по x", "switch (x) {"),
         type("Ветка для значения 1", "case 1:"),
         type("Выйди из switch", "break;"),
@@ -99,6 +147,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Условие И", "a > 0 && b > 0")
     )),
     Lesson("Строки std::string", "string хранит текст. Методы: size, substr, find, append, +. Строки сравнивают через ==. Нужен #include <string>.\n>string s = \"Привет\";\n>s.size();\n>s.substr(0, 3);\n>s.find(\"ив\");\n>s += \"!\";", listOf(
+        choice("Что даёт s.substr(0, 3)?", "Первые три символа", "Последние три символа", "Длину"),
+        choice("Чем сравнивают строки?", "==", "equals", "like"),
+        gap("Дополни: поиск подстроки", "s.___(\"ив\");", "find", "search|index"),
+        fix("Исправь: склейка строк через +", "s = s . \"!\";", "s = s + \"!\";"),
         type("Создай строку s со значением abc", "string s = \"abc\";"),
         type("Длина строки s", "s.size()"),
         type("Первые 3 символа s", "s.substr(0, 3)"),
@@ -107,6 +159,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи string", "#include <string>")
     )),
     Lesson("Структуры и enum", "struct объединяет поля в один тип. enum задаёт набор именованных значений. Поля читают через точку.\n>struct Point { int x; int y; };\n>Point p = {1, 2};\n>p.x = 5;\n>enum Color { RED, GREEN, BLUE };", listOf(
+        choice("Что делает struct?", "Объединяет поля в один тип", "Создаёт цикл", "Подключает файл"),
+        choice("Как читают поле структуры?", "Через точку", "Через стрелку ->", "Через двоеточие"),
+        gap("Дополни: поле x", "p.___ = 5;", "x", "y|Point"),
+        fix("Исправь: после struct нужна ; ", "struct Point { int x; int y; }", "struct Point { int x; int y; };"),
         type("Структура Point с полями x и y", "struct Point { int x; int y; };"),
         type("Создай p со значениями 1 и 2", "Point p = {1, 2};"),
         type("Задай полю x значение 5", "p.x = 5;"),
@@ -115,6 +171,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Прочитай поле y", "p.y")
     )),
     Lesson("map и set", "map хранит пары ключ-значение и держит ключи отсортированными. set хранит уникальные значения. Нужны #include <map> и <set>.\n>map<string, int> m;\n>m[\"a\"] = 1;\n>set<int> s;\n>s.insert(5);\n>m.count(\"a\");", listOf(
+        choice("Что хранит map?", "Пары ключ и значение", "Только числа", "Только уникальные"),
+        choice("Что хранит set?", "Только уникальные значения", "Пары", "Строки"),
+        gap("Дополни: добавь в set", "s.___(5);", "insert", "push|add"),
+        fix("Исправь: нужен include", "#include <maps>", "#include <map>"),
         type("Создай map string-int", "map<string, int> m;"),
         type("Положи a со значением 1", "m[\"a\"] = 1;"),
         type("Создай множество int", "set<int> s;"),
@@ -123,6 +183,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Перебери пары map", "for (auto& kv : m) {")
     )),
     Lesson("Алгоритмы", "Заголовок <algorithm> даёт sort, reverse, find, count, max_element. Они работают с диапазоном begin() ... end().\n>sort(v.begin(), v.end());\n>reverse(v.begin(), v.end());\n>auto it = find(v.begin(), v.end(), 3);", listOf(
+        choice("Что делает sort?", "Сортирует диапазон", "Находит элемент", "Удаляет повторы"),
+        choice("Какой заголовок нужен для sort?", "<algorithm>", "<sort>", "<vector2>"),
+        gap("Дополни: сортировка вектора", "sort(v.begin(), v.___());", "end", "last|back"),
+        fix("Исправь: sort принимает начало и конец", "sort(v);", "sort(v.begin(), v.end());"),
         type("Подключи algorithm", "#include <algorithm>"),
         type("Отсортируй вектор v", "sort(v.begin(), v.end());"),
         type("Разверни вектор v", "reverse(v.begin(), v.end());"),
@@ -131,6 +195,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Размер вектора v", "v.size()")
     )),
     Lesson("Лямбды", "Лямбда это безымянная функция: [захват](параметры){тело}. Её часто передают в алгоритмы.\n>auto sq = [](int x) { return x * x; };\n>sort(v.begin(), v.end(), [](int a, int b) { return a > b; });", listOf(
+        choice("Что такое лямбда?", "Безымянная функция", "Цикл", "Класс"),
+        choice("Что пишут в квадратных скобках лямбды?", "Захват переменных", "Тип результата", "Имя"),
+        gap("Дополни: лямбда", "auto sq = [](int x) { ___ x * x; };", "return", "print|break"),
+        fix("Исправь: после лямбды нужна ; ", "auto sq = [](int x) { return x * x; }", "auto sq = [](int x) { return x * x; };"),
         type("Лямбда квадрата x в переменной sq", "auto sq = [](int x) { return x * x; };"),
         type("Вызови sq с 5", "sq(5)"),
         type("Сортировка по убыванию лямбдой", "sort(v.begin(), v.end(), [](int a, int b) { return a > b; });"),
@@ -139,6 +207,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи functional", "#include <functional>")
     )),
     Lesson("Шаблоны", "Шаблон делает функцию или класс для любого типа. template<typename T> объявляет тип-параметр.\n>template<typename T>\n>T maxOf(T a, T b) { return a > b ? a : b; }\n>maxOf<int>(1, 2);", listOf(
+        choice("Что объявляет template<typename T>?", "Тип-параметр", "Переменную", "Класс"),
+        choice("Зачем нужны шаблоны?", "Одна функция для любых типов", "Для скорости", "Для файлов"),
+        gap("Дополни: шаблон", "template<___ T>", "typename", "int|class2"),
+        fix("Исправь: ключевое слово template", "templat<typename T>", "template<typename T>"),
         type("Объяви шаблон с типом T", "template<typename T>"),
         type("Функция maxOf для T", "T maxOf(T a, T b) { return a > b ? a : b; }"),
         type("Вызови maxOf для int", "maxOf<int>(1, 2)"),
@@ -147,6 +219,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай пару 1 и a", "make_pair(1, \"a\")")
     )),
     Lesson("Динамическая память и умные указатели", "new выделяет память, delete освобождает. Умные указатели делают это сами: unique_ptr владеет один, shared_ptr разделяют. Нужен #include <memory>.\n>int* p = new int(5);\n>delete p;\n>auto u = make_unique<int>(5);", listOf(
+        choice("Что делает delete?", "Освобождает память", "Выделяет память", "Создаёт указатель"),
+        choice("Какой указатель владеет объектом в одиночку?", "unique_ptr", "shared_ptr", "raw_ptr"),
+        gap("Дополни: выделить память", "int* p = ___ int(5);", "new", "make|alloc"),
+        fix("Исправь: нужен include", "#include <memory2>", "#include <memory>"),
         type("Выдели память под int со значением 5", "int* p = new int(5);"),
         type("Освободи память p", "delete p;"),
         type("Создай unique_ptr на 5", "auto u = make_unique<int>(5);"),
@@ -155,6 +231,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Прочитай значение через указатель p", "*p")
     )),
     Lesson("Исключения", "try ловит ошибку, catch обрабатывает, throw бросает. Для стандартных ошибок используют std::exception и what().\n>try {\n>  throw runtime_error(\"плохо\");\n>} catch (const exception& e) {\n>  cout << e.what();\n>}", listOf(
+        choice("Что делает throw?", "Бросает ошибку", "Ловит ошибку", "Завершает цикл"),
+        choice("Что даёт e.what()?", "Текст ошибки", "Номер строки", "Тип"),
+        gap("Дополни: ловим ошибку", "try { } ___ (const exception& e) { }", "catch", "except|handle"),
+        fix("Исправь: в C++ пишут catch", "try { } except (exception& e) { }", "try { } catch (exception& e) { }"),
         type("Начни блок try", "try {"),
         type("Брось runtime_error", "throw runtime_error(\"плохо\");"),
         type("Поймай любое стандартное исключение", "} catch (const exception& e) {"),
@@ -163,6 +243,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Подключи stdexcept", "#include <stdexcept>")
     )),
     Lesson("Файлы: fstream", "ifstream читает файл, ofstream пишет. Нужен #include <fstream>. Файл закрывается сам, когда объект исчезает.\n>ofstream out(\"a.txt\");\n>out << \"привет\";\n>ifstream in(\"a.txt\");\n>getline(in, line);", listOf(
+        choice("Чем читают файл?", "ifstream", "ofstream", "cout"),
+        choice("Чем пишут в файл?", "ofstream", "ifstream", "cin"),
+        gap("Дополни: открыть файл для записи", "___ out(\"a.txt\");", "ofstream", "ifstream|fopen"),
+        fix("Исправь: нужен include", "#include <filestream>", "#include <fstream>"),
         type("Подключи fstream", "#include <fstream>"),
         type("Открой a.txt для записи", "ofstream out(\"a.txt\");"),
         type("Запиши привет в файл", "out << \"привет\";"),
@@ -171,6 +255,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Проверь, что файл открылся", "in.is_open()")
     )),
     Lesson("Перегрузка операторов и namespace", "Оператор можно определить для своего класса. namespace группирует имена и предотвращает конфликты. using namespace std; избавляет от префикса std::.\n>Point operator+(Point a, Point b) {\n>  return {a.x + b.x, a.y + b.y};\n>}\n>namespace my { int x = 1; }\n>my::x", listOf(
+        choice("Что делает namespace?", "Группирует имена", "Создаёт цикл", "Удаляет имена"),
+        choice("Что делает using namespace std;?", "Убирает необходимость писать std::", "Подключает файл", "Создаёт функцию"),
+        gap("Дополни: оператор плюс", "Point ___+(Point a, Point b)", "operator", "oper|function"),
+        fix("Исправь: после using нужна ; ", "using namespace std", "using namespace std;"),
         type("Оператор плюс для Point", "Point operator+(Point a, Point b) {"),
         type("Объяви пространство имён my", "namespace my {"),
         type("Обратись к x из my", "my::x"),
@@ -179,6 +267,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Постоянная pi равная 3.14 на этапе компиляции", "constexpr double pi = 3.14;")
     )),
     Lesson("Потоки: std::thread", "Поток выполняет функцию параллельно с главной программой. join ждёт его завершения. Если два потока меняют одну переменную, нужен mutex: lock_guard закрывает доступ на время блока. При сборке добавь флаг -pthread.\n>#include <thread>\n>#include <mutex>\n>std::thread t(work);\n>t.join();\n>std::mutex m;\n>std::lock_guard<std::mutex> lock(m);", listOf(
+        choice("Что делает join?", "Ждёт завершения потока", "Запускает поток", "Удаляет поток"),
+        choice("Зачем нужен mutex?", "Защитить общую переменную от двух потоков", "Ускорить поток", "Закрыть файл"),
+        gap("Дополни: ждать поток", "t.___();", "join", "wait|stop"),
+        fix("Исправь: флаг сборки для потоков", "g++ main.cpp -thread", "g++ main.cpp -pthread"),
         type("Подключи thread", "#include <thread>"),
         type("Подключи mutex", "#include <mutex>"),
         type("Запусти функцию work в потоке t", "std::thread t(work);"),
@@ -187,6 +279,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Закрой доступ на время блока", "std::lock_guard<std::mutex> lock(m);")
     )),
     Lesson("Время и случайные числа", "chrono измеряет время, random даёт качественные случайные числа. mt19937 это генератор, uniform_int_distribution задаёт диапазон. this_thread::sleep_for делает паузу.\n>#include <chrono>\n>#include <random>\n>std::mt19937 gen(std::random_device{}());\n>std::uniform_int_distribution<int> d(1, 6);\n>int x = d(gen);\n>std::this_thread::sleep_for(std::chrono::seconds(1));", listOf(
+        choice("Что задаёт uniform_int_distribution?", "Диапазон случайных чисел", "Время", "Файл"),
+        choice("Что делает sleep_for?", "Делает паузу", "Запускает поток", "Читает время"),
+        gap("Дополни: генератор", "std::___ gen(rd());", "mt19937", "random2|rand"),
+        fix("Исправь: нужен include", "#include <crono>", "#include <chrono>"),
         type("Подключи chrono", "#include <chrono>"),
         type("Подключи random", "#include <random>"),
         type("Создай генератор gen", "std::mt19937 gen(std::random_device{}());"),
@@ -195,6 +291,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Пауза на 1 секунду", "std::this_thread::sleep_for(std::chrono::seconds(1));")
     )),
     Lesson("STL: stack, queue, deque", "stack работает по принципу последним пришёл, первым ушёл: push кладёт, top смотрит верх, pop убирает. queue работает по очереди: front смотрит первый, push кладёт в конец. deque это двусторонняя очередь: push_front и push_back.\n>#include <stack>\n>std::stack<int> s;\n>s.push(5);\n>int x = s.top();\n>s.pop();\n>std::queue<int> q;\n>q.push(1);", listOf(
+        choice("По какому принципу работает stack?", "Последним пришёл, первым ушёл", "Первым пришёл, первым ушёл", "Случайно"),
+        choice("Что делает pop у stack?", "Убирает верхний элемент", "Кладёт элемент", "Смотрит верх"),
+        gap("Дополни: положить в очередь", "q.___(5);", "push", "add|put"),
+        fix("Исправь: верх стека смотрят через top", "int x = s.peek();", "int x = s.top();"),
         type("Подключи stack", "#include <stack>"),
         type("Создай стек целых s", "std::stack<int> s;"),
         type("Положи 5 в стек", "s.push(5);"),
@@ -203,6 +303,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай очередь целых q", "std::queue<int> q;")
     )),
     Lesson("STL: unordered_map и pair", "unordered_map хранит пары ключ-значение с быстрым поиском. Квадратные скобки добавляют или меняют значение, count проверяет наличие ключа, erase удаляет. pair хранит два значения вместе: first и second.\n>#include <unordered_map>\n>std::unordered_map<std::string, int> m;\n>m[\"a\"] = 1;\n>if (m.count(\"a\")) {}\n>for (auto& p : m) {}\n>std::pair<int, int> p = {1, 2};", listOf(
+        choice("Что делает count в unordered_map?", "Проверяет наличие ключа", "Считает значения", "Удаляет"),
+        choice("Что хранит pair?", "Два значения вместе", "Список", "Строку"),
+        gap("Дополни: удалить ключ", "m.___(\"a\");", "erase", "remove|delete"),
+        fix("Исправь: первое значение pair", "int a = p.one;", "int a = p.first;"),
         type("Подключи unordered_map", "#include <unordered_map>"),
         type("Создай словарь строка в число", "std::unordered_map<std::string, int> m;"),
         type("Запиши по ключу a значение 1", "m[\"a\"] = 1;"),
@@ -211,6 +315,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Создай пару чисел", "std::pair<int, int> p = {1, 2};")
     )),
     Lesson("Итераторы и auto", "Итератор указывает на элемент контейнера. begin даёт первый, end стоит за последним. Разыменование звёздочкой читает значение, ++ двигает дальше. Слово auto избавляет от длинного типа.\n>std::vector<int> v = {1, 2, 3};\n>auto it = v.begin();\n>int x = *it;\n>++it;\n>for (auto it = v.begin(); it != v.end(); ++it) {}", listOf(
+        choice("Что даёт begin()?", "Итератор на первый элемент", "Последний элемент", "Размер"),
+        choice("Что делает auto?", "Подбирает тип сам", "Создаёт переменную без типа", "Удаляет тип"),
+        gap("Дополни: итератор", "___ it = v.begin();", "auto", "int|var"),
+        fix("Исправь: значение читают через *", "int x = it;", "int x = *it;"),
         type("Получи итератор на начало v", "auto it = v.begin();"),
         type("Прочитай значение итератора", "int x = *it;"),
         type("Сдвинь итератор вперёд", "++it;"),
@@ -219,6 +327,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Найди 2 в v через std::find", "auto p = std::find(v.begin(), v.end(), 2);")
     )),
     Lesson("constexpr и static_assert", "constexpr значит, что значение можно вычислить ещё при компиляции. Так делают константы и небольшие функции без накладных расходов. static_assert проверяет условие при сборке: если оно ложно, программа не скомпилируется.\n>constexpr int N = 10;\n>constexpr int sq(int x) { return x * x; }\n>static_assert(N > 0, \"N должно быть больше нуля\");", listOf(
+        choice("Что значит constexpr?", "Значение считается при компиляции", "Значение нельзя читать", "Значение меняется"),
+        choice("Что делает static_assert?", "Проверяет условие при сборке", "Выводит текст", "Ловит ошибку"),
+        gap("Дополни: константа", "___ int N = 10;", "constexpr", "const2|define"),
+        fix("Исправь: static_assert принимает условие и текст", "static_assert(sizeof(int) == 4);", "static_assert(sizeof(int) == 4, \"int должен быть 4 байта\");"),
         type("Константа N равна 10 на этапе компиляции", "constexpr int N = 10;"),
         type("Функция sq вычисляется при компиляции", "constexpr int sq(int x) { return x * x; }"),
         type("Проверь при сборке, что N больше нуля", "static_assert(N > 0);"),
@@ -227,6 +339,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Размер массива из constexpr N", "int arr[N];")
     )),
     Lesson("Сборка: g++ и CMake", "g++ собирает программу из исходников. Флаг -o задаёт имя файла, -std выбирает стандарт, -Wall включает предупреждения, -pthread нужен для потоков. Для больших проектов описывают сборку в файле CMakeLists.txt и запускают cmake и make.\n>g++ -std=c++17 -Wall main.cpp -o app\n>g++ main.cpp -pthread -o app\n>cmake .\n>make", listOf(
+        choice("Что делает флаг -o в g++?", "Задаёт имя файла", "Включает оптимизацию", "Открывает файл"),
+        choice("Что делает -Wall?", "Включает предупреждения", "Удаляет файлы", "Запускает программу"),
+        gap("Дополни: имя выходного файла", "g++ main.cpp ___ app", "-o", "-n|-f"),
+        fix("Исправь: стандарт задают через -std", "g++ main.cpp -c++17", "g++ main.cpp -std=c++17"),
         type("Собери main.cpp в app со стандартом c++17", "g++ -std=c++17 main.cpp -o app"),
         type("Включи все предупреждения", "g++ -Wall main.cpp -o app"),
         type("Собери программу с потоками", "g++ main.cpp -pthread -o app"),
@@ -235,6 +351,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Собери проект через make", "make")
     )),
     Lesson("std::optional", "optional хранит значение или «ничего». Удобно, когда функция может не найти результат. has_value и проверка в if говорят, есть ли значение, value и звёздочка достают его, value_or даёт запасное. Автор курса: @yfeeeee.\n>#include <optional>\n>std::optional<int> x = 5;\n>std::optional<int> y = std::nullopt;\n>if (x) std::cout << *x;\n>int v = y.value_or(0);", listOf(
+        choice("Что хранит optional?", "Значение или ничего", "Только число", "Список"),
+        choice("Что делает value_or?", "Даёт запасное значение", "Удаляет значение", "Создаёт optional"),
+        gap("Дополни: есть ли значение", "if (o.___()) { }", "has_value", "exists|have"),
+        fix("Исправь: нужен include", "#include <optionals>", "#include <optional>"),
         type("Подключи optional", "#include <optional>"),
         type("Создай optional со значением 5", "std::optional<int> x = 5;"),
         type("Создай пустой optional", "std::optional<int> y = std::nullopt;"),
@@ -243,6 +363,10 @@ fun cppCourse() = Course("cpp", "C++", "⚙️", listOf(
         type("Проверь наличие значения", "bool ok = x.has_value();")
     )),
     Lesson("std::move", "std::move разрешает забрать ресурсы у объекта вместо копирования. После перемещения исходный объект остаётся в допустимом, но неопределённом состоянии, пользоваться его значением не стоит. Так быстро передают большие строки и векторы.\n>#include <utility>\n>std::string a = \"привет\";\n>std::string b = std::move(a);\n>v.push_back(std::move(b));", listOf(
+        choice("Что делает std::move?", "Позволяет забрать ресурсы вместо копии", "Копирует объект", "Удаляет объект"),
+        choice("Можно ли после move полагаться на значение исходного объекта?", "Нет", "Да", "Только для чисел"),
+        gap("Дополни: перемести", "auto b = std::___(a);", "move", "copy|swap"),
+        fix("Исправь: нужен include", "#include <move>", "#include <utility>"),
         type("Подключи utility", "#include <utility>"),
         type("Создай строку a", "std::string a = \"привет\";"),
         type("Перемести a в b", "std::string b = std::move(a);"),
