@@ -173,11 +173,19 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 return
             }
             cmd == "log" || cmd.startsWith("log ") -> {
-                // log [N] — last N lines of the bot log (default 30)
-                val n = cmd.removePrefix("log").trim().toIntOrNull()?.coerceIn(1, 500) ?: 30
+                // log [N] | log err | log find слово — show the bot log, only errors, or lines with a word
+                val arg = cmd.removePrefix("log").trim()
                 val f = store.logFile
-                if (!f.exists() || f.length() == 0L) print("Лог пуст: запусти бота кнопкой ▶ или командой run файл.py")
-                else print(f.readText().takeLast(60000).trimEnd('\n').split("\n").takeLast(n).joinToString("\n"))
+                if (!f.exists() || f.length() == 0L) { print("Лог пуст: запусти бота кнопкой ▶ или командой run файл.py"); return }
+                val all = f.readText().takeLast(200000).trimEnd('\n').split("\n")
+                val lines = when {
+                    arg == "err" -> all.filter { l -> val t = l.lowercase(); "error" in t || "traceback" in t || "exception" in t || "ошибк" in t }
+                    arg.startsWith("find ") -> arg.removePrefix("find ").trim().let { w -> all.filter { it.contains(w, ignoreCase = true) } }
+                    else -> all
+                }
+                val n = arg.toIntOrNull()?.coerceIn(1, 500) ?: 30
+                if (lines.isEmpty()) print("Ничего не найдено. Подсказка: log 50, log err, log find слово")
+                else print(lines.takeLast(n).joinToString("\n"))
                 return
             }
             cmd == "autorestart" || cmd.startsWith("autorestart ") -> {
