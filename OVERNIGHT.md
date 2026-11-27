@@ -12,7 +12,7 @@
 - [x] 8. Подсказки ошибок (runner.py _hint): добавить частые ошибки aiogram/telebot/Hikka.
 - [x] 9. Терминал: история команд стрелками вверх/вниз во встроенном терминале, если ещё нет; иначе пропустить. (пропущено: история стрелками уже есть)
 - [x] 10. Обновить HelpScreen.kt, README.md, CHANGELOG.md, yfee-help.
-- [ ] 11. Ревью `git diff main..dev` на ошибки компиляции (скобки, импорты, `$`, типы).
+- [x] 11. Ревью `git diff main..dev` на ошибки компиляции (скобки, импорты, `$`, типы).
 - [ ] 12. Слить dev в main (checkout main, pull, merge --ff-only dev, push), ждать сборку (gh run list --workflow build.yml --limit 1).
 - [ ] 13. Если красная: gh run view <id> --log-failed | grep -E " e: |error:", починить, повторить; если зелёная ничего.
 - [ ] 14. ФИНАЛ: без нового напоминания; SendUserMessage по-русски: что добавлено, как обновиться (приложение предложит или APK из релиза latest den1511bol/YfeeCode), что не проверено на телефоне, ссылка (gh run list --workflow build.yml --status success --limit 1 --json url).
