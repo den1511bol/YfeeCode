@@ -6,7 +6,7 @@
 
 - [x] 1. Каркас (LearnBots.kt, подключение в Courses и Practices) + LearnBots1.kt: что такое бот, BotFather и токен, pip install, первый бот telebot (4-5 уроков).
 - [x] 2. LearnBots2.kt: telebot: команды, обработчики текста, reply_to, клавиатуры (reply и inline).
-- [ ] 3. LearnBots3.kt: telebot: callback_query, register_next_step_handler, отправка фото/файлов, parse_mode, обработка ошибок.
+- [x] 3. LearnBots3.kt: telebot: callback_query, register_next_step_handler, отправка фото/файлов, parse_mode, обработка ошибок.
 - [ ] 4. LearnBots4.kt: aiogram 3: Bot, Dispatcher, Command, async/await, polling.
 - [ ] 5. LearnBots5.kt: aiogram 3: фильтры, F-фильтры, inline-клавиатуры, callback, FSM.
 - [ ] 6. LearnBots6.kt: хранение данных: json, sqlite3, .env и os.environ, логирование.
