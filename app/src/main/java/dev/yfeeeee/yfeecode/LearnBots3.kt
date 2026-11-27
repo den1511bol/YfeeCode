@@ -56,7 +56,7 @@ fun botsLessons3(): List<Lesson> = listOf(
         gap("Дополни: поймай любую ошибку", "try:\n    bot.send_message(chat_id, \"Привет\")\n___ Exception as e:\n    print(e)", "except", "catch|finally"),
         fix("Исправь: в Python пишут except, а не catch", "catch Exception as e:", "except Exception as e:"),
         fix("Исправь: после except нужно двоеточие", "except Exception as e", "except Exception as e:"),
-        build("Поймай ошибку", "try|:|", "while|if"),
+        build("Поймай ошибку", "try|:", "while|if"),
         build("Вторая часть конструкции", "except|Exception|as|e|:", "catch|then"),
         type("Выведи ошибку e", "print(e)"),
         build("Запусти polling без остановки", "bot|.|infinity_polling|(|)", "polling|stop"),

@@ -3,6 +3,10 @@ package dev.yfeeeee.yfeecode
 
 fun csCourse() = Course("cs", "C#", "🔷", listOf(
     Lesson("Первая программа", "Метод Main — точка входа. Console.WriteLine печатает строку.\n>using System;\n>class Program {\n>    static void Main() {\n>        Console.WriteLine(\"Hello\");\n>    }\n>}", listOf(
+        choice("Что такое Main?", "Точка входа программы", "Тип данных", "Библиотека"),
+        choice("Что делает Console.WriteLine?", "Печатает строку", "Читает строку", "Удаляет строку"),
+        gap("Дополни: вывод", "Console.___(\"Hello\");", "WriteLine", "Print|Echo"),
+        fix("Исправь: нужна точка с запятой", "Console.WriteLine(\"Hello\")", "Console.WriteLine(\"Hello\");"),
         build("Подключи System", "using|System|;", "import|include"),
         build("Объяви класс Program", "class|Program|{", "def|func"),
         type("Выведи Hello", "Console.WriteLine(\"Hello\");"),
@@ -11,6 +15,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Закрой блок", "}")
     )),
     Lesson("Переменные и типы", "int — целое, double — дробное, string — текст, bool — логическое. var подбирает тип сам.\n>int age = 18;\n>string name = \"Аня\";\n>var x = 5;", listOf(
+        choice("Какой тип хранит текст?", "string", "int", "bool"),
+        choice("Что делает var?", "Подбирает тип сам", "Создаёт список", "Удаляет тип"),
+        gap("Дополни: целое число", "___ age = 18;", "int", "string|double"),
+        fix("Исправь: текст в двойных кавычках", "string name = 'Аня';", "string name = \"Аня\";"),
         build("Целое age = 18", "int|age|=|18|;", "string|double"),
         type("Строка name = \"Bob\"", "string name = \"Bob\";"),
         build("Дробное pi", "double|pi|=|3.14|;", "int|bool"),
@@ -19,6 +27,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Увеличь x на 1", "x++;")
     )),
     Lesson("Условия", "if, else if и else управляют ходом программы.\n>if (x > 5) {\n>    Console.WriteLine(\"много\");\n>} else if (x == 0) {\n>}", listOf(
+        choice("Какое слово означает «иначе»?", "else", "elif", "other"),
+        choice("Как пишут «иначе если»?", "else if", "elif", "elseif"),
+        gap("Дополни: условие", "___ (x > 5) { }", "if", "when|check"),
+        fix("Исправь: сравнение пишут ==", "if (x = 0) { }", "if (x == 0) { }"),
         build("Если x больше 5", "if|(|x|>|5|)|{", "elif|then"),
         type("Если age >= 18", "if (age >= 18) {"),
         build("Иначе если x равен 0", "}|else|if|(|x|==|0|)|{", "elif|:"),
@@ -27,6 +39,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Логическое ИЛИ", "if (a || b) {")
     )),
     Lesson("Циклы", "for — по счётчику, foreach — по элементам коллекции, while — пока условие верно.\n>for (int i = 0; i < 3; i++) { }\n>foreach (var x in items) { }", listOf(
+        choice("Что делает foreach?", "Перебирает элементы коллекции", "Повторяет по счётчику", "Удаляет элементы"),
+        choice("Когда выполняется while?", "Пока условие верно", "Один раз", "Никогда"),
+        gap("Дополни: цикл по items", "foreach (var x ___ items) { }", "in", "of|from"),
+        fix("Исправь: части for разделяют ; ", "for (int i = 0, i < 3, i++) { }", "for (int i = 0; i < 3; i++) { }"),
         build("Цикл от 0 до 2", "for|(|int|i|=|0|;|i|<|3|;|i|++|)|{", "in|range"),
         type("Пока n меньше 10", "while (n < 10) {"),
         build("Перебери items", "foreach|(|var|x|in|items|)|{", "for|of"),
@@ -35,6 +51,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Бесконечный цикл", "while (true) {")
     )),
     Lesson("Методы", "Метод объявляется с типом результата и параметрами. void — ничего не возвращает.\n>static int Add(int a, int b) {\n>    return a + b;\n>}", listOf(
+        choice("Что значит void?", "Метод ничего не возвращает", "Метод возвращает 0", "Метод закрыт"),
+        choice("Что делает return?", "Возвращает результат", "Печатает значение", "Закрывает программу"),
+        gap("Дополни: метод сложения", "static ___ Add(int a, int b) { return a + b; }", "int", "void|var"),
+        fix("Исправь: у параметров нужны типы", "static int Add(a, b) {", "static int Add(int a, int b) {"),
         build("Метод Add двух чисел", "static|int|Add|(|int|a|,|int|b|)|{", "def|void"),
         type("Объяви static void Hello()", "static void Hello() {"),
         build("Верни сумму", "return|a|+|b|;", "print|=="),
@@ -43,6 +63,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Прочитай строку в s", "string s = Console.ReadLine();")
     )),
     Lesson("Списки", "List<T> — растущий список. Для него нужен using System.Collections.Generic.\n>var nums = new List<int>();\n>nums.Add(4);\n>Console.WriteLine(nums.Count);", listOf(
+        choice("Что даёт nums.Count?", "Количество элементов", "Последний элемент", "Первый элемент"),
+        choice("Что нужно для List?", "using System.Collections.Generic;", "using List;", "import List"),
+        gap("Дополни: добавь элемент", "nums.___(4);", "Add", "Push|Append"),
+        fix("Исправь: список создают через new", "var nums = List<int>();", "var nums = new List<int>();"),
         build("Создай список чисел", "var|nums|=|new|List|<|int|>|(|)|;", "array|[]"),
         type("Добавь 4 в список nums", "nums.Add(4);"),
         build("Размер списка nums", "nums|.|Count", "Length|size"),
@@ -51,6 +75,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Подключи коллекции", "using System.Collections.Generic;")
     )),
     Lesson("Классы и свойства", "Класс описывает объект, свойство даёт доступ к данным через get и set.\n>public class Dog {\n>    public string Name { get; set; }\n>}\n>var d = new Dog();\n>d.Name = \"Рекс\";", listOf(
+        choice("Что даёт свойство с get и set?", "Доступ к данным класса", "Новый цикл", "Файл"),
+        choice("Как создать объект Dog?", "new Dog()", "Dog()", "create Dog"),
+        gap("Дополни: свойство", "public string Name { get; ___; }", "set", "put|write"),
+        fix("Исправь: объект создают через new", "var d = Dog();", "var d = new Dog();"),
         build("Объяви класс Dog", "public|class|Dog|{", "def|func"),
         type("Свойство Name типа string", "public string Name { get; set; }"),
         build("Создай объект Dog", "var|d|=|new|Dog|(|)|;", "Dog|=="),
@@ -59,6 +87,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Метод Bark, ничего не возвращает", "public void Bark() {")
     )),
     Lesson("LINQ", "LINQ — запросы к спискам: Where фильтрует, Select преобразует, Sum и Count считают. Нужен using System.Linq.\n>using System.Linq;\n>var even = nums.Where(n => n % 2 == 0);\n>var sq = nums.Select(n => n * n);\n>int total = nums.Sum();", listOf(
+        choice("Что делает Where?", "Фильтрует", "Преобразует", "Сортирует"),
+        choice("Что делает Select?", "Преобразует каждый элемент", "Отбирает нужные", "Считает"),
+        gap("Дополни: только чётные", "var even = nums.___(n => n % 2 == 0);", "Where", "Select|Filter"),
+        fix("Исправь: нужен using", "using System.Linque;", "using System.Linq;"),
         build("Подключи LINQ", "using|System|.|Linq|;", "import|include"),
         type("Оставь чётные числа", "var even = nums.Where(n => n % 2 == 0);"),
         build("Возведи в квадрат каждый элемент", "var|sq|=|nums|.|Select|(|n|=>|n|*|n|)|;", "Where|map"),
@@ -67,6 +99,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Найди первый элемент больше 5", "var x = nums.First(n => n > 5);")
     )),
     Lesson("Словари и строки", "Dictionary хранит пары ключ-значение. Строки в C# удобно склеивать через интерполяцию $\"...\".\n>var d = new Dictionary<string, int>();\n>d[\"a\"] = 1;", listOf(
+        choice("Что хранит Dictionary?", "Пары ключ и значение", "Только числа", "Только строки"),
+        choice("Для чего интерполяция строк?", "Подставлять значения в текст", "Читать ввод", "Удалять пробелы"),
+        gap("Дополни: создай словарь", "var d = new ___<string, int>();", "Dictionary", "List|Map"),
+        fix("Исправь: ключ в квадратных скобках", "d(\"a\") = 1;", "d[\"a\"] = 1;"),
         type("Создай словарь string-int", "var d = new Dictionary<string, int>();"),
         type("Добавь ключ a со значением 1", "d[\"a\"] = 1;"),
         type("Проверь наличие ключа a", "d.ContainsKey(\"a\")"),
@@ -75,6 +111,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Длина строки s", "s.Length")
     )),
     Lesson("Исключения", "try ловит ошибку, catch обрабатывает, finally выполняется всегда. throw создаёт своё исключение.\n>try { int x = int.Parse(s); }\n>catch (FormatException e) { Console.WriteLine(e.Message); }", listOf(
+        choice("Для чего catch?", "Обработать ошибку", "Бросить ошибку", "Запустить цикл"),
+        choice("Когда выполняется finally?", "Всегда", "Только при ошибке", "Никогда"),
+        gap("Дополни: бросить исключение", "___ new Exception(\"плохо\");", "throw", "raise|error"),
+        fix("Исправь: catch с типом ошибки в скобках", "catch FormatException e { }", "catch (FormatException e) { }"),
         build("Начни блок try", "try|{", "catch|finally"),
         type("Поймай FormatException", "catch (FormatException e)"),
         type("Выведи сообщение ошибки", "Console.WriteLine(e.Message);"),
@@ -83,6 +123,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Преобразуй строку в число", "int x = int.Parse(s);")
     )),
     Lesson("Switch и тернарный оператор", "switch выбирает ветку по значению, break завершает ветку. В C# есть switch-выражение. Тернарный оператор: условие ? да : нет.\n>switch (x) {\n>  case 1: Console.WriteLine(\"один\"); break;\n>  default: Console.WriteLine(\"другое\"); break;\n>}\n>int m = a > b ? a : b;", listOf(
+        choice("Что делает break в switch?", "Завершает ветку", "Повторяет ветку", "Закрывает программу"),
+        choice("Что такое тернарный оператор?", "Условие ? да : нет", "Цикл", "Метод"),
+        gap("Дополни: тернарный оператор", "var m = a > b ___ a : b;", "?", ":|??"),
+        fix("Исправь: у case двоеточие", "case 1 Console.WriteLine(1);", "case 1: Console.WriteLine(1);"),
         type("Начни switch по x", "switch (x) {"),
         type("Ветка для значения 1", "case 1:"),
         type("Выйди из ветки", "break;"),
@@ -91,6 +135,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Switch-выражение: 1 это один, иначе другое", "var r = x switch { 1 => \"один\", _ => \"другое\" };")
     )),
     Lesson("Массивы", "Массив имеет фиксированный размер. Индексы с нуля. Length даёт размер, Array.Sort сортирует, foreach перебирает.\n>int[] a = new int[3];\n>int[] b = { 1, 2, 3 };\n>a[0] = 5;\n>Array.Sort(b);", listOf(
+        choice("С какого индекса начинается массив?", "С нуля", "С единицы", "С двух"),
+        choice("Что даёт Length?", "Размер массива", "Первый элемент", "Копию"),
+        gap("Дополни: сортировка", "Array.___(a);", "Sort", "Order|Arrange"),
+        fix("Исправь: массив создают с размером", "int[] a = new int[];", "int[] a = new int[3];"),
         type("Создай массив из 3 int", "int[] a = new int[3];"),
         type("Массив из 1, 2, 3", "int[] b = { 1, 2, 3 };"),
         type("Задай первому элементу 5", "a[0] = 5;"),
@@ -99,6 +147,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Переверни массив b", "Array.Reverse(b);")
     )),
     Lesson("Строки: методы и StringBuilder", "Строки неизменяемые: каждое изменение создаёт новую. Методы: ToUpper, Trim, Split, Contains, Replace, Substring. Для многих склеек есть StringBuilder.\n>s.ToUpper();\n>s.Split(',');\n>s.Contains(\"ab\");\n>var sb = new StringBuilder();\n>sb.Append(\"a\");", listOf(
+        choice("Можно ли менять строку на месте?", "Нет, строки неизменяемые", "Да", "Только в Main"),
+        choice("Когда нужен StringBuilder?", "При многих склейках", "Для чисел", "Для файлов"),
+        gap("Дополни: большие буквы", "s.___();", "ToUpper", "Upper|Big"),
+        fix("Исправь: метод с большой буквы", "s.toupper();", "s.ToUpper();"),
         type("Верхний регистр s", "s.ToUpper()"),
         type("Убери пробелы по краям", "s.Trim()"),
         type("Раздели строку по запятой", "s.Split(',')"),
@@ -107,6 +159,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Добавь a в sb", "sb.Append(\"a\");")
     )),
     Lesson("Интерфейсы и абстрактные классы", "Интерфейс описывает набор методов без реализации. Абстрактный класс нельзя создать, но от него наследуют. Метод переопределяют через override.\n>interface IAnimal { void Speak(); }\n>abstract class Base { public abstract void Run(); }\n>class Dog : Base { public override void Run() {} }", listOf(
+        choice("Что описывает интерфейс?", "Набор методов без реализации", "Готовый класс", "Файл"),
+        choice("Чем переопределяют метод?", "override", "new2", "change"),
+        gap("Дополни: интерфейс", "___ IAnimal { void Speak(); }", "interface", "class|abstract2"),
+        fix("Исправь: имя интерфейса обычно с I", "interface Animal { }", "interface IAnimal { }"),
         type("Интерфейс IAnimal с методом Speak", "interface IAnimal { void Speak(); }"),
         type("Абстрактный класс Base", "abstract class Base"),
         type("Абстрактный метод Run", "public abstract void Run();"),
@@ -115,6 +171,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Класс реализует интерфейс IAnimal", "class Cat : IAnimal")
     )),
     Lesson("async и await", "async-метод может ждать долгие операции через await и не блокирует программу. Он возвращает Task. Task.Delay делает паузу.\n>async Task Main() {\n>  await Task.Delay(1000);\n>  Console.WriteLine(\"готово\");\n>}", listOf(
+        choice("Что возвращает async-метод?", "Task", "string", "void всегда"),
+        choice("Что делает Task.Delay?", "Делает паузу без блокировки", "Запускает поток", "Останавливает программу"),
+        gap("Дополни: пауза", "await Task.___(1000);", "Delay", "Sleep|Wait"),
+        fix("Исправь: перед Delay нужен await", "Task.Delay(1000);", "await Task.Delay(1000);"),
         type("Асинхронный метод Main, возвращающий Task", "async Task Main() {"),
         type("Подожди секунду", "await Task.Delay(1000);"),
         type("Подключи System.Threading.Tasks", "using System.Threading.Tasks;"),
@@ -123,6 +183,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Метод вернёт число асинхронно", "async Task<int> GetAsync() {")
     )),
     Lesson("Лямбды и делегаты", "Делегат это тип для ссылки на метод. Func принимает параметры и возвращает значение, Action ничего не возвращает. Лямбда: x => выражение.\n>Func<int, int> sq = x => x * x;\n>Action hi = () => Console.WriteLine(\"hi\");\n>sq(5);", listOf(
+        choice("Что делает Func?", "Хранит метод с результатом", "Хранит метод без результата", "Создаёт класс"),
+        choice("Что делает Action?", "Хранит метод без результата", "Хранит метод с результатом", "Создаёт список"),
+        gap("Дополни: лямбда", "Func<int, int> sq = x ___ x * x;", "=>", "->|:"),
+        fix("Исправь: стрелка пишется =>", "Func<int, int> sq = x -> x * x;", "Func<int, int> sq = x => x * x;"),
         type("Func квадрата x", "Func<int, int> sq = x => x * x;"),
         type("Action, пишущий hi", "Action hi = () => Console.WriteLine(\"hi\");"),
         type("Вызови sq с 5", "sq(5)"),
@@ -131,6 +195,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Вызови событие, если есть подписчики", "Click?.Invoke();")
     )),
     Lesson("Файлы: File и Path", "Класс File читает и пишет файлы: ReadAllText, WriteAllText, Exists. Path работает с путями. Нужен using System.IO.\n>using System.IO;\n>File.WriteAllText(\"a.txt\", \"привет\");\n>var t = File.ReadAllText(\"a.txt\");\n>File.Exists(\"a.txt\");", listOf(
+        choice("Что делает File.ReadAllText?", "Читает файл целиком", "Пишет в файл", "Удаляет файл"),
+        choice("Какой using нужен для File?", "using System.IO;", "using File;", "using Files;"),
+        gap("Дополни: проверка файла", "File.___(\"a.txt\")", "Exists", "Has|Found"),
+        fix("Исправь: запись текста в файл", "File.Write(\"a.txt\", \"привет\");", "File.WriteAllText(\"a.txt\", \"привет\");"),
         type("Подключи System.IO", "using System.IO;"),
         type("Запиши привет в a.txt", "File.WriteAllText(\"a.txt\", \"привет\");"),
         type("Прочитай весь a.txt", "File.ReadAllText(\"a.txt\")"),
@@ -139,6 +207,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Склей путь папки и файла", "Path.Combine(\"dir\", \"a.txt\")")
     )),
     Lesson("null и безопасность", "Ссылка может быть null. ?. безопасно вызывает метод, ?? подставляет значение по умолчанию, ??= присваивает, если null. is null проверяет.\n>string s = null;\n>int n = s?.Length ?? 0;\n>s ??= \"x\";\n>if (s is null) {}", listOf(
+        choice("Что делает ?. ?", "Безопасно вызывает метод у возможного null", "Сравнивает", "Создаёт объект"),
+        choice("Что делает ??", "Подставляет значение, если null", "Проверяет тип", "Удаляет null"),
+        gap("Дополни: значение по умолчанию", "var n = s ___ \"пусто\";", "??", "?:|?."),
+        fix("Исправь: проверка на null", "if (s == nul) { }", "if (s == null) { }"),
         type("Длина s или 0, если s null", "int n = s?.Length ?? 0;"),
         type("Присвой x, если s равна null", "s ??= \"x\";"),
         type("Проверь, что s null", "s is null"),
@@ -147,6 +219,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Значение по умолчанию для int", "default(int)")
     )),
     Lesson("record, struct и enum", "record это короткий неизменяемый класс данных, struct хранится по значению, enum задаёт набор имён. Обычный класс подходит для сложной логики.\n>record Point(int X, int Y);\n>struct Vec { public int X; }\n>enum Color { Red, Green, Blue }", listOf(
+        choice("Что такое record?", "Короткий неизменяемый класс данных", "Цикл", "Метод"),
+        choice("Как хранится struct?", "По значению", "По ссылке", "В файле"),
+        gap("Дополни: набор имён", "___ Color { Red, Green }", "enum", "set|list"),
+        fix("Исправь: у record параметры в скобках", "record Point { int X, int Y };", "record Point(int X, int Y);"),
         type("Record Point с X и Y", "record Point(int X, int Y);"),
         type("Создай Point 1 и 2", "var p = new Point(1, 2);"),
         type("Структура Vec с полем X", "struct Vec { public int X; }"),
@@ -155,6 +231,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Скопируй record с изменением X", "var q = p with { X = 5 };")
     )),
     Lesson("Обобщения (generics)", "Обобщённый класс или метод работает с любым типом T. List<T>, Dictionary<K,V> уже сделаны так. where ограничивает тип.\n>class Box<T> { public T Value; }\n>var b = new Box<int>();\n>T Max<T>(T a, T b) where T : IComparable<T>", listOf(
+        choice("Что значит T в Box<T>?", "Любой тип", "Число", "Текст"),
+        choice("Что делает where в обобщениях?", "Ограничивает тип", "Фильтрует список", "Запускает код"),
+        gap("Дополни: обобщённый класс", "class Box<___> { }", "T", "int|Type2"),
+        fix("Исправь: тип в угловых скобках", "var b = new Box(int)();", "var b = new Box<int>();"),
         type("Класс Box с типом T", "class Box<T>"),
         type("Поле Value типа T", "public T Value;"),
         type("Создай Box для int", "var b = new Box<int>();"),
@@ -163,6 +243,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Список строк", "var list = new List<string>();")
     )),
     Lesson("using и IDisposable", "Объекты с ресурсами (файлы, соединения) реализуют IDisposable. using гарантирует вызов Dispose, даже если случилась ошибка.\n>using (var r = new StreamReader(\"a.txt\")) {\n>  Console.WriteLine(r.ReadToEnd());\n>}\n>using var w = new StreamWriter(\"b.txt\");", listOf(
+        choice("Что гарантирует using?", "Вызов Dispose даже при ошибке", "Ускорение", "Новый поток"),
+        choice("Какие объекты реализуют IDisposable?", "С ресурсами: файлы, соединения", "Любые числа", "Только строки"),
+        gap("Дополни: using", "___ (var r = new StreamReader(\"a.txt\")) { }", "using", "try|with"),
+        fix("Исправь: using с скобками", "using var r = new StreamReader(\"a.txt\"", "using var r = new StreamReader(\"a.txt\");"),
         type("Открой StreamReader в блоке using", "using (var r = new StreamReader(\"a.txt\")) {"),
         type("Прочитай всё из r", "r.ReadToEnd()"),
         type("Короткий using для StreamWriter", "using var w = new StreamWriter(\"b.txt\");"),
@@ -171,6 +255,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Интерфейс очистки ресурсов", "IDisposable")
     )),
     Lesson("Свойства, индексаторы и static", "Свойство с get и set даёт контроль доступа. static принадлежит классу, а не объекту. readonly нельзя менять после создания.\n>public int Age { get; private set; }\n>public static int Count;\n>public readonly int Id;", listOf(
+        choice("Что значит static?", "Принадлежит классу, а не объекту", "Нельзя читать", "Только для чисел"),
+        choice("Что значит readonly?", "Нельзя менять после создания", "Нельзя читать", "Только для строк"),
+        gap("Дополни: закрытый set", "public int Age { get; ___ set; }", "private", "public|static"),
+        fix("Исправь: свойство с get", "public int Age { read; set; }", "public int Age { get; set; }"),
         type("Свойство Age, set только внутри класса", "public int Age { get; private set; }"),
         type("Статическое поле Count", "public static int Count;"),
         type("Поле Id только для чтения", "public readonly int Id;"),
@@ -179,6 +267,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Вызови статический метод Hello класса Util", "Util.Hello();")
     )),
     Lesson("JSON: System.Text.Json", "Встроенный класс JsonSerializer превращает объект в строку JSON и обратно. Serialize пишет, Deserialize читает. Свойства класса становятся полями JSON.\n>using System.Text.Json;\n>string s = JsonSerializer.Serialize(user);\n>var u = JsonSerializer.Deserialize<User>(s);", listOf(
+        choice("Что делает Serialize?", "Превращает объект в JSON", "Читает JSON", "Удаляет объект"),
+        choice("Что делает Deserialize?", "Читает JSON в объект", "Пишет JSON", "Сортирует"),
+        gap("Дополни: в JSON", "var s = JsonSerializer.___(obj);", "Serialize", "ToJson|Write"),
+        fix("Исправь: нужен using", "using System.Json;", "using System.Text.Json;"),
         type("Подключи пространство имён JSON", "using System.Text.Json;"),
         type("Преврати user в строку JSON", "string s = JsonSerializer.Serialize(user);"),
         type("Прочитай User из строки s", "var u = JsonSerializer.Deserialize<User>(s);"),
@@ -187,6 +279,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Свойство Name типа string", "public string Name { get; set; }")
     )),
     Lesson("ASP.NET: минимальный API", "Минимальный веб-API создаётся в нескольких строках. WebApplication.CreateBuilder готовит приложение, MapGet описывает адрес, Run запускает сервер. Создать проект: dotnet new web.\n>var builder = WebApplication.CreateBuilder(args);\n>var app = builder.Build();\n>app.MapGet(\"/\", () => \"Привет\");\n>app.Run();", listOf(
+        choice("Что делает MapGet?", "Описывает адрес и ответ", "Запускает сервер", "Читает файл"),
+        choice("Что делает app.Run()?", "Запускает сервер", "Создаёт адрес", "Читает JSON"),
+        gap("Дополни: адрес", "app.___(\"/\", () => \"Привет\");", "MapGet", "Get|Route"),
+        fix("Исправь: проект создают командой dotnet new", "dotnet create web", "dotnet new web"),
         type("Создай проект веб-приложения", "dotnet new web"),
         type("Подготовь builder", "var builder = WebApplication.CreateBuilder(args);"),
         type("Собери приложение", "var app = builder.Build();"),
@@ -195,6 +291,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Запусти сервер", "app.Run();")
     )),
     Lesson("Коллекции: HashSet, Queue, Stack", "HashSet хранит только уникальные значения, Add возвращает false для повтора. Queue работает по очереди: Enqueue кладёт, Dequeue берёт первый. Stack берёт последний: Push и Pop.\n>var set = new HashSet<int>();\n>set.Add(5);\n>var q = new Queue<string>();\n>q.Enqueue(\"a\");\n>var s = new Stack<int>();\n>s.Push(1);", listOf(
+        choice("Что хранит HashSet?", "Только уникальные значения", "Пары", "Строки"),
+        choice("Что делает Dequeue?", "Берёт первый из очереди", "Кладёт в очередь", "Очищает"),
+        gap("Дополни: положить в очередь", "q.___(5);", "Enqueue", "Push|Add"),
+        fix("Исправь: стек кладёт через Push", "s.Add(5);", "s.Push(5);"),
         type("Создай множество целых", "var set = new HashSet<int>();"),
         type("Добавь 5 в множество", "set.Add(5);"),
         type("Создай очередь строк", "var q = new Queue<string>();"),
@@ -203,6 +303,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Положи 1 в стек", "s.Push(1);")
     )),
     Lesson("LINQ: группировка и агрегаты", "LINQ умеет считать и группировать. Sum, Average, Max, Min считают по числам, Count считает элементы, GroupBy собирает группы по ключу, Any проверяет наличие, First берёт первый.\n>using System.Linq;\n>int total = nums.Sum();\n>double avg = nums.Average();\n>var groups = words.GroupBy(w => w.Length);\n>bool has = nums.Any(n => n > 5);", listOf(
+        choice("Что делает GroupBy?", "Собирает группы по ключу", "Считает сумму", "Сортирует"),
+        choice("Что делает Any?", "Проверяет, есть ли подходящий элемент", "Берёт все", "Удаляет"),
+        gap("Дополни: сумма", "var t = nums.___();", "Sum", "Total|Add"),
+        fix("Исправь: нужен using", "using System.Linque;", "using System.Linq;"),
         type("Подключи LINQ", "using System.Linq;"),
         type("Посчитай сумму nums", "int total = nums.Sum();"),
         type("Найди среднее nums", "double avg = nums.Average();"),
@@ -211,6 +315,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Возьми первый элемент", "var first = nums.First();")
     )),
     Lesson("Паттерн-матчинг", "Оператор is проверяет тип или значение и может сразу создать переменную. switch-выражение возвращает значение по шаблонам: можно сравнивать с константами, диапазонами и типами.\n>if (obj is string s) { }\n>if (n is > 0 and < 10) { }\n>var name = day switch {\n>    1 => \"Пн\",\n>    _ => \"?\"\n>};", listOf(
+        choice("Что делает is?", "Проверяет тип или значение", "Присваивает", "Сравнивает ссылки"),
+        choice("Что возвращает switch-выражение?", "Значение", "Ничего", "Ошибку"),
+        gap("Дополни: проверка типа", "if (obj ___ int n) { }", "is", "as2|in"),
+        fix("Исправь: switch-выражение с =>", "var r = x switch { 1 -> \"a\", _ -> \"b\" };", "var r = x switch { 1 => \"a\", _ => \"b\" };"),
         type("Проверь, что obj строка, и положи в s", "if (obj is string s) { }"),
         type("Проверь, что n больше 0 и меньше 10", "if (n is > 0 and < 10) { }"),
         type("Проверь на null", "if (x is null) { }"),
@@ -219,6 +327,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Ветка для значения 1", "1 => \"Пн\",")
     )),
     Lesson("События: event", "Событие позволяет одному объекту сообщать другим, что что-то произошло. Объявляется через event и тип делегата, подписка делает +=, вызов через Invoke. Знак вопроса перед точкой защищает от случая, когда подписчиков нет.\n>public event Action<string> Message;\n>obj.Message += text => Console.WriteLine(text);\n>Message?.Invoke(\"привет\");", listOf(
+        choice("Что делает event?", "Сообщает другим, что что-то произошло", "Создаёт цикл", "Читает файл"),
+        choice("Как подписываются на событие?", "+=", "=", "++"),
+        gap("Дополни: подписка", "obj.Clicked ___ Handler;", "+=", "=|=>"),
+        fix("Исправь: вызов события", "Clicked.Call();", "Clicked?.Invoke();"),
         type("Объяви событие Message с текстом", "public event Action<string> Message;"),
         type("Подпишись на событие", "obj.Message += text => Console.WriteLine(text);"),
         type("Вызови событие безопасно", "Message?.Invoke(\"привет\");"),
@@ -227,6 +339,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Делегат с результатом int", "Func<int> f = () => 5;")
     )),
     Lesson("EF Core и SQLite", "Entity Framework Core связывает классы C# с таблицами базы. Модель это обычный класс, DbContext описывает наборы данных (DbSet) и подключение. SaveChanges записывает изменения в SQLite. Автор курса: @yfeeeee.\n>public class User { public int Id { get; set; } public string Name { get; set; } }\n>class Db : DbContext { public DbSet<User> Users => Set<User>(); }\n>protected override void OnConfiguring(DbContextOptionsBuilder o) => o.UseSqlite(\"Data Source=app.db\");\n>db.Users.Add(new User { Name = \"Ян\" });\n>db.SaveChanges();", listOf(
+        choice("Что делает SaveChanges?", "Записывает изменения в базу", "Читает таблицу", "Удаляет базу"),
+        choice("Что описывает DbContext?", "Наборы данных и подключение", "Цвета", "Файлы"),
+        gap("Дополни: набор данных", "public ___<User> Users { get; set; }", "DbSet", "List|Table"),
+        fix("Исправь: сохранение", "db.Save();", "db.SaveChanges();"),
         type("Объяви набор данных Users", "public DbSet<User> Users => Set<User>();"),
         type("Подключи SQLite", "o.UseSqlite(\"Data Source=app.db\");"),
         type("Добавь пользователя", "db.Users.Add(new User { Name = \"Ян\" });"),
@@ -235,6 +351,10 @@ fun csCourse() = Course("cs", "C#", "🔷", listOf(
         type("Найди пользователей по имени", "var list = db.Users.Where(u => u.Name == \"Ян\").ToList();")
     )),
     Lesson("Func и Action", "Func хранит метод с результатом: последний параметр типа это тип результата. Action хранит метод без результата. Оба можно задавать лямбдой и передавать в другие методы.\n>Func<int, int> sq = x => x * x;\n>Action<string> say = s => Console.WriteLine(s);\n>int r = sq(4);\n>say(\"привет\");", listOf(
+        choice("Что делает Func?", "Хранит метод с результатом", "Хранит метод без результата", "Создаёт класс"),
+        choice("Какой последний параметр у Func<int, int, int>?", "Тип результата", "Первый аргумент", "Имя метода"),
+        gap("Дополни: метод без результата", "___ hi = () => Console.WriteLine(\"Hi\");", "Action", "Func|Task"),
+        fix("Исправь: вызов делегата", "sq.Call(3);", "sq(3);"),
         type("Func, возводящий int в квадрат", "Func<int, int> sq = x => x * x;"),
         type("Action для вывода строки", "Action<string> say = s => Console.WriteLine(s);"),
         type("Вызови sq с 4", "int r = sq(4);"),
