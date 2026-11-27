@@ -174,6 +174,23 @@ object Completer {
         )
     )
 
+    /** Members offered after "name." in Python (Telegram bots, Hikka). Developer: @yfeeeee */
+    private val members: Map<String, List<String>> = mapOf(
+        "bot" to listOf("send_message", "reply_to", "send_photo", "send_document", "edit_message_text", "delete_message", "answer_callback_query",
+            "infinity_polling", "polling", "message_handler", "callback_query_handler", "get_me", "forward_message", "send_chat_action"),
+        "message" to listOf("text", "chat", "from_user", "message_id", "reply_to_message", "answer", "reply", "photo", "document", "caption", "date", "delete", "edit_text", "get_args"),
+        "call" to listOf("data", "message", "from_user", "answer", "id", "edit_text", "delete"),
+        "utils" to listOf("answer", "get_args_raw", "get_args", "get_args_split_by", "escape_html", "get_chat_id", "get_user", "run_sync", "answer_file", "invite_inline_bot"),
+        "loader" to listOf("Module", "command", "tds", "watcher", "inline_handler", "callback_handler", "owner", "unrestricted", "ratelimit"),
+        "self" to listOf("client", "db", "get", "set", "strings", "config", "inline", "_db", "_client", "allmodules", "tg_id"),
+        "client" to listOf("send_message", "send_file", "edit_message", "delete_messages", "get_messages", "get_entity", "get_me", "iter_messages", "download_media", "forward_messages", "send_read_acknowledge"),
+        "asyncio" to listOf("sleep", "run", "gather", "create_task", "wait_for", "Queue", "Lock", "get_event_loop", "Event", "TimeoutError"),
+        "os" to listOf("path", "listdir", "getenv", "environ", "makedirs", "remove", "getcwd", "rename"),
+        "json" to listOf("dumps", "loads", "dump", "load"),
+        "time" to listOf("sleep", "time", "strftime", "perf_counter"),
+        "random" to listOf("choice", "randint", "shuffle", "random", "sample")
+    )
+
     fun suggest(text: String, cursor: Int, lang: Lang): List<Suggestion> {
         var i = cursor
         while (i > 0 && (text[i - 1].isLetterOrDigit() || text[i - 1] == '_')) i--
@@ -192,6 +209,13 @@ object Completer {
                 Suggestion("<" + n + ">", clean, clean.length - pos, snippet = true)
             }
             if (hit.isNotEmpty()) return hit
+        }
+        if (lang == Lang.PYTHON && i > 1 && text[i - 1] == '.') {
+            var j = i - 1
+            while (j > 0 && (text[j - 1].isLetterOrDigit() || text[j - 1] == '_')) j--
+            val obj = text.substring(j, i - 1)
+            val hit = members[obj]?.filter { it.startsWith(prefix, ignoreCase = true) && it != prefix }
+            if (!hit.isNullOrEmpty()) return hit.take(7).map { Suggestion(it, it) }
         }
         if (prefix.isEmpty()) return emptyList()
         val out = mutableListOf<Suggestion>()
