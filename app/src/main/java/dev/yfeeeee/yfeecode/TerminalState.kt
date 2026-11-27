@@ -63,7 +63,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         if (cmd.isEmpty()) return
         when {
             cmd == "clear" -> { lines.clear(); return }
-            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore"); return }
+            cmd == "help" -> { print("Команды: linux install / linux setup / linux dotnet (поставить Linux, инструменты, .NET), lpy файл.py, lpip install пакет, lx команда (выполнить в Linux), get URL (скачать файл из интернета), run файл, stop, log [N] (последние строки лога бота), sh/py (режим), mod файл.py .cmd (тест модуля), token ТОКЕН (сохранить в token.txt), clear + ls cd cat mkdir cp mv rm echo"); print("Ещё: status (состояние бота), log err / log find слово, autorestart on|off, backup (копия проектов), snip add имя текст / snip list / snip del имя (свои сниппеты), theme red|green|light, new telebot|aiogram|aiogram3|flask|hikka имя (новый проект), find слово (поиск по файлам), reqs файл.py (какие пакеты поставить), tokencheck (проверка token.txt), procfile [файл.py], gitignore, tree [папка] (дерево файлов)"); return }
             cmd == "linux" || cmd == "linux install" -> {
                 if (cmd == "linux" && Linux.installed(ctx)) { print("Linux установлен. Команды выполняй так: lx команда (например: lx apk add git)"); return }
                 thread {
@@ -330,6 +330,26 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 if (add.isEmpty()) { print(".gitignore уже защищает токены"); return }
                 gi.appendText((if (gi.exists() && gi.length() > 0 && !gi.readText().endsWith("\n")) "\n" else "") + add.joinToString("\n") + "\n")
                 print("Добавлено в .gitignore: " + add.joinToString(", "))
+                return
+            }
+            cmd == "tree" || cmd.startsWith("tree ") -> {
+                // tree [папка] — file tree (depth up to 3, up to 80 lines)
+                val sub = cmd.removePrefix("tree").trim()
+                val base = (if (sub.isEmpty()) cwd else File(cwd, sub)).canonicalFile
+                if (!base.isDirectory || !base.path.startsWith(store.root.canonicalPath)) { print("tree: нет такой папки"); return }
+                var n = 0
+                fun walk(d: File, depth: Int) {
+                    val kids = (d.listFiles() ?: return).filter { !it.name.startsWith(".") }.sortedWith(compareBy({ !it.isDirectory }, { it.name.lowercase() }))
+                    for (k in kids) {
+                        if (n >= 80) return
+                        n++
+                        print("  ".repeat(depth) + (if (k.isDirectory) k.name + "/" else k.name))
+                        if (k.isDirectory && depth < 2) walk(k, depth + 1)
+                    }
+                }
+                print(base.name + "/")
+                walk(base, 1)
+                if (n >= 80) print("… (показаны первые 80)")
                 return
             }
             cmd == "stop" -> { stopAll(); return }
