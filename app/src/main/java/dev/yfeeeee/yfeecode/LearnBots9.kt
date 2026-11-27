@@ -61,5 +61,15 @@ fun botsLessons9(): List<Lesson> = listOf(
         type("Покажи запущенные процессы", "heroku ps"),
         build("Перезапусти приложение", "heroku|restart", "heroku|create"),
         build("Шаблон для webhook в приложении", "Flask|для|Heroku", "aiogram|3", "В списке шаблонов есть «Бот: Flask для Heroku (web)».")
+    )),
+    Lesson("Проект по шагам: эхо-бот", "Эхо-бот повторяет любое сообщение. Это основа любого бота.\n>pip install aiogram\n>bot = Bot(token=TOKEN)\n>@dp.message()\n>async def echo(message): await message.answer(message.text)\n>asyncio.run(dp.start_polling(bot))\nШаги: токен от @BotFather, библиотека, обработчик, запуск polling. Токен храни в переменной окружения.", listOf(
+        choice("Где взять токен бота?", "У @BotFather", "В настройках Android", "В Procfile"),
+        choice("Что делает обработчик сообщения?", "Отвечает на каждое сообщение", "Хранит токен", "Запускает Heroku"),
+        gap("Дополни: ответь тем же текстом", "await message.___(message.text)", "answer", "echo|start"),
+        gap("Дополни: запусти приём обновлений", "asyncio.run(dp.start____(bot))", "polling", "webhook|loop"),
+        fix("Исправь: обработчик должен быть async", "def echo(message): await message.answer(message.text)", "async def echo(message): await message.answer(message.text)", explain = "await работает только внутри async def."),
+        build("Установи библиотеку", "pip|install|aiogram", "pip|remove"),
+        build("Создай бота с токеном", "bot|=|Bot(token=TOKEN)", "bot|==|Bot"),
+        type("Запусти бота", "python3 bot.py")
     ))
 )
