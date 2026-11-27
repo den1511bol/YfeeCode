@@ -71,5 +71,15 @@ fun botsLessons9(): List<Lesson> = listOf(
         build("Установи библиотеку", "pip|install|aiogram", "pip|remove"),
         build("Создай бота с токеном", "bot|=|Bot(token=TOKEN)", "bot|==|Bot"),
         type("Запусти бота", "python3 bot.py")
+    )),
+    Lesson("Отладка бота по логам", "Если бот молчит, сначала смотри логи.\n>heroku logs --tail\n>logging.basicConfig(level=logging.INFO)\n>print(message.text)\nВ логе ищи слово Traceback: последняя строка трейсбека называет ошибку. Unauthorized значит неверный токен, Conflict значит бот уже запущен в другом месте.", listOf(
+        choice("С чего начать, если бот молчит?", "С логов", "С переустановки Android", "С нового токена"),
+        choice("Что значит ошибка Unauthorized?", "Неверный токен", "Нет интернета", "Мало памяти"),
+        choice("Что значит ошибка Conflict?", "Бот уже запущен в другом месте", "Токен верный", "Нет файла Procfile"),
+        gap("Дополни: настрой логирование", "logging.___(level=logging.INFO)", "basicConfig", "setup|start"),
+        gap("Дополни: логи в реальном времени", "heroku logs --___", "tail", "live|watch"),
+        fix("Исправь: уровень пишется капсом", "logging.basicConfig(level=logging.info)", "logging.basicConfig(level=logging.INFO)", explain = "Уровни: DEBUG, INFO, WARNING, ERROR."),
+        build("Смотри логи Heroku", "heroku|logs|--tail", "heroku|log|-f"),
+        type("Выведи текст сообщения для проверки", "print(message.text)")
     ))
 )
