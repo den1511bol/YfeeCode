@@ -3,6 +3,11 @@ package dev.yfeeeee.yfeecode
 
 fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
     Lesson("Вывод: console.log", "console.log печатает значение в консоль. Строки пишут в кавычках, а в конце команды ставят точку с запятой.\n>console.log(\"Привет\");\n>console.log(2 + 3);", listOf(
+        choice("Что делает console.log?", "Печатает значение в консоль", "Читает ввод", "Удаляет переменную"),
+        choice("Что ставят в конце команды в JS?", "Точку с запятой", "Двоеточие", "Ничего нельзя"),
+        gap("Дополни: выведи Привет", "console.___(\"Привет\");", "log", "print|echo"),
+        fix("Исправь: нужна точка с запятой", "console.log(\"Привет\")", "console.log(\"Привет\");"),
+        fix("Исправь: в JS нет print", "print(\"Привет\");", "console.log(\"Привет\");"),
         build("Выведи слово Привет", "console|.|log|(|\"Привет\"|)|;", "print|echo"),
         build("Выведи число 7", "console|.|log|(|7|)|;", "alert|\"7\""),
         type("Выведи Hello", "console.log(\"Hello\");"),
@@ -11,6 +16,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Выведи слово JS", "console.log(\"JS\");")
     )),
     Lesson("Переменные: let и const", "let создаёт изменяемую переменную, const — постоянную.\n>let score = 0;\n>const name = \"Аня\";\n>score = score + 1;", listOf(
+        choice("Чем let отличается от const?", "let можно менять, const нельзя", "Ничем", "const можно менять"),
+        choice("Каким словом создают постоянную переменную?", "const", "var2", "fix"),
+        gap("Дополни: изменяемая переменная", "___ score = 0;", "let", "const|def"),
+        fix("Исправь: const нельзя менять, нужен let", "const score = 0;\nscore = 1;", "let score = 0;\nscore = 1;"),
+        fix("Исправь: текст в кавычках", "const name = Аня;", "const name = \"Аня\";"),
         build("Создай переменную x = 10", "let|x|=|10|;", "const|=="),
         type("Создай константу PI = 3.14", "const PI = 3.14;"),
         build("Выведи переменную name", "console|.|log|(|name|)|;", "\"name\"|print"),
@@ -19,6 +29,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Выведи переменную score", "console.log(score);")
     )),
     Lesson("Условия: if", "if проверяет условие в круглых скобках, тело блока пишут в фигурных.\n>if (age >= 18) {\n>  console.log(\"Взрослый\");\n>} else {\n>  console.log(\"Ребёнок\");\n>}\nСравнивай через === (строгое равенство).", listOf(
+        choice("Какое сравнение рекомендуют в JS?", "===", "=", "=="),
+        choice("В каких скобках пишут условие if?", "В круглых", "В квадратных", "В угловых"),
+        gap("Дополни: иначе", "if (x > 5) { a(); } ___ { b(); }", "else", "elif|then"),
+        fix("Исправь: сравнение пишут через ===", "if (x = 5) {", "if (x === 5) {"),
+        fix("Исправь: условие в круглых скобках", "if x > 5 {", "if (x > 5) {"),
         build("Если x больше 5", "if|(|x|>|5|)|{", "for|then|:"),
         type("Если age больше или равно 18", "if (age >= 18) {"),
         build("Строгое сравнение a и b", "if|(|a|===|b|)|{", "=|:"),
@@ -27,6 +42,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Если name равно \"Аня\"", "if (name === \"Аня\") {")
     )),
     Lesson("Циклы", "for повторяет код по счётчику, while — пока условие верно.\n>for (let i = 0; i < 3; i++) {\n>  console.log(i);\n>}\n>while (n < 10) { n++; }", listOf(
+        choice("Что делает i++?", "Увеличивает i на 1", "Уменьшает i на 1", "Удваивает i"),
+        choice("Когда выполняется while?", "Пока условие верно", "Ровно один раз", "Никогда"),
+        gap("Дополни: цикл от 0 до 2", "for (let i = 0; i ___ 3; i++) {", "<", ">|=="),
+        fix("Исправь: части for разделяют точкой с запятой", "for (let i = 0, i < 3, i++) {", "for (let i = 0; i < 3; i++) {"),
+        fix("Исправь: счётчик объявляют через let", "for (i = 0; i < 3; i++) {", "for (let i = 0; i < 3; i++) {"),
         build("Цикл от 0 до 2", "for|(|let|i|=|0|;|i|<|3|;|i|++|)|{", "in|range|:"),
         type("Пока n меньше 10", "while (n < 10) {"),
         build("Увеличь i на 1", "i|++|;", "--|=="),
@@ -35,6 +55,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Продолжи со следующей итерации", "continue;")
     )),
     Lesson("Функции", "Функция — именованный блок кода. function создаёт её, return возвращает результат. Есть и короткая стрелочная запись.\n>function add(a, b) {\n>  return a + b;\n>}\n>const mul = (a, b) => a * b;", listOf(
+        choice("Что делает return?", "Возвращает результат из функции", "Выводит текст", "Создаёт переменную"),
+        choice("Что такое стрелочная функция?", "Короткая запись функции через =>", "Цикл", "Класс"),
+        gap("Дополни: объяви функцию", "___ add(a, b) { return a + b; }", "function", "def|func"),
+        gap("Дополни: стрелочная функция", "const mul = (a, b) ___ a * b;", "=>", "->|:"),
+        fix("Исправь: у стрелочной функции знак =>", "const mul = (a, b) -> a * b;", "const mul = (a, b) => a * b;"),
         build("Объяви функцию hello", "function|hello|(|)|{", "def|func"),
         type("Объяви функцию add(a, b)", "function add(a, b) {"),
         build("Верни сумму a и b", "return|a|+|b|;", "print|=="),
@@ -43,6 +68,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Выведи результат add(1, 2)", "console.log(add(1, 2));")
     )),
     Lesson("Массивы", "Массив хранит набор значений в квадратных скобках.\n>const nums = [1, 2, 3];\n>nums.push(4);\n>console.log(nums.length);", listOf(
+        choice("В каких скобках пишут массив?", "В квадратных", "В фигурных", "В круглых"),
+        choice("Что даёт nums.length?", "Количество элементов", "Последний элемент", "Первый элемент"),
+        gap("Дополни: добавь в конец", "nums.___(4);", "push", "append|add"),
+        fix("Исправь: в JS нет append", "nums.append(4);", "nums.push(4);"),
+        fix("Исправь: массив пишут в квадратных скобках", "const nums = (1, 2, 3);", "const nums = [1, 2, 3];"),
         build("Создай массив nums", "const|nums|=|[|1|,|2|,|3|]|;", "(|)"),
         type("Добавь 4 в конец nums", "nums.push(4);"),
         build("Длина массива nums", "nums|.|length", "len|size"),
@@ -51,6 +81,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Выведи последний элемент nums", "console.log(nums[nums.length - 1]);")
     )),
     Lesson("Запросы fetch", "fetch делает HTTP-запрос. Он асинхронный, поэтому используют async и await. Так работают простые боты Telegram в WebView.\n>const r = await fetch(url);\n>const data = await r.json();\n>async function main() { }", listOf(
+        choice("Что делает fetch?", "Делает HTTP-запрос", "Рисует страницу", "Создаёт файл"),
+        choice("Зачем await?", "Дождаться результата промиса", "Остановить программу", "Создать функцию"),
+        gap("Дополни: данные из JSON", "const data = await r.___();", "json", "text2|parse"),
+        fix("Исправь: await работает внутри async-функции", "function main() { await fetch(url); }", "async function main() { await fetch(url); }"),
+        fix("Исправь: перед fetch нужен await", "const r = fetch(url);\nconst data = await r.json();", "const r = await fetch(url);\nconst data = await r.json();"),
         build("Сделай запрос по url", "const|r|=|await|fetch|(|url|)|;", "get|then"),
         type("Прочитай ответ как JSON", "const data = await r.json();"),
         build("Объяви асинхронную функцию main", "async|function|main|(|)|{", "await|def"),
@@ -59,6 +94,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Блок обработки ошибки", "} catch (e) {")
     )),
     Lesson("DOM и события", "DOM — это дерево элементов страницы. Находим элемент через querySelector, слушаем события через addEventListener.\n>const btn = document.querySelector(\"#btn\");\n>btn.addEventListener(\"click\", () => {\n>  btn.textContent = \"Нажато\";\n>});", listOf(
+        choice("Что такое DOM?", "Дерево элементов страницы", "База данных", "Язык стилей"),
+        choice("Как найти элемент по id?", "document.querySelector(\"#id\")", "document.find(id)", "get.id()"),
+        gap("Дополни: слушаем нажатие", "btn.___(\"click\", () => {});", "addEventListener", "onclick2|listen"),
+        fix("Исправь: id в селекторе пишут с решёткой", "document.querySelector(\"btn\")", "document.querySelector(\"#btn\")"),
+        fix("Исправь: текст элемента меняют через textContent", "btn.text = \"Нажато\";", "btn.textContent = \"Нажато\";"),
         build("Найди элемент с id btn", "const|btn|=|document|.|querySelector|(|\"#btn\"|)|;", "getElement|fetch"),
         type("Слушай клик по btn", "btn.addEventListener(\"click\", () => {"),
         build("Поменяй текст элемента", "btn|.|textContent|=|\"Привет\"|;", "console|log"),
@@ -67,6 +107,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Закрой обработчик события", "});")
     )),
     Lesson("Промисы и async", "Promise — это обещание результата в будущем. then получает результат, catch ловит ошибку. await делает то же короче.\n>fetch(url)\n>  .then(r => r.json())\n>  .catch(e => console.error(e));\n>await new Promise(r => setTimeout(r, 1000));", listOf(
+        choice("Что делает catch?", "Ловит ошибку промиса", "Создаёт промис", "Ждёт результат"),
+        choice("Что получает then?", "Результат промиса", "Ошибку", "Ничего"),
+        gap("Дополни: ловим ошибку", "fetch(url).then(r => r.json()).___(e => console.error(e));", "catch", "error|except"),
+        fix("Исправь: цепочка через точку", "fetch(url) then(r => r.json())", "fetch(url).then(r => r.json())"),
+        fix("Исправь: setTimeout принимает функцию и время", "setTimeout(1000, () => {})", "setTimeout(() => {}, 1000)"),
         build("Обработай результат промиса", "fetch|(|url|)|.|then|(|r|=>|r|.|json|(|)|)", "catch|await"),
         type("Лови ошибку промиса", ".catch(e => console.error(e));"),
         build("Подожди 1 секунду", "await|new|Promise|(|r|=>|setTimeout|(|r|,|1000|)|)|;", "fetch|then"),
@@ -75,6 +120,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Выведи ошибку в консоль", "console.error(e);")
     )),
     Lesson("map, filter, reduce", "Методы массивов принимают функцию. map преобразует каждый элемент, filter отбирает нужные, reduce сворачивает массив в одно значение.\n>const d = [1, 2, 3].map(x => x * 2)\n>const e = d.filter(x => x > 2)", listOf(
+        choice("Что делает map?", "Преобразует каждый элемент", "Отбирает нужные элементы", "Сортирует массив"),
+        choice("Что делает filter?", "Оставляет элементы, подходящие по условию", "Умножает элементы", "Удаляет массив"),
+        gap("Дополни: удвоить каждый элемент", "const d = [1, 2, 3].___(x => x * 2);", "map", "filter|reduce"),
+        gap("Дополни: только большие", "const e = d.___(x => x > 2);", "filter", "map|find2"),
+        fix("Исправь: стрелка пишется =>", "const d = [1, 2].map(x -> x * 2);", "const d = [1, 2].map(x => x * 2);"),
         build("Удвой каждое число", "nums|.|map|(|x|=>|x|*|2|)", "filter|for"),
         type("Оставь числа больше 10", "nums.filter(x => x > 10)"),
         build("Сумма через reduce", "nums|.|reduce|(|(|a|,|b|)|=>|a|+|b|,|0|)", "map|filter"),
@@ -83,6 +133,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Проверь, есть ли 5 в массиве", "nums.includes(5)")
     )),
     Lesson("Классы и деструктуризация", "class описывает объект, constructor задаёт начальные поля. Деструктуризация достаёт значения из массива или объекта в одну строку.\n>class Dog { constructor(name) { this.name = name } }\n>const { name } = dog", listOf(
+        choice("Что задаёт constructor?", "Начальные поля объекта", "Имя файла", "Тип массива"),
+        choice("Что делает деструктуризация?", "Достаёт значения в переменные одной строкой", "Удаляет объект", "Копирует массив"),
+        gap("Дополни: достань name", "const { ___ } = dog;", "name", "dog|key"),
+        fix("Исправь: класс объявляют через class", "Dog class { constructor() {} }", "class Dog { constructor() {} }"),
+        fix("Исправь: к полю объекта обращаются через this", "class Dog { constructor(name) { name = name } }", "class Dog { constructor(name) { this.name = name } }"),
         build("Объяви класс Dog", "class|Dog|{", "function|const"),
         type("Конструктор с параметром name", "constructor(name) {"),
         type("Запиши имя в объект", "this.name = name;"),
@@ -91,6 +146,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Достань два элемента из массива arr", "const [a, b] = arr;")
     )),
     Lesson("Строки и шаблоны", "Строки в JS удобно собирать шаблонными литералами в обратных кавычках: подстановка через \${...}. Методы: toUpperCase, trim, split, includes, replace, slice.\n>const s = `Привет, \${name}!`;\n>s.toUpperCase();\n>\"a,b\".split(\",\");\n>s.includes(\"при\");", listOf(
+        choice("В каких кавычках пишут шаблонные строки?", "В обратных кавычках", "В двойных", "В угловых"),
+        choice("Что делает s.includes(\"при\")?", "Проверяет, есть ли подстрока", "Заменяет текст", "Режет строку"),
+        gap("Дополни: большие буквы", "s.___();", "toUpperCase", "upper|big"),
+        fix("Исправь: split принимает разделитель в скобках", "\"a,b\".split[\",\"];", "\"a,b\".split(\",\");"),
+        fix("Исправь: в JS метод называется toUpperCase", "s.upper();", "s.toUpperCase();"),
         type("Строка-шаблон с подстановкой name", "const s = `Привет, \${name}!`;"),
         type("Верхний регистр строки s", "s.toUpperCase()"),
         type("Убери пробелы по краям", "s.trim()"),
@@ -99,6 +159,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Длина строки s", "s.length")
     )),
     Lesson("Объекты", "Объект хранит пары ключ-значение. К полю обращаются через точку или квадратные скобки. Object.keys, values и entries перечисляют поля.\n>const user = { name: \"Аня\", age: 20 };\n>user.name;\n>user[\"age\"];\n>Object.keys(user);", listOf(
+        choice("Как обратиться к полю name объекта user?", "user.name", "user(name)", "user->name"),
+        choice("Что делает Object.keys?", "Даёт список ключей объекта", "Даёт значения", "Удаляет поля"),
+        gap("Дополни: объект в фигурных скобках", "const user = ___ name: \"Аня\" };", "{", "[|("),
+        fix("Исправь: между ключом и значением двоеточие", "const user = { name = \"Аня\" };", "const user = { name: \"Аня\" };"),
+        fix("Исправь: запятая между полями", "const user = { name: \"Аня\" age: 20 };", "const user = { name: \"Аня\", age: 20 };"),
         type("Создай объект user с полем name Аня", "const user = { name: \"Аня\" };"),
         type("Прочитай поле name", "user.name"),
         type("Прочитай поле age через скобки", "user[\"age\"]"),
@@ -107,6 +172,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Удали поле age", "delete user.age;")
     )),
     Lesson("Замыкания и область видимости", "Переменная let видна только в своём блоке. Функция запоминает переменные, где была создана: это замыкание. Так делают счётчики и приватные данные.\n>function counter() {\n>  let n = 0;\n>  return () => ++n;\n>}\n>const c = counter();\n>c(); // 1", listOf(
+        choice("Что такое замыкание?", "Функция помнит переменные места создания", "Закрытая функция без параметров", "Вид цикла"),
+        choice("Где виден let?", "Только в своём блоке", "Везде", "Только в файле"),
+        gap("Дополни: счётчик", "function counter() {\n  let n = 0;\n  ___ () => ++n;\n}", "return", "break|let"),
+        fix("Исправь: функцию-счётчик нужно вызвать для создания замыкания", "const c = counter;\nc();", "const c = counter();\nc();"),
         type("Объяви счётчик n равный 0", "let n = 0;"),
         type("Верни стрелочную функцию с увеличением n", "return () => ++n;"),
         type("Создай счётчик c", "const c = counter();"),
@@ -115,6 +184,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Функция выражением f", "const f = function() {};")
     )),
     Lesson("Стрелочные функции и this", "Стрелка короче обычной функции: (a, b) => a + b. Если в теле одно выражение, return не нужен. Стрелка не имеет своего this.\n>const add = (a, b) => a + b;\n>const sq = x => x * x;\n>const hi = () => { console.log(\"hi\"); };", listOf(
+        choice("Есть ли у стрелочной функции свой this?", "Нет", "Да", "Только в классах"),
+        choice("Нужен ли return, если в теле одно выражение?", "Нет", "Да", "Только для чисел"),
+        gap("Дополни: квадрат числа", "const sq = x ___ x * x;", "=>", "->|:"),
+        fix("Исправь: стрелка пишется =>", "const sq = x -> x * x;", "const sq = x => x * x;"),
+        fix("Исправь: параметры в скобках", "const add = a, b => a + b;", "const add = (a, b) => a + b;"),
         type("Стрелка сложения a и b", "const add = (a, b) => a + b;"),
         type("Стрелка квадрата x с одним параметром", "const sq = x => x * x;"),
         type("Стрелка без параметров, пишет hi", "const hi = () => { console.log(\"hi\"); };"),
@@ -123,6 +197,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Функция по умолчанию b равно 2", "function f(a, b = 2) {}")
     )),
     Lesson("Spread и rest", "Три точки разворачивают массив или объект (spread) и собирают остальные аргументы (rest). Так копируют и объединяют данные.\n>const a = [1, 2];\n>const b = [...a, 3];\n>const o2 = { ...o, x: 1 };\n>function f(...args) {}", listOf(
+        choice("Что делают три точки в [...a, 3]?", "Разворачивают массив a", "Удаляют a", "Считают длину"),
+        choice("Что собирает ...args?", "Остальные аргументы функции", "Один первый аргумент", "Объект"),
+        gap("Дополни: копия массива", "const b = [___a, 3];", "...", "..|::"),
+        fix("Исправь: три точки, а не две", "const b = [..a, 3];", "const b = [...a, 3];"),
+        fix("Исправь: rest-параметр пишут с тремя точками", "function f(..args) {}", "function f(...args) {}"),
         type("Новый массив из a и числа 3", "const b = [...a, 3];"),
         type("Копия объекта o с полем x равным 1", "const o2 = { ...o, x: 1 };"),
         type("Функция с любым числом аргументов", "function f(...args) {}"),
