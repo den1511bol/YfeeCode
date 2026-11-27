@@ -85,6 +85,96 @@ class MyMod(loader.Module):
         args = utils.get_args_raw(message)
         await utils.answer(message, self.strings("hello") + (" " + args if args else ""))
 """.trimStart()),
+        Template("Бот: aiogram 3 + .env", "bot_aiogram3.py", """
+# developer: @yfeeeee
+# Токен: в терминале выполни  env set BOT_TOKEN твой_токен
+import asyncio
+import os
+
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+
+bot = Bot(token=os.environ["BOT_TOKEN"])
+dp = Dispatcher()
+
+
+@dp.message(Command("start"))
+async def start(message: types.Message):
+    await message.answer("Привет! Бот работает.")
+
+
+@dp.message()
+async def echo(message: types.Message):
+    await message.answer(message.text or "...")
+
+
+async def main():
+    await dp.start_polling(bot)
+
+
+asyncio.run(main())
+""".trimStart()),
+        Template("Бот: Flask для Heroku (web)", "web_bot.py", """
+# developer: @yfeeeee
+# Procfile:  web: python3 web_bot.py   (yfee-heroku init)
+import os
+
+import telebot
+from flask import Flask, request
+
+bot = telebot.TeleBot(os.environ["BOT_TOKEN"])
+app = Flask(__name__)
+
+
+@bot.message_handler(commands=["start"])
+def start(message):
+    bot.reply_to(message, "Привет с Heroku!")
+
+
+@app.route("/" + os.environ["BOT_TOKEN"], methods=["POST"])
+def hook():
+    bot.process_new_updates([telebot.types.Update.de_json(request.get_data().decode("utf-8"))])
+    return "ok", 200
+
+
+@app.route("/")
+def index():
+    url = os.environ.get("APP_URL", "")
+    if url:
+        bot.remove_webhook()
+        bot.set_webhook(url=url + "/" + os.environ["BOT_TOKEN"])
+    return "bot ok", 200
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+""".trimStart()),
+        Template("Модуль Heroku: конфиг + watcher", "CfgMod.py", """
+# meta developer: @yfeeeee
+from .. import loader, utils
+
+
+@loader.tds
+class CfgMod(loader.Module):
+    ${Q3}Модуль с настройкой и наблюдателем${Q3}
+
+    strings = {"name": "CfgMod", "hit": "Нашёл слово!"}
+
+    def __init__(self):
+        self.config = loader.ModuleConfig(
+            loader.ConfigValue("word", "привет", "Слово для поиска"),
+        )
+
+    @loader.command()
+    async def wordcmd(self, message):
+        ${Q3}Показать текущее слово${Q3}
+        await utils.answer(message, self.config["word"])
+
+    @loader.watcher(only_messages=True)
+    async def watcher(self, message):
+        if self.config["word"] in (getattr(message, "raw_text", "") or ""):
+            await message.respond(self.strings("hit"))
+""".trimStart()),
         Template("JS: бот на fetch", "bot.js", """
 // Токен: впиши ниже. Работает через WebView (без Node).
 const TOKEN = "PASTE_TOKEN_HERE";
