@@ -319,3 +319,4 @@
 - v5-B7: кнопка «слово» в поиске: переименование целых слов (переменная/функция) во всём файле.
 - v5-B1b: команда status/bots (состояние бота, автоперезапуск, 3 строки лога).
 - v5-B12: подсказки методов после точки (bot., message., utils., self., client., asyncio. и др.).
+- v5-B8: песочница Hikka: answer_file, run_sync, get_user, get_args_split_by, inline/callback handlers, поля Message.

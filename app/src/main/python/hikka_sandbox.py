@@ -111,6 +111,18 @@ class Message:
         self.chat_id = 1
         self.sender_id = 1
         self.out = True
+        self.id = 1
+        self.reply_to_msg_id = None
+        self.is_reply = False
+        self.media = None
+        self.photo = None
+        self.file = None
+        self.date = None
+        self.to_id = 1
+
+    async def respond_file(self, *a, **kw):
+        print("[respond_file] (имитация отправки файла)")
+        return self
 
     async def edit(self, text, **kw):
         print("[edit] " + str(text))
@@ -140,6 +152,23 @@ def get_args(m):
     return get_args_raw(m).split()
 
 
+def get_args_split_by(m, sep):
+    return [x.strip() for x in get_args_raw(m).split(sep) if x.strip()]
+
+
+async def answer_file(m, file, caption="", **kw):
+    print("[answer_file] %s %s" % (file, caption))
+    return m
+
+
+async def run_sync(func, *a, **k):
+    return func(*a, **k)
+
+
+async def get_user(m):
+    return types.SimpleNamespace(id=1, first_name="Test", username="test", bot=False)
+
+
 async def answer(m, text, **kw):
     return await m.edit(text)
 
@@ -155,6 +184,10 @@ def _install_shims():
     loader.watcher = _deco
     loader.loop = _deco
     loader.ConfigValue = ConfigValue
+    loader.inline_handler = _deco
+    loader.callback_handler = _deco
+    loader.ratelimit = _deco
+    loader.raw_handler = _deco
     loader.validators = types.SimpleNamespace(
         String=lambda *a, **k: None, Integer=lambda *a, **k: None,
         Boolean=lambda *a, **k: None, Series=lambda *a, **k: None)
@@ -163,6 +196,10 @@ def _install_shims():
     utils.get_args = get_args
     utils.answer = answer
     utils.escape_html = lambda t: str(t).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    utils.get_args_split_by = get_args_split_by
+    utils.answer_file = answer_file
+    utils.run_sync = run_sync
+    utils.get_user = get_user
     utils.get_chat_id = lambda m: getattr(m, "chat_id", 1)
     pkg = types.ModuleType("shimpkg")
     pkg.loader = loader
