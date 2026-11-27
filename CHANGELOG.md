@@ -357,3 +357,4 @@
 - v5-N29: практика js25 (async fetch с try/catch).
 - v5-N30: аудит названий уроков внутри функций-курсов и пустых explain: дублей и пустых нет.
 - v5-N31: практика cpp23 (std::string::find).
+- v5-N32: практика cs23 (LINQ Where и Select).
