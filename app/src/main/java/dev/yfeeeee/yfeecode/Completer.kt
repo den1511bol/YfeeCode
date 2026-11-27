@@ -50,7 +50,7 @@ object Completer {
             "tbcb" to "@bot.callback_query_handler(func=lambda c: c.data == \"|btn1\")\ndef on_btn(call):\n    bot.answer_callback_query(call.id, \"Нажато\")",
             "aiocmd" to "@dp.message_handler(commands=[\"|start\"])\nasync def cmd_start(message: types.Message):\n    await message.answer(\"Привет!\")",
             "aiocb" to "@dp.callback_query_handler(lambda c: c.data == \"|btn1\")\nasync def on_btn(call: types.CallbackQuery):\n    await call.answer(\"Нажато\")",
-            "aiofsm" to "class Form(StatesGroup):\n    name = State()\n\n\n@dp.message_handler(commands=[\"form\"])\nasync def form_start(message: types.Message):\n    await Form.name.set()\n    await message.answer(\"|Как тебя зовут?\")\n\n\n@dp.message_handler(state=Form.name)\nasync def form_name(message: types.Message, state: FSMContext):\n    await state.finish()\n    await message.answer(\"Привет, \" + message.text)",
+            "aio2fsm" to "class Form(StatesGroup):\n    name = State()\n\n\n@dp.message_handler(commands=[\"form\"])\nasync def form_start(message: types.Message):\n    await Form.name.set()\n    await message.answer(\"|Как тебя зовут?\")\n\n\n@dp.message_handler(state=Form.name)\nasync def form_name(message: types.Message, state: FSMContext):\n    await state.finish()\n    await message.answer(\"Привет, \" + message.text)",
             "quote" to "text = \"<blockquote>|Текст цитаты</blockquote>\"\nawait utils.answer(message, text)\n",
             "bq" to "\"<blockquote>|Текст цитаты</blockquote>\"",
             "bqx" to "\"<blockquote expandable>|Длинный текст, свёрнутый по нажатию</blockquote>\"",
