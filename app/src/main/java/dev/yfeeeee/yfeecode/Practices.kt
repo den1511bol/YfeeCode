@@ -87,7 +87,9 @@ object Practices {
             Practice("py22", "Counter", "Подсчитай буквы в строке \"banana\" через collections.Counter и выведи, сколько раз встречается a.", "", Lang.PYTHON,
                 listOf(must("""Counter""", "Нужен collections.Counter")), "3"),
             Practice("py23", "JSON туда и обратно", "Преврати словарь {\"name\": \"Аня\"} в строку через json.dumps (ensure_ascii=False), затем обратно через json.loads и выведи имя.", "", Lang.PYTHON,
-                listOf(must("""json\.dumps""", "Нужен json.dumps(...)"), must("""json\.loads""", "Нужен json.loads(...)")), "Аня")
+                listOf(must("""json\.dumps""", "Нужен json.dumps(...)"), must("""json\.loads""", "Нужен json.loads(...)")), "Аня"),
+            Practice("py24", "logging: сообщение INFO", "Настрой logging на уровень INFO через basicConfig и запиши сообщение через logging.info (например, Бот запущен).", "import logging\n", Lang.PYTHON,
+                listOf(must("""logging\.basicConfig\s*\(""", "Нужен logging.basicConfig(...)"), must("""logging\.info\s*\(""", "Запиши сообщение через logging.info(...)")))
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
