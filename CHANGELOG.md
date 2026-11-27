@@ -293,3 +293,4 @@
 - v5-U2.8: LearnBots8: +25 заданий.
 - v5-U2.9: LearnBots9: +25 заданий. Курс «Боты и Heroku» готов: ~224 новых задания.
 - v5-U5b: +51 сниппет для JS/HTML/CSS/C++/C#, список в HelpScreen.
+- v5-U5c: syntax_check: compile вместо ast.parse + 17 новых русских пояснений ошибок новичка.
