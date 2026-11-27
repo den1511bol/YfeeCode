@@ -219,7 +219,9 @@ object Practices {
             Practice("css19", "Сетка", "Сделай сетку .grid из трёх равных колонок через display: grid и grid-template-columns.", "", Lang.CSS,
                 listOf(must("""display\s*:\s*grid""", "Нужен display: grid"), must("""grid-template-columns\s*:""", "Нужен grid-template-columns"))),
             Practice("css20", "Наведение", "Сделай так, чтобы кнопка .btn меняла фон при наведении мыши через :hover.", "", Lang.CSS,
-                listOf(must("""\.btn\s*:hover""", "Нужен селектор .btn:hover"), must("""background""", "Измени background")))
+                listOf(must("""\.btn\s*:hover""", "Нужен селектор .btn:hover"), must("""background""", "Измени background"))),
+            Practice("css21", "Flex-контейнер", "Сделай для .row flex-контейнер: display flex, justify-content space-between и gap между элементами.", "", Lang.CSS,
+                listOf(must("""\.row""", "Нужен селектор .row"), must("""display\s*:\s*flex""", "Добавь display: flex"), must("""justify-content\s*:""", "Добавь justify-content"), must("""gap\s*:""", "Добавь gap")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
