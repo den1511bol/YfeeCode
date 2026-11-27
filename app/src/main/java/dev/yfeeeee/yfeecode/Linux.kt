@@ -135,7 +135,7 @@ object Linux {
             File(root(ctx), "etc/profile.d").mkdirs()
             File(root(ctx), "etc/profile.d/yfee-extra.sh").writeText(
                 "# YfeeCode extras. Developer: @yfeeeee\nalias ll='ls -lah --color=auto'\nalias la='ls -A --color=auto'\nalias ls='ls --color=auto'\nalias grep='grep --color=auto'\nalias gs='git status'\n" +
-                "if [ -n \"\$BASH_VERSION\" ]; then\n  export HISTFILE=/root/.bash_history HISTSIZE=5000 HISTFILESIZE=10000\n  shopt -s histappend 2>/dev/null\n  PROMPT_COMMAND='printf \"\\033]0;%s\\007\" \"\${PWD##*/}\"'\n  [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion\nfi\n"
+                "export PIP_BREAK_SYSTEM_PACKAGES=1\nif [ -n \"\$BASH_VERSION\" ]; then\n  export HISTFILE=/root/.bash_history HISTSIZE=5000 HISTFILESIZE=10000\n  shopt -s histappend 2>/dev/null\n  PROMPT_COMMAND='printf \"\\033]0;%s\\007\" \"\${PWD##*/}\"'\n  [ -f /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion\nfi\n"
             )
             File(bin, "termux-setup-storage").also {
                 it.writeText("#!/bin/sh\nif [ -d /sdcard/Download ]; then echo 'Память телефона доступна: /sdcard (Download, Documents, DCIM)'; else echo 'Нет доступа. В приложении: вкладка Linux, кнопка Файлы, разреши доступ ко всем файлам, затем новая сессия.'; fi\n")
