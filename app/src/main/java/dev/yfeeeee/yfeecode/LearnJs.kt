@@ -210,6 +210,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Первый элемент и остальные", "const [first, ...rest] = a;")
     )),
     Lesson("Map, Set и JSON", "Map хранит пары с любыми ключами, Set только уникальные значения. JSON.stringify превращает объект в строку, JSON.parse обратно.\n>const m = new Map();\n>m.set(\"a\", 1);\n>const s = new Set([1, 2, 2]);\n>JSON.stringify(obj);\n>JSON.parse(text);", listOf(
+        choice("Что хранит Set?", "Только уникальные значения", "Только пары", "Только числа"),
+        choice("Что делает JSON.stringify?", "Превращает объект в строку", "Превращает строку в объект", "Удаляет объект"),
+        gap("Дополни: строка в объект", "const o = JSON.___(text);", "parse", "stringify|read"),
+        fix("Исправь: Map создают через new", "const m = Map();", "const m = new Map();"),
+        fix("Исправь: у Set метод add", "s.push(3);", "s.add(3);"),
         type("Создай Map", "const m = new Map();"),
         type("Положи в m ключ a со значением 1", "m.set(\"a\", 1);"),
         type("Создай Set из 1, 2, 2", "const s = new Set([1, 2, 2]);"),
@@ -218,6 +223,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Размер множества s", "s.size")
     )),
     Lesson("Ошибки: try/catch", "try пробует код, catch ловит ошибку, finally выполняется всегда. throw создаёт свою ошибку. Для async-кода try/catch работает вместе с await.\n>try {\n>  JSON.parse(text);\n>} catch (e) {\n>  console.log(e.message);\n>}", listOf(
+        choice("Что делает catch?", "Ловит ошибку из try", "Создаёт ошибку", "Запускает цикл"),
+        choice("Когда выполняется finally?", "Всегда", "Только при ошибке", "Никогда"),
+        gap("Дополни: бросить ошибку", "___ new Error(\"плохо\");", "throw", "raise|error"),
+        fix("Исправь: catch получает ошибку в скобках", "} catch e {", "} catch (e) {"),
+        fix("Исправь: в JS пишут throw", "raise new Error(\"x\");", "throw new Error(\"x\");"),
         type("Начни блок try", "try {"),
         type("Поймай ошибку в e", "} catch (e) {"),
         type("Выведи сообщение ошибки", "console.log(e.message);"),
@@ -226,6 +236,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Проверь тип значения x", "typeof x")
     )),
     Lesson("Таймеры и цикл событий", "setTimeout запускает функцию один раз позже, setInterval повторяет. Они не блокируют программу: JS ставит задачу в очередь и идёт дальше.\n>setTimeout(() => console.log(\"ок\"), 1000);\n>const id = setInterval(tick, 500);\n>clearInterval(id);", listOf(
+        choice("Что делает setTimeout?", "Запускает функцию один раз позже", "Повторяет функцию", "Останавливает программу"),
+        choice("Чем останавливают setInterval?", "clearInterval", "stopInterval", "break"),
+        gap("Дополни: повтор каждые 500 мс", "const id = ___(tick, 500);", "setInterval", "setTimeout|repeat"),
+        fix("Исправь: функция идёт первым аргументом", "setTimeout(1000, () => {});", "setTimeout(() => {}, 1000);"),
+        fix("Исправь: останови интервал по id", "clearInterval(tick);", "clearInterval(id);"),
         type("Выведи ок через 1000 мс", "setTimeout(() => console.log(\"ок\"), 1000);"),
         type("Повторяй tick каждые 500 мс", "const id = setInterval(tick, 500);"),
         type("Останови интервал id", "clearInterval(id);"),
@@ -234,6 +249,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Текущее время в миллисекундах", "Date.now()")
     )),
     Lesson("Модули import и export", "Модули делят код на файлы. export открывает функцию, import подключает. В Node.js ещё встречается require.\n>export function add(a, b) { return a + b; }\n>import { add } from \"./math.js\";\n>export default add;", listOf(
+        choice("Что делает export?", "Открывает функцию для других файлов", "Удаляет функцию", "Запускает файл"),
+        choice("Что делает import?", "Подключает код из другого файла", "Создаёт файл", "Удаляет модуль"),
+        gap("Дополни: открой функцию", "___ function add(a, b) { return a + b; }", "export", "import|public"),
+        fix("Исправь: путь к своему файлу начинается с ./", "import { add } from \"math.js\";", "import { add } from \"./math.js\";"),
+        fix("Исправь: имена в import в фигурных скобках", "import add from \"./math.js\";", "import { add } from \"./math.js\";"),
         type("Экспортируй функцию add", "export function add(a, b) { return a + b; }"),
         type("Импортируй add из math.js", "import { add } from \"./math.js\";"),
         type("Экспорт по умолчанию", "export default add;"),
@@ -242,6 +262,11 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Экспорт через module.exports", "module.exports = add;")
     )),
     Lesson("Node.js: файлы и скрипты", "Node.js запускает JS без браузера. Модуль fs читает и пишет файлы, process.argv хранит аргументы. Пакеты ставят через npm.\n>const fs = require(\"fs\");\n>const t = fs.readFileSync(\"a.txt\", \"utf8\");\n>fs.writeFileSync(\"b.txt\", \"привет\");\n>npm install express", listOf(
+        choice("Что умеет Node.js?", "Запускает JS без браузера", "Рисует страницу", "Хранит стили"),
+        choice("Что хранит process.argv?", "Аргументы запуска", "Файлы", "Пароли"),
+        gap("Дополни: прочитать файл", "const t = fs.___(\"a.txt\", \"utf8\");", "readFileSync", "readText|openFile"),
+        fix("Исправь: fs подключают через require", "const fs = import(\"fs\");", "const fs = require(\"fs\");"),
+        fix("Исправь: пакеты ставят через npm install", "npm add express", "npm install express"),
         type("Прочитай a.txt как utf8", "fs.readFileSync(\"a.txt\", \"utf8\")"),
         type("Запиши привет в b.txt", "fs.writeFileSync(\"b.txt\", \"привет\");"),
         type("Аргументы командной строки", "process.argv"),
@@ -250,6 +275,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Создай package.json", "npm init -y")
     )),
     Lesson("Регулярные выражения", "Регулярное выражение пишут между слэшами. \\d цифра, \\w буква, + один или больше. Методы: test, match, replace.\n>/\\d+/.test(\"abc123\");\n>\"a1b22\".match(/\\d+/g);\n>s.replace(/\\s+/g, \" \");", listOf(
+        choice("Между какими знаками пишут регулярное выражение?", "Между слэшами", "Между кавычками", "Между скобками"),
+        choice("Что означает \\d?", "Цифру", "Букву", "Пробел"),
+        gap("Дополни: проверка", "/\\d+/.___(\"abc123\");", "test", "check|find"),
+        fix("Исправь: флаг g ищет все совпадения", "\"a1b22\".match(/\\d+/);", "\"a1b22\".match(/\\d+/g);"),
         type("Проверь, есть ли цифры в строке s", "/\\d+/.test(s)"),
         type("Найди все числа в строке s", "s.match(/\\d+/g)"),
         type("Замени все пробелы на один", "s.replace(/\\s+/g, \" \")"),
@@ -258,6 +287,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Создай регулярку из строки", "new RegExp(\"a+\")")
     )),
     Lesson("Продвинутые массивы", "find ищет первый подходящий элемент, some и every проверяют условие, sort сортирует, flat выравнивает вложенные массивы, includes проверяет наличие.\n>arr.find(x => x > 2);\n>arr.some(x => x > 2);\n>arr.sort((a, b) => a - b);\n>arr.includes(3);", listOf(
+        choice("Что делает find?", "Находит первый подходящий элемент", "Находит все элементы", "Удаляет элемент"),
+        choice("Что делает includes?", "Проверяет наличие значения", "Сортирует", "Выравнивает"),
+        gap("Дополни: есть ли больше 2", "arr.___(x => x > 2);", "some", "find2|only"),
+        fix("Исправь: сортировка чисел", "arr.sort((a, b) => b - a);", "arr.sort((a, b) => a - b);"),
         type("Найди первый элемент больше 2", "arr.find(x => x > 2)"),
         type("Есть ли хоть один больше 2", "arr.some(x => x > 2)"),
         type("Все ли больше 0", "arr.every(x => x > 0)"),
@@ -266,6 +299,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Склей массив через дефис", "arr.join(\"-\")")
     )),
     Lesson("npm и package.json", "npm это менеджер пакетов Node.js. npm init -y создаёт package.json, где записаны зависимости. npm install ставит пакет в папку node_modules. Запуск файла: node index.js.\n>npm init -y\n>npm install express\n>node index.js\n>const express = require(\"express\")", listOf(
+        choice("Что создаёт npm init -y?", "Файл package.json", "Папку node_modules", "Сервер"),
+        choice("Куда npm ставит пакеты?", "В папку node_modules", "В папку src", "В облако"),
+        gap("Дополни: запуск файла", "___ index.js", "node", "npm|js"),
+        fix("Исправь: установка пакета", "npm get express", "npm install express"),
         type("Создай package.json", "npm init -y"),
         type("Установи пакет express", "npm install express"),
         type("Запусти файл index.js", "node index.js"),
@@ -274,6 +311,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Установи пакет только для разработки nodemon", "npm install --save-dev nodemon")
     )),
     Lesson("Сервер на Express", "Express создаёт веб-сервер за несколько строк. app.get описывает адрес и ответ, res.send отправляет текст, res.json отправляет JSON, app.listen запускает сервер на порту.\n>const express = require(\"express\")\n>const app = express()\n>app.get(\"/\", (req, res) => {\n>  res.send(\"Привет\")\n>})\n>app.listen(3000)", listOf(
+        choice("Что делает app.get?", "Описывает адрес и ответ сервера", "Запускает сервер", "Читает файл"),
+        choice("Что делает app.listen?", "Запускает сервер на порту", "Отправляет JSON", "Создаёт маршрут"),
+        gap("Дополни: отправь текст", "res.___(\"Привет\");", "send", "write2|say"),
+        fix("Исправь: express вызывают как функцию", "const app = express;", "const app = express();"),
         type("Создай приложение express", "const app = express()"),
         type("Опиши GET-адрес /hello", "app.get(\"/hello\", (req, res) => {"),
         type("Отправь текст Привет", "res.send(\"Привет\")"),
@@ -282,6 +323,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Запусти сервер на порту 3000", "app.listen(3000)")
     )),
     Lesson("Telegram-боты на Node.js", "Бот на Node.js: пакет node-telegram-bot-api. Создаёшь бота с токеном и polling, onText ловит команды, sendMessage отвечает. Токен храни в переменной окружения, а не в коде.\n>const TelegramBot = require(\"node-telegram-bot-api\")\n>const bot = new TelegramBot(process.env.TOKEN, { polling: true })\n>bot.onText(/\\/start/, (msg) => {\n>  bot.sendMessage(msg.chat.id, \"Привет\")\n>})", listOf(
+        choice("Какой пакет нужен для бота на Node.js?", "node-telegram-bot-api", "telebot", "aiogram"),
+        choice("Где хранить токен?", "В переменной окружения", "В коде", "В публичном README"),
+        gap("Дополни: отправь сообщение", "bot.___(chatId, \"Привет\");", "sendMessage", "send|reply"),
+        fix("Исправь: бота создают через new", "const bot = TelegramBot(token, { polling: true });", "const bot = new TelegramBot(token, { polling: true });"),
         type("Установи пакет бота", "npm install node-telegram-bot-api"),
         type("Подключи библиотеку", "const TelegramBot = require(\"node-telegram-bot-api\")"),
         type("Создай бота с токеном из окружения", "const bot = new TelegramBot(process.env.TOKEN, { polling: true })"),
@@ -290,6 +335,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Прочитай токен из окружения", "process.env.TOKEN")
     )),
     Lesson("DOM: создание элементов", "JavaScript умеет создавать элементы на лету. createElement делает тег, textContent задаёт текст, appendChild добавляет в страницу, remove убирает. Так строят списки задач и карточки.\n>const li = document.createElement(\"li\")\n>li.textContent = \"Купить хлеб\"\n>list.appendChild(li)\n>li.remove()", listOf(
+        choice("Что делает createElement?", "Создаёт новый тег", "Удаляет тег", "Находит тег"),
+        choice("Что делает appendChild?", "Добавляет элемент в страницу", "Удаляет элемент", "Меняет цвет"),
+        gap("Дополни: создай li", "const li = document.___(\"li\");", "createElement", "newElement|create"),
+        fix("Исправь: текст задают через textContent", "li.text = \"Купить хлеб\";", "li.textContent = \"Купить хлеб\";"),
         type("Создай элемент li", "const li = document.createElement(\"li\")"),
         type("Задай текст элемента", "li.textContent = \"Купить хлеб\""),
         type("Добавь li в список list", "list.appendChild(li)"),
@@ -298,6 +347,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Найди элемент с id list", "document.getElementById(\"list\")")
     )),
     Lesson("localStorage: память браузера", "localStorage хранит строки между запусками страницы. setItem записывает, getItem читает. Объекты и массивы превращают в строку через JSON.stringify и обратно через JSON.parse.\n>localStorage.setItem(\"name\", \"Аня\")\n>const n = localStorage.getItem(\"name\")\n>localStorage.setItem(\"list\", JSON.stringify(arr))\n>const arr = JSON.parse(localStorage.getItem(\"list\"))", listOf(
+        choice("Что хранит localStorage?", "Строки между запусками страницы", "Только числа", "Файлы"),
+        choice("Как сохранить массив в localStorage?", "Через JSON.stringify", "Напрямую", "Через push"),
+        gap("Дополни: прочитать значение", "const n = localStorage.___(\"name\");", "getItem", "get|read"),
+        fix("Исправь: запись значения", "localStorage.set(\"name\", \"Аня\");", "localStorage.setItem(\"name\", \"Аня\");"),
         type("Запиши name в память", "localStorage.setItem(\"name\", \"Аня\")"),
         type("Прочитай name из памяти", "const n = localStorage.getItem(\"name\")"),
         type("Сохрани массив arr как строку", "localStorage.setItem(\"list\", JSON.stringify(arr))"),
@@ -306,6 +359,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Очисти всю память", "localStorage.clear()")
     )),
     Lesson("Math и случайные числа", "Объект Math содержит математические функции. Math.random даёт число от 0 до 1, Math.floor округляет вниз, Math.round до ближайшего, Math.max и Math.min выбирают наибольшее и наименьшее. Случайное целое от 1 до 6 получают формулой с floor.\n>const r = Math.random()\n>const dice = Math.floor(Math.random() * 6) + 1\n>Math.round(2.6)\n>Math.max(1, 5, 3)", listOf(
+        choice("Что даёт Math.random()?", "Число от 0 до 1", "Целое от 1 до 6", "Число от 1 до 100"),
+        choice("Что делает Math.floor?", "Округляет вниз", "Округляет вверх", "Возводит в квадрат"),
+        gap("Дополни: округление вниз", "Math.___(2.7)", "floor", "ceil|round2"),
+        fix("Исправь: Math пишется с большой буквы", "math.random()", "Math.random()"),
         type("Случайное число от 0 до 1", "const r = Math.random()"),
         type("Случайное целое от 1 до 6", "const dice = Math.floor(Math.random() * 6) + 1"),
         type("Округли 2.6 до ближайшего", "Math.round(2.6)"),
@@ -314,6 +371,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Возведи 2 в степень 3", "Math.pow(2, 3)")
     )),
     Lesson("Дата и время: Date", "Объект Date работает с датой и временем. new Date создаёт текущий момент, getFullYear и getMonth возвращают части даты (месяцы считаются с нуля), toLocaleDateString показывает дату в удобном виде, Date.now даёт число миллисекунд.\n>const now = new Date()\n>now.getFullYear()\n>now.getMonth()\n>now.toLocaleDateString(\"ru-RU\")\n>const t = Date.now()", listOf(
+        choice("С какого числа считаются месяцы в Date?", "С нуля", "С единицы", "С двенадцати"),
+        choice("Что даёт Date.now()?", "Число миллисекунд", "Строку с датой", "Объект Date"),
+        gap("Дополни: текущий момент", "const now = ___ Date();", "new", "get|make"),
+        fix("Исправь: имя метода года", "now.getYear2();", "now.getFullYear();"),
         type("Создай текущую дату", "const now = new Date()"),
         type("Получи год из now", "now.getFullYear()"),
         type("Получи месяц из now", "now.getMonth()"),
@@ -322,6 +383,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Получи час из now", "now.getHours()")
     )),
     Lesson("WebSocket в браузере", "WebSocket держит постоянное соединение с сервером: данные идут в обе стороны без повторных запросов. Адрес начинается с ws:// или wss://. События: open, message, close. Метод send отправляет строку. Автор курса: @yfeeeee.\n>const ws = new WebSocket(\"wss://example.com/chat\")\n>ws.onopen = () => ws.send(\"привет\")\n>ws.onmessage = e => console.log(e.data)\n>ws.onclose = () => console.log(\"закрыто\")\n>ws.close()", listOf(
+        choice("С чего начинается адрес WebSocket?", "ws:// или wss://", "http://", "ftp://"),
+        choice("Что делает метод send?", "Отправляет строку на сервер", "Закрывает соединение", "Читает ответ"),
+        gap("Дополни: событие сообщения", "ws.addEventListener(\"___\", (e) => {});", "message", "data|send"),
+        fix("Исправь: WebSocket создают через new", "const ws = WebSocket(\"wss://example.com\");", "const ws = new WebSocket(\"wss://example.com\");"),
         type("Открой соединение", "const ws = new WebSocket(\"wss://example.com/chat\")"),
         type("Отправь привет при открытии", "ws.onopen = () => ws.send(\"привет\")"),
         type("Выведи полученные данные", "ws.onmessage = e => console.log(e.data)"),
@@ -330,6 +395,10 @@ fun jsCourse() = Course("js", "JavaScript", "🟨", listOf(
         type("Отправь JSON", "ws.send(JSON.stringify({ a: 1 }))")
     )),
     Lesson("Canvas: рисование", "Элемент canvas это холст. Берём контекст 2d и рисуем: fillStyle задаёт цвет, fillRect рисует прямоугольник, arc с beginPath и fill рисует круг. requestAnimationFrame зовёт функцию перед каждым кадром, так делают анимации и игры.\n>const ctx = canvas.getContext(\"2d\")\n>ctx.fillStyle = \"#ef4444\"\n>ctx.fillRect(10, 10, 50, 50)\n>ctx.beginPath()\n>ctx.arc(100, 100, 20, 0, Math.PI * 2)\n>ctx.fill()\n>requestAnimationFrame(draw)", listOf(
+        choice("Что такое canvas?", "Холст для рисования", "Вид списка", "Таблица стилей"),
+        choice("Что делает fillRect?", "Рисует закрашенный прямоугольник", "Рисует круг", "Очищает холст"),
+        gap("Дополни: контекст 2d", "const ctx = canvas.___(\"2d\");", "getContext", "getCanvas|context"),
+        fix("Исправь: цвет задают через fillStyle", "ctx.color = \"red\";", "ctx.fillStyle = \"red\";"),
         type("Получи контекст 2d", "const ctx = canvas.getContext(\"2d\")"),
         type("Задай красный цвет заливки", "ctx.fillStyle = \"#ef4444\""),
         type("Нарисуй квадрат 50 на 50", "ctx.fillRect(10, 10, 50, 50)"),
