@@ -289,6 +289,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Дописывай в конец файла (режим)", "open(\"a.txt\", \"a\")")
     )),
     Lesson("Стандартная библиотека", "Полезные модули: random (случайные числа), datetime (даты), os (файлы и пути), time (пауза), sys (аргументы).\n>import random\n>random.randint(1, 6)\n>from datetime import datetime\n>datetime.now()\n>import os\n>os.path.exists(\"a.txt\")", listOf(
+        choice("Для чего нужен модуль random?", "Для случайных чисел", "Для работы с датами", "Для файлов"),
+        choice("Что даёт datetime.now()?", "Текущую дату и время", "Случайное число", "Путь к файлу"),
+        gap("Дополни: случайное число от 1 до 6", "random.___(1, 6)", "randint", "random2|choice2"),
+        gap("Дополни: файл существует?", "os.path.___(\"a.txt\")", "exists", "has|find"),
+        fix("Исправь: сначала нужен импорт модуля", "random.randint(1, 6)", "import random"),
         type("Случайное число от 1 до 6", "random.randint(1, 6)"),
         type("Случайный элемент списка lst", "random.choice(lst)"),
         type("Подключи datetime из datetime", "from datetime import datetime"),
@@ -297,6 +302,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Подожди 2 секунды", "time.sleep(2)")
     )),
     Lesson("Регулярные выражения", "Модуль re ищет шаблоны в тексте. \\d цифра, \\w буква, + один или больше, * ноль или больше. search ищет первое совпадение, findall все, sub заменяет.\n>import re\n>re.findall(r\"\\d+\", text)\n>re.sub(r\"\\s+\", \" \", text)", listOf(
+        choice("Что означает \\d в регулярном выражении?", "Цифру", "Букву", "Пробел", explain = "\\w это буква или цифра, \\s пробел."),
+        choice("Что делает re.findall?", "Находит все совпадения", "Находит только первое", "Заменяет текст"),
+        gap("Дополни: заменить текст", "re.___(r\"\\s+\", \" \", text)", "sub", "replace|swap"),
+        fix("Исправь: нужен импорт re", "import regex", "import re"),
+        fix("Исправь: findall это метод модуля re", "findall(r\"\\d+\", text)", "re.findall(r\"\\d+\", text)"),
         type("Подключи модуль re", "import re"),
         type("Найди все числа в text", "re.findall(r\"\\d+\", text)"),
         type("Найди первое совпадение слова", "re.search(r\"\\w+\", text)"),
@@ -305,6 +315,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Цифра в шаблоне (одна)", "\\d")
     )),
     Lesson("Классы: dataclass и свойства", "dataclass сам создаёт __init__ и вывод. @property делает метод похожим на поле. Подсказки типов не обязательны, но помогают читать код.\n>from dataclasses import dataclass\n>@dataclass\n>class User:\n>    name: str\n>    age: int = 0", listOf(
+        choice("Что делает @dataclass?", "Сам создаёт __init__ и вывод", "Удаляет класс", "Делает класс асинхронным"),
+        choice("Что делает @property?", "Метод выглядит как поле", "Метод становится приватным", "Метод запускается сам"),
+        gap("Дополни: импорт dataclass", "from dataclasses import ___", "dataclass", "dataclasses2|class"),
+        fix("Исправь: у поля dataclass пишут тип", "name = str", "name: str"),
+        fix("Исправь: декоратор над классом", "dataclass\nclass User:", "@dataclass\nclass User:"),
         type("Подключи dataclass", "from dataclasses import dataclass"),
         type("Декоратор dataclass над классом", "@dataclass"),
         type("Поле name типа str", "name: str"),
@@ -313,6 +328,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Создай User с именем Аня", "u = User(\"Аня\")")
     )),
     Lesson("Контекстные менеджеры и ошибки", "with гарантирует закрытие ресурса. raise бросает свою ошибку, finally выполняется всегда. Свой тип ошибки — класс от Exception. assert проверяет условие при отладке.\n>try:\n>    x = int(s)\n>except ValueError as e:\n>    print(e)\n>finally:\n>    print(\"конец\")", listOf(
+        choice("Что делает raise?", "Бросает ошибку", "Ловит ошибку", "Завершает цикл"),
+        choice("Когда выполнится finally?", "Всегда", "Только при ошибке", "Никогда"),
+        gap("Дополни: бросить ошибку", "___ ValueError(\"плохое значение\")", "raise", "throw|error"),
+        fix("Исправь: в Python пишут raise, а не throw", "throw ValueError(\"x\")", "raise ValueError(\"x\")"),
+        fix("Исправь: ошибка ловится через as", "except ValueError e:", "except ValueError as e:"),
         type("Поймай ValueError как e", "except ValueError as e:"),
         type("Блок, который выполнится всегда", "finally:"),
         type("Брось ошибку с текстом", "raise ValueError(\"плохо\")"),
@@ -321,6 +341,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Пропусти действие в блоке", "pass")
     )),
     Lesson("Виртуальные среды и pip", "pip ставит библиотеки. venv создаёт отдельную среду для проекта, чтобы версии не конфликтовали. requirements.txt хранит список зависимостей.\n>pip install requests\n>python3 -m venv venv\n>source venv/bin/activate\n>pip freeze > requirements.txt", listOf(
+        choice("Зачем нужна виртуальная среда venv?", "Чтобы версии библиотек не конфликтовали", "Чтобы ускорить Python", "Чтобы удалить файлы"),
+        choice("Что хранит requirements.txt?", "Список зависимостей проекта", "Токен бота", "Лог ошибок"),
+        gap("Дополни: создай среду", "python3 -m ___ venv", "venv", "pip|env2"),
+        gap("Дополни: сохрани список библиотек", "pip ___ > requirements.txt", "freeze", "list2|save"),
+        fix("Исправь: ставят через pip install", "pip add requests", "pip install requests"),
         type("Установи requests через pip", "pip install requests"),
         type("Создай среду venv", "python3 -m venv venv"),
         type("Включи среду", "source venv/bin/activate"),
@@ -329,6 +354,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Покажи установленные пакеты", "pip list")
     )),
     Lesson("Запросы: requests", "Библиотека requests ходит в интернет. get получает данные, post отправляет. Ответ r хранит статус и тело. r.json() превращает JSON в словарь. Всегда ставь timeout, иначе программа может зависнуть.\n>import requests\n>r = requests.get(\"https://api.github.com\", timeout=10)\n>print(r.status_code)\n>data = r.json()", listOf(
+        choice("Что делает requests.get?", "Получает данные по адресу", "Отправляет файл", "Создаёт сайт"),
+        choice("Зачем указывать timeout?", "Чтобы программа не зависла навсегда", "Чтобы ускорить сайт", "Чтобы получить JSON"),
+        gap("Дополни: статус ответа", "print(r.___)", "status_code", "status|code"),
+        gap("Дополни: JSON в словарь", "data = r.___()", "json", "dict|loads"),
+        fix("Исправь: нужен импорт requests", "import request", "import requests"),
         type("Подключи requests", "import requests"),
         type("Сделай GET-запрос к url с таймаутом 10", "r = requests.get(url, timeout=10)"),
         type("Покажи код ответа", "r.status_code"),
@@ -337,6 +367,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Брось ошибку, если ответ плохой", "r.raise_for_status()")
     )),
     Lesson("Базы данных: sqlite3", "sqlite3 встроен в Python: база хранится в одном файле. connect открывает файл, execute выполняет SQL, commit сохраняет изменения. Значения подставляй через ? — так безопаснее всего.\n>import sqlite3\n>db = sqlite3.connect(\"bot.db\")\n>db.execute(\"CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)\")\n>db.execute(\"INSERT INTO users VALUES (?, ?)\", (1, \"Аня\"))\n>db.commit()", listOf(
+        choice("Что делает commit?", "Сохраняет изменения в базе", "Открывает базу", "Удаляет таблицу"),
+        choice("Зачем знак ? в запросе?", "Безопасно подставляет значения", "Спрашивает пользователя", "Ускоряет запрос"),
+        gap("Дополни: открой базу", "db = sqlite3.___(\"bot.db\")", "connect", "open|load"),
+        gap("Дополни: выполни SQL", "db.___(\"SELECT * FROM users\")", "execute", "run|query"),
+        fix("Исправь: значения передаются кортежем", "db.execute(\"INSERT INTO users VALUES (?, ?)\", 1, \"Аня\")", "db.execute(\"INSERT INTO users VALUES (?, ?)\", (1, \"Аня\"))"),
         type("Подключи sqlite3", "import sqlite3"),
         type("Открой базу bot.db", "db = sqlite3.connect(\"bot.db\")"),
         type("Добавь строку в users со значениями 1 и name", "db.execute(\"INSERT INTO users VALUES (?, ?)\", (1, name))"),
@@ -345,6 +380,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Закрой базу", "db.close()")
     )),
     Lesson("Асинхронность: asyncio", "async def создаёт корутину, await ждёт результат и не блокирует остальных. Боты на aiogram и модули Hikka работают именно так. asyncio.run запускает главную корутину, gather ждёт сразу несколько.\n>import asyncio\n>async def main():\n>    await asyncio.sleep(1)\n>    print(\"готово\")\n>asyncio.run(main())", listOf(
+        choice("Что делает asyncio.gather?", "Ждёт сразу несколько корутин", "Создаёт поток", "Закрывает цикл"),
+        choice("Что делает asyncio.run?", "Запускает главную корутину", "Останавливает программу", "Создаёт функцию"),
+        gap("Дополни: пауза", "await asyncio.___(1)", "sleep", "wait|pause"),
+        fix("Исправь: корутину запускают через asyncio.run", "main()", "asyncio.run(main())"),
+        fix("Исправь: await только внутри async def", "def main():\n    await asyncio.sleep(1)", "async def main():\n    await asyncio.sleep(1)"),
         type("Подключи asyncio", "import asyncio"),
         type("Объяви асинхронную функцию main", "async def main():"),
         type("Подожди секунду, не блокируя других", "await asyncio.sleep(1)"),
@@ -353,6 +393,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Запусти задачу в фоне", "asyncio.create_task(a())")
     )),
     Lesson("Тесты: unittest и pytest", "Тест проверяет, что функция работает так, как задумано. В pytest достаточно функции test_... с assert. В unittest тесты лежат в классе от TestCase. Запуск: python3 -m pytest или python3 -m unittest.\n>def test_sum():\n>    assert add(2, 3) == 5\n>import unittest\n>class T(unittest.TestCase):\n>    def test_add(self):\n>        self.assertEqual(add(2, 3), 5)", listOf(
+        choice("Что проверяет assert?", "Что условие верно", "Что файл существует", "Что бот запущен"),
+        choice("С чего должна начинаться функция теста в pytest?", "test_", "check_", "run_"),
+        gap("Дополни: проверка", "def test_sum():\n    ___ add(2, 3) == 5", "assert", "check|raise"),
+        gap("Дополни: запуск тестов", "python3 -m ___", "pytest", "test2|unit"),
+        fix("Исправь: имя функции теста", "def sum_test():", "def test_sum():"),
         type("Объяви pytest-тест test_sum", "def test_sum():"),
         type("Проверь, что add(2, 3) равно 5", "assert add(2, 3) == 5"),
         type("Подключи unittest", "import unittest"),
@@ -361,6 +406,11 @@ fun pythonCourse() = Course("py", "Python", "🐍", listOf(
         type("Запусти pytest", "python3 -m pytest")
     )),
     Lesson("Модули Heroku и Hikka", "Модуль для Hikka это один .py файл. Класс наследуется от loader.Module, у него есть strings с именем модуля. Команда это метод с приставкой cmd в конце имени, внутри ответ отправляет utils.answer. Файл подключают командой loadmod.\n>from .. import loader, utils\n>@loader.tds\n>class HelloMod(loader.Module):\n>    strings = {\"name\": \"Hello\"}\n>    async def hicmd(self, message):\n>        await utils.answer(message, \"Привет\")", listOf(
+        choice("От какого класса наследуется модуль Hikka?", "loader.Module", "utils.Module", "telebot.Bot"),
+        choice("Каким суффиксом заканчивается имя метода команды?", "cmd", "command", "run"),
+        gap("Дополни: ответ на команду", "await utils.___(message, \"Привет\")", "answer", "send|reply"),
+        fix("Исправь: имя метода команды заканчивается на cmd", "async def hi(self, message):", "async def hicmd(self, message):"),
+        fix("Исправь: ключ имени модуля", "strings = {\"title\": \"Hello\"}", "strings = {\"name\": \"Hello\"}"),
         type("Подключи loader и utils", "from .. import loader, utils"),
         type("Класс модуля HelloMod", "class HelloMod(loader.Module):"),
         type("Имя модуля в strings", "strings = {\"name\": \"Hello\"}"),
