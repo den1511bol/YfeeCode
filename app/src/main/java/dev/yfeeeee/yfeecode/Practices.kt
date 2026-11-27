@@ -141,7 +141,9 @@ object Practices {
             Practice("js23", "Promise.all", "Дождись двух промисов одновременно через Promise.all и выведи результат.", "", Lang.JS,
                 listOf(must("""Promise\.all\s*\(""", "Нужен Promise.all([...])"), must("""await|\.then""", "Дождись результата: await или then"))),
             Practice("js24", "setTimeout", "Выведи в консоль текст через 1 секунду с помощью setTimeout.", "", Lang.JS,
-                listOf(must("""setTimeout\s*\(""", "Нужен setTimeout(...)"), must("""1000""", "Задержка 1 секунда это 1000 миллисекунд")))
+                listOf(must("""setTimeout\s*\(""", "Нужен setTimeout(...)"), must("""1000""", "Задержка 1 секунда это 1000 миллисекунд"))),
+            Practice("js25", "fetch с try/catch", "Напиши async-функцию, которая через await fetch(url) получает ответ и ловит ошибку сети в try/catch.", "", Lang.JS,
+                listOf(must("""\basync\b""", "Нужна async-функция"), must("""await\s+fetch\s*\(""", "Используй await fetch(...)"), must("""\btry\b""", "Оберни вызов в try"), must("""\bcatch\b""", "Добавь блок catch")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
