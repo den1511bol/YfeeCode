@@ -452,3 +452,4 @@
 - v5-N93: практика css31 text-transform и letter-spacing (192 практики). Автор: @yfeeeee.
 - v5-N94: практика js36 метод some (193 практики). Автор: @yfeeeee.
 - v5-N95: практика py36 abs (194 практики). Автор: @yfeeeee.
+- v5-N96: практика cpp34 std::swap (195 практик). Автор: @yfeeeee.

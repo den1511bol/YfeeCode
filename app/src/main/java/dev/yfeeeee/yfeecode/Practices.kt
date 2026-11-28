@@ -373,7 +373,9 @@ object Practices {
             Practice("cpp32", "Приведение static_cast", "Объяви int a = 7 и выведи a, делённое на 2 как число с дробной частью, через static_cast<double>(a) / 2 и cout.", "", Lang.CPP,
                 listOf(must("""static_cast\s*<\s*double\s*>\s*\(""", "Нужен static_cast<double>(a)"), must("""/\s*2""", "Раздели на 2"), must("""cout\s*<<""", "Выведи результат через cout"))),
             Practice("cpp33", "Разворот reverse", "Разверни вектор std::vector<int> v = {1, 2, 3} через std::reverse(v.begin(), v.end()).", "", Lang.CPP,
-                listOf(must("""std::reverse\s*\(""", "Нужен std::reverse(...)"), must("""v\.begin\s*\(\s*\)""", "Первый аргумент: v.begin()"), must("""v\.end\s*\(\s*\)""", "Второй аргумент: v.end()")))
+                listOf(must("""std::reverse\s*\(""", "Нужен std::reverse(...)"), must("""v\.begin\s*\(\s*\)""", "Первый аргумент: v.begin()"), must("""v\.end\s*\(\s*\)""", "Второй аргумент: v.end()"))),
+            Practice("cpp34", "Обмен swap", "Поменяй местами значения int a = 1 и int b = 2 через std::swap и выведи a через cout.", "", Lang.CPP,
+                listOf(must("""std::swap\s*\(\s*a\s*,\s*b\s*\)""", "Нужен std::swap(a, b)"), must("""cout\s*<<""", "Выведи результат через cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
