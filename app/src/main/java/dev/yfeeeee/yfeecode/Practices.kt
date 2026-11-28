@@ -453,7 +453,9 @@ object Practices {
             Practice("cs32", "ToUpper", "Преврати строку string s = \"hello\" в верхний регистр через ToUpper и выведи через Console.WriteLine.", "", Lang.CSHARP,
                 listOf(must("""\.ToUpper\s*\(""", "Нужен метод .ToUpper()"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"))),
             Practice("cs33", "Очередь Queue", "Создай Queue<int> q, добавь в неё число 5 через Enqueue и выведи первый элемент через Dequeue и Console.WriteLine.", "", Lang.CSHARP,
-                listOf(must("""Queue\s*<\s*int\s*>""", "Нужна Queue<int>"), must("""\.Enqueue\s*\(""", "Добавь элемент через .Enqueue(...)"), must("""\.Dequeue\s*\(""", "Достань элемент через .Dequeue()"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
+                listOf(must("""Queue\s*<\s*int\s*>""", "Нужна Queue<int>"), must("""\.Enqueue\s*\(""", "Добавь элемент через .Enqueue(...)"), must("""\.Dequeue\s*\(""", "Достань элемент через .Dequeue()"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"))),
+            Practice("cs34", "Максимум Math.Max", "Выведи большее из чисел 4 и 9 через Math.Max и Console.WriteLine.", "", Lang.CSHARP,
+                listOf(must("""Math\.Max\s*\(""", "Нужен Math.Max(a, b)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
         )
     )
 }
