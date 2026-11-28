@@ -2,15 +2,19 @@
 # scope: hikka_only
 # scope: hikka_min 1.6.0
 #
-# RichKit: сворачиваемые списки (details/summary) и таблицы (table) для Hikka.
+# RichKit: сворачиваемые списки (details/summary) для Hikka и Heroku-юзербота.
 # Автор: @yfeeeee
 #
-# ВАЖНО (проверено только по документации Telegram, не на живом Hikka):
-#   details и table это Rich Messages из Bot API 10.1+ (метод sendRichMessage, поле html).
-#   Их шлёт бот, а не обычный аккаунт. Поэтому модуль шлёт через ассистент-бота Hikka.
-#   Бот должен быть в этом чате (например, личка с ботом или группа, куда он добавлен).
-#   Если отправка не вышла, модуль сам переходит на запасной вариант:
-#   <blockquote expandable> (сворачиваемая цитата), которая работает и с аккаунта юзербота.
+# Как это устроено (по реальному модулю Always Online, который прислал пользователь):
+#   юзербот шлёт обычный HTML через utils.answer, а внутри есть <details><summary>...</summary>...</details>
+#   и абзацы <p>. Telegram показывает это сворачиваемым блоком. Сработает, если парсер
+#   вашего юзербота понимает <details>. Не проверено на всех версиях.
+#
+# Режимы (настройка mode):
+#   details: <details><summary> как у Always Online (по умолчанию)
+#   quote:   <blockquote expandable>, работает почти везде
+#   bot:     rich-сообщение через ассистент-бота (sendRichMessage), нужен бот в чате
+# Настройка tables: вместо строк-абзацев команды выводятся таблицей <table> (не проверено с аккаунта).
 
 import html as _html
 import logging
@@ -43,20 +47,36 @@ def table(rows, header=None):
     return "".join(out)
 
 
+def para(html_text):
+    return "<p>%s</p>" % html_text
+
+
+def cmd_lines(cmds):
+    """Команды абзацами: <p><code>.cmd</code> - описание</p>"""
+    out = []
+    for c, d in cmds:
+        line = "<code>%s</code>" % esc(c)
+        if d:
+            line += " - " + esc(d)
+        out.append(para(line))
+    return "".join(out)
+
+
+def cmd_table(cmds, header=None):
+    rows = [["<code>%s</code>" % esc(c), esc(d)] for c, d in cmds]
+    return table(rows, header)
+
+
 def fallback_list(title, lines):
-    """Запасной вариант без rich: заголовок и сворачиваемая цитата."""
-    body = "\n".join(lines)
-    return "<b>%s</b>\n<blockquote expandable>%s</blockquote>" % (title, body)
+    """Свёрнутая цитата: заголовок и список строк внутри <blockquote expandable>."""
+    return "<b>%s</b>\n<blockquote expandable>%s</blockquote>" % (title, "\n".join(lines))
 
 
 def fallback_sections(sections):
-    """Несколько блоков: у каждого заголовок и своя сворачиваемая цитата с командами."""
+    """Несколько блоков: у каждого заголовок и своя свёрнутая цитата."""
     out = []
     for title, lines in sections:
-        if lines:
-            out.append(fallback_list(title, lines))
-        else:
-            out.append("<b>%s</b>" % title)
+        out.append(fallback_list(title, lines) if lines else "<b>%s</b>" % title)
     return "\n".join(out)
 
 
@@ -70,23 +90,34 @@ def module_commands(mod, prefix):
     return res
 
 
+def module_name(mod):
+    return getattr(mod, "strings", {}).get("name", mod.__class__.__name__)
+
+
 @loader.tds
 class RichKitMod(loader.Module):
-    """Сворачиваемые списки и таблицы (Rich Messages). Автор: @yfeeeee"""
+    """Сворачиваемые списки (details) для вывода модулей и команд. Автор: @yfeeeee"""
 
     strings = {
         "name": "RichKit",
         "no_mod": "<b>Модуль не найден.</b>",
+        "ask_mod": "<b>Укажи модуль:</b> <code>%srhelp имя</code>",
     }
 
     def __init__(self):
         self.config = loader.ModuleConfig(
             loader.ConfigValue(
-                "use_rich",
+                "mode",
+                "details",
+                "Режим: details, quote или bot",
+                validator=loader.validators.Choice(["details", "quote", "bot"]),
+            ),
+            loader.ConfigValue(
+                "tables",
                 False,
-                "Пробовать отправку через Rich Messages (нужен бот в чате, у автора не сработало)",
+                "Команды таблицей вместо строк (таблицы с аккаунта не проверены)",
                 validator=loader.validators.Boolean(),
-            )
+            ),
         )
 
     async def _send_rich(self, chat_id, html_text):
@@ -109,8 +140,15 @@ class RichKitMod(loader.Module):
             return False
 
     async def _show(self, message, rich_html, fb_html):
-        """Rich если можно, иначе запасной вариант. Команду-сообщение при успехе удаляем."""
-        if self.config["use_rich"]:
+        """Показывает по режиму; при сбое падает на свёрнутую цитату."""
+        mode = self.config["mode"]
+        if mode == "details":
+            try:
+                await utils.answer(message, rich_html)
+                return
+            except Exception as e:
+                logger.warning("details failed: %s", e)
+        elif mode == "bot":
             if await self._send_rich(utils.get_chat_id(message), rich_html):
                 try:
                     await message.delete()
@@ -119,45 +157,46 @@ class RichKitMod(loader.Module):
                 return
         await utils.answer(message, fb_html)
 
+    def _body(self, cmds, header=None):
+        return cmd_table(cmds, header) if self.config["tables"] else cmd_lines(cmds)
+
     async def richcmd(self, message):
-        """Тест: таблица и сворачиваемые списки"""
-        rich = table(
-            [["Имя", "<b>RichKit</b>"], ["Автор", "@yfeeeee"]],
-        ) + details("Закрытый список", "Скрытый текст") + details("Открытый список", "Видно сразу", True)
-        await self._show(
-            message, rich, fallback_list("RichKit", ["Имя: RichKit", "Автор: @yfeeeee", "Свёрнутый список работает"])
+        """Тест: закрытый и открытый свёрнутые списки"""
+        rich = (
+            para("<b>RichKit</b> <code>(by @yfeeeee)</code>")
+            + details("Закрытый список", para("Скрытый текст"))
+            + details("Открытый список", para("Видно сразу"), True)
         )
+        await self._show(message, rich, fallback_list("RichKit", ["Автор: @yfeeeee", "Свёрнутый список работает"]))
 
     async def rmodscmd(self, message):
-        """Список модулей: каждый модуль свёрнут, внутри его команды"""
+        """Список модулей: каждый свёрнут, внутри его команды"""
         prefix = self.get_prefix()
         parts = []
         sections = []
         for mod in self.allmodules.modules:
-            name = esc(getattr(mod, "strings", {}).get("name", mod.__class__.__name__))
+            name = esc(module_name(mod))
             cmds = module_commands(mod, prefix)
             if cmds:
-                rows = [["<code>%s</code>" % esc(c), esc(d)] for c, d in cmds]
-                parts.append(details("📦 " + name, table(rows)))
+                parts.append(details("📦 " + name, self._body(cmds)))
             else:
-                parts.append("<b>📦 %s</b>" % name)
-            sections.append(("📦 " + name, ["%s — %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]))
+                parts.append(para("<b>📦 %s</b>" % name))
+            sections.append(("📦 " + name, ["%s - %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]))
         await self._show(message, "".join(parts), fallback_sections(sections))
 
     async def rhelpcmd(self, message):
-        """<модуль> - команды модуля таблицей в свёрнутом блоке"""
+        """<модуль> - команды модуля в свёрнутом блоке"""
         args = utils.get_args_raw(message).strip().lower()
-        if not args:
-            await utils.answer(message, "<b>Укажи модуль:</b> <code>%srhelp имя</code>" % self.get_prefix())
-            return
         prefix = self.get_prefix()
+        if not args:
+            await utils.answer(message, self.strings["ask_mod"] % prefix)
+            return
         for mod in self.allmodules.modules:
-            name = getattr(mod, "strings", {}).get("name", mod.__class__.__name__)
+            name = module_name(mod)
             if name.lower() == args:
                 cmds = module_commands(mod, prefix)
-                rows = [["<code>%s</code>" % esc(c), esc(d)] for c, d in cmds]
-                rich = details("📦 " + esc(name), table(rows, ["Команда", "Описание"]), True)
-                lines = ["%s — %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]
+                rich = para("<b>%s</b>" % esc(name)) + details("Commands", self._body(cmds, ["Команда", "Описание"]), True)
+                lines = ["%s - %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]
                 await self._show(message, rich, fallback_list("📦 " + esc(name), lines))
                 return
         await utils.answer(message, self.strings["no_mod"])

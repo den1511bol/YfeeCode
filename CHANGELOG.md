@@ -392,3 +392,4 @@
 - v5-N64a (пожелание пользователя): подсказки для Rich-сообщений Telegram (table bordered striped compact, details/summary, tg://user, pre+code language): сниппеты rtable, rdet, rdeto, ruser, pycode, теги после <, шпаргалка.
 - RichKit.py: модуль Hikka со сворачиваемыми списками и таблицами (Rich Messages) для загрузки модуля, списка модулей и справки; запасной вариант blockquote expandable.
 - RichKit: rich по умолчанию выключен (у пользователя не сработал), основной вариант: свёрнутая цитата на каждый модуль/команды построчно.
+- RichKit v3: по реальному образцу Always Online (details+p через utils.answer) режим details по умолчанию, режимы quote/bot, таблицы опционально.
