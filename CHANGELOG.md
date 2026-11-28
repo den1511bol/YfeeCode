@@ -433,3 +433,4 @@
 - v5-N78: практика cpp31 длина строки через size (177 практик). Автор: @yfeeeee.
 - v5-N79: практика cs30 string.Join (178 практик). Автор: @yfeeeee.
 - v5-N80: практика html29 индикатор progress (179 практик; details уже был в html17, html24). Автор: @yfeeeee.
+- v5-N81: практика css29 многоточие text-overflow (180 практик). Автор: @yfeeeee.

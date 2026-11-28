@@ -283,7 +283,9 @@ object Practices {
             Practice("css27", "Отступ gap", "Сделай для .gallery сетку display: grid и задай расстояние между ячейками через gap: 12px.", "", Lang.CSS,
                 listOf(must("""\.gallery""", "Нужен селектор .gallery"), must("""display\s*:\s*grid""", "Включи display: grid"), must("""\bgap\s*:\s*12px""", "Добавь gap: 12px"))),
             Practice("css28", "Тень блока", "Добавь для .box тень через box-shadow со смещением 0 4px, размытием 8px и цветом rgba(0,0,0,0.2).", "", Lang.CSS,
-                listOf(must("""\.box\s*\{""", "Нужен селектор .box"), must("""box-shadow\s*:\s*0\s+4px\s+8px""", "Добавь box-shadow: 0 4px 8px ..."), must("""rgba\s*\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0?\.2\s*\)""", "Цвет тени: rgba(0,0,0,0.2)")))
+                listOf(must("""\.box\s*\{""", "Нужен селектор .box"), must("""box-shadow\s*:\s*0\s+4px\s+8px""", "Добавь box-shadow: 0 4px 8px ..."), must("""rgba\s*\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0?\.2\s*\)""", "Цвет тени: rgba(0,0,0,0.2)"))),
+            Practice("css29", "Многоточие в строке", "Для .title сделай так, чтобы длинный текст обрезался многоточием в одну строку: white-space nowrap, overflow hidden и text-overflow ellipsis.", "", Lang.CSS,
+                listOf(must("""\.title\s*\{""", "Нужен селектор .title"), must("""white-space\s*:\s*nowrap""", "Добавь white-space: nowrap"), must("""overflow\s*:\s*hidden""", "Добавь overflow: hidden"), must("""text-overflow\s*:\s*ellipsis""", "Добавь text-overflow: ellipsis")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
