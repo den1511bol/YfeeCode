@@ -376,3 +376,4 @@
 - v5-N48: практика js28 (class).
 - v5-N49: практика cpp26 (класс с конструктором).
 - v5-N50: практика html24 (details и summary).
+- v5-N51: практика css24 (transition).

@@ -243,7 +243,9 @@ object Practices {
             Practice("css22", "Медиазапрос", "Сделай медиазапрос: на экранах до 600px шириной у .menu должно быть display: none.", "", Lang.CSS,
                 listOf(must("""@media""", "Нужен @media"), must("""max-width\s*:\s*600px""", "Условие: (max-width: 600px)"), must("""\.menu""", "Нужен селектор .menu"), must("""display\s*:\s*none""", "Добавь display: none"))),
             Practice("css23", "CSS-переменные", "Объяви в :root переменную --main со значением цвета и используй её для color у .title через var(--main).", "", Lang.CSS,
-                listOf(must(""":root""", "Нужен селектор :root"), must("""--main\s*:""", "Объяви переменную --main: ..."), must("""var\s*\(\s*--main""", "Используй var(--main)"), must("""\.title""", "Нужен селектор .title")))
+                listOf(must(""":root""", "Нужен селектор :root"), must("""--main\s*:""", "Объяви переменную --main: ..."), must("""var\s*\(\s*--main""", "Используй var(--main)"), must("""\.title""", "Нужен селектор .title"))),
+            Practice("css24", "Плавный переход", "Сделай так, чтобы у .btn фон менялся плавно: добавь transition для background за 0.3s.", "", Lang.CSS,
+                listOf(must("""\.btn""", "Нужен селектор .btn"), must("""transition\s*:""", "Добавь свойство transition"), must("""background""", "Переход для background"), must("""0?\.3s|300ms""", "Время перехода: 0.3s")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
