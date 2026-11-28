@@ -210,7 +210,7 @@ class HelpRichMod(loader.Module):
                     for c, d in cmds
                 )
                 # премиум-эмодзи и в заголовке; если Telegram откажет, _help повторит с обычными
-                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (em, name, len(cmds), body))
+                out.append("<details><summary>%s %s</summary>%s</details>" % (em, name, body))
         return out
 
     def _find_module(self, arg):
@@ -237,7 +237,7 @@ class HelpRichMod(loader.Module):
         if doc:
             rich += "<p>%s</p>" % esc(doc)
         if lines:
-            rich += "<details><summary>Команды (%d)</summary>%s</details>" % (len(cmds), "".join(lines))
+            rich += "<details><summary>Команды</summary>%s</details>" % "".join(lines)
         else:
             rich += "<p>Команд нет</p>"
         fn = getattr(utils, "answer_with_media_fallback", None)
