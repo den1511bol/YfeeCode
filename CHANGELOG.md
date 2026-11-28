@@ -411,3 +411,4 @@
 - v5-N69: практика css27 gap (168 практик). Автор: @yfeeeee.
 - HelpRich v7: по логам RICH_MESSAGE_EMOJI_INVALID: премиум-эмодзи в summary нельзя, в summary обычный символ, премиум в строках команд; повтор без премиум-эмодзи. Автор: @yfeeeee.
 - v5-N70: практика py32 enumerate (169 практик; dict.get уже был в py31). Автор: @yfeeeee.
+- HelpRich v8: в логах v7 оба варианта (премиум и обычные эмодзи) дали RICH_MESSAGE_EMOJI_INVALID; добавлен третий вариант без эмодзи и лог начала текста. Автор: @yfeeeee.

@@ -42,6 +42,14 @@ def plain_emoji(html_text):
     return _TG_RE.sub(lambda m: m.group(1), html_text)
 
 
+_ANY_EMOJI = re.compile("[\U0001F000-\U0001FAFF\u2190-\u21FF\u2300-\u23FF\u2600-\u27BF\u2B00-\u2BFF\uFE0F\u200D]")
+
+
+def no_emoji(html_text):
+    """Совсем без эмодзи: последний запасной вариант rich-сообщения."""
+    return _ANY_EMOJI.sub("", plain_emoji(html_text))
+
+
 def mod_name(mod):
     return getattr(mod, "strings", {}).get("name", mod.__class__.__name__)
 
@@ -213,12 +221,12 @@ class HelpRichMod(loader.Module):
             rich += "<p>Команд нет</p>"
         fn = getattr(utils, "answer_with_media_fallback", None)
         if fn is not None and self.config["mode"] == "details":
-            for variant in (rich, plain_emoji(rich)):
+            for n, variant in enumerate((rich, plain_emoji(rich), no_emoji(rich))):
                 try:
                     await fn(message, rich_message=variant)
                     return
                 except Exception as e:
-                    logger.warning("HelpRich module help failed: %s", e)
+                    logger.warning("HelpRich module help variant %d failed: %s. Начало: %r", n + 1, e, variant[:400])
         q = ["%s <b>%s</b>" % (head_em, name)]
         q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
             "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
@@ -242,12 +250,14 @@ class HelpRichMod(loader.Module):
             rich = getattr(utils, "answer_with_media_fallback", None)
             if rich is not None:
                 text = head + "".join(blocks)
-                for variant in (text, plain_emoji(text)):
+                for n, variant in enumerate((text, plain_emoji(text), no_emoji(text))):
                     try:
                         await rich(message, rich_message=variant)
+                        if n:
+                            logger.warning("HelpRich: rich ушёл только в варианте %d (1 премиум, 2 обычные эмодзи, 3 без эмодзи)", n + 1)
                         return
                     except Exception as e:
-                        logger.warning("HelpRich rich send failed: %s", e)
+                        logger.warning("HelpRich rich variant %d failed: %s. Начало текста: %r", n + 1, e, variant[:400])
         await self._plain(message, self._blocks(True))
 
     async def _plain(self, message, blocks):
