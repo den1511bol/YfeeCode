@@ -41,7 +41,7 @@ class BotService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == ACTION_STOP) {
-            state().edit().putBoolean("running", false).apply()
+            state().edit().putBoolean("running", false).commit()
             stopForeground(STOP_FOREGROUND_REMOVE)
             Process.killProcess(Process.myPid())
             return START_NOT_STICKY
@@ -97,7 +97,7 @@ class BotService : Service() {
                 try { Thread.sleep(wait * 1000L) } catch (_: InterruptedException) { break }
             }
             // script finished by itself
-            state().edit().putBoolean("running", false).apply()
+            state().edit().putBoolean("running", false).commit()
             stopForeground(STOP_FOREGROUND_REMOVE)
             Process.killProcess(Process.myPid())
         }.start()

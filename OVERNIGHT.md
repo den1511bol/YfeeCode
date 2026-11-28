@@ -132,3 +132,7 @@
 - N89 py35 готово
 - N90 cpp33 готово
 - N91 cs32 готово
+- F1 BotService commit() готово
+- F2 терминал: try/catch вокруг файловых команд shell() и автоскролл после 1500 строк (LaunchedEffect по счётчику, а не по lines.size) - ждёт
+- F3 контраст светлой темы терминала, кнопки 48dp, contentDescription для TalkBack (App.kt, LearnUi.kt) - ждёт
+- F4 configChanges в манифесте (uiMode|locale|fontScale|layoutDirection|screenLayout|smallestScreenSize), чтобы терминал не терялся - ждёт
