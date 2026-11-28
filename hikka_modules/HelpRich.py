@@ -188,8 +188,8 @@ class HelpRichMod(loader.Module):
                     "<p>%s<code>%s</code>%s</p>" % ((cem + " ") if cem else "", esc(c), (" - " + esc(d)) if d else "")
                     for c, d in cmds
                 )
-                # RICH_MESSAGE_EMOJI_INVALID: в <summary> премиум-эмодзи нельзя, ставим обычный символ
-                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (plain_emoji(em), name, len(cmds), body))
+                # премиум-эмодзи и в заголовке; если Telegram откажет, _help повторит с обычными
+                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (em, name, len(cmds), body))
         return out
 
     def _find_module(self, arg):
