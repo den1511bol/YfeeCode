@@ -113,7 +113,9 @@ object Practices {
             Practice("py35", "Максимум max", "Найди наибольшее число в списке nums через max и выведи его через print.", "nums = [3, 9, 4]\n", Lang.PYTHON,
                 listOf(must("""max\s*\(""", "Нужен max(nums)"), must("""print\s*\(""", "Выведи результат через print")), "9"),
             Practice("py36", "Модуль числа abs", "Выведи модуль числа x через abs.", "x = -7\n", Lang.PYTHON,
-                listOf(must("""abs\s*\(""", "Нужен abs(x)"), must("""print\s*\(""", "Выведи результат через print")), "7")
+                listOf(must("""abs\s*\(""", "Нужен abs(x)"), must("""print\s*\(""", "Выведи результат через print")), "7"),
+            Practice("py37", "Минимум min", "Выведи наименьшее число из списка nums через min.", "nums = [8, 3, 5]\n", Lang.PYTHON,
+                listOf(must("""min\s*\(""", "Нужен min(nums)"), must("""print\s*\(""", "Выведи результат через print")), "3")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
