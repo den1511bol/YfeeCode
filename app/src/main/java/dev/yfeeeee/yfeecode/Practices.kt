@@ -381,7 +381,9 @@ object Practices {
             Practice("cs26", "Интерфейс", "Объяви интерфейс IGreeter с методом string Greet() и класс Bot, который его реализует.", "", Lang.CSHARP,
                 listOf(must("""interface\s+IGreeter""", "Нужен interface IGreeter"), must("""string\s+Greet\s*\(\s*\)""", "В интерфейсе нужен метод string Greet()"), must("""class\s+Bot\s*:\s*IGreeter""", "Класс должен реализовать интерфейс: class Bot : IGreeter"))),
             Practice("cs27", "List<T>", "Создай List<string> names, добавь в него имя через Add и выведи количество элементов через Count.", "", Lang.CSHARP,
-                listOf(must("""List\s*<\s*string\s*>""", "Нужен List<string>"), must("""\.Add\s*\(""", "Добавь элемент через .Add(...)"), must("""\.Count\b""", "Количество элементов: names.Count")))
+                listOf(must("""List\s*<\s*string\s*>""", "Нужен List<string>"), must("""\.Add\s*\(""", "Добавь элемент через .Add(...)"), must("""\.Count\b""", "Количество элементов: names.Count"))),
+            Practice("cs28", "foreach и интерполяция", "Пройди по массиву int[] nums циклом foreach и выведи каждый элемент через Console.WriteLine и интерполяцию строки со знаком доллара.", "", Lang.CSHARP,
+                listOf(must("""foreach\s*\(""", "Нужен цикл foreach (var x in nums)"), must("""Console\.WriteLine\s*\(""", "Выводи через Console.WriteLine(...)"), must("""\x24\x22""", "Интерполяция: строка начинается с знака доллара и кавычки")))
         )
     )
 }
