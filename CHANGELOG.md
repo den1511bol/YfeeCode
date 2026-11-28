@@ -410,3 +410,4 @@
 - HelpRich v6: премиум-эмодзи из настроек Help (plain_emoji, core_emoji, command_emoji, desc_icon, конвертация emoji document_id в tg-emoji), свои эмодзи в .fcfg HelpRich, .help имя в том же стиле, опция nested (список в списке). Автор: @yfeeeee.
 - v5-N69: практика css27 gap (168 практик). Автор: @yfeeeee.
 - HelpRich v7: по логам RICH_MESSAGE_EMOJI_INVALID: премиум-эмодзи в summary нельзя, в summary обычный символ, премиум в строках команд; повтор без премиум-эмодзи. Автор: @yfeeeee.
+- v5-N70: практика py32 enumerate (169 практик; dict.get уже был в py31). Автор: @yfeeeee.
