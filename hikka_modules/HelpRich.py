@@ -5,6 +5,7 @@
 # HelpRich: подменяет обычную команду .help. Каждый модуль отдельным свёрнутым списком
 # (<details>), внутри его команды с описаниями. Отдельная команда не нужна: пишешь .help
 # как обычно. .help имя показывает команды одного модуля в том же стиле.
+# Баннер: ссылка на картинку/гифку из banner_url (настройки HelpRich или Help), ставится сверху в цитате.
 # Премиум-эмодзи берутся из настроек модуля Help (plain_emoji, core_emoji, command_emoji, desc_icon),
 # либо задай свои в настройках HelpRich (.fcfg HelpRich).
 # Сделано под Heroku (coddrago/Heroku): обёртка над dispatch_candidates.
@@ -13,6 +14,7 @@
 
 import html as _html
 import logging
+import random
 import re
 
 from .. import loader, utils
@@ -103,6 +105,11 @@ class HelpRichMod(loader.Module):
                 "Эмодзи в заголовке. Пусто: берётся из модуля Help",
             ),
             loader.ConfigValue(
+                "banner_url",
+                "",
+                "Ссылка на картинку или гифку сверху в цитате. Пусто: берётся banner_url из модуля Help",
+            ),
+            loader.ConfigValue(
                 "show_empty",
                 False,
                 "Показывать модули без команд",
@@ -165,6 +172,21 @@ class HelpRichMod(loader.Module):
                         val = ""
                     break
         return fix_emoji(val) or fallback
+
+    def _banner(self):
+        """Своя ссылка из настроек HelpRich или banner_url из модуля Help (там может быть список)."""
+        url = self.config["banner_url"]
+        if not url:
+            for m in self.allmodules.modules:
+                if getattr(m, "strings", {}).get("name") == "Help":
+                    try:
+                        url = m.config["banner_url"]
+                    except Exception:
+                        url = ""
+                    break
+        if isinstance(url, (list, tuple)):
+            url = random.choice(list(url)) if url else ""
+        return str(url or "").strip()
 
     def _hidden(self):
         """Список скрытых модулей из базы Help (команда .helphide), имена классов."""
@@ -274,15 +296,22 @@ class HelpRichMod(loader.Module):
                 blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
             rich = getattr(utils, "answer_with_media_fallback", None)
             if rich is not None:
-                text = head + "".join(blocks)
-                for n, variant in enumerate((text, plain_emoji(text), no_emoji(text))):
-                    try:
-                        await rich(message, rich_message=variant)
-                        if n:
-                            logger.warning("HelpRich: rich ушёл только в варианте %d (1 премиум, 2 обычные эмодзи, 3 без эмодзи)", n + 1)
-                        return
-                    except Exception as e:
-                        logger.warning("HelpRich rich variant %d failed: %s. Начало текста: %r", n + 1, e, variant[:400])
+                body = head + "".join(blocks)
+                url = self._banner()
+                tops = [""]
+                if url:
+                    img = '<figure><img src="%s"/></figure>' % esc(url).replace('"', "&quot;")
+                    tops = ["<blockquote>%s</blockquote>" % img, img, ""]
+                for t, top in enumerate(tops):
+                    text = top + body
+                    for n, variant in enumerate((text, plain_emoji(text), no_emoji(text))):
+                        try:
+                            await rich(message, rich_message=variant)
+                            if n or t:
+                                logger.warning("HelpRich: rich ушёл в варианте баннера %d, эмодзи %d", t + 1, n + 1)
+                            return
+                        except Exception as e:
+                            logger.warning("HelpRich rich баннер %d эмодзи %d: %s. Начало: %r", t + 1, n + 1, e, variant[:300])
         await self._plain(message, self._blocks(True, force, only))
 
     async def _plain(self, message, blocks):
