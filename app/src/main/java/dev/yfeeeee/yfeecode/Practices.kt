@@ -105,7 +105,9 @@ object Practices {
             Practice("py31", "dict.get с умолчанием", "В словаре settings язык есть только у пользователя \"1\". Выведи язык пользователя \"2\" через settings.get со значением по умолчанию \"en\".", "settings = {\"1\": \"ru\"}\n", Lang.PYTHON,
                 listOf(must("""\.get\s*\(""", "Нужен settings.get(...)"), must("""["']en["']""", "Значение по умолчанию: \"en\""), must("""print\s*\(""", "Выведи результат через print")), "en"),
             Practice("py32", "enumerate", "Пройди по списку names циклом for с enumerate (счёт с 1) и выведи номер и имя, например: 1 Аня.", "names = [\"Аня\", \"Боря\"]\n", Lang.PYTHON,
-                listOf(must("""enumerate\s*\(""", "Нужен enumerate(names, 1)"), must("""for\s+\w+\s*,\s*\w+\s+in""", "Нужен цикл for i, name in ..."), must("""print\s*\(""", "Выведи через print")), "1 Аня\n2 Боря")
+                listOf(must("""enumerate\s*\(""", "Нужен enumerate(names, 1)"), must("""for\s+\w+\s*,\s*\w+\s+in""", "Нужен цикл for i, name in ..."), must("""print\s*\(""", "Выведи через print")), "1 Аня\n2 Боря"),
+            Practice("py33", "Срез списка", "Выведи элементы списка nums с индекса 1 до 3 (не включая 3) с помощью среза.", "nums = [10, 20, 30, 40]\n", Lang.PYTHON,
+                listOf(must("""nums\s*\[\s*1\s*:\s*3\s*\]""", "Нужен срез nums[1:3]"), must("""print\s*\(""", "Выведи результат через print")), "[20, 30]")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
