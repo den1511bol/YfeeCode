@@ -283,7 +283,9 @@ object Practices {
             Practice("cpp23", "Поиск подстроки", "Найди в строке std::string s подстроку \"bot\" через s.find и выведи позицию через std::cout.", "", Lang.CPP,
                 listOf(must("""\.find\s*\(""", "Нужен s.find(...)"), must("""bot""", "Ищи подстроку bot"), must("""cout""", "Выведи позицию через std::cout"))),
             Practice("cpp24", "range-for с auto", "Обойди std::vector<int> v циклом range-for с auto и выведи каждый элемент через std::cout.", "", Lang.CPP,
-                listOf(must("""for\s*\(\s*(const\s+)?auto\s*&?\s*\w+\s*:\s*v""", "Нужен цикл: for (auto x : v)"), must("""cout""", "Выводи через std::cout")))
+                listOf(must("""for\s*\(\s*(const\s+)?auto\s*&?\s*\w+\s*:\s*v""", "Нужен цикл: for (auto x : v)"), must("""cout""", "Выводи через std::cout"))),
+            Practice("cpp25", "Константная ссылка", "Напиши функцию void show(const std::string& s), которая выводит строку через std::cout, без копирования.", "", Lang.CPP,
+                listOf(must("""const\s+std::string\s*&""", "Параметр: const std::string& s"), must("""void\s+show\s*\(""", "Нужна функция void show(...)"), must("""cout""", "Выводи через std::cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
