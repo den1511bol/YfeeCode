@@ -307,7 +307,9 @@ object Practices {
             Practice("css30", "Пропорции aspect-ratio", "Сделай для .video блок с пропорциями 16 на 9 через aspect-ratio и шириной 100%.", "", Lang.CSS,
                 listOf(must("""\.video\s*\{""", "Нужен селектор .video"), must("""aspect-ratio\s*:\s*16\s*/\s*9""", "Добавь aspect-ratio: 16 / 9"), must("""width\s*:\s*100%""", "Добавь width: 100%"))),
             Practice("css31", "Регистр и разрядка", "Для .label сделай заглавные буквы через text-transform и разрядку букв через letter-spacing в 2px.", "", Lang.CSS,
-                listOf(must("""\.label\s*\{""", "Нужен селектор .label"), must("""text-transform\s*:\s*uppercase""", "Добавь text-transform: uppercase"), must("""letter-spacing\s*:\s*2px""", "Добавь letter-spacing: 2px")))
+                listOf(must("""\.label\s*\{""", "Нужен селектор .label"), must("""text-transform\s*:\s*uppercase""", "Добавь text-transform: uppercase"), must("""letter-spacing\s*:\s*2px""", "Добавь letter-spacing: 2px"))),
+            Practice("css32", "Градиент фона", "Для .hero задай фон линейным градиентом через linear-gradient от красного (#ef4444) к тёмному (#111).", "", Lang.CSS,
+                listOf(must("""\.hero\s*\{""", "Нужен селектор .hero"), must("""linear-gradient\s*\(""", "Нужен linear-gradient(...)"), must("""#ef4444""", "Первый цвет: #ef4444"), must("""#111\b""", "Второй цвет: #111")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,

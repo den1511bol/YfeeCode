@@ -455,3 +455,4 @@
 - v5-N96: практика cpp34 std::swap (195 практик). Автор: @yfeeeee.
 - v5-N97: практика cs33 Queue (196 практик). Автор: @yfeeeee.
 - v5-N98: практика html32 textarea (197 практик). Автор: @yfeeeee.
+- v5-N99: практика css32 linear-gradient (198 практик). Автор: @yfeeeee.
