@@ -197,7 +197,9 @@ object Practices {
             Practice("html22", "Таблица", "Сделай таблицу: table с thead (строка заголовков th) и tbody (строка с ячейками td).", "", Lang.HTML,
                 listOf(must("""<table""", "Нужен тег table"), must("""<thead""", "Нужен thead"), must("""<th""", "Нужны заголовки th"), must("""<tbody""", "Нужен tbody"), must("""<td""", "Нужны ячейки td"))),
             Practice("html23", "Картинка", "Вставь картинку: img с src, описанием alt и шириной width.", "", Lang.HTML,
-                listOf(must("""<img""", "Нужен тег img"), must("""src\s*=""", "Добавь атрибут src"), must("""alt\s*=""", "Добавь описание alt"), must("""width\s*=""", "Добавь ширину width")))
+                listOf(must("""<img""", "Нужен тег img"), must("""src\s*=""", "Добавь атрибут src"), must("""alt\s*=""", "Добавь описание alt"), must("""width\s*=""", "Добавь ширину width"))),
+            Practice("html24", "Раскрывающийся блок", "Сделай раскрывающийся блок: details с заголовком summary и абзацем p внутри.", "", Lang.HTML,
+                listOf(must("""<details""", "Нужен тег details"), must("""<summary""", "Нужен заголовок summary"), must("""<p""", "Добавь абзац p")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,

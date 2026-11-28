@@ -375,3 +375,4 @@
 - v5-N47: практика py28 (try/except ValueError).
 - v5-N48: практика js28 (class).
 - v5-N49: практика cpp26 (класс с конструктором).
+- v5-N50: практика html24 (details и summary).
