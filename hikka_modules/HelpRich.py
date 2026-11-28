@@ -34,6 +34,14 @@ def fix_emoji(val):
     return _EMOJI_RE.sub(lambda m: '<tg-emoji emoji-id="%s">%s</tg-emoji>' % (m.group(1), m.group(2)), str(val or ""))
 
 
+_TG_RE = re.compile(r"<tg-emoji[^>]*>(.*?)</tg-emoji>", re.S)
+
+
+def plain_emoji(html_text):
+    """Убирает премиум-эмодзи, оставляя обычный символ (в summary Telegram их не принимает)."""
+    return _TG_RE.sub(lambda m: m.group(1), html_text)
+
+
 def mod_name(mod):
     return getattr(mod, "strings", {}).get("name", mod.__class__.__name__)
 
@@ -167,10 +175,13 @@ class HelpRichMod(loader.Module):
                 lines = ["<code>%s</code> - %s" % (esc(c), esc(d)) if d else "<code>%s</code>" % esc(c) for c, d in cmds]
                 out.append("<b>%s %s</b>\n<blockquote expandable>%s</blockquote>" % (em, name, "\n".join(lines)))
             else:
+                cem = self._em("command_emoji", "")
                 body = "".join(
-                    "<p><code>%s</code>%s</p>" % (esc(c), (" - " + esc(d)) if d else "") for c, d in cmds
+                    "<p>%s<code>%s</code>%s</p>" % ((cem + " ") if cem else "", esc(c), (" - " + esc(d)) if d else "")
+                    for c, d in cmds
                 )
-                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (em, name, len(cmds), body))
+                # RICH_MESSAGE_EMOJI_INVALID: в <summary> премиум-эмодзи нельзя, ставим обычный символ
+                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (plain_emoji(em), name, len(cmds), body))
         return out
 
     def _find_module(self, arg):
@@ -202,11 +213,12 @@ class HelpRichMod(loader.Module):
             rich += "<p>Команд нет</p>"
         fn = getattr(utils, "answer_with_media_fallback", None)
         if fn is not None and self.config["mode"] == "details":
-            try:
-                await fn(message, rich_message=rich)
-                return
-            except Exception as e:
-                logger.warning("HelpRich module help failed: %s", e)
+            for variant in (rich, plain_emoji(rich)):
+                try:
+                    await fn(message, rich_message=variant)
+                    return
+                except Exception as e:
+                    logger.warning("HelpRich module help failed: %s", e)
         q = ["%s <b>%s</b>" % (head_em, name)]
         q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
             "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
@@ -229,11 +241,13 @@ class HelpRichMod(loader.Module):
                 blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
             rich = getattr(utils, "answer_with_media_fallback", None)
             if rich is not None:
-                try:
-                    await rich(message, rich_message=head + "".join(blocks))
-                    return
-                except Exception as e:
-                    logger.warning("HelpRich rich send failed: %s", e)
+                text = head + "".join(blocks)
+                for variant in (text, plain_emoji(text)):
+                    try:
+                        await rich(message, rich_message=variant)
+                        return
+                    except Exception as e:
+                        logger.warning("HelpRich rich send failed: %s", e)
         await self._plain(message, self._blocks(True))
 
     async def _plain(self, message, blocks):
