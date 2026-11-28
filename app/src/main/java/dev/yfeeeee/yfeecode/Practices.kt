@@ -267,7 +267,9 @@ object Practices {
             Practice("css25", "Сетка grid", "Сделай для .cards сетку: display grid и три равные колонки через grid-template-columns.", "", Lang.CSS,
                 listOf(must("""\.cards""", "Нужен селектор .cards"), must("""display\s*:\s*grid""", "Добавь display: grid"), must("""grid-template-columns\s*:""", "Добавь grid-template-columns"), must("""repeat\s*\(\s*3|1fr\s+1fr\s+1fr""", "Три колонки: repeat(3, 1fr)"))),
             Practice("css26", "Позиционирование", "Сделай .card позиционным родителем (position: relative), а .badge поставь в правый верхний угол через position: absolute, top и right.", "", Lang.CSS,
-                listOf(must("""position\s*:\s*relative""", "У .card нужен position: relative"), must("""position\s*:\s*absolute""", "У .badge нужен position: absolute"), must("""\btop\s*:""", "Добавь top"), must("""\bright\s*:""", "Добавь right")))
+                listOf(must("""position\s*:\s*relative""", "У .card нужен position: relative"), must("""position\s*:\s*absolute""", "У .badge нужен position: absolute"), must("""\btop\s*:""", "Добавь top"), must("""\bright\s*:""", "Добавь right"))),
+            Practice("css27", "Отступ gap", "Сделай для .gallery сетку display: grid и задай расстояние между ячейками через gap: 12px.", "", Lang.CSS,
+                listOf(must("""\.gallery""", "Нужен селектор .gallery"), must("""display\s*:\s*grid""", "Включи display: grid"), must("""\bgap\s*:\s*12px""", "Добавь gap: 12px")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
