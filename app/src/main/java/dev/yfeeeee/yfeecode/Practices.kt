@@ -215,7 +215,9 @@ object Practices {
             Practice("html25", "Обязательное поле", "Сделай поле ввода input с подсказкой placeholder и обязательным атрибутом required.", "", Lang.HTML,
                 listOf(must("""<input""", "Нужен тег input"), must("""placeholder\s*=""", "Добавь placeholder"), must("""\brequired\b""", "Добавь атрибут required"))),
             Practice("html26", "Видео", "Вставь видео: тег video с атрибутом controls и вложенным source с src.", "", Lang.HTML,
-                listOf(must("""<video""", "Нужен тег video"), must("""\bcontrols\b""", "Добавь атрибут controls"), must("""<source[^>]*src\s*=""", "Добавь <source src=...>")))
+                listOf(must("""<video""", "Нужен тег video"), must("""\bcontrols\b""", "Добавь атрибут controls"), must("""<source[^>]*src\s*=""", "Добавь <source src=...>"))),
+            Practice("html27", "Нумерованный список", "Сделай нумерованный список из трёх пунктов: тег ol и три вложенных li.", "", Lang.HTML,
+                listOf(must("""<ol[\s>][\s\S]*</ol>""", "Нужен тег <ol>…</ol>"), must("""(<li[\s>][\s\S]*){3}""", "Нужно три пункта <li>"), must("""</li>""", "Закрывай каждый <li> тегом </li>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
