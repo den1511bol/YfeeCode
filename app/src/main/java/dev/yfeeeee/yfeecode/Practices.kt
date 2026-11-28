@@ -99,7 +99,9 @@ object Practices {
             Practice("py28", "try/except ValueError", "Преврати строку \"abc\" в число через int() внутри try, а в except ValueError выведи слова Не число.", "", Lang.PYTHON,
                 listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови конкретную ошибку: except ValueError:"), must("""int\s*\(""", "Используй int(...)")), "Не число"),
             Practice("py29", "Генератор списка с условием", "Из списка nums возведи в квадрат только чётные числа через генератор списка с if и выведи результат.", "nums = [1, 2, 3, 4, 5, 6]\n", Lang.PYTHON,
-                listOf(must("""\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*\]""", "Нужен генератор списка: [... for n in nums if ...]"), must("""%\s*2""", "Чётность проверяй через % 2"), must("""print\s*\(""", "Выведи результат через print")), "[4, 16, 36]")
+                listOf(must("""\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*\]""", "Нужен генератор списка: [... for n in nums if ...]"), must("""%\s*2""", "Чётность проверяй через % 2"), must("""print\s*\(""", "Выведи результат через print")), "[4, 16, 36]"),
+            Practice("py30", "Класс с __init__", "Напиши класс Dog с __init__(self, name) и методом speak, который возвращает имя и слово гав через пробел. Выведи Dog(\"Рекс\").speak().", "", Lang.PYTHON,
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""def\s+__init__\s*\(\s*self""", "Нужен __init__(self, name)"), must("""def\s+speak\s*\(\s*self""", "Нужен метод speak(self)"), must("""print\s*\(""", "Выведи результат через print")), "Рекс гав")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
