@@ -99,9 +99,8 @@ class HelpRichMod(loader.Module):
     async def on_unload(self):
         self._uninstall()
 
-    def _blocks(self):
+    def _blocks(self, quote):
         prefix = self.get_prefix()
-        quote = self.config["mode"] == "quote"
         out = []
         for mod in self.allmodules.modules:
             if mod is self:
@@ -127,20 +126,32 @@ class HelpRichMod(loader.Module):
         args = utils.get_args_raw(message)
         if args and self._orig is not None:
             return await self._orig(message)
-        blocks = self._blocks()
-        sep = "\n" if self.config["mode"] == "quote" else ""
+        # Так отправляет сам Help при rich_mode: одним rich-сообщением
+        if self.config["mode"] == "details":
+            blocks = self._blocks(False)
+            head = "<p><b>📚 Модулей: %d</b></p>" % len(blocks)
+            rich = getattr(utils, "answer_with_media_fallback", None)
+            if rich is not None:
+                try:
+                    await rich(message, rich_message=head + "".join(blocks))
+                    return
+                except Exception as e:
+                    logger.warning("HelpRich rich send failed: %s", e)
+        await self._plain(message, self._blocks(True))
+
+    async def _plain(self, message, blocks):
+        """Запасной путь: свёрнутые цитаты обычными сообщениями до LIMIT знаков."""
         chunks, cur = [], ""
         for b in blocks:
             if cur and len(cur) + len(b) > LIMIT:
                 chunks.append(cur)
                 cur = ""
-            cur += b + sep
+            cur += b + "\n"
         if cur:
             chunks.append(cur)
         if not chunks:
             chunks = ["<b>Модулей нет</b>"]
-        head = "<b>📚 Модулей: %d</b>\n" % len(blocks)
-        await utils.answer(message, head + chunks[0])
+        await utils.answer(message, "<b>📚 Модулей: %d</b>\n" % len(blocks) + chunks[0])
         for ch in chunks[1:]:
             await self._client.send_message(utils.get_chat_id(message), ch, parse_mode="html")
 

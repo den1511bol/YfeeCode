@@ -151,7 +151,12 @@ class RichKitMod(loader.Module):
         mode = self.config["mode"]
         if mode == "details":
             try:
-                await utils.answer(message, rich_html)
+                # как отправляет сам Help при rich_mode (Heroku)
+                rich = getattr(utils, "answer_with_media_fallback", None)
+                if rich is not None:
+                    await rich(message, rich_message=rich_html)
+                else:
+                    await utils.answer(message, rich_html)
                 return
             except Exception as e:
                 logger.warning("details failed: %s", e)
@@ -168,6 +173,9 @@ class RichKitMod(loader.Module):
         """items это список (rich_html, fb_html). Режет на сообщения до LIMIT знаков.
         Длинный ответ Hikka превращает в инлайн-форму через бота и теряет теги,
         поэтому каждое сообщение держим короче."""
+        if self.config["mode"] == "details" and getattr(utils, "answer_with_media_fallback", None):
+            await self._show(message, "".join(x[0] for x in items), "\n".join(x[1] for x in items))
+            return
         groups, cur = [], []
         size = 0
         for it in items:
