@@ -140,3 +140,4 @@
 - F3 готово (контраст, 48dp, TalkBack у акцентов; остальное из LearnUi/LinuxScreen/HelpScreen позже)
 - F4 готово (configChanges)
 - N92 html31 готово
+- N93 css31 готово

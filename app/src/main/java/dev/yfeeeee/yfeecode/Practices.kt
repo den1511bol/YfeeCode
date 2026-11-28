@@ -299,7 +299,9 @@ object Practices {
             Practice("css29", "Многоточие в строке", "Для .title сделай так, чтобы длинный текст обрезался многоточием в одну строку: white-space nowrap, overflow hidden и text-overflow ellipsis.", "", Lang.CSS,
                 listOf(must("""\.title\s*\{""", "Нужен селектор .title"), must("""white-space\s*:\s*nowrap""", "Добавь white-space: nowrap"), must("""overflow\s*:\s*hidden""", "Добавь overflow: hidden"), must("""text-overflow\s*:\s*ellipsis""", "Добавь text-overflow: ellipsis"))),
             Practice("css30", "Пропорции aspect-ratio", "Сделай для .video блок с пропорциями 16 на 9 через aspect-ratio и шириной 100%.", "", Lang.CSS,
-                listOf(must("""\.video\s*\{""", "Нужен селектор .video"), must("""aspect-ratio\s*:\s*16\s*/\s*9""", "Добавь aspect-ratio: 16 / 9"), must("""width\s*:\s*100%""", "Добавь width: 100%")))
+                listOf(must("""\.video\s*\{""", "Нужен селектор .video"), must("""aspect-ratio\s*:\s*16\s*/\s*9""", "Добавь aspect-ratio: 16 / 9"), must("""width\s*:\s*100%""", "Добавь width: 100%"))),
+            Practice("css31", "Регистр и разрядка", "Для .label сделай заглавные буквы через text-transform и разрядку букв через letter-spacing в 2px.", "", Lang.CSS,
+                listOf(must("""\.label\s*\{""", "Нужен селектор .label"), must("""text-transform\s*:\s*uppercase""", "Добавь text-transform: uppercase"), must("""letter-spacing\s*:\s*2px""", "Добавь letter-spacing: 2px")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
