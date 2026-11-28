@@ -165,7 +165,9 @@ object Practices {
             Practice("js29", "Promise.all", "Напиши async-функцию, которая ждёт два промиса a и b одновременно через await Promise.all([...]).", "", Lang.JS,
                 listOf(must("""\basync\b""", "Нужна async-функция"), must("""await\s+Promise\.all\s*\(""", "Используй await Promise.all(...)"), must("""\[[^\]]*,[^\]]*\]""", "Передай массив из двух промисов"))),
             Practice("js30", "Map", "Создай new Map(), положи в него пару через set (ключ \"a\", значение 1) и получи значение через get.", "", Lang.JS,
-                listOf(must("""new\s+Map\s*\(""", "Нужен new Map()"), must("""\.set\s*\(""", "Добавь пару через .set(...)"), must("""\.get\s*\(""", "Получи значение через .get(...)")))
+                listOf(must("""new\s+Map\s*\(""", "Нужен new Map()"), must("""\.set\s*\(""", "Добавь пару через .set(...)"), must("""\.get\s*\(""", "Получи значение через .get(...)"))),
+            Practice("js31", "Array.reduce", "Посчитай сумму массива [1, 2, 3] через reduce и выведи её через console.log.", "", Lang.JS,
+                listOf(must("""\.reduce\s*\(""", "Используй метод .reduce(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"), must("""\+""", "Сложи элементы через +")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,

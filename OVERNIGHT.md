@@ -105,3 +105,4 @@
 - [x] Rich-теги Telegram в подсказках (по коду от пользователя). Цикл: дальше N64 (практика py31).
 - [x] rich-хелпер готов: hikka_modules/RichKit.py (команды .rich, .rmods, .rhelp, details/table через sendRichMessage ассистент-бота, запасной вариант blockquote expandable). Не проверено на живом Hikka.
 - [x] N64 практика py31.
+- N65 js31 готово
