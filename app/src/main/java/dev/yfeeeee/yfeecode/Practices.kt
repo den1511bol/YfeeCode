@@ -227,7 +227,9 @@ object Practices {
             Practice("html27", "Нумерованный список", "Сделай нумерованный список из трёх пунктов: тег ol и три вложенных li.", "", Lang.HTML,
                 listOf(must("""<ol[\s>][\s\S]*</ol>""", "Нужен тег <ol>…</ol>"), must("""(<li[\s>][\s\S]*){3}""", "Нужно три пункта <li>"), must("""</li>""", "Закрывай каждый <li> тегом </li>"))),
             Practice("html28", "Ссылка в новой вкладке", "Сделай ссылку на https://example.com с текстом Сайт, которая открывается в новой вкладке (атрибут target).", "", Lang.HTML,
-                listOf(must("""<a\s[^>]*href\s*=\s*["']https://example\.com""", "Нужна ссылка <a href=\"https://example.com\">"), must("""target\s*=\s*["']_blank["']""", "Добавь target=\"_blank\""), must("""</a>""", "Закрой ссылку тегом </a>")))
+                listOf(must("""<a\s[^>]*href\s*=\s*["']https://example\.com""", "Нужна ссылка <a href=\"https://example.com\">"), must("""target\s*=\s*["']_blank["']""", "Добавь target=\"_blank\""), must("""</a>""", "Закрой ссылку тегом </a>"))),
+            Practice("html29", "Индикатор progress", "Добавь индикатор выполнения: тег progress с атрибутами value=\"70\" и max=\"100\".", "", Lang.HTML,
+                listOf(must("""<progress[\s>]""", "Нужен тег <progress>"), must("""value\s*=\s*["']70["']""", "Добавь value=\"70\""), must("""max\s*=\s*["']100["']""", "Добавь max=\"100\""), must("""</progress>""", "Закрой тег </progress>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
