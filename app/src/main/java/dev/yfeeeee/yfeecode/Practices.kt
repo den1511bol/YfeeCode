@@ -405,7 +405,9 @@ object Practices {
             Practice("cs28", "foreach и интерполяция", "Пройди по массиву int[] nums циклом foreach и выведи каждый элемент через Console.WriteLine и интерполяцию строки со знаком доллара.", "", Lang.CSHARP,
                 listOf(must("""foreach\s*\(""", "Нужен цикл foreach (var x in nums)"), must("""Console\.WriteLine\s*\(""", "Выводи через Console.WriteLine(...)"), must("""\x24\x22""", "Интерполяция: строка начинается с знака доллара и кавычки"))),
             Practice("cs29", "Тернарный оператор", "Объяви int age = 20 и выведи через Console.WriteLine слово \"взрослый\" или \"ребёнок\" с помощью тернарного оператора ?: (граница 18).", "", Lang.CSHARP,
-                listOf(must("""\?[^?:\n]+:""", "Нужен тернарный оператор: условие ? значение1 : значение2"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"), must("""age\s*(>=|>|<|<=)\s*18""", "Сравни возраст с 18")))
+                listOf(must("""\?[^?:\n]+:""", "Нужен тернарный оператор: условие ? значение1 : значение2"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"), must("""age\s*(>=|>|<|<=)\s*18""", "Сравни возраст с 18"))),
+            Practice("cs30", "string.Join", "Объедини элементы массива string[] words = {\"a\", \"b\", \"c\"} в одну строку через запятую с помощью string.Join и выведи через Console.WriteLine.", "", Lang.CSHARP,
+                listOf(must("""[sS]tring\.Join\s*\(""", "Нужен string.Join(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
         )
     )
 }
