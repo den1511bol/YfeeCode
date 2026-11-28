@@ -245,7 +245,9 @@ object Practices {
             Practice("html30", "Выпадающий список", "Сделай выпадающий список: тег select и три вложенных option.", "", Lang.HTML,
                 listOf(must("""<select[\s>][\s\S]*</select>""", "Нужен тег <select>…</select>"), must("""(<option[\s>][\s\S]*){3}""", "Нужно три пункта <option>"), must("""</option>""", "Закрывай каждый <option> тегом </option>"))),
             Practice("html31", "Цитата", "Оформи цитату: тег blockquote с текстом внутри и подписью в теге cite.", "", Lang.HTML,
-                listOf(must("""<blockquote[\s>][\s\S]*</blockquote>""", "Нужен тег <blockquote>…</blockquote>"), must("""<cite[\s>][\s\S]*</cite>""", "Добавь подпись в <cite>…</cite>")))
+                listOf(must("""<blockquote[\s>][\s\S]*</blockquote>""", "Нужен тег <blockquote>…</blockquote>"), must("""<cite[\s>][\s\S]*</cite>""", "Добавь подпись в <cite>…</cite>"))),
+            Practice("html32", "Многострочное поле", "Добавь многострочное поле ввода: тег textarea с атрибутами rows=\"4\" и name=\"msg\".", "", Lang.HTML,
+                listOf(must("""<textarea[\s>][\s\S]*</textarea>""", "Нужен тег <textarea>…</textarea>"), must("""rows\s*=\s*["']4["']""", "Добавь rows=\"4\""), must("""name\s*=\s*["']msg["']""", "Добавь name=\"msg\"")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
