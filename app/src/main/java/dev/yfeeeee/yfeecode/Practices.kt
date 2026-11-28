@@ -429,7 +429,9 @@ object Practices {
             Practice("cs30", "string.Join", "Объедини элементы массива string[] words = {\"a\", \"b\", \"c\"} в одну строку через запятую с помощью string.Join и выведи через Console.WriteLine.", "", Lang.CSHARP,
                 listOf(must("""[sS]tring\.Join\s*\(""", "Нужен string.Join(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"))),
             Practice("cs31", "StringBuilder", "Создай StringBuilder sb, добавь в него слова \"Hello\" и \"World\" через Append и выведи результат через Console.WriteLine(sb.ToString()).", "", Lang.CSHARP,
-                listOf(must("""new\s+StringBuilder\s*\(""", "Нужен new StringBuilder()"), must("""\.Append\s*\(""", "Добавь текст через .Append(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
+                listOf(must("""new\s+StringBuilder\s*\(""", "Нужен new StringBuilder()"), must("""\.Append\s*\(""", "Добавь текст через .Append(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"))),
+            Practice("cs32", "ToUpper", "Преврати строку string s = \"hello\" в верхний регистр через ToUpper и выведи через Console.WriteLine.", "", Lang.CSHARP,
+                listOf(must("""\.ToUpper\s*\(""", "Нужен метод .ToUpper()"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
         )
     )
 }
