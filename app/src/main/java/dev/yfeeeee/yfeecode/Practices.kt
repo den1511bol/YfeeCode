@@ -363,7 +363,9 @@ object Practices {
             Practice("cpp31", "Длина строки", "Выведи длину строки std::string s = \"hello\" через s.size() и cout.", "", Lang.CPP,
                 listOf(must("""\.size\s*\(\s*\)""", "Узнай длину через s.size()"), must("""cout\s*<<""", "Выведи результат через cout"))),
             Practice("cpp32", "Приведение static_cast", "Объяви int a = 7 и выведи a, делённое на 2 как число с дробной частью, через static_cast<double>(a) / 2 и cout.", "", Lang.CPP,
-                listOf(must("""static_cast\s*<\s*double\s*>\s*\(""", "Нужен static_cast<double>(a)"), must("""/\s*2""", "Раздели на 2"), must("""cout\s*<<""", "Выведи результат через cout")))
+                listOf(must("""static_cast\s*<\s*double\s*>\s*\(""", "Нужен static_cast<double>(a)"), must("""/\s*2""", "Раздели на 2"), must("""cout\s*<<""", "Выведи результат через cout"))),
+            Practice("cpp33", "Разворот reverse", "Разверни вектор std::vector<int> v = {1, 2, 3} через std::reverse(v.begin(), v.end()).", "", Lang.CPP,
+                listOf(must("""std::reverse\s*\(""", "Нужен std::reverse(...)"), must("""v\.begin\s*\(\s*\)""", "Первый аргумент: v.begin()"), must("""v\.end\s*\(\s*\)""", "Второй аргумент: v.end()")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,

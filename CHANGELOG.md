@@ -442,3 +442,4 @@
 - v5-N87: практика css30 aspect-ratio (186 практик). Автор: @yfeeeee.
 - v5-N88: практика js35 includes (187 практик). Автор: @yfeeeee.
 - v5-N89: практика py35 max списка (188 практик). Автор: @yfeeeee.
+- v5-N90: практика cpp33 std::reverse (189 практик). Автор: @yfeeeee.
