@@ -61,7 +61,7 @@ class HelpRichMod(loader.Module):
 
     def _install(self):
         """Heroku берёт обработчик из dispatch_candidates (последний в списке).
-        Оборачиваем его: для команды help добавляем в конец свой обработчик.
+        Оборачиваем его: для команды help подставляем только свой обработчик (иначе Heroku спросит, какой модуль выбрать).
         Словарь commands не трогаем, его раз в 30 секунд пересобирает сам юзербот."""
         am = self.allmodules
         cur = getattr(am, "dispatch_candidates", None)
@@ -77,7 +77,8 @@ class HelpRichMod(loader.Module):
                     last = hs[-1]
                     if getattr(last, "__self__", None) is not outer:
                         outer._orig = last
-                    return txt, [h for h in hs if getattr(h, "__self__", None) is not outer] + [outer._help]
+                    # один обработчик: если их несколько, Heroku показывает меню выбора модуля
+                    return txt, [outer._help]
             except Exception as e:
                 logger.warning("HelpRich dispatch: %s", e)
             return res
