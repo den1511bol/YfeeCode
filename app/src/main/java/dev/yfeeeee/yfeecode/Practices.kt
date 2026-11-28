@@ -313,7 +313,9 @@ object Practices {
             Practice("cpp26", "Класс с конструктором", "Напиши класс Dog с публичным конструктором Dog(std::string n), который сохраняет имя, и методом speak(), выводящим имя через std::cout.", "", Lang.CPP,
                 listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""Dog\s*\(\s*std::string\s+\w+\s*\)""", "Нужен конструктор Dog(std::string n)"), must("""speak\s*\(\s*\)""", "Нужен метод speak()"), must("""cout""", "Выводи через std::cout"))),
             Practice("cpp27", "std::map", "Создай std::map<std::string, int> ages, добавь пару Аня и 25 (ключ \"Anna\") и выведи значение по ключу через std::cout.", "", Lang.CPP,
-                listOf(must("""map\s*<\s*std::string\s*,\s*int\s*>""", "Нужен std::map<std::string, int>"), must("""ages\s*\[""", "Обращайся по ключу: ages[\"Anna\"]"), must("""cout""", "Выводи через std::cout")))
+                listOf(must("""map\s*<\s*std::string\s*,\s*int\s*>""", "Нужен std::map<std::string, int>"), must("""ages\s*\[""", "Обращайся по ключу: ages[\"Anna\"]"), must("""cout""", "Выводи через std::cout"))),
+            Practice("cpp28", "sort с лямбдой", "Отсортируй std::vector<int> v по убыванию через std::sort и лямбду-компаратор.", "", Lang.CPP,
+                listOf(must("""std::sort\s*\(""", "Нужен std::sort(...)"), must("""\[\s*\]\s*\(""", "Нужна лямбда: [](int a, int b) { ... }"), must("""a\s*>\s*b""", "Для убывания сравнивай a > b")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
