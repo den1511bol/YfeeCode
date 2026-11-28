@@ -259,7 +259,9 @@ object Practices {
             Practice("css24", "Плавный переход", "Сделай так, чтобы у .btn фон менялся плавно: добавь transition для background за 0.3s.", "", Lang.CSS,
                 listOf(must("""\.btn""", "Нужен селектор .btn"), must("""transition\s*:""", "Добавь свойство transition"), must("""background""", "Переход для background"), must("""0?\.3s|300ms""", "Время перехода: 0.3s"))),
             Practice("css25", "Сетка grid", "Сделай для .cards сетку: display grid и три равные колонки через grid-template-columns.", "", Lang.CSS,
-                listOf(must("""\.cards""", "Нужен селектор .cards"), must("""display\s*:\s*grid""", "Добавь display: grid"), must("""grid-template-columns\s*:""", "Добавь grid-template-columns"), must("""repeat\s*\(\s*3|1fr\s+1fr\s+1fr""", "Три колонки: repeat(3, 1fr)")))
+                listOf(must("""\.cards""", "Нужен селектор .cards"), must("""display\s*:\s*grid""", "Добавь display: grid"), must("""grid-template-columns\s*:""", "Добавь grid-template-columns"), must("""repeat\s*\(\s*3|1fr\s+1fr\s+1fr""", "Три колонки: repeat(3, 1fr)"))),
+            Practice("css26", "Позиционирование", "Сделай .card позиционным родителем (position: relative), а .badge поставь в правый верхний угол через position: absolute, top и right.", "", Lang.CSS,
+                listOf(must("""position\s*:\s*relative""", "У .card нужен position: relative"), must("""position\s*:\s*absolute""", "У .badge нужен position: absolute"), must("""\btop\s*:""", "Добавь top"), must("""\bright\s*:""", "Добавь right")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
