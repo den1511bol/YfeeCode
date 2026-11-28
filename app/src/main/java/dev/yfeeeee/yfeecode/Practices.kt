@@ -343,7 +343,9 @@ object Practices {
             Practice("cpp29", "vector push_back и size", "Создай std::vector<int> v, добавь в него число 5 через push_back и выведи размер через v.size().", "", Lang.CPP,
                 listOf(must("""std::vector\s*<\s*int\s*>""", "Нужен std::vector<int>"), must("""\.push_back\s*\(""", "Добавь элемент через .push_back(...)"), must("""\.size\s*\(\s*\)""", "Узнай размер через .size()"))),
             Practice("cpp30", "Подстрока substr", "Возьми из строки std::string s = \"hello\" первые три символа через substr и выведи их через cout.", "", Lang.CPP,
-                listOf(must("""\.substr\s*\(""", "Нужен метод .substr(...)"), must("""\.substr\s*\(\s*0\s*,\s*3\s*\)""", "Первые три символа: s.substr(0, 3)"), must("""cout\s*<<""", "Выведи результат через cout")))
+                listOf(must("""\.substr\s*\(""", "Нужен метод .substr(...)"), must("""\.substr\s*\(\s*0\s*,\s*3\s*\)""", "Первые три символа: s.substr(0, 3)"), must("""cout\s*<<""", "Выведи результат через cout"))),
+            Practice("cpp31", "Длина строки", "Выведи длину строки std::string s = \"hello\" через s.size() и cout.", "", Lang.CPP,
+                listOf(must("""\.size\s*\(\s*\)""", "Узнай длину через s.size()"), must("""cout\s*<<""", "Выведи результат через cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
