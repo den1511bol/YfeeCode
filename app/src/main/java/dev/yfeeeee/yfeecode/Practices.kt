@@ -383,7 +383,9 @@ object Practices {
             Practice("cpp33", "Разворот reverse", "Разверни вектор std::vector<int> v = {1, 2, 3} через std::reverse(v.begin(), v.end()).", "", Lang.CPP,
                 listOf(must("""std::reverse\s*\(""", "Нужен std::reverse(...)"), must("""v\.begin\s*\(\s*\)""", "Первый аргумент: v.begin()"), must("""v\.end\s*\(\s*\)""", "Второй аргумент: v.end()"))),
             Practice("cpp34", "Обмен swap", "Поменяй местами значения int a = 1 и int b = 2 через std::swap и выведи a через cout.", "", Lang.CPP,
-                listOf(must("""std::swap\s*\(\s*a\s*,\s*b\s*\)""", "Нужен std::swap(a, b)"), must("""cout\s*<<""", "Выведи результат через cout")))
+                listOf(must("""std::swap\s*\(\s*a\s*,\s*b\s*\)""", "Нужен std::swap(a, b)"), must("""cout\s*<<""", "Выведи результат через cout"))),
+            Practice("cpp35", "Максимум max", "Выведи большее из чисел 4 и 9 через std::max и cout.", "", Lang.CPP,
+                listOf(must("""std::max\s*\(""", "Нужен std::max(a, b)"), must("""cout\s*<<""", "Выведи результат через cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
