@@ -353,7 +353,9 @@ object Practices {
             Practice("cpp30", "Подстрока substr", "Возьми из строки std::string s = \"hello\" первые три символа через substr и выведи их через cout.", "", Lang.CPP,
                 listOf(must("""\.substr\s*\(""", "Нужен метод .substr(...)"), must("""\.substr\s*\(\s*0\s*,\s*3\s*\)""", "Первые три символа: s.substr(0, 3)"), must("""cout\s*<<""", "Выведи результат через cout"))),
             Practice("cpp31", "Длина строки", "Выведи длину строки std::string s = \"hello\" через s.size() и cout.", "", Lang.CPP,
-                listOf(must("""\.size\s*\(\s*\)""", "Узнай длину через s.size()"), must("""cout\s*<<""", "Выведи результат через cout")))
+                listOf(must("""\.size\s*\(\s*\)""", "Узнай длину через s.size()"), must("""cout\s*<<""", "Выведи результат через cout"))),
+            Practice("cpp32", "Приведение static_cast", "Объяви int a = 7 и выведи a, делённое на 2 как число с дробной частью, через static_cast<double>(a) / 2 и cout.", "", Lang.CPP,
+                listOf(must("""static_cast\s*<\s*double\s*>\s*\(""", "Нужен static_cast<double>(a)"), must("""/\s*2""", "Раздели на 2"), must("""cout\s*<<""", "Выведи результат через cout")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
