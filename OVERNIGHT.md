@@ -136,3 +136,4 @@
 - F2 терминал: try/catch вокруг файловых команд shell() и автоскролл после 1500 строк (LaunchedEffect по счётчику, а не по lines.size) - ждёт
 - F3 контраст светлой темы терминала, кнопки 48dp, contentDescription для TalkBack (App.kt, LearnUi.kt) - ждёт
 - F4 configChanges в манифесте (uiMode|locale|fontScale|layoutDirection|screenLayout|smallestScreenSize), чтобы терминал не терялся - ждёт
+- F2 готово (try/catch в submit, scrollTick)

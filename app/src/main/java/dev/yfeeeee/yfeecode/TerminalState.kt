@@ -25,7 +25,9 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     init { CloudRunner.prefetch(); Completer.loadUser(ctx) }
 
     fun print(s: String) { ui.post { s.split("\n").forEach { lines.add(it) }; trim() } }
-    private fun trim() { while (lines.size > 1500) lines.removeAt(0) }
+    /** Grows on every print: the screen scrolls on it, because after 1500 lines the list size stops changing. */
+    var scrollTick by mutableStateOf(0)
+    private fun trim() { while (lines.size > 1500) lines.removeAt(0); scrollTick++ }
 
     val prompt: String
         get() = if (mode == TermMode.PY) (if (pyMore) "... " else ">>> ")
@@ -47,7 +49,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
         val cmd = AutoFix.command(raw)
         if (cmd != raw.trim()) print("(исправлено: $cmd)")
         lines.add(prompt + if (cmd.startsWith("token ")) "token ***" else cmd)
-        if (mode == TermMode.PY) pySubmit(raw.trimEnd()) else shell(cmd)
+        if (mode == TermMode.PY) pySubmit(raw.trimEnd()) else try { shell(cmd) } catch (e: Throwable) { print("[error] " + e.message) }
     }
 
     private fun pySubmit(line: String) {

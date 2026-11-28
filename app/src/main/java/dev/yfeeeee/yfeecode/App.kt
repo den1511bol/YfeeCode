@@ -638,7 +638,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
         }
     )
 
-    LaunchedEffect(term.lines.size) {
+    LaunchedEffect(term.lines.size, term.scrollTick) {
         if (term.lines.isNotEmpty()) listState.scrollToItem(term.lines.size - 1)
     }
 
