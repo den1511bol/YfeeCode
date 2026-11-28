@@ -437,3 +437,4 @@
 - v5-N82: практика js34 Object.keys (181 практика). Автор: @yfeeeee.
 - v5-N83: практика py34 split строки (182 практики). Автор: @yfeeeee.
 - v5-N84: практика cpp32 static_cast (183 практики). Автор: @yfeeeee.
+- v5-N85: практика cs31 StringBuilder (184 практики). Автор: @yfeeeee.

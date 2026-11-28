@@ -417,7 +417,9 @@ object Practices {
             Practice("cs29", "Тернарный оператор", "Объяви int age = 20 и выведи через Console.WriteLine слово \"взрослый\" или \"ребёнок\" с помощью тернарного оператора ?: (граница 18).", "", Lang.CSHARP,
                 listOf(must("""\?[^?:\n]+:""", "Нужен тернарный оператор: условие ? значение1 : значение2"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"), must("""age\s*(>=|>|<|<=)\s*18""", "Сравни возраст с 18"))),
             Practice("cs30", "string.Join", "Объедини элементы массива string[] words = {\"a\", \"b\", \"c\"} в одну строку через запятую с помощью string.Join и выведи через Console.WriteLine.", "", Lang.CSHARP,
-                listOf(must("""[sS]tring\.Join\s*\(""", "Нужен string.Join(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
+                listOf(must("""[sS]tring\.Join\s*\(""", "Нужен string.Join(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine"))),
+            Practice("cs31", "StringBuilder", "Создай StringBuilder sb, добавь в него слова \"Hello\" и \"World\" через Append и выведи результат через Console.WriteLine(sb.ToString()).", "", Lang.CSHARP,
+                listOf(must("""new\s+StringBuilder\s*\(""", "Нужен new StringBuilder()"), must("""\.Append\s*\(""", "Добавь текст через .Append(...)"), must("""Console\.WriteLine\s*\(""", "Выведи результат через Console.WriteLine")))
         )
     )
 }
