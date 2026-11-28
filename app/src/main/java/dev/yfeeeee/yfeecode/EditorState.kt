@@ -38,15 +38,15 @@ class EditorState(val file: File, initial: String) {
         snapshot()
         val a = selStart
         set(text.removeRange(a, selEnd), a)
-        anchor = null; selectMode = false
+        clearSel()
     }
 
     fun selectWordAt(off: Int) {
         val o = off.coerceIn(0, text.length)
         var a = o
         var b = o
-        while (a > 0 && (text[a - 1].isLetterOrDigit() || text[a - 1] == '_')) a--
-        while (b < text.length && (text[b].isLetterOrDigit() || text[b] == '_')) b++
+        while (a > 0 && isWordCh(text[a - 1])) a--
+        while (b < text.length && isWordCh(text[b])) b++
         if (a == b) return
         selectMode = false
         anchor = a
@@ -58,10 +58,7 @@ class EditorState(val file: File, initial: String) {
     // line helpers
     fun toggleComment() {
         val prefix = when (lang) { Lang.PYTHON -> "# "; Lang.CSS -> return; Lang.HTML -> return; else -> "// " }
-        val a = if (hasSel) selStart else cursor
-        val b = if (hasSel) selEnd else cursor
-        val ls = text.lastIndexOf('\n', a - 1) + 1
-        val le = text.indexOf('\n', b).let { if (it < 0) text.length else it }
+        val (ls, le) = blockRange()
         val lines = text.substring(ls, le).split("\n")
         val all = lines.all { it.isBlank() || it.trimStart().startsWith(prefix.trim()) }
         val out = lines.joinToString("\n") { l ->
@@ -73,16 +70,16 @@ class EditorState(val file: File, initial: String) {
     }
 
     fun duplicateLine() {
-        val ls = text.lastIndexOf('\n', cursor - 1) + 1
-        val le = text.indexOf('\n', cursor).let { if (it < 0) text.length else it }
+        val ls = lineStartOf(cursor)
+        val le = lineEndOf(cursor)
         val line = text.substring(ls, le)
         snapshot(); set(text.substring(0, le) + "\n" + line + text.substring(le), cursor + line.length + 1)
     }
 
     /** Moves the current line up (dir=-1) or down (dir=1). Developer: @yfeeeee */
     fun moveLine(dir: Int) {
-        val ls = text.lastIndexOf('\n', cursor - 1) + 1
-        val le = text.indexOf('\n', cursor).let { if (it < 0) text.length else it }
+        val ls = lineStartOf(cursor)
+        val le = lineEndOf(cursor)
         val col = cursor - ls
         if (dir < 0) {
             if (ls == 0) return
@@ -112,7 +109,7 @@ class EditorState(val file: File, initial: String) {
         var i = text.indexOf(q, from, ignoreCase)
         if (i < 0) i = text.indexOf(q, 0, ignoreCase)
         if (i < 0) return false
-        anchor = i; cursor = i + q.length; selectMode = false
+        selectMatch(i, q.length)
         return true
     }
     fun findPrev(q: String, ignoreCase: Boolean = true): Boolean {
@@ -121,9 +118,10 @@ class EditorState(val file: File, initial: String) {
         var i = if (from >= 0) text.lastIndexOf(q, from, ignoreCase) else -1
         if (i < 0) i = text.lastIndexOf(q, text.length, ignoreCase)
         if (i < 0) return false
-        anchor = i; cursor = i + q.length; selectMode = false
+        selectMatch(i, q.length)
         return true
     }
+    private fun selectMatch(start: Int, length: Int) { anchor = start; cursor = start + length; selectMode = false }
     fun countMatches(q: String, ignoreCase: Boolean = true): Int {
         if (q.isEmpty()) return 0
         var n = 0; var i = text.indexOf(q, 0, ignoreCase)
@@ -140,6 +138,11 @@ class EditorState(val file: File, initial: String) {
     fun replaceAllText(q: String, r: String, ignoreCase: Boolean = true): Int {
         if (q.isEmpty()) return 0
         val rx = if (ignoreCase) Regex(Regex.escape(q), RegexOption.IGNORE_CASE) else Regex(Regex.escape(q))
+        return replaceMatches(rx, r)
+    }
+
+    /** Replaces every match of [rx] with [r] as one undo step; returns the number of matches. */
+    private fun replaceMatches(rx: Regex, r: String): Int {
         val n = rx.findAll(text).count()
         if (n > 0) { snapshot(); set(rx.replace(text) { r }, cursor) }
         return n
@@ -151,8 +154,8 @@ class EditorState(val file: File, initial: String) {
     /** Jumps to the def/class/function of the word under the cursor. Returns false if not found. */
     fun gotoDefinition(): Boolean {
         var a = cursor; var b = cursor
-        while (a > 0 && (text[a - 1].isLetterOrDigit() || text[a - 1] == '_')) a--
-        while (b < text.length && (text[b].isLetterOrDigit() || text[b] == '_')) b++
+        while (a > 0 && isWordCh(text[a - 1])) a--
+        while (b < text.length && isWordCh(text[b])) b++
         if (a == b) return false
         val w = Regex.escape(text.substring(a, b))
         val rx = Regex("(?m)^[ \\t]*(?:async\\s+def|def|class|function|async\\s+function|(?:public|private|static|protected|internal|void|int|string|bool|auto|const|let|var)\\s+)[^\\n]*?\\b" + w + "\\b")
@@ -168,9 +171,7 @@ class EditorState(val file: File, initial: String) {
     fun renameWord(q: String, r: String, ignoreCase: Boolean = false): Int {
         if (q.isEmpty()) return 0
         val rx = Regex("(?<![A-Za-z0-9_])" + Regex.escape(q) + "(?![A-Za-z0-9_])", if (ignoreCase) setOf(RegexOption.IGNORE_CASE) else emptySet())
-        val n = rx.findAll(text).count()
-        if (n > 0) { snapshot(); set(rx.replace(text) { r }, cursor) }
-        return n
+        return replaceMatches(rx, r)
     }
 
     private val undo = ArrayDeque<Pair<String, Int>>()
@@ -185,6 +186,12 @@ class EditorState(val file: File, initial: String) {
     }
 
     private fun set(t: String, c: Int) { text = t; cursor = c.coerceIn(0, t.length); anchor = anchor?.coerceIn(0, t.length); dirty = true }
+
+    /** Start offset of the line containing [at]. */
+    private fun lineStartOf(at: Int): Int = text.lastIndexOf('\n', at - 1) + 1
+
+    /** End offset (position of '\n' or text end) of the line containing [at]. */
+    private fun lineEndOf(at: Int): Int = text.indexOf('\n', at).let { if (it < 0) text.length else it }
 
     fun moveTo(c: Int) { cursor = c.coerceIn(0, text.length); afterMove() }
 
@@ -292,18 +299,21 @@ class EditorState(val file: File, initial: String) {
     private fun blockRange(): Pair<Int, Int> {
         val a = if (hasSel) selStart else cursor
         val b = if (hasSel) selEnd else cursor
-        val ls = text.lastIndexOf('\n', a - 1) + 1
-        val le = text.indexOf('\n', b).let { if (it < 0) text.length else it }
-        return ls to le
+        return lineStartOf(a) to lineEndOf(b)
+    }
+
+    /** Puts [block] in place of text[ls, le) as one undo step and drops the selection. */
+    private fun replaceBlock(ls: Int, le: Int, block: String) {
+        snapshot()
+        set(text.substring(0, ls) + block + text.substring(le), ls + block.length)
+        clearSel()
     }
 
     /** Adds 4 spaces to every line of the selection (or the current line). */
     fun indentSel() {
         val (ls, le) = blockRange()
         val block = text.substring(ls, le).split("\n").joinToString("\n") { if (it.isBlank()) it else "    $it" }
-        snapshot()
-        set(text.substring(0, ls) + block + text.substring(le), ls + block.length)
-        anchor = null; selectMode = false
+        replaceBlock(ls, le, block)
     }
 
     /** Removes up to 4 leading spaces from every line of the selection (or the current line). */
@@ -313,13 +323,11 @@ class EditorState(val file: File, initial: String) {
             val n = minOf(4, l.length - l.trimStart(' ').length)
             l.substring(n)
         }
-        snapshot()
-        set(text.substring(0, ls) + block + text.substring(le), ls + block.length)
-        anchor = null; selectMode = false
+        replaceBlock(ls, le, block)
     }
 
     fun deleteLine() {
-        val ls = text.lastIndexOf('\n', cursor - 1) + 1
+        val ls = lineStartOf(cursor)
         var le = text.indexOf('\n', cursor)
         le = if (le < 0) text.length else le + 1
         snapshot()
@@ -327,13 +335,13 @@ class EditorState(val file: File, initial: String) {
         var nc = ls
         if (le == text.length && ls > 0) { nt = nt.dropLast(1); nc = ls - 1 }  // last line: also drop the preceding newline
         set(nt, nc)
-        anchor = null; selectMode = false
+        clearSel()
     }
 
     /** Replaces the word before the cursor; [cursorBack] = how many chars before the end to put the cursor. */
     fun complete(s: Suggestion) {
         var i = cursor
-        while (i > 0 && (text[i - 1].isLetterOrDigit() || text[i - 1] == '_')) i--
+        while (i > 0 && isWordCh(text[i - 1])) i--
         snapshot()
         val nt = text.substring(0, i) + s.insert + text.substring(cursor)
         set(nt, i + s.insert.length - s.cursorBack)
@@ -363,8 +371,8 @@ class EditorState(val file: File, initial: String) {
     fun left() { if (cursor > 0) cursor -= 1; afterMove() }
     fun right() { if (cursor < text.length) cursor += 1; afterMove() }
 
-    fun home() { cursor = text.lastIndexOf('\n', cursor - 1) + 1; afterMove() }
-    fun end() { val e = text.indexOf('\n', cursor); cursor = if (e < 0) text.length else e; afterMove() }
+    fun home() { cursor = lineStartOf(cursor); afterMove() }
+    fun end() { cursor = lineEndOf(cursor); afterMove() }
 
     fun up() { vertical(-1); afterMove() }
     fun down() { vertical(1); afterMove() }
@@ -386,11 +394,16 @@ class EditorState(val file: File, initial: String) {
 
     fun undo() {
         val s = undo.removeLastOrNull() ?: return
-        redo.addLast(text to cursor); text = s.first; cursor = s.second.coerceIn(0, text.length); anchor = null; selectMode = false; dirty = true
+        restore(s, redo)
     }
 
     fun redo() {
         val s = redo.removeLastOrNull() ?: return
-        undo.addLast(text to cursor); text = s.first; cursor = s.second.coerceIn(0, text.length); anchor = null; selectMode = false; dirty = true
+        restore(s, undo)
+    }
+
+    /** Applies a saved (text, cursor) state, pushing the current one onto [other]. */
+    private fun restore(s: Pair<String, Int>, other: ArrayDeque<Pair<String, Int>>) {
+        other.addLast(text to cursor); text = s.first; cursor = s.second.coerceIn(0, text.length); clearSel(); dirty = true
     }
 }

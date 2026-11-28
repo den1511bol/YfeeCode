@@ -53,15 +53,39 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     }
 
     private fun pySubmit(line: String) {
-        thread {
-            try {
-                val r = Python.getInstance().getModule("repl").callAttr("feed", line).asList()
-                val out = r[0].toString().trimEnd('\n')
-                if (out.isNotEmpty()) print(out)
-                ui.post { pyMore = r[1].toBoolean() }
-            } catch (e: Throwable) { print("[error] " + e.message) }
+        pyThread {
+            val r = Python.getInstance().getModule("repl").callAttr("feed", line).asList()
+            val out = r[0].toString().trimEnd('\n')
+            if (out.isNotEmpty()) print(out)
+            ui.post { pyMore = r[1].toBoolean() }
         }
     }
+
+    /** Runs a Python call on a background thread; any failure is printed as "[error] ...". */
+    private fun pyThread(block: () -> Unit) {
+        thread {
+            try { block() } catch (e: Throwable) { print("[error] " + e.message) }
+        }
+    }
+
+    /** Runs [command] inside Linux on a background thread, then [after]; errors are printed. */
+    private fun linuxExec(dir: File, command: String, after: () -> Unit = {}) {
+        thread {
+            try {
+                Linux.exec(ctx, store, dir, command, { proc = it }) { print(it) }
+                after()
+            } catch (e: Exception) { print("Ошибка: " + e.message) }
+        }
+    }
+
+    /** Wraps [s] in single quotes for sh. */
+    private fun shQuote(s: String): String = "'" + s.replace("'", "'\\''") + "'"
+
+    private fun botPrefs() = ctx.getSharedPreferences("bot_state", Context.MODE_PRIVATE)
+
+    /** "\n" if [f] is non-empty and does not end with a newline, so appended lines start on their own line. */
+    private fun newlineBeforeAppend(f: File): String =
+        if (f.exists() && f.length() > 0 && !f.readText().endsWith("\n")) "\n" else ""
 
     /** True when the command has no -flags: such commands are ours, with flags they go to the system sh. */
     private fun noFlags(cmd: String) = cmd.split(Regex("\\s+")).drop(1).none { it.startsWith("-") }
@@ -81,39 +105,30 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             cmd == "linux dotnet" -> {
                 // .NET SDK from the Alpine repository: lets the play button run C# offline
-                thread {
-                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache dotnet8-sdk dotnet8-targeting-pack icu-libs", { proc = it }) { print(it) }
-                        print(if (Linux.hasDotnet(ctx)) "Готово: .NET установлен, кнопка ▶ на .cs теперь работает офлайн" else "Не удалось поставить .NET (пакет dotnet8-sdk недоступен)") }
-                    catch (e: Exception) { print("Ошибка: ${e.message}") }
+                linuxExec(cwd, "apk add --no-cache dotnet8-sdk dotnet8-targeting-pack icu-libs") {
+                    print(if (Linux.hasDotnet(ctx)) "Готово: .NET установлен, кнопка ▶ на .cs теперь работает офлайн" else "Не удалось поставить .NET (пакет dotnet8-sdk недоступен)")
                 }
                 return
             }
             cmd == "linux setup" -> {
                 // one-shot install of the usual tools inside Alpine
-                thread {
-                    try { Linux.exec(ctx, store, cwd, "apk add --no-cache python3 py3-pip git build-base nano vim curl wget openssh tmux nodejs npm bash htop zip unzip jq", { proc = it }) { print(it) }; print("Готово: python3, pip, git, g++, nano, vim, curl, wget, ssh, tmux, node, npm, bash. Есть pkg install, apt install") }
-                    catch (e: Exception) { print("Ошибка: ${e.message}") }
+                linuxExec(cwd, "apk add --no-cache python3 py3-pip git build-base nano vim curl wget openssh tmux nodejs npm bash htop zip unzip jq") {
+                    print("Готово: python3, pip, git, g++, nano, vim, curl, wget, ssh, tmux, node, npm, bash. Есть pkg install, apt install")
                 }
                 return
             }
             cmd.startsWith("lpy ") || cmd.startsWith("lpip ") -> {
                 // lpy file.py [args]  — run Python inside Linux;  lpip install X  — pip inside Linux
+                val pipArgs = cmd.removePrefix("lpip ").trim()
                 val c = if (cmd.startsWith("lpy ")) "python3 " + cmd.removePrefix("lpy ").trim()
-                        else if (cmd.removePrefix("lpip ").trim().startsWith("install")) "pip " + cmd.removePrefix("lpip ").trim() + " --break-system-packages"
-                        else "pip " + cmd.removePrefix("lpip ").trim()
-                thread {
-                    try { Linux.exec(ctx, store, cwd, c, { proc = it }) { print(it) } }
-                    catch (e: Exception) { print("Ошибка: ${e.message}") }
-                }
+                        else if (pipArgs.startsWith("install")) "pip " + pipArgs + " --break-system-packages"
+                        else "pip " + pipArgs
+                linuxExec(cwd, c)
                 return
             }
             cmd == "lx" -> { print("Использование: lx команда (например: lx apk add git)"); return }
             cmd.startsWith("lx ") -> {
-                val c = cmd.removePrefix("lx ").trim()
-                thread {
-                    try { Linux.exec(ctx, store, cwd, c, { proc = it }) { print(it) } }
-                    catch (e: Exception) { print("Ошибка: ${e.message}") }
-                }
+                linuxExec(cwd, cmd.removePrefix("lx ").trim())
                 return
             }
             Regex("^(print\\(|import \\w+|from \\w+ import |def \\w+|async def |class \\w+).*").matches(cmd) -> {
@@ -201,7 +216,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             cmd == "autorestart" || cmd.startsWith("autorestart ") -> {
                 // autorestart on|off — restart the bot after a crash (up to 5 times)
-                val sp = ctx.getSharedPreferences("bot_state", Context.MODE_PRIVATE)
+                val sp = botPrefs()
                 when (cmd.removePrefix("autorestart").trim()) {
                     "on" -> sp.edit().putBoolean("autorestart", true).apply()
                     "off" -> sp.edit().putBoolean("autorestart", false).apply()
@@ -269,7 +284,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
             }
             cmd == "status" || cmd == "bots" -> {
                 // status — what the background bot is doing
-                val sp = ctx.getSharedPreferences("bot_state", Context.MODE_PRIVATE)
+                val sp = botPrefs()
                 val last = store.logFile.takeIf { it.exists() && it.length() > 0 }?.readText()?.takeLast(20000)?.trimEnd('\n')?.split("\n")?.takeLast(3)
                 val done = last?.lastOrNull()?.startsWith("[done]") == true
                 print("Бот: " + (if (sp.getBoolean("running", false) && !done) "работает" else "остановлен") +
@@ -335,7 +350,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 val have = if (gi.exists()) gi.readLines().map { it.trim() }.toSet() else emptySet()
                 val add = listOf("token.txt", ".env", "__pycache__/", "*.log", "*.session").filter { it !in have }
                 if (add.isEmpty()) { print(".gitignore уже защищает токены"); return }
-                gi.appendText((if (gi.exists() && gi.length() > 0 && !gi.readText().endsWith("\n")) "\n" else "") + add.joinToString("\n") + "\n")
+                gi.appendText(newlineBeforeAppend(gi) + add.joinToString("\n") + "\n")
                 print("Добавлено в .gitignore: " + add.joinToString(", "))
                 return
             }
@@ -435,7 +450,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 if (env.exists()) print(".env уже есть") else { env.writeText("BOT_TOKEN=\nADMIN_ID=\n"); print("Создан .env: впиши BOT_TOKEN и ADMIN_ID") }
                 val gi = File(cwd, ".gitignore")
                 if (!gi.exists() || ".env" !in gi.readLines().map { it.trim() }) {
-                    gi.appendText((if (gi.exists() && gi.length() > 0 && !gi.readText().endsWith("\n")) "\n" else "") + ".env\n")
+                    gi.appendText(newlineBeforeAppend(gi) + ".env\n")
                     print(".env добавлен в .gitignore, на GitHub он не попадёт")
                 }
                 return
@@ -487,12 +502,7 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     fun runLinuxPython(f: File) {
         if (!Linux.installed(ctx)) { print("Linux не установлен. Выполни: linux install, затем linux setup"); return }
         print("Запуск ${f.name} в Linux (python3)...")
-        thread {
-            try {
-                val q = "'" + f.name.replace("'", "'\\''") + "'"
-                Linux.exec(ctx, store, f.parentFile ?: cwd, "python3 -u $q", { proc = it }) { print(it) }
-            } catch (e: Exception) { print("Ошибка: ${e.message}") }
-        }
+        linuxExec(f.parentFile ?: cwd, "python3 -u " + shQuote(f.name))
     }
 
     fun runFile(f: File) {
@@ -521,23 +531,12 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
                 val lang = Lang.fromName(f.name)
                 if (lang == Lang.CSHARP && Linux.installed(ctx) && Linux.hasDotnet(ctx)) {
                     print("Сборка ${f.name} (.NET, офлайн), первый запуск может занять до минуты...")
-                    thread {
-                        try {
-                            val q = "'" + f.name.replace("'", "'\\''") + "'"
-                            val cmdLine = "yfeecs $q"
-                            Linux.exec(ctx, store, f.parentFile ?: cwd, cmdLine, { proc = it }) { print(it) }
-                        } catch (e: Exception) { print("Ошибка: ${e.message}") }
-                    }
+                    linuxExec(f.parentFile ?: cwd, "yfeecs " + shQuote(f.name))
                     return
                 }
                 if (lang == Lang.CPP && Linux.installed(ctx) && Linux.hasGpp(ctx)) {
                     print("Компиляция ${f.name} (g++, офлайн)...")
-                    thread {
-                        try {
-                            val q = "'" + f.name.replace("'", "'\\''") + "'"
-                            Linux.exec(ctx, store, f.parentFile ?: cwd, "g++ -std=gnu++17 -O1 $q -o /tmp/yfee_out && /tmp/yfee_out", { proc = it }) { print(it) }
-                        } catch (e: Exception) { print("Ошибка: ${e.message}") }
-                    }
+                    linuxExec(f.parentFile ?: cwd, "g++ -std=gnu++17 -O1 " + shQuote(f.name) + " -o /tmp/yfee_out && /tmp/yfee_out")
                     return
                 }
                 print("Компиляция ${f.name} (${lang.label}, онлайн)... ${if (lang == Lang.CSHARP) "C# может занять до 30 секунд" else ""}")
@@ -553,22 +552,18 @@ class TerminalState(private val ctx: Context, private val store: FileStore) {
     /** Prints the commands found in a Heroku/Hikka-style module file. Developer: @yfeeeee */
     fun listModuleCommands(f: File) {
         if (!f.exists()) { print("Нет файла: ${f.name}"); return }
-        thread {
-            try {
-                val r = Python.getInstance().getModule("hikka_sandbox").callAttr("commands", f.absolutePath).asList()
-                if (r.isEmpty()) print("В модуле нет команд")
-                else print("Команды модуля: " + r.joinToString(", ") { "." + it.toString() } + "\nПроверка: mod " + f.name + " ." + r[0].toString() + " аргументы")
-            } catch (e: Throwable) { print("[error] " + e.message) }
+        pyThread {
+            val r = Python.getInstance().getModule("hikka_sandbox").callAttr("commands", f.absolutePath).asList()
+            if (r.isEmpty()) print("В модуле нет команд")
+            else print("Команды модуля: " + r.joinToString(", ") { "." + it.toString() } + "\nПроверка: mod " + f.name + " ." + r[0].toString() + " аргументы")
         }
     }
 
     /** Test a Heroku/Hikka-style module command, e.g. ".hello world". */
     fun runModuleCommand(f: File, line: String) {
-        thread {
-            try {
-                val out = Python.getInstance().getModule("hikka_sandbox").callAttr("call", f.absolutePath, line).toString()
-                print(out.trimEnd('\n'))
-            } catch (e: Throwable) { print("[error] " + e.message) }
+        pyThread {
+            val out = Python.getInstance().getModule("hikka_sandbox").callAttr("call", f.absolutePath, line).toString()
+            print(out.trimEnd('\n'))
         }
     }
 

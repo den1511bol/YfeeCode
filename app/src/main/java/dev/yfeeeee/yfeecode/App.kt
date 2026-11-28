@@ -60,6 +60,12 @@ fun App(
     LaunchedEffect(open.size, active) {
         sp.edit().putString("tabs", open.joinToString("\n") { it.file.absolutePath }).putInt("active", active).apply()
     }
+    fun clampActive() { active = active.coerceIn(0, maxOf(0, open.size - 1)) }
+    /** Makes [f] the active editor tab, opening it first if needed. */
+    fun focusOrOpen(f: File) {
+        val i = open.indexOfFirst { it.file == f }
+        if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
+    }
     var dir by remember {
         mutableStateOf(File(sp.getString("dir", "") ?: "").takeIf {
             it.isDirectory && it.absolutePath.startsWith(store.root.absolutePath)
@@ -129,10 +135,9 @@ fun App(
                         val dead = open.filter { it.file.absolutePath == prefix || it.file.absolutePath.startsWith(prefix + File.separator) }
                         dead.forEach { it.markSaved() }
                         open.removeAll(dead.toSet())
-                        active = active.coerceIn(0, maxOf(0, open.size - 1))
+                        clampActive()
                     }) { f, line ->
-                    val i = open.indexOfFirst { it.file == f }
-                    if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
+                    focusOrOpen(f)
                     if (line != null) open[active].goToLine(line)
                     tab = 1
                 }
@@ -142,15 +147,14 @@ fun App(
                     onClose = { i ->
                         val e = open[i]
                         if (e.dirty) store.write(e.file, e.text)
-                        open.removeAt(i); active = active.coerceIn(0, maxOf(0, open.size - 1))
+                        open.removeAt(i); clampActive()
                     },
                     goTerminal = { tab = 2 }
                 )
                 2 -> TerminalScreen(term, open.getOrNull(active)?.file, dir) { p, line ->
                     val f = File(p).takeIf { it.isFile } ?: store.root.walkTopDown().firstOrNull { it.isFile && it.name == File(p).name }
                     if (f != null) {
-                        val i = open.indexOfFirst { it.file == f }
-                        if (i >= 0) active = i else { open.add(EditorState(f, store.read(f))); active = open.size - 1 }
+                        focusOrOpen(f)
                         open[active].goToLine(line)
                         tab = 1
                     }
@@ -171,18 +175,9 @@ fun App(
                         TextButton(onClick = { Settings.fontSize = (Settings.fontSize - 1).coerceAtLeast(10) }) { Text("−") }
                         TextButton(onClick = { Settings.fontSize = (Settings.fontSize + 1).coerceAtMost(24) }) { Text("+") }
                     }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Пульсация узоров", modifier = Modifier.weight(1f))
-                        Switch(checked = Settings.pulse, onCheckedChange = { Settings.pulse = it })
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Автопробелы вокруг = + - ,", modifier = Modifier.weight(1f))
-                        Switch(checked = Settings.autoSpace, onCheckedChange = { Settings.autoSpace = it })
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Автопроверка обновлений", modifier = Modifier.weight(1f))
-                        Switch(checked = Settings.autoUpdate, onCheckedChange = { Settings.autoUpdate = it })
-                    }
+                    SettingSwitch("Пульсация узоров", Settings.pulse) { Settings.pulse = it }
+                    SettingSwitch("Автопробелы вокруг = + - ,", Settings.autoSpace) { Settings.autoSpace = it }
+                    SettingSwitch("Автопроверка обновлений", Settings.autoUpdate) { Settings.autoUpdate = it }
                     Text("Версия: ${Updater.currentLabel}", color = Color(0xFFA87F81), fontSize = 12.sp, modifier = Modifier.padding(top = 6.dp))
                     if (Updater.status.isNotEmpty()) Text(Updater.status, color = Color(0xFFEF4444), fontSize = 12.sp)
                     if (Updater.progress >= 0) LinearProgressIndicator(progress = { Updater.progress / 100f }, modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
@@ -212,6 +207,14 @@ fun App(
                         icon = { Icon(icon, label) }, label = { Text(label) })
                 }
         }
+    }
+}
+
+@Composable
+private fun SettingSwitch(label: String, checked: Boolean, onChange: (Boolean) -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(label, modifier = Modifier.weight(1f))
+        Switch(checked = checked, onCheckedChange = onChange)
     }
 }
 
@@ -388,11 +391,14 @@ fun EditorScreen(
     val clip = LocalClipboardManager.current
     val hints = remember(state.text, state.cursor) { Hints.analyze(state.text, state.lang, state.lineIndex) }
     val save = { store.write(state.file, state.text); state.markSaved() }
+    // search continues after the current selection, if any
+    fun findFrom(): Int = if (state.hasSel) state.selEnd else state.cursor
+    fun copyText(s: String) = clip.setText(androidx.compose.ui.text.AnnotatedString(s))
     var syntaxErr by remember(state) { mutableStateOf("") }
     val spE = LocalContext.current.getSharedPreferences("session", android.content.Context.MODE_PRIVATE)
     LaunchedEffect(state.text) {
         delay(1500) // autosave 1.5 s after the last edit
-        if (state.dirty) { store.write(state.file, state.text); state.markSaved() }
+        if (state.dirty) save()
         spE.edit().putInt("cur_" + state.file.absolutePath, state.cursor).apply()
     }
 
@@ -406,10 +412,10 @@ fun EditorScreen(
         } else syntaxErr = ""
     }
     LaunchedEffect(state.text) {
-        if (state.dirty) { delay(1500); store.write(state.file, state.text); state.markSaved() }
+        if (state.dirty) { delay(1500); save() }
     }
     DisposableEffect(state) {
-        onDispose { if (state.dirty) { store.write(state.file, state.text); state.markSaved() } }
+        onDispose { if (state.dirty) save() }
     }
 
     Column(Modifier.fillMaxSize()) {
@@ -459,8 +465,8 @@ fun EditorScreen(
             }
             MiniBtn(if (state.selectMode) "✓ выделение" else "выделить", state.selectMode) { state.toggleSelect() }
             MiniBtn("всё") { state.selectAll() }
-            MiniBtn("копия") { if (state.hasSel) clip.setText(androidx.compose.ui.text.AnnotatedString(state.selectedText)) }
-            MiniBtn("вырезать") { if (state.hasSel) clip.setText(androidx.compose.ui.text.AnnotatedString(state.cutSel())) }
+            MiniBtn("копия") { if (state.hasSel) copyText(state.selectedText) }
+            MiniBtn("вырезать") { if (state.hasSel) copyText(state.cutSel()) }
             MiniBtn("//") { state.toggleComment() }
             MiniBtn("дубль") { state.duplicateLine() }
             MiniBtn("⇥") { state.indentSel() }
@@ -482,7 +488,7 @@ fun EditorScreen(
                 Spacer(Modifier.height(4.dp))
                 FieldBox("Заменить на", replQ, focusRepl) { focusRepl = true }
                 Row(horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
-                    MiniBtn("далее") { info = if (state.findNext(findQ, state.cursor.let { if (state.hasSel) state.selEnd else it }, !caseSens)) "найдено: " + state.countMatches(findQ, !caseSens) else "не найдено" }
+                    MiniBtn("далее") { info = if (state.findNext(findQ, findFrom(), !caseSens)) "найдено: " + state.countMatches(findQ, !caseSens) else "не найдено" }
                     MiniBtn("назад") { info = if (state.findPrev(findQ, !caseSens)) "найдено: " + state.countMatches(findQ, !caseSens) else "не найдено" }
                     MiniBtn("Aa", caseSens) { caseSens = !caseSens }
                     MiniBtn("заменить") { state.replaceCurrent(findQ, replQ, !caseSens) }
@@ -535,7 +541,7 @@ fun EditorScreen(
                     val nv = when (c) {
                         Cmd.BACK -> cur.dropLast(1)
                         Cmd.PASTE -> cur + (clip.getText()?.text ?: "").replace("\n", " ")
-                        else -> { info = if (state.findNext(findQ, if (state.hasSel) state.selEnd else state.cursor, !caseSens)) "" else "не найдено"; cur }
+                        else -> { info = if (state.findNext(findQ, findFrom(), !caseSens)) "" else "не найдено"; cur }
                     }
                     if (focusRepl) replQ = nv else findQ = nv
                 } else when (c) {
@@ -614,6 +620,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
     var input by remember { mutableStateOf("") }
     // cursor distance from the end of the input line (0 = cursor at the end). Developer: @yfeeeee
     var gap by remember { mutableIntStateOf(0) }
+    fun caretPos(): Int = (input.length - gap).coerceIn(0, input.length)
     val history = remember { mutableStateListOf<String>() }
     var hIdx by remember { mutableIntStateOf(0) }
     val listState = rememberLazyListState()
@@ -699,13 +706,13 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
             }
         }
         Text(
-            term.prompt + input.substring(0, (input.length - gap).coerceIn(0, input.length)) + "▏" + input.substring((input.length - gap).coerceIn(0, input.length)), color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
+            term.prompt + input.substring(0, caretPos()) + "▏" + input.substring(caretPos()), color = Color(0xFFEF4444), fontFamily = FontFamily.Monospace, fontSize = 13.sp,
             modifier = Modifier.fillMaxWidth().background(Color(0xFF20090A)).padding(8.dp)
         )
         DevKeyboard(
             onText = { raw ->
                 val t = raw.replace("()", "(").replace("[]", "[").replace("{}", "{")
-                val p = (input.length - gap).coerceIn(0, input.length)
+                val p = caretPos()
                 val before = input.substring(0, p)
                 val after = input.substring(p)
                 val closeOf = mapOf("(" to ")", "[" to "]", "{" to "}", "\"" to "\"", "'" to "'")
@@ -723,7 +730,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
             onCmd = { c ->
                 when (c) {
                     Cmd.BACK -> {
-                        val p = (input.length - gap).coerceIn(0, input.length)
+                        val p = caretPos()
                         if (p > 0) {
                             val l = input[p - 1]
                             val r = input.getOrNull(p)
@@ -749,7 +756,7 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
                     } else { input += "    "; gap = 0 }
                     Cmd.UP -> if (hIdx > 0) { hIdx--; input = history[hIdx]; gap = 0 }
                     Cmd.DOWN -> { if (hIdx < history.size - 1) { hIdx++; input = history[hIdx] } else { hIdx = history.size; input = "" }; gap = 0 }
-                    Cmd.PASTE -> clip.getText()?.text?.let { val p = (input.length - gap).coerceIn(0, input.length); input = input.substring(0, p) + it.replace("\n", " ") + input.substring(p) }
+                    Cmd.PASTE -> clip.getText()?.text?.let { val p = caretPos(); input = input.substring(0, p) + it.replace("\n", " ") + input.substring(p) }
                     else -> {}
                 }
             }
