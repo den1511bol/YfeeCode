@@ -335,7 +335,9 @@ object Practices {
             Practice("cs23", "LINQ: Where и Select", "Из списка чисел var nums = new List<int>{1,2,3,4} возьми чётные через Where и удвой их через Select.", "using System.Linq;\n", Lang.CSHARP,
                 listOf(must("""\.Where\s*\(""", "Нужен .Where(...)"), must("""\.Select\s*\(""", "Нужен .Select(...)"), must("""%\s*2""", "Чётность проверяй через % 2"))),
             Practice("cs24", "switch-выражение", "Напиши метод Name(int n), который возвращает строку через switch-выражение со стрелками =>: 1 даёт one, остальные other.", "", Lang.CSHARP,
-                listOf(must("""switch\s*\{""", "Нужно switch-выражение: n switch { ... }"), must("""=>""", "Ветки пишутся через =>"), must("""_\s*=>""", "Добавь ветку по умолчанию: _ => ...")))
+                listOf(must("""switch\s*\{""", "Нужно switch-выражение: n switch { ... }"), must("""=>""", "Ветки пишутся через =>"), must("""_\s*=>""", "Добавь ветку по умолчанию: _ => ..."))),
+            Practice("cs25", "Класс со свойством", "Напиши класс User со свойством Name ({ get; set; }) и конструктором, который принимает name и записывает его в Name.", "", Lang.CSHARP,
+                listOf(must("""class\s+User""", "Нужен класс User"), must("""\bName\s*\{\s*get\s*;\s*set\s*;\s*\}""", "Свойство: public string Name { get; set; }"), must("""User\s*\(\s*string\s+\w+\s*\)""", "Нужен конструктор User(string name)")))
         )
     )
 }
