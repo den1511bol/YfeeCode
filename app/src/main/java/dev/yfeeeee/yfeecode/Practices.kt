@@ -95,7 +95,9 @@ object Practices {
             Practice("py26", "sorted с lambda", "Отсортируй список словарей people по ключу \"age\" через sorted и lambda и выведи имя самого младшего.", "people = [{\"name\": \"Борис\", \"age\": 30}, {\"name\": \"Аня\", \"age\": 25}]\n", Lang.PYTHON,
                 listOf(must("""sorted\s*\(""", "Нужен sorted(...)"), must("""lambda""", "Ключ сортировки задай через lambda"), must("""print\s*\(""", "Выведи имя через print")), "Аня"),
             Practice("py27", "f-строка с форматом", "Выведи через f-строку текст Цена: 3.14 (число price округли до двух знаков через :.2f).", "price = 3.14159\n", Lang.PYTHON,
-                listOf(must("""\bf["']""", "Нужна f-строка: f\"...\""), must("""\{[^}]*:\.2f\}""", "Формат числа: {price:.2f}"), must("""print\s*\(""", "Выведи через print")), "Цена: 3.14")
+                listOf(must("""\bf["']""", "Нужна f-строка: f\"...\""), must("""\{[^}]*:\.2f\}""", "Формат числа: {price:.2f}"), must("""print\s*\(""", "Выведи через print")), "Цена: 3.14"),
+            Practice("py28", "try/except ValueError", "Преврати строку \"abc\" в число через int() внутри try, а в except ValueError выведи слова Не число.", "", Lang.PYTHON,
+                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови конкретную ошибку: except ValueError:"), must("""int\s*\(""", "Используй int(...)")), "Не число")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
