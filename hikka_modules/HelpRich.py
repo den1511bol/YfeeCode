@@ -126,6 +126,11 @@ class HelpRichMod(loader.Module):
                 "Ссылка на картинку или гифку сверху в цитате. Пусто: берётся banner_url из модуля Help",
             ),
             loader.ConfigValue(
+                "dev_emoji",
+                '<tg-emoji emoji-id="5260399854500191689">👤</tg-emoji>',
+                "Эмодзи перед разработчиком модуля (премиум: <tg-emoji emoji-id=\"ID\">👤</tg-emoji>)",
+            ),
+            loader.ConfigValue(
                 "show_empty",
                 False,
                 "Показывать модули без команд",
@@ -280,7 +285,7 @@ class HelpRichMod(loader.Module):
             rich += "<p>Команд нет</p>"
         dev = mod_developer(mod)
         if dev:
-            rich += "<blockquote>👤 Разработчик: %s</blockquote>" % esc(dev)
+            rich += "<blockquote>%s Разработчик: %s</blockquote>" % (fix_emoji(self.config["dev_emoji"]) or "👤", esc(dev))
         fn = getattr(utils, "answer_with_media_fallback", None)
         if fn is not None and self.config["mode"] == "details":
             for n, variant in enumerate((rich, plain_emoji(rich), no_emoji(rich))):
@@ -293,7 +298,7 @@ class HelpRichMod(loader.Module):
         q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
             "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
         if dev:
-            q.append("<blockquote>👤 Разработчик: %s</blockquote>" % esc(dev))
+            q.append("<blockquote>%s Разработчик: %s</blockquote>" % (fix_emoji(self.config["dev_emoji"]) or "👤", esc(dev)))
         await utils.answer(message, "\n".join(q))
 
     async def _help(self, message):

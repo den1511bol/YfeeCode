@@ -423,3 +423,4 @@
 - HelpRich v14: баннер (картинка/гифка) сверху в цитате: banner_url из HelpRich или Help; варианты blockquote+figure, figure, без баннера. Автор: @yfeeeee.
 - v5-N74: практика html28 ссылка target=_blank (173 практики). Автор: @yfeeeee.
 - HelpRich v15: в .help имя разработчик модуля внизу в цитате (атрибут developer или meta developer из исходника). Автор: @yfeeeee.
+- HelpRich v16: премиум-эмодзи 5260399854500191689 перед разработчиком (настройка dev_emoji). Автор: @yfeeeee.
