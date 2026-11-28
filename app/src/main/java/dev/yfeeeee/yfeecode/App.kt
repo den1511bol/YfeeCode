@@ -4,6 +4,9 @@ package dev.yfeeeee.yfeecode
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -108,10 +111,10 @@ fun App(
             )
             Spacer(Modifier.weight(1f))
             Text("by @yfeeeee", color = Color(0xFFEF4444), fontSize = 12.sp)
-            IconButton(onClick = { showHelp = true }, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = { showHelp = true }, modifier = Modifier.size(48.dp)) {
                 Icon(Icons.Default.Info, "Инструкция", tint = Color(0xFFEF4444))
             }
-            IconButton(onClick = { showSettings = true }, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = { showSettings = true }, modifier = Modifier.size(48.dp)) {
                 Icon(Icons.Default.Settings, "Настройки", tint = Color(0xFFEF4444))
             }
         }
@@ -191,10 +194,11 @@ fun App(
                     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         Settings.accents.forEachIndexed { i, c ->
                             Box(
-                                Modifier.size(34.dp)
+                                Modifier.size(44.dp)
                                     .background(Color(c), androidx.compose.foundation.shape.CircleShape)
                                     .border(if (Settings.accent == i) 3.dp else 0.dp, Color.White, androidx.compose.foundation.shape.CircleShape)
-                                    .clickable { Settings.accent = i }
+                                    .semantics { contentDescription = "Цвет акцента " + (i + 1); selected = Settings.accent == i }
+                                    .clickable(role = androidx.compose.ui.semantics.Role.Button) { Settings.accent = i }
                             )
                         }
                     }
@@ -592,7 +596,7 @@ private fun MiniBtn(label: String, on: Boolean = false, onClick: () -> Unit) {
 private fun FieldBox(hint: String, value: String, focused: Boolean, onClick: () -> Unit) {
     Text(
         if (value.isEmpty() && !focused) hint else value + if (focused) "▏" else "",
-        color = if (value.isEmpty() && !focused) Color(0xFF8C5B5D) else Color(0xFFEF4444),
+        color = if (value.isEmpty() && !focused) Color(0xFFB08486) else Color(0xFFEF4444),
         fontFamily = FontFamily.Monospace, fontSize = 13.sp,
         modifier = Modifier.fillMaxWidth().background(Color(0xFF120606)).clickable { onClick() }.padding(8.dp)
     )
@@ -600,7 +604,7 @@ private fun FieldBox(hint: String, value: String, focused: Boolean, onClick: () 
 
 @Composable
 private fun ToolIcon(icon: androidx.compose.ui.graphics.vector.ImageVector, desc: String, onClick: () -> Unit) {
-    IconButton(onClick = onClick, modifier = Modifier.size(38.dp)) {
+    IconButton(onClick = onClick, modifier = Modifier.size(48.dp)) {
         Icon(icon, desc, tint = Color(0xFFF0CCCD), modifier = Modifier.size(20.dp))
     }
 }
@@ -660,13 +664,15 @@ fun TerminalScreen(term: TerminalState, current: File?, dir: File, onOpen: (Stri
         }
         LazyColumn(Modifier.weight(1f).fillMaxWidth().diamondPattern(Settings.termBg, Color(0x14B91C1C), 32.dp).padding(6.dp), state = listState) {
             items(term.lines) { l ->
+                val light = Settings.termTheme == 2
+                val linkC = if (light) Color(0xFF0550AE) else Color(0xFF79C0FF)
                 val c = when {
-                    l.startsWith("[error]") || l.contains("Traceback") || l.contains("Error") -> Color(0xFFF48972)
-                    l.startsWith("[") -> Color(0xFF79C0FF)
+                    l.startsWith("[error]") || l.contains("Traceback") || l.contains("Error") -> if (light) Color(0xFFB42318) else Color(0xFFF48972)
+                    l.startsWith("[") -> linkC
                     else -> Settings.termFg
                 }
                 val tb = Regex("File \"([^\"]+)\", line (\\d+)").find(l)
-                Text(l, color = if (tb != null) Color(0xFF79C0FF) else c, fontFamily = FontFamily.Monospace, fontSize = 12.sp,
+                Text(l, color = if (tb != null) linkC else c, fontFamily = FontFamily.Monospace, fontSize = 12.sp,
                     modifier = if (tb != null) Modifier.clickable { onOpen(tb.groupValues[1], tb.groupValues[2].toInt()) } else Modifier)
             }
         }
