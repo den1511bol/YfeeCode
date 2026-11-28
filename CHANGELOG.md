@@ -400,3 +400,4 @@
 - RichKit: команда .mods (короткий .rmods). В .fcfg help нет опции группировки по модулям. Автор: @yfeeeee.
 - HelpRich.py: подменяет .help, каждый модуль свёрнутым списком (обход allmodules.commands). Автор: @yfeeeee.
 - v5-N66: практика cpp29 vector push_back и size (165 практик). Автор: @yfeeeee.
+- HelpRich v2: подмена help в commands, в модуле Help и через dispatch (первая версия не сработала, шёл родной help). Автор: @yfeeeee.

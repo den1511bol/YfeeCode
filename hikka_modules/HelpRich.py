@@ -9,6 +9,7 @@
 # Автор: @yfeeeee
 
 import html as _html
+import inspect
 import logging
 
 from .. import loader, utils
@@ -56,18 +57,69 @@ class HelpRichMod(loader.Module):
             ),
         )
         self._orig = None
+        self._disp = None
+
+    def _install(self):
+        """Подмена help сразу в трёх местах: словарь команд, модуль Help и dispatch."""
+        am = self.allmodules
+        try:
+            cmds = am.commands
+            cur = cmds.get("help")
+            if cur is not None and getattr(cur, "__self__", None) is not self:
+                self._orig = cur
+            cmds["help"] = self._help
+        except Exception as e:
+            logger.warning("HelpRich commands: %s", e)
+        for mod in am.modules:
+            if mod is self:
+                continue
+            mc = getattr(mod, "commands", None)
+            if isinstance(mc, dict) and "help" in mc:
+                try:
+                    if self._orig is None:
+                        self._orig = mc["help"]
+                    mc["help"] = self._help
+                except Exception as e:
+                    logger.warning("HelpRich module commands: %s", e)
+        disp = getattr(am, "dispatch", None)
+        if disp is not None and not getattr(disp, "_helprich", False) and not inspect.iscoroutinefunction(disp):
+            outer = self
+
+            def dispatch(command, *a, **kw):
+                res = disp(command, *a, **kw)
+                try:
+                    if isinstance(res, tuple) and len(res) == 2 and str(res[0]).lower() == "help":
+                        return res[0], outer._help
+                except Exception:
+                    pass
+                return res
+
+            dispatch._helprich = True
+            dispatch._orig = disp
+            self._disp = disp
+            am.dispatch = dispatch
+
+    def _uninstall(self):
+        am = self.allmodules
+        if self._orig is not None:
+            try:
+                am.commands["help"] = self._orig
+            except Exception:
+                pass
+            for mod in am.modules:
+                mc = getattr(mod, "commands", None)
+                if isinstance(mc, dict) and mc.get("help") == self._help:
+                    mc["help"] = self._orig
+        if getattr(self, "_disp", None) is not None:
+            am.dispatch = self._disp
+            self._disp = None
 
     async def client_ready(self, client, db):
         self._client = client
-        cmds = self.allmodules.commands
-        if "help" in cmds and getattr(cmds["help"], "__self__", None) is not self:
-            self._orig = cmds["help"]
-        cmds["help"] = self._help
+        self._install()
 
     async def on_unload(self):
-        cmds = self.allmodules.commands
-        if self._orig is not None:
-            cmds["help"] = self._orig
+        self._uninstall()
 
     def _blocks(self):
         prefix = self.get_prefix()
@@ -117,10 +169,9 @@ class HelpRichMod(loader.Module):
     async def helprichcmd(self, message):
         """Вернуть оригинальный help (.helprich off) или включить снова (.helprich on)"""
         arg = utils.get_args_raw(message).strip().lower()
-        cmds = self.allmodules.commands
-        if arg == "off" and self._orig is not None:
-            cmds["help"] = self._orig
+        if arg == "off":
+            self._uninstall()
             await utils.answer(message, "Оригинальный help возвращён")
         else:
-            cmds["help"] = self._help
+            self._install()
             await utils.answer(message, "HelpRich включён")
