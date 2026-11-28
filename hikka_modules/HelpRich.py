@@ -13,6 +13,7 @@
 # Автор: @yfeeeee
 
 import html as _html
+import inspect
 import logging
 import random
 import re
@@ -50,6 +51,21 @@ _ANY_EMOJI = re.compile("[\U0001F000-\U0001FAFF\u2190-\u21FF\u2300-\u23FF\u2600-
 def no_emoji(html_text):
     """Совсем без эмодзи: последний запасной вариант rich-сообщения."""
     return _ANY_EMOJI.sub("", plain_emoji(html_text))
+
+
+def mod_developer(mod):
+    """Разработчик модуля: атрибут developer, иначе строка '# meta developer:' из исходника."""
+    dev = getattr(mod, "developer", None)
+    if dev:
+        return str(dev)
+    try:
+        src = inspect.getsource(inspect.getmodule(mod.__class__) or mod.__class__)
+        m = re.search(r"#\s*meta\s+developer\s*:\s*(.+)", src)
+        if m:
+            return m.group(1).strip()
+    except Exception:
+        pass
+    return ""
 
 
 def mod_name(mod):
@@ -262,6 +278,9 @@ class HelpRichMod(loader.Module):
             rich += "<details><summary>Команды</summary>%s</details>" % "".join(lines)
         else:
             rich += "<p>Команд нет</p>"
+        dev = mod_developer(mod)
+        if dev:
+            rich += "<blockquote>👤 Разработчик: %s</blockquote>" % esc(dev)
         fn = getattr(utils, "answer_with_media_fallback", None)
         if fn is not None and self.config["mode"] == "details":
             for n, variant in enumerate((rich, plain_emoji(rich), no_emoji(rich))):
@@ -273,6 +292,8 @@ class HelpRichMod(loader.Module):
         q = ["%s <b>%s</b>" % (head_em, name)]
         q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
             "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
+        if dev:
+            q.append("<blockquote>👤 Разработчик: %s</blockquote>" % esc(dev))
         await utils.answer(message, "\n".join(q))
 
     async def _help(self, message):
