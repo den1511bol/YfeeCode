@@ -63,6 +63,9 @@ object Completer {
             "spoiler" to "\"<tg-spoiler>|скрытый текст</tg-spoiler>\"",
             "rtable" to "\"<table bordered striped compact>\"\n\"<tr><td>|Название</td><td><b>значение</b></td></tr>\"\n\"</table>\"",
             "rdet" to "\"<details><summary>|Заголовок</summary>Скрытое содержимое</details>\"",
+            "rlist" to "\"<ol><li>|Первый</li><li>Второй</li></ol>\"",
+            "rcheck" to "\"<ul><li><input type=\\\"checkbox\\\">|Пункт</li></ul>\"",
+            "rh1" to "\"<h1>|Заголовок</h1>\"",
             "rdeto" to "\"<details open><summary>|Заголовок</summary>Открытое содержимое</details>\"",
             "ruser" to "'<a href=\"tg://user?id=|ID\">Имя</a>'",
             "pycode" to "\"<pre><code class=\\\"language-python\\\">|print(1)</code></pre>\"",
@@ -216,7 +219,8 @@ object Completer {
                 "tg-emoji" to "tg-emoji emoji-id=\"|\">🙂</tg-emoji>",
                 "table" to "table bordered striped compact>|</table>",
                 "tr" to "tr>|</tr>", "td" to "td valign=\"middle\">|</td>", "th" to "th>|</th>",
-                "details" to "details>|</details>", "summary" to "summary>|</summary>"
+                "details" to "details>|</details>", "summary" to "summary>|</summary>",
+                "h1" to "h1>|</h1>", "ol" to "ol>|</ol>", "ul" to "ul>|</ul>", "li" to "li>|</li>", "p" to "p>|</p>"
             )
             val hit = tags.filter { it.first.startsWith(prefix) }.map { (n, raw) ->
                 val pos = raw.indexOf('|'); val clean = raw.replace("|", "")

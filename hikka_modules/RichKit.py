@@ -11,8 +11,8 @@
 #   вашего юзербота понимает <details>. Не проверено на всех версиях.
 #
 # Режимы (настройка mode):
-#   quote:   <blockquote expandable> (по умолчанию), у автора показалась без сбоев
-#   details: <details><summary>, у автора в юзерботе теги пропали, текст склеился
+#   details: <details><summary> (по умолчанию)
+#   quote:   <blockquote expandable>, запасной вариант
 #   bot:     rich-сообщение через ассистент-бота (sendRichMessage), нужен бот в чате
 # Настройка tables: вместо строк-абзацев команды выводятся таблицей <table> (не проверено с аккаунта).
 
@@ -24,6 +24,8 @@ import aiohttp
 from .. import loader, utils
 
 logger = logging.getLogger(__name__)
+
+LIMIT = 3000  # знаков на одно сообщение
 
 
 def esc(text):
@@ -108,9 +110,9 @@ class RichKitMod(loader.Module):
         self.config = loader.ModuleConfig(
             loader.ConfigValue(
                 "mode",
-                "quote",
-                "Режим: quote (свёрнутая цитата), details (<details>, у автора теги пропали) или bot",
-                validator=loader.validators.Choice(["quote", "details", "bot"]),
+                "details",
+                "Режим: details (<details>), quote (свёрнутая цитата) или bot",
+                validator=loader.validators.Choice(["details", "quote", "bot"]),
             ),
             loader.ConfigValue(
                 "tables",
@@ -139,6 +141,11 @@ class RichKitMod(loader.Module):
             logger.warning("sendRichMessage error: %s", e)
             return False
 
+    async def _send_more(self, message, text):
+        """Отправка следующего куска отдельным сообщением."""
+        client = getattr(self, "_client", None) or getattr(self, "client", None)
+        await client.send_message(utils.get_chat_id(message), text, parse_mode="html")
+
     async def _show(self, message, rich_html, fb_html):
         """Показывает по режиму; при сбое падает на свёрнутую цитату."""
         mode = self.config["mode"]
@@ -157,6 +164,28 @@ class RichKitMod(loader.Module):
                 return
         await utils.answer(message, fb_html)
 
+    async def _show_many(self, message, items):
+        """items это список (rich_html, fb_html). Режет на сообщения до LIMIT знаков.
+        Длинный ответ Hikka превращает в инлайн-форму через бота и теряет теги,
+        поэтому каждое сообщение держим короче."""
+        groups, cur = [], []
+        size = 0
+        for it in items:
+            if cur and size + len(it[0]) > LIMIT:
+                groups.append(cur)
+                cur, size = [], 0
+            cur.append(it)
+            size += len(it[0])
+        if cur:
+            groups.append(cur)
+        for n, g in enumerate(groups):
+            rich = "".join(x[0] for x in g)
+            fb = "\n".join(x[1] for x in g)
+            if n == 0:
+                await self._show(message, rich, fb)
+            else:
+                await self._send_more(message, rich if self.config["mode"] == "details" else fb)
+
     def _body(self, cmds, header=None):
         return cmd_table(cmds, header) if self.config["tables"] else cmd_lines(cmds)
 
@@ -172,17 +201,17 @@ class RichKitMod(loader.Module):
     async def rmodscmd(self, message):
         """Список модулей: каждый свёрнут, внутри его команды"""
         prefix = self.get_prefix()
-        parts = []
-        sections = []
+        items = []
         for mod in self.allmodules.modules:
             name = esc(module_name(mod))
             cmds = module_commands(mod, prefix)
             if cmds:
-                parts.append(details("📦 " + name, self._body(cmds)))
+                rich = details("📦 " + name, self._body(cmds))
             else:
-                parts.append(para("<b>📦 %s</b>" % name))
-            sections.append(("📦 " + name, ["%s - %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]))
-        await self._show(message, "".join(parts), fallback_sections(sections))
+                rich = para("<b>📦 %s</b>" % name)
+            lines = ["%s - %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]
+            items.append((rich, fallback_list("📦 " + name, lines) if lines else "<b>📦 %s</b>" % name))
+        await self._show_many(message, items)
 
     async def rhelpcmd(self, message):
         """<модуль> - команды модуля в свёрнутом блоке"""

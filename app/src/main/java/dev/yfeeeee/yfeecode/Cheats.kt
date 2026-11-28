@@ -27,6 +27,9 @@ Rich-сообщения (новые Bot API, sendRichMessage с полем html)
   <details><summary>Заголовок</summary>скрыто</details>   закрытый список
   <details open><summary>...</summary>...</details>        открытый список
   Работает только при отправке как rich-сообщение, в обычном parse_mode HTML таблицы и details не рисуются.
+  Ещё в rich: <h1>заголовок</h1>  <ol><li>нумерованный</li></ol>  <ul><li>маркированный</li></ul>
+  Чек-лист: <ul><li><input type="checkbox">пункт</li></ul>
+  <details open><summary><b>Заголовок</b></summary>...</details>   открытый свёрнутый блок
   В юзерботе (как у модуля Always Online): <p>абзац</p> и <details><summary>Commands</summary><p>...</p></details> через utils.answer; зависит от версии юзербота.
 
 Основа
