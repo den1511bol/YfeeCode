@@ -97,7 +97,9 @@ object Practices {
             Practice("py27", "f-строка с форматом", "Выведи через f-строку текст Цена: 3.14 (число price округли до двух знаков через :.2f).", "price = 3.14159\n", Lang.PYTHON,
                 listOf(must("""\bf["']""", "Нужна f-строка: f\"...\""), must("""\{[^}]*:\.2f\}""", "Формат числа: {price:.2f}"), must("""print\s*\(""", "Выведи через print")), "Цена: 3.14"),
             Practice("py28", "try/except ValueError", "Преврати строку \"abc\" в число через int() внутри try, а в except ValueError выведи слова Не число.", "", Lang.PYTHON,
-                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови конкретную ошибку: except ValueError:"), must("""int\s*\(""", "Используй int(...)")), "Не число")
+                listOf(must("""\btry\s*:""", "Нужен блок try:"), must("""except\s+ValueError""", "Лови конкретную ошибку: except ValueError:"), must("""int\s*\(""", "Используй int(...)")), "Не число"),
+            Practice("py29", "Генератор списка с условием", "Из списка nums возведи в квадрат только чётные числа через генератор списка с if и выведи результат.", "nums = [1, 2, 3, 4, 5, 6]\n", Lang.PYTHON,
+                listOf(must("""\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*\]""", "Нужен генератор списка: [... for n in nums if ...]"), must("""%\s*2""", "Чётность проверяй через % 2"), must("""print\s*\(""", "Выведи результат через print")), "[4, 16, 36]")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
