@@ -11,8 +11,8 @@
 #   вашего юзербота понимает <details>. Не проверено на всех версиях.
 #
 # Режимы (настройка mode):
-#   details: <details><summary> как у Always Online (по умолчанию)
-#   quote:   <blockquote expandable>, работает почти везде
+#   quote:   <blockquote expandable> (по умолчанию), у автора показалась без сбоев
+#   details: <details><summary>, у автора в юзерботе теги пропали, текст склеился
 #   bot:     rich-сообщение через ассистент-бота (sendRichMessage), нужен бот в чате
 # Настройка tables: вместо строк-абзацев команды выводятся таблицей <table> (не проверено с аккаунта).
 
@@ -108,9 +108,9 @@ class RichKitMod(loader.Module):
         self.config = loader.ModuleConfig(
             loader.ConfigValue(
                 "mode",
-                "details",
-                "Режим: details, quote или bot",
-                validator=loader.validators.Choice(["details", "quote", "bot"]),
+                "quote",
+                "Режим: quote (свёрнутая цитата), details (<details>, у автора теги пропали) или bot",
+                validator=loader.validators.Choice(["quote", "details", "bot"]),
             ),
             loader.ConfigValue(
                 "tables",
