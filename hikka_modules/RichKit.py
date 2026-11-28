@@ -49,6 +49,17 @@ def fallback_list(title, lines):
     return "<b>%s</b>\n<blockquote expandable>%s</blockquote>" % (title, body)
 
 
+def fallback_sections(sections):
+    """Несколько блоков: у каждого заголовок и своя сворачиваемая цитата с командами."""
+    out = []
+    for title, lines in sections:
+        if lines:
+            out.append(fallback_list(title, lines))
+        else:
+            out.append("<b>%s</b>" % title)
+    return "\n".join(out)
+
+
 def module_commands(mod, prefix):
     """Список (команда, описание) модуля Hikka."""
     res = []
@@ -66,15 +77,14 @@ class RichKitMod(loader.Module):
     strings = {
         "name": "RichKit",
         "no_mod": "<b>Модуль не найден.</b>",
-        "fb_note": "\n<i>Rich-отправка не удалась, показан запасной вариант.</i>",
     }
 
     def __init__(self):
         self.config = loader.ModuleConfig(
             loader.ConfigValue(
                 "use_rich",
-                True,
-                "Пробовать отправку через Rich Messages (нужен бот в чате)",
+                False,
+                "Пробовать отправку через Rich Messages (нужен бот в чате, у автора не сработало)",
                 validator=loader.validators.Boolean(),
             )
         )
@@ -98,7 +108,7 @@ class RichKitMod(loader.Module):
             logger.warning("sendRichMessage error: %s", e)
             return False
 
-    async def _show(self, message, rich_html, fb_title, fb_lines):
+    async def _show(self, message, rich_html, fb_html):
         """Rich если можно, иначе запасной вариант. Команду-сообщение при успехе удаляем."""
         if self.config["use_rich"]:
             if await self._send_rich(utils.get_chat_id(message), rich_html):
@@ -107,7 +117,7 @@ class RichKitMod(loader.Module):
                 except Exception:
                     pass
                 return
-        await utils.answer(message, fallback_list(fb_title, fb_lines) + self.strings["fb_note"])
+        await utils.answer(message, fb_html)
 
     async def richcmd(self, message):
         """Тест: таблица и сворачиваемые списки"""
@@ -115,14 +125,14 @@ class RichKitMod(loader.Module):
             [["Имя", "<b>RichKit</b>"], ["Автор", "@yfeeeee"]],
         ) + details("Закрытый список", "Скрытый текст") + details("Открытый список", "Видно сразу", True)
         await self._show(
-            message, rich, "RichKit", ["Имя: RichKit", "Автор: @yfeeeee", "Rich не сработал, это запасной вариант"]
+            message, rich, fallback_list("RichKit", ["Имя: RichKit", "Автор: @yfeeeee", "Свёрнутый список работает"])
         )
 
     async def rmodscmd(self, message):
         """Список модулей: каждый модуль свёрнут, внутри его команды"""
         prefix = self.get_prefix()
         parts = []
-        fb = []
+        sections = []
         for mod in self.allmodules.modules:
             name = esc(getattr(mod, "strings", {}).get("name", mod.__class__.__name__))
             cmds = module_commands(mod, prefix)
@@ -131,8 +141,8 @@ class RichKitMod(loader.Module):
                 parts.append(details("📦 " + name, table(rows)))
             else:
                 parts.append("<b>📦 %s</b>" % name)
-            fb.append("%s: %s" % (name, ", ".join(esc(c) for c, _ in cmds) or "без команд"))
-        await self._show(message, "".join(parts), "Модули", fb)
+            sections.append(("📦 " + name, ["%s — %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]))
+        await self._show(message, "".join(parts), fallback_sections(sections))
 
     async def rhelpcmd(self, message):
         """<модуль> - команды модуля таблицей в свёрнутом блоке"""
@@ -147,6 +157,7 @@ class RichKitMod(loader.Module):
                 cmds = module_commands(mod, prefix)
                 rows = [["<code>%s</code>" % esc(c), esc(d)] for c, d in cmds]
                 rich = details("📦 " + esc(name), table(rows, ["Команда", "Описание"]), True)
-                await self._show(message, rich, esc(name), ["%s %s" % (esc(c), esc(d)) for c, d in cmds])
+                lines = ["%s — %s" % (esc(c), esc(d)) if d else esc(c) for c, d in cmds]
+                await self._show(message, rich, fallback_list("📦 " + esc(name), lines))
                 return
         await utils.answer(message, self.strings["no_mod"])
