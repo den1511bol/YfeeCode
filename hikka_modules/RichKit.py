@@ -213,6 +213,10 @@ class RichKitMod(loader.Module):
             items.append((rich, fallback_list("📦 " + name, lines) if lines else "<b>📦 %s</b>" % name))
         await self._show_many(message, items)
 
+    async def modscmd(self, message):
+        """Короткий вариант .rmods: каждый модуль отдельным свёрнутым блоком"""
+        await self.rmodscmd(message)
+
     async def rhelpcmd(self, message):
         """<модуль> - команды модуля в свёрнутом блоке"""
         args = utils.get_args_raw(message).strip().lower()
