@@ -378,3 +378,4 @@
 - v5-N50: практика html24 (details и summary).
 - v5-N51: практика css24 (transition).
 - v5-N52: практика py29 (генератор списка с условием).
+- v5-N53: практика js29 (Promise.all).
