@@ -153,7 +153,9 @@ object Practices {
             Practice("js26", "Деструктуризация и spread", "Из объекта user = {name, age} достань name через деструктуризацию, а затем создай копию объекта с новым полем через spread (три точки).", "", Lang.JS,
                 listOf(must("""(const|let)\s*\{[^}]*\}\s*=""", "Нужна деструктуризация: const { name } = user"), must("""\.\.\.\s*user""", "Скопируй объект через ...user"))),
             Practice("js27", "filter и find", "Из массива nums = [1, 2, 3, 4] оставь чётные через filter и найди первое число больше 2 через find.", "", Lang.JS,
-                listOf(must("""\.filter\s*\(""", "Нужен .filter(...)"), must("""\.find\s*\(""", "Нужен .find(...)"), must("""%\s*2""", "Чётность проверяй через % 2")))
+                listOf(must("""\.filter\s*\(""", "Нужен .filter(...)"), must("""\.find\s*\(""", "Нужен .find(...)"), must("""%\s*2""", "Чётность проверяй через % 2"))),
+            Practice("js28", "Класс", "Напиши класс User с constructor(name), который сохраняет имя в this.name, и методом hello(), который возвращает строку с именем.", "", Lang.JS,
+                listOf(must("""class\s+User""", "Нужен class User"), must("""constructor\s*\(""", "Нужен constructor(name)"), must("""this\.name\s*=""", "Сохрани имя: this.name = name"), must("""hello\s*\(\s*\)\s*\{""", "Нужен метод hello() { ... }")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
