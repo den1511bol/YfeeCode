@@ -407,3 +407,4 @@
 - v5-N67: практика cs28 foreach и интерполяция (166 практик). Автор: @yfeeeee.
 - HelpRich v5, RichKit v6: по исходнику Heroku help.py rich-сообщение шлётся через utils.answer_with_media_fallback(message, rich_message=...), а не utils.answer (там details/p теряются). Автор: @yfeeeee.
 - v5-N68: практика html27 нумерованный список ol (167 практик). Автор: @yfeeeee.
+- HelpRich v6: премиум-эмодзи из настроек Help (plain_emoji, core_emoji, command_emoji, desc_icon, конвертация emoji document_id в tg-emoji), свои эмодзи в .fcfg HelpRich, .help имя в том же стиле, опция nested (список в списке). Автор: @yfeeeee.

@@ -4,13 +4,16 @@
 #
 # HelpRich: подменяет обычную команду .help. Каждый модуль отдельным свёрнутым списком
 # (<details>), внутри его команды с описаниями. Отдельная команда не нужна: пишешь .help
-# как обычно. С аргументом (.help имя) работает оригинальный help.
+# как обычно. .help имя показывает команды одного модуля в том же стиле.
+# Премиум-эмодзи берутся из настроек модуля Help (plain_emoji, core_emoji, command_emoji, desc_icon),
+# либо задай свои в настройках HelpRich (.fcfg HelpRich).
 # Сделано под Heroku (coddrago/Heroku): обёртка над dispatch_candidates.
 # При выгрузке модуля оригинальный help возвращается.
 # Автор: @yfeeeee
 
 import html as _html
 import logging
+import re
 
 from .. import loader, utils
 
@@ -21,6 +24,14 @@ LIMIT = 3000  # знаков на одно сообщение, длинное Hi
 
 def esc(text):
     return _html.escape(str(text), quote=False)
+
+
+_EMOJI_RE = re.compile(r"<emoji\s+document_id=[\"']?(\d+)[\"']?\s*>(.*?)</emoji>", re.S)
+
+
+def fix_emoji(val):
+    """<emoji document_id=ID>X</emoji> превращает в <tg-emoji emoji-id=\"ID\">X</tg-emoji>."""
+    return _EMOJI_RE.sub(lambda m: '<tg-emoji emoji-id="%s">%s</tg-emoji>' % (m.group(1), m.group(2)), str(val or ""))
 
 
 def mod_name(mod):
@@ -48,6 +59,32 @@ class HelpRichMod(loader.Module):
                 "details",
                 "details (<details>) или quote (свёрнутая цитата, запасной вариант)",
                 validator=loader.validators.Choice(["details", "quote"]),
+            ),
+            loader.ConfigValue(
+                "nested",
+                False,
+                "Список внутри списка: все модули внутри одного свёрнутого блока (если Telegram покажет вложенность)",
+                validator=loader.validators.Boolean(),
+            ),
+            loader.ConfigValue(
+                "plain_emoji",
+                "",
+                "Эмодзи перед модулем. Пусто: берётся из настроек модуля Help (.fcfg help plain_emoji)",
+            ),
+            loader.ConfigValue(
+                "core_emoji",
+                "",
+                "Эмодзи перед встроенным модулем. Пусто: берётся из модуля Help",
+            ),
+            loader.ConfigValue(
+                "command_emoji",
+                "",
+                "Эмодзи перед командой в .help имя. Пусто: берётся из модуля Help",
+            ),
+            loader.ConfigValue(
+                "desc_icon",
+                "",
+                "Эмодзи в заголовке. Пусто: берётся из модуля Help",
             ),
             loader.ConfigValue(
                 "show_empty",
@@ -99,6 +136,19 @@ class HelpRichMod(loader.Module):
     async def on_unload(self):
         self._uninstall()
 
+    def _em(self, key, fallback):
+        """Эмодзи: своя настройка, иначе настройка модуля Help (премиум-эмодзи), иначе запасной."""
+        val = self.config[key]
+        if not val:
+            for m in self.allmodules.modules:
+                if getattr(m, "strings", {}).get("name") == "Help":
+                    try:
+                        val = m.config[key]
+                    except Exception:
+                        val = ""
+                    break
+        return fix_emoji(val) or fallback
+
     def _blocks(self, quote):
         prefix = self.get_prefix()
         out = []
@@ -106,30 +156,77 @@ class HelpRichMod(loader.Module):
             if mod is self:
                 continue
             name = esc(mod_name(mod))
+            core = str(getattr(mod, "__origin__", "")).startswith("<core")
+            em = self._em("core_emoji" if core else "plain_emoji", "📦")
             cmds = mod_commands(mod, prefix)
             if not cmds:
                 if self.config["show_empty"]:
-                    out.append("<b>📦 %s</b>" % name if quote else "<p><b>📦 %s</b></p>" % name)
+                    out.append("<b>%s %s</b>" % (em, name) if quote else "<p><b>%s %s</b></p>" % (em, name))
                 continue
             if quote:
                 lines = ["<code>%s</code> - %s" % (esc(c), esc(d)) if d else "<code>%s</code>" % esc(c) for c, d in cmds]
-                out.append("<b>📦 %s</b>\n<blockquote expandable>%s</blockquote>" % (name, "\n".join(lines)))
+                out.append("<b>%s %s</b>\n<blockquote expandable>%s</blockquote>" % (em, name, "\n".join(lines)))
             else:
                 body = "".join(
                     "<p><code>%s</code>%s</p>" % (esc(c), (" - " + esc(d)) if d else "") for c, d in cmds
                 )
-                out.append("<details><summary>📦 %s (%d)</summary>%s</details>" % (name, len(cmds), body))
+                out.append("<details><summary>%s %s (%d)</summary>%s</details>" % (em, name, len(cmds), body))
         return out
+
+    def _find_module(self, arg):
+        key = arg.strip().lower()
+        for mod in self.allmodules.modules:
+            if mod is self:
+                continue
+            if mod_name(mod).lower() == key or mod.__class__.__name__.lower() in (key, key + "mod"):
+                return mod
+        return None
+
+    async def _module_help(self, message, mod):
+        """.help имя: команды одного модуля в том же стиле."""
+        prefix = self.get_prefix()
+        cmd_em = self._em("command_emoji", "▫️")
+        head_em = self._em("desc_icon", "🪐")
+        name = esc(mod_name(mod))
+        cmds = mod_commands(mod, prefix)
+        lines = []
+        for c, d in cmds:
+            lines.append("<p>%s <code>%s</code>%s</p>" % (cmd_em, esc(c), (" - " + esc(d)) if d else ""))
+        doc = (getattr(mod, "__doc__", "") or "").strip().split("\n")[0]
+        rich = "<p>%s <b>%s</b></p>" % (head_em, name)
+        if doc:
+            rich += "<p>%s</p>" % esc(doc)
+        if lines:
+            rich += "<details><summary>Команды (%d)</summary>%s</details>" % (len(cmds), "".join(lines))
+        else:
+            rich += "<p>Команд нет</p>"
+        fn = getattr(utils, "answer_with_media_fallback", None)
+        if fn is not None and self.config["mode"] == "details":
+            try:
+                await fn(message, rich_message=rich)
+                return
+            except Exception as e:
+                logger.warning("HelpRich module help failed: %s", e)
+        q = ["%s <b>%s</b>" % (head_em, name)]
+        q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
+            "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
+        await utils.answer(message, "\n".join(q))
 
     async def _help(self, message):
         """Список модулей и команд (подменён HelpRich)"""
         args = utils.get_args_raw(message)
-        if args and self._orig is not None:
-            return await self._orig(message)
+        if args:
+            mod = self._find_module(args.split()[0])
+            if mod is not None:
+                return await self._module_help(message, mod)
+            if self._orig is not None:
+                return await self._orig(message)
         # Так отправляет сам Help при rich_mode: одним rich-сообщением
         if self.config["mode"] == "details":
             blocks = self._blocks(False)
-            head = "<p><b>📚 Модулей: %d</b></p>" % len(blocks)
+            head = "<p>%s <b>Модулей: %d</b></p>" % (self._em("desc_icon", "📚"), len(blocks))
+            if self.config["nested"]:
+                blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
             rich = getattr(utils, "answer_with_media_fallback", None)
             if rich is not None:
                 try:
