@@ -435,3 +435,4 @@
 - v5-N80: практика html29 индикатор progress (179 практик; details уже был в html17, html24). Автор: @yfeeeee.
 - v5-N81: практика css29 многоточие text-overflow (180 практик). Автор: @yfeeeee.
 - v5-N82: практика js34 Object.keys (181 практика). Автор: @yfeeeee.
+- v5-N83: практика py34 split строки (182 практики). Автор: @yfeeeee.
