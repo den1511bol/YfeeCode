@@ -103,3 +103,4 @@
 - [x] N62 практика html26.
 - [x] N63 практика css26.
 - [x] Rich-теги Telegram в подсказках (по коду от пользователя). Цикл: дальше N64 (практика py31).
+- [x] rich-хелпер готов: hikka_modules/RichKit.py (команды .rich, .rmods, .rhelp, details/table через sendRichMessage ассистент-бота, запасной вариант blockquote expandable). Не проверено на живом Hikka.

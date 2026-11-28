@@ -390,3 +390,4 @@
 - v5-N62: практика html26 (video).
 - v5-N63: практика css26 (position).
 - v5-N64a (пожелание пользователя): подсказки для Rich-сообщений Telegram (table bordered striped compact, details/summary, tg://user, pre+code language): сниппеты rtable, rdet, rdeto, ruser, pycode, теги после <, шпаргалка.
+- RichKit.py: модуль Hikka со сворачиваемыми списками и таблицами (Rich Messages) для загрузки модуля, списка модулей и справки; запасной вариант blockquote expandable.
