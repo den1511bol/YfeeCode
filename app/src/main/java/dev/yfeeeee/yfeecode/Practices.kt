@@ -169,7 +169,9 @@ object Practices {
             Practice("js30", "Map", "Создай new Map(), положи в него пару через set (ключ \"a\", значение 1) и получи значение через get.", "", Lang.JS,
                 listOf(must("""new\s+Map\s*\(""", "Нужен new Map()"), must("""\.set\s*\(""", "Добавь пару через .set(...)"), must("""\.get\s*\(""", "Получи значение через .get(...)"))),
             Practice("js31", "Array.reduce", "Посчитай сумму массива [1, 2, 3] через reduce и выведи её через console.log.", "", Lang.JS,
-                listOf(must("""\.reduce\s*\(""", "Используй метод .reduce(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"), must("""\+""", "Сложи элементы через +")))
+                listOf(must("""\.reduce\s*\(""", "Используй метод .reduce(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"), must("""\+""", "Сложи элементы через +"))),
+            Practice("js32", "Оператор ??", "Объяви const name = null и выведи имя через console.log, подставив значение по умолчанию \"гость\" через оператор ??.", "", Lang.JS,
+                listOf(must("""\?\?""", "Используй оператор ??"), must("""console\.log\s*\(""", "Выведи результат через console.log"), must("""["'`]гость["'`]""", "Значение по умолчанию: \"гость\"")), "гость")
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
