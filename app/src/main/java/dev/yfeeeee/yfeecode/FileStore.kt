@@ -64,9 +64,14 @@ class FileStore(private val ctx: Context) {
         ctx.contentResolver.openOutputStream(uri)?.use { out ->
             java.util.zip.ZipOutputStream(out).use { z ->
                 root.walkTopDown().filter { it.isFile }.forEach { f ->
-                    z.putNextEntry(java.util.zip.ZipEntry(f.relativeTo(root).path.replace('\\', '/')))
-                    f.inputStream().use { it.copyTo(z) }
-                    z.closeEntry()
+                    // one unreadable file must not break the whole backup
+                    try {
+                        z.putNextEntry(java.util.zip.ZipEntry(f.relativeTo(root).path.replace('\\', '/')))
+                        f.inputStream().use { it.copyTo(z) }
+                    } catch (_: java.io.IOException) {
+                    } finally {
+                        try { z.closeEntry() } catch (_: java.io.IOException) {}
+                    }
                 }
             }
         }
@@ -80,13 +85,17 @@ class FileStore(private val ctx: Context) {
             java.util.zip.ZipInputStream(input).use { z ->
                 var e = z.nextEntry
                 while (e != null) {
-                    val target = File(dir, e.name).canonicalFile
-                    if (target.path.startsWith(base + File.separator)) {
-                        if (e.isDirectory) target.mkdirs() else {
-                            target.parentFile?.mkdirs()
-                            target.outputStream().use { z.copyTo(it) }
-                            n++
+                    // a broken entry is skipped, the rest of the archive is still unpacked
+                    try {
+                        val target = File(dir, e.name).canonicalFile
+                        if (target.path.startsWith(base + File.separator)) {
+                            if (e.isDirectory) target.mkdirs() else {
+                                target.parentFile?.mkdirs()
+                                target.outputStream().use { z.copyTo(it) }
+                                n++
+                            }
                         }
+                    } catch (_: java.io.IOException) {
                     }
                     e = z.nextEntry
                 }
