@@ -137,6 +137,12 @@ class HelpRichMod(loader.Module):
                 "Эмодзи перед разработчиком модуля (премиум: <tg-emoji emoji-id=\"ID\">👤</tg-emoji>)",
             ),
             loader.ConfigValue(
+                "quotes",
+                True,
+                "Заголовок и команды в цитатах (если Telegram не примет, модуль сам откатится без цитат)",
+                validator=loader.validators.Boolean(),
+            ),
+            loader.ConfigValue(
                 "show_empty",
                 False,
                 "Показывать модули без команд",
@@ -225,7 +231,7 @@ class HelpRichMod(loader.Module):
                     return []
         return []
 
-    def _blocks(self, quote, force=False, only=None):
+    def _blocks(self, quote, force=False, only=None, quotes=False):
         """force: показать и скрытые (.help -f). only: core (.help -c) или loaded (.help -l)."""
         prefix = self.get_prefix()
         hidden = self._hidden()
@@ -258,6 +264,8 @@ class HelpRichMod(loader.Module):
                     "<p>%s<code>%s</code>%s</p>" % ((cem + " ") if cem else "", esc(c), (" - " + esc(d)) if d else "")
                     for c, d in cmds
                 )
+                if quotes:
+                    body = "<blockquote>%s</blockquote>" % body
                 # премиум-эмодзи и в заголовке; если Telegram откажет, _help повторит с обычными
                 out.append("<details><summary>%s %s</summary>%s</details>" % (em, name, body))
         return out
@@ -282,24 +290,36 @@ class HelpRichMod(loader.Module):
         for c, d in cmds:
             lines.append("<p>%s <code>%s</code>%s</p>" % (cmd_em, esc(c), (" - " + esc(d)) if d else ""))
         doc = (getattr(mod, "__doc__", "") or "").strip().split("\n")[0]
-        rich = "<p>%s <b>%s</b></p>" % (head_em, name)
-        if doc:
-            rich += "<p>%s</p>" % esc(doc)
-        if lines:
-            rich += "<details><summary>Команды</summary>%s</details>" % "".join(lines)
-        else:
-            rich += "<p>Команд нет</p>"
         dev = mod_developer(mod)
-        if dev:
-            rich += "<blockquote>%s Разработчик: %s</blockquote>" % (fix_emoji(self.config["dev_emoji"]) or "👤", esc(dev))
+
+        def build(qv):
+            head = "<p>%s <b>%s</b></p>" % (head_em, name)
+            if doc:
+                head += "<p>%s</p>" % esc(doc)
+            if qv:
+                head = "<blockquote>%s</blockquote>" % head
+            text = head
+            if lines:
+                inner = "".join(lines)
+                if qv:
+                    inner = "<blockquote>%s</blockquote>" % inner
+                text += "<details><summary>Команды</summary>%s</details>" % inner
+            else:
+                text += "<p>Команд нет</p>"
+            if dev:
+                text += "<blockquote>%s Разработчик: %s</blockquote>" % (fix_emoji(self.config["dev_emoji"]) or "👤", esc(dev))
+            return text
+
         fn = getattr(utils, "answer_with_media_fallback", None)
         if fn is not None and self.config["mode"] == "details":
-            for n, variant in enumerate((rich, plain_emoji(rich), no_emoji(rich))):
-                try:
-                    await fn(message, rich_message=variant)
-                    return
-                except Exception as e:
-                    logger.warning("HelpRich module help variant %d failed: %s. Начало: %r", n + 1, e, variant[:400])
+            for qv in ((True, False) if self.config["quotes"] else (False,)):
+                rich = build(qv)
+                for n, variant in enumerate((rich, plain_emoji(rich), no_emoji(rich))):
+                    try:
+                        await fn(message, rich_message=variant)
+                        return
+                    except Exception as e:
+                        logger.warning("HelpRich модуль цитаты %s эмодзи %d: %s. Начало: %r", qv, n + 1, e, variant[:300])
         q = ["%s <b>%s</b>" % (head_em, name)]
         q.append("<blockquote expandable>%s</blockquote>" % "\n".join(
             "%s <code>%s</code>%s" % (cmd_em, esc(c), (" - " + esc(d)) if d else "") for c, d in cmds))
@@ -321,29 +341,31 @@ class HelpRichMod(loader.Module):
                 return await self._orig(message)
         # Так отправляет сам Help при rich_mode: одним rich-сообщением
         if self.config["mode"] == "details":
-            blocks = self._blocks(False, force, only)
-            hid = (", скрыто: %d" % self._hidden_count) if self._hidden_count else ""
-            head = "<p>%s <b>Модулей: %d%s</b></p>" % (self._em("desc_icon", "📚"), len(blocks), hid)
-            if self.config["nested"]:
-                blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
             rich = getattr(utils, "answer_with_media_fallback", None)
             if rich is not None:
-                body = head + "".join(blocks)
                 url = self._banner()
                 tops = [""]
                 if url:
                     img = '<figure><img src="%s"/></figure>' % esc(url).replace('"', "&quot;")
                     tops = ["<blockquote>%s</blockquote>" % img, img, ""]
-                for t, top in enumerate(tops):
-                    text = top + body
-                    for n, variant in enumerate((text, plain_emoji(text), no_emoji(text))):
-                        try:
-                            await rich(message, rich_message=variant)
-                            if n or t:
-                                logger.warning("HelpRich: rich ушёл в варианте баннера %d, эмодзи %d", t + 1, n + 1)
-                            return
-                        except Exception as e:
-                            logger.warning("HelpRich rich баннер %d эмодзи %d: %s. Начало: %r", t + 1, n + 1, e, variant[:300])
+                for qv in ((True, False) if self.config["quotes"] else (False,)):
+                    blocks = self._blocks(False, force, only, qv)
+                    hid = (", скрыто: %d" % self._hidden_count) if self._hidden_count else ""
+                    title = "%s <b>Модулей: %d%s</b>" % (self._em("desc_icon", "📚"), len(blocks), hid)
+                    head = ("<blockquote>%s</blockquote>" if qv else "<p>%s</p>") % title
+                    if self.config["nested"]:
+                        blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
+                    body = head + "".join(blocks)
+                    for t, top in enumerate(tops):
+                        text = top + body
+                        for n, variant in enumerate((text, plain_emoji(text), no_emoji(text))):
+                            try:
+                                await rich(message, rich_message=variant)
+                                if n or t or not qv:
+                                    logger.warning("HelpRich: ушло в варианте: цитаты %s, баннер %d, эмодзи %d", qv, t + 1, n + 1)
+                                return
+                            except Exception as e:
+                                logger.warning("HelpRich цитаты %s баннер %d эмодзи %d: %s. Начало: %r", qv, t + 1, n + 1, e, variant[:300])
         await self._plain(message, self._blocks(True, force, only))
 
     async def _plain(self, message, blocks):
