@@ -93,7 +93,9 @@ object Practices {
             Practice("py25", "Настройки пользователей в JSON", "Настройки бота хранятся словарём по user_id. Сохрани словарь в f через json.dump, перемотай f на начало (f.seek(0)), прочитай через json.load и выведи язык пользователя \"1\".", "import io\nimport json\n\nsettings = {\"1\": {\"lang\": \"ru\"}, \"2\": {\"lang\": \"en\"}}\nf = io.StringIO()\n", Lang.PYTHON,
                 listOf(must("""json\.dump\s*\(""", "Нужен json.dump(settings, f)"), must("""json\.load\s*\(""", "Нужен json.load(f)"), must("""print\s*\(""", "Выведи язык через print")), "ru"),
             Practice("py26", "sorted с lambda", "Отсортируй список словарей people по ключу \"age\" через sorted и lambda и выведи имя самого младшего.", "people = [{\"name\": \"Борис\", \"age\": 30}, {\"name\": \"Аня\", \"age\": 25}]\n", Lang.PYTHON,
-                listOf(must("""sorted\s*\(""", "Нужен sorted(...)"), must("""lambda""", "Ключ сортировки задай через lambda"), must("""print\s*\(""", "Выведи имя через print")), "Аня")
+                listOf(must("""sorted\s*\(""", "Нужен sorted(...)"), must("""lambda""", "Ключ сортировки задай через lambda"), must("""print\s*\(""", "Выведи имя через print")), "Аня"),
+            Practice("py27", "f-строка с форматом", "Выведи через f-строку текст Цена: 3.14 (число price округли до двух знаков через :.2f).", "price = 3.14159\n", Lang.PYTHON,
+                listOf(must("""\bf["']""", "Нужна f-строка: f\"...\""), must("""\{[^}]*:\.2f\}""", "Формат числа: {price:.2f}"), must("""print\s*\(""", "Выведи через print")), "Цена: 3.14")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
