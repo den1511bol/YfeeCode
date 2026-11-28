@@ -456,3 +456,4 @@
 - v5-N97: практика cs33 Queue (196 практик). Автор: @yfeeeee.
 - v5-N98: практика html32 textarea (197 практик). Автор: @yfeeeee.
 - v5-N99: практика css32 linear-gradient (198 практик). Автор: @yfeeeee.
+- v5-N100: практика js37 метод every (199 практик). Автор: @yfeeeee.

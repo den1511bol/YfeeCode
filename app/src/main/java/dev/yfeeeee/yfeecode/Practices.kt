@@ -187,7 +187,9 @@ object Practices {
             Practice("js35", "Метод includes", "Проверь, есть ли в массиве names = [\"Аня\", \"Боря\"] имя \"Аня\" через includes, и выведи результат через console.log.", "", Lang.JS,
                 listOf(must("""\.includes\s*\(""", "Нужен names.includes(...)"), must("""console\.log\s*\(""", "Выведи результат через console.log"))),
             Practice("js36", "Метод some", "Проверь, есть ли в массиве nums = [1, 3, 8] хотя бы одно чётное число через some, и выведи результат через console.log.", "", Lang.JS,
-                listOf(must("""\.some\s*\(""", "Нужен nums.some(...)"), must("""%\s*2""", "Проверь чётность: n % 2 === 0"), must("""console\.log\s*\(""", "Выведи результат через console.log")))
+                listOf(must("""\.some\s*\(""", "Нужен nums.some(...)"), must("""%\s*2""", "Проверь чётность: n % 2 === 0"), must("""console\.log\s*\(""", "Выведи результат через console.log"))),
+            Practice("js37", "Метод every", "Проверь, что все числа в массиве nums = [2, 4, 6] чётные, через every, и выведи результат через console.log.", "", Lang.JS,
+                listOf(must("""\.every\s*\(""", "Нужен nums.every(...)"), must("""%\s*2""", "Проверь чётность: n % 2 === 0"), must("""console\.log\s*\(""", "Выведи результат через console.log")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
