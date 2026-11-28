@@ -15,6 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -135,7 +139,7 @@ fun LinuxScreen(store: FileStore) {
     }
     Column(Modifier.fillMaxSize().background(Color.Black)) {
         AndroidView(
-            modifier = Modifier.weight(1f).fillMaxWidth(),
+            modifier = Modifier.weight(1f).fillMaxWidth().semantics { contentDescription = "Терминал Linux" },
             factory = { c ->
                 val v = TerminalView(c, null)
                 v.setTerminalViewClient(LinuxTerm.viewClient)
@@ -153,18 +157,37 @@ fun LinuxScreen(store: FileStore) {
         val kbOn = remember { mutableStateOf(true) }
         Row(Modifier.fillMaxWidth().background(Color(0xFF1A0707)).horizontalScroll(rememberScrollState()).padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             LinuxTerm.sessions.forEachIndexed { i, sess ->
-                TextButton(onClick = { LinuxTerm.select(i) }, contentPadding = PaddingValues(horizontal = 12.dp)) {
+                TextButton(onClick = { LinuxTerm.select(i) }, contentPadding = PaddingValues(horizontal = 12.dp),
+                    modifier = Modifier.semantics { selected = (i == LinuxTerm.cur) }) {
                     Text(if (LinuxTerm.titleTick >= 0 && !sess.title.isNullOrBlank()) "${i + 1} ${sess.title.take(12)}" else "${i + 1}", fontSize = 14.sp, color = if (i == LinuxTerm.cur) Color(0xFFEF4444) else Color(0xFF8B7FA8))
                 }
             }
-            TextButton(onClick = { kbOn.value = !kbOn.value }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text(if (kbOn.value) "⌨↓" else "⌨↑", fontSize = 14.sp) }
-            fun key(label: String, send: String) = @Composable {
-                TextButton(onClick = { LinuxTerm.session?.write(send) }, contentPadding = PaddingValues(horizontal = 10.dp)) { Text(label, fontSize = 14.sp) }
+            TextButton(onClick = { kbOn.value = !kbOn.value }, contentPadding = PaddingValues(horizontal = 12.dp),
+                modifier = Modifier.semantics { contentDescription = if (kbOn.value) "Скрыть клавиатуру" else "Показать клавиатуру" }) {
+                Text(if (kbOn.value) "⌨↓" else "⌨↑", fontSize = 14.sp)
             }
-            TextButton(onClick = { LinuxTerm.ctrl = !LinuxTerm.ctrl }, contentPadding = PaddingValues(horizontal = 10.dp)) {
+            fun keyDesc(label: String): String = when {
+                label.startsWith("^") -> "Ctrl плюс " + label.drop(1)
+                label == "/" -> "слэш"
+                label == "-" -> "минус"
+                label == "|" -> "вертикальная черта"
+                label == "~" -> "тильда"
+                label == "\\" -> "обратный слэш"
+                label == "&" -> "амперсанд"
+                label == "*" -> "звёздочка"
+                label == "Esc" -> "Escape"
+                else -> label
+            }
+            fun key(label: String, send: String) = @Composable {
+                TextButton(onClick = { LinuxTerm.session?.write(send) }, contentPadding = PaddingValues(horizontal = 10.dp),
+                    modifier = Modifier.semantics { contentDescription = keyDesc(label) }) { Text(label, fontSize = 14.sp) }
+            }
+            TextButton(onClick = { LinuxTerm.ctrl = !LinuxTerm.ctrl }, contentPadding = PaddingValues(horizontal = 10.dp),
+                modifier = Modifier.semantics { stateDescription = if (LinuxTerm.ctrl) "включён" else "выключен" }) {
                 Text("Ctrl", fontSize = 14.sp, color = if (LinuxTerm.ctrl) Color(0xFFF472B6) else Color.Unspecified)
             }
-            TextButton(onClick = { LinuxTerm.alt = !LinuxTerm.alt }, contentPadding = PaddingValues(horizontal = 10.dp)) {
+            TextButton(onClick = { LinuxTerm.alt = !LinuxTerm.alt }, contentPadding = PaddingValues(horizontal = 10.dp),
+                modifier = Modifier.semantics { stateDescription = if (LinuxTerm.alt) "включён" else "выключен" }) {
                 Text("Alt", fontSize = 14.sp, color = if (LinuxTerm.alt) Color(0xFFF472B6) else Color.Unspecified)
             }
             key("Esc", "\u001b")()
@@ -203,8 +226,10 @@ fun LinuxScreen(store: FileStore) {
             key("F11", "\u001b[23~")()
             key("F12", "\u001b[24~")()
 
-            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp - 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A−", fontSize = 14.sp) }
-            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp + 1) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("A+", fontSize = 14.sp) }
+            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp - 1) }, contentPadding = PaddingValues(horizontal = 12.dp),
+                modifier = Modifier.semantics { contentDescription = "Уменьшить шрифт" }) { Text("A−", fontSize = 14.sp) }
+            TextButton(onClick = { LinuxTerm.setFont(ctx, LinuxTerm.fontSp + 1) }, contentPadding = PaddingValues(horizontal = 12.dp),
+                modifier = Modifier.semantics { contentDescription = "Увеличить шрифт" }) { Text("A+", fontSize = 14.sp) }
             TextButton(onClick = { LinuxTerm.newSession(ctx, store) }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("+ сессия", fontSize = 14.sp) }
             if (LinuxTerm.sessions.isNotEmpty()) TextButton(onClick = { LinuxTerm.session?.finishIfRunning() }, contentPadding = PaddingValues(horizontal = 12.dp)) { Text("закрыть", fontSize = 14.sp) }
             TextButton(onClick = {

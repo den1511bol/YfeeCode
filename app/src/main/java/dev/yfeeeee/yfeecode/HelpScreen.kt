@@ -12,6 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -196,7 +202,7 @@ fun HelpDialog(onClose: () -> Unit) {
         Surface(Modifier.fillMaxSize(), color = Color(0xFF140606)) {
             Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("Инструкция", color = Color(0xFFEF4444), fontSize = 20.sp, modifier = Modifier.weight(1f))
+                    Text("Инструкция", color = Color(0xFFEF4444), fontSize = 20.sp, modifier = Modifier.weight(1f).semantics { heading() })
                     TextButton(onClick = onClose) { Text("Закрыть") }
                 }
                 Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
@@ -204,8 +210,10 @@ fun HelpDialog(onClose: () -> Unit) {
                         var open by remember { mutableStateOf(i == 0) }
                         Column(Modifier.fillMaxWidth().padding(vertical = 4.dp)
                             .background(Color(0xFF2E0F10), RoundedCornerShape(12.dp))
-                            .clickable { open = !open }.padding(14.dp)) {
-                            Text((if (open) "▾ " else "▸ ") + s.title, color = Color(0xFFFFD5D5), fontSize = 16.sp)
+                            .semantics { stateDescription = if (open) "развёрнуто" else "свёрнуто" }
+                            .clickable(onClickLabel = if (open) "Свернуть раздел" else "Развернуть раздел", role = Role.Button) { open = !open }.padding(14.dp)) {
+                            Text((if (open) "▾ " else "▸ ") + s.title, color = Color(0xFFFFD5D5), fontSize = 16.sp,
+                                modifier = Modifier.clearAndSetSemantics { contentDescription = s.title })
                             if (open) {
                                 Spacer(Modifier.height(8.dp))
                                 Text(s.body, color = Color(0xFFE8B8B9), fontSize = 14.sp, lineHeight = 21.sp)
@@ -214,7 +222,7 @@ fun HelpDialog(onClose: () -> Unit) {
                     }
                     Spacer(Modifier.height(10.dp))
                     Text("𝒴𝒻𝑒𝑒𝒞𝑜𝒹𝑒 · разработчик @yfeeeee", color = Color(0xFFEF4444), fontSize = 12.sp,
-                        modifier = Modifier.align(Alignment.CenterHorizontally))
+                        modifier = Modifier.align(Alignment.CenterHorizontally).semantics { contentDescription = "YfeeCode, разработчик @yfeeeee" })
                     Spacer(Modifier.height(16.dp))
                 }
             }

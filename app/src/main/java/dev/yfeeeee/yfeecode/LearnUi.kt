@@ -22,6 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.ProgressBarRangeInfo
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.progressBarRangeInfo
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,6 +40,15 @@ private val Chip = Color(0xFF471617)
 private val Good = Color(0xFF4ADE80)
 private val Bad = Color(0xFFF87171)
 private val Muted = Color(0xFFA87F81)
+
+/** Safe fraction in 0..1: no division by zero for empty lists, no NaN. */
+private fun frac(a: Int, b: Int): Float = if (b <= 0) 0f else (a.toFloat() / b.toFloat()).coerceIn(0f, 1f)
+
+/** TalkBack: announce a custom progress bar as a real progress indicator. */
+private fun Modifier.progressSem(label: String, f: Float): Modifier = this.semantics {
+    contentDescription = label
+    progressBarRangeInfo = ProgressBarRangeInfo(f, 0f..1f)
+}
 
 @Composable
 fun LearnScreen() {
@@ -74,8 +90,9 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
         Row(Modifier.fillMaxWidth().padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("Уровень $level", color = Color.White, fontSize = 13.sp)
             Spacer(Modifier.width(10.dp))
-            Box(Modifier.weight(1f).height(8.dp).background(Chip, CircleShape)) {
-                Box(Modifier.fillMaxWidth(lp.coerceIn(0.02f, 1f)).fillMaxHeight().background(Violet, CircleShape))
+            val lpSafe = if (lp.isNaN()) 0f else lp.coerceIn(0f, 1f)
+            Box(Modifier.weight(1f).height(8.dp).background(Chip, CircleShape).progressSem("Прогресс уровня " + level, lpSafe)) {
+                Box(Modifier.fillMaxWidth(lpSafe.coerceAtLeast(0.02f)).fillMaxHeight().background(Violet, CircleShape))
             }
         }
         Text(if (streak > 0) "Серия: $streak дн. подряд. Занимайся каждый день!" else "Пройди урок сегодня, чтобы начать серию.",
@@ -88,7 +105,7 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
                 Row(
                     Modifier.fillMaxWidth().background(Panel, RoundedCornerShape(16.dp))
                         .border(1.dp, Color(0x55B91C1C), RoundedCornerShape(16.dp))
-                        .clickable { onOpen(c) }.padding(14.dp),
+                        .clickable(onClickLabel = "Открыть курс " + c.title, role = Role.Button) { onOpen(c) }.padding(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(c.emoji, fontSize = 30.sp)
@@ -97,7 +114,7 @@ private fun LearnHome(prog: Progress, tick: Int, onOpen: (Course) -> Unit) {
                         Text(c.title, color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                         Spacer(Modifier.height(6.dp))
                         Box(Modifier.fillMaxWidth().height(8.dp).background(Chip, CircleShape)) {
-                            Box(Modifier.fillMaxWidth(done / c.lessons.size.toFloat()).fillMaxHeight().background(Violet, CircleShape))
+                            Box(Modifier.fillMaxWidth(frac(done, c.lessons.size)).fillMaxHeight().background(Violet, CircleShape))
                         }
                         Text("$done / ${c.lessons.size} уроков", color = Muted, fontSize = 11.sp, modifier = Modifier.padding(top = 4.dp))
                     }
@@ -123,7 +140,8 @@ private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, 
                 val shift = when (i % 4) { 0 -> 0; 1 -> 36; 2 -> 0; else -> (-36) }
                 Row(
                     Modifier.fillMaxWidth().padding(start = (40 + shift).dp, end = 12.dp)
-                        .clickable(enabled = !locked) { onOpen(i) },
+                        .semantics { stateDescription = if (done) "пройден" else if (locked) "закрыт" else "доступен" }
+                        .clickable(enabled = !locked, onClickLabel = "Открыть урок " + les.title, role = Role.Button) { onOpen(i) },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
@@ -145,7 +163,8 @@ private fun CourseMap(c: Course, prog: Progress, tick: Int, onBack: () -> Unit, 
                     Modifier.fillMaxWidth().padding(horizontal = 12.dp)
                         .background(Panel, RoundedCornerShape(14.dp))
                         .border(1.dp, if (done) Good else Color(0x55B91C1C), RoundedCornerShape(14.dp))
-                        .clickable { onPractice(pr) }.padding(12.dp),
+                        .semantics { stateDescription = if (done) "выполнена" else "не выполнена" }
+                        .clickable(onClickLabel = "Открыть практику " + pr.title, role = Role.Button) { onPractice(pr) }.padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(if (done) "✓" else "⌨", color = if (done) Good else Violet, fontSize = 20.sp)
@@ -197,7 +216,7 @@ private fun TheoryText(text: String) {
 private fun BlockChip(text: String, onClick: () -> Unit) {
     Box(
         Modifier.background(Chip, RoundedCornerShape(12.dp)).border(1.dp, Color(0x88B91C1C), RoundedCornerShape(12.dp))
-            .clickable { onClick() }.padding(horizontal = 12.dp, vertical = 9.dp)
+            .clickable(role = Role.Button) { onClick() }.padding(horizontal = 12.dp, vertical = 9.dp)
     ) { Text(text, color = Color.White, fontFamily = FontFamily.Monospace, fontSize = 15.sp) }
 }
 
@@ -243,9 +262,11 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
 
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-            TextButton(onClick = onExit) { Text("✕", color = Muted, fontSize = 18.sp) }
-            Box(Modifier.weight(1f).height(10.dp).background(Chip, CircleShape)) {
-                val f = if (phase == 2) 1f else solved.coerceAtMost(total) / total.toFloat()
+            TextButton(onClick = onExit, modifier = Modifier.semantics { contentDescription = "Закрыть урок" }) {
+                Text("✕", color = Muted, fontSize = 18.sp)
+            }
+            val f = if (phase == 2) 1f else frac(solved.coerceAtMost(total), total)
+            Box(Modifier.weight(1f).height(10.dp).background(Chip, CircleShape).progressSem("Прогресс урока", f)) {
                 Box(Modifier.fillMaxWidth(f).fillMaxHeight().background(Violet, CircleShape))
             }
             Spacer(Modifier.width(12.dp))
@@ -257,7 +278,9 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                 Spacer(Modifier.height(12.dp))
                 TheoryText(lesson.theory)
                 Spacer(Modifier.height(20.dp))
-                Button(onClick = { phase = 1 }, modifier = Modifier.fillMaxWidth(),
+                Button(onClick = {
+                    if (queue.isEmpty()) { gained = 10; prog.complete(c.id, idx, gained); phase = 2 } else phase = 1
+                }, modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Violet, contentColor = Color.Black)) { Text("Начать практику") }
             }
             1 -> {
@@ -281,7 +304,8 @@ private fun LessonRunner(c: Course, idx: Int, prog: Progress, onExit: () -> Unit
                             Box(
                                 Modifier.fillMaxWidth().padding(bottom = 8.dp).background(if (sel) Chip else Panel, RoundedCornerShape(12.dp))
                                     .border(2.dp, col, RoundedCornerShape(12.dp))
-                                    .clickable { if (result == null) { picked.clear(); picked.add(bi) } }.padding(14.dp)
+                                    .semantics { selected = sel }
+                                    .clickable(role = Role.RadioButton) { if (result == null) { picked.clear(); picked.add(bi) } }.padding(14.dp)
                             ) { Text(b, color = Color.White, fontFamily = FontFamily.Monospace, fontSize = 15.sp) }
                         }
                     } else if (ex.kind == Kind.BUILD) {
