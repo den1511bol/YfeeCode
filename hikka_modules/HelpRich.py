@@ -26,7 +26,7 @@ def esc(text):
     return _html.escape(str(text), quote=False)
 
 
-_EMOJI_RE = re.compile(r"<emoji\s+document_id=[\"']?(\d+)[\"']?\s*>(.*?)</emoji>", re.S)
+_EMOJI_RE = re.compile(r"<emoji\s+document_id=[\"']?(\d+)[\"']?\s*>(.*?)</emoji\s*>?", re.S)
 
 
 def fix_emoji(val):
