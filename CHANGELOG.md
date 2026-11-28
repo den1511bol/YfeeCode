@@ -440,3 +440,4 @@
 - v5-N85: практика cs31 StringBuilder (184 практики). Автор: @yfeeeee.
 - v5-N86: практика html30 выпадающий список select (185 практик). Автор: @yfeeeee.
 - v5-N87: практика css30 aspect-ratio (186 практик). Автор: @yfeeeee.
+- v5-N88: практика js35 includes (187 практик). Автор: @yfeeeee.
