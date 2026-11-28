@@ -106,3 +106,4 @@
 - [x] rich-хелпер готов: hikka_modules/RichKit.py (команды .rich, .rmods, .rhelp, details/table через sendRichMessage ассистент-бота, запасной вариант blockquote expandable). Не проверено на живом Hikka.
 - [x] N64 практика py31.
 - N65 js31 готово
+- N66 cpp29 готово

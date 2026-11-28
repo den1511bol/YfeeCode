@@ -399,3 +399,4 @@
 - v5-N65: практика js31 Array.reduce (164 практики). Автор: @yfeeeee. Выяснено: rich встроен в юзербот и был выключен командами fcfg rich_mode 0.
 - RichKit: команда .mods (короткий .rmods). В .fcfg help нет опции группировки по модулям. Автор: @yfeeeee.
 - HelpRich.py: подменяет .help, каждый модуль свёрнутым списком (обход allmodules.commands). Автор: @yfeeeee.
+- v5-N66: практика cpp29 vector push_back и size (165 практик). Автор: @yfeeeee.

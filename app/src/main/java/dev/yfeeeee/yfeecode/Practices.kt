@@ -323,7 +323,9 @@ object Practices {
             Practice("cpp27", "std::map", "Создай std::map<std::string, int> ages, добавь пару Аня и 25 (ключ \"Anna\") и выведи значение по ключу через std::cout.", "", Lang.CPP,
                 listOf(must("""map\s*<\s*std::string\s*,\s*int\s*>""", "Нужен std::map<std::string, int>"), must("""ages\s*\[""", "Обращайся по ключу: ages[\"Anna\"]"), must("""cout""", "Выводи через std::cout"))),
             Practice("cpp28", "sort с лямбдой", "Отсортируй std::vector<int> v по убыванию через std::sort и лямбду-компаратор.", "", Lang.CPP,
-                listOf(must("""std::sort\s*\(""", "Нужен std::sort(...)"), must("""\[\s*\]\s*\(""", "Нужна лямбда: [](int a, int b) { ... }"), must("""a\s*>\s*b""", "Для убывания сравнивай a > b")))
+                listOf(must("""std::sort\s*\(""", "Нужен std::sort(...)"), must("""\[\s*\]\s*\(""", "Нужна лямбда: [](int a, int b) { ... }"), must("""a\s*>\s*b""", "Для убывания сравнивай a > b"))),
+            Practice("cpp29", "vector push_back и size", "Создай std::vector<int> v, добавь в него число 5 через push_back и выведи размер через v.size().", "", Lang.CPP,
+                listOf(must("""std::vector\s*<\s*int\s*>""", "Нужен std::vector<int>"), must("""\.push_back\s*\(""", "Добавь элемент через .push_back(...)"), must("""\.size\s*\(\s*\)""", "Узнай размер через .size()")))
         ),
         "cs" to listOf(
             Practice("cs1", "Hello, C#", "Напиши программу с классом Program, методом Main и выводом Hello.", "", Lang.CSHARP,
