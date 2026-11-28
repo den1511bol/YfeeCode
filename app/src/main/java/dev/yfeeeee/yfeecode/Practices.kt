@@ -233,7 +233,9 @@ object Practices {
             Practice("html28", "Ссылка в новой вкладке", "Сделай ссылку на https://example.com с текстом Сайт, которая открывается в новой вкладке (атрибут target).", "", Lang.HTML,
                 listOf(must("""<a\s[^>]*href\s*=\s*["']https://example\.com""", "Нужна ссылка <a href=\"https://example.com\">"), must("""target\s*=\s*["']_blank["']""", "Добавь target=\"_blank\""), must("""</a>""", "Закрой ссылку тегом </a>"))),
             Practice("html29", "Индикатор progress", "Добавь индикатор выполнения: тег progress с атрибутами value=\"70\" и max=\"100\".", "", Lang.HTML,
-                listOf(must("""<progress[\s>]""", "Нужен тег <progress>"), must("""value\s*=\s*["']70["']""", "Добавь value=\"70\""), must("""max\s*=\s*["']100["']""", "Добавь max=\"100\""), must("""</progress>""", "Закрой тег </progress>")))
+                listOf(must("""<progress[\s>]""", "Нужен тег <progress>"), must("""value\s*=\s*["']70["']""", "Добавь value=\"70\""), must("""max\s*=\s*["']100["']""", "Добавь max=\"100\""), must("""</progress>""", "Закрой тег </progress>"))),
+            Practice("html30", "Выпадающий список", "Сделай выпадающий список: тег select и три вложенных option.", "", Lang.HTML,
+                listOf(must("""<select[\s>][\s\S]*</select>""", "Нужен тег <select>…</select>"), must("""(<option[\s>][\s\S]*){3}""", "Нужно три пункта <option>"), must("""</option>""", "Закрывай каждый <option> тегом </option>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
