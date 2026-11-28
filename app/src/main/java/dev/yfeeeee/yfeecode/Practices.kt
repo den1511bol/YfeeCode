@@ -175,7 +175,9 @@ object Practices {
             Practice("js32", "Оператор ??", "Объяви const name = null и выведи имя через console.log, подставив значение по умолчанию \"гость\" через оператор ??.", "", Lang.JS,
                 listOf(must("""\?\?""", "Используй оператор ??"), must("""console\.log\s*\(""", "Выведи результат через console.log"), must("""["'`]гость["'`]""", "Значение по умолчанию: \"гость\"")), "гость"),
             Practice("js33", "Уникальные значения (Set)", "Убери повторы из массива [1, 2, 2, 3] через new Set и spread и выведи результат через console.log.", "", Lang.JS,
-                listOf(must("""new\s+Set\s*\(""", "Нужен new Set(...)"), must("""\[\s*\.\.\.""", "Преврати обратно в массив: [...new Set(arr)]"), must("""console\.log\s*\(""", "Выведи результат через console.log")))
+                listOf(must("""new\s+Set\s*\(""", "Нужен new Set(...)"), must("""\[\s*\.\.\.""", "Преврати обратно в массив: [...new Set(arr)]"), must("""console\.log\s*\(""", "Выведи результат через console.log"))),
+            Practice("js34", "Object.keys", "Выведи массив ключей объекта user = { name: \"Аня\", age: 20 } через Object.keys и console.log.", "", Lang.JS,
+                listOf(must("""Object\.keys\s*\(""", "Нужен Object.keys(user)"), must("""console\.log\s*\(""", "Выведи результат через console.log")))
         ),
         "html" to listOf(
             Practice("html1", "Каркас страницы", "Собери каркас: DOCTYPE, html, head с title, body.", "", Lang.HTML,
