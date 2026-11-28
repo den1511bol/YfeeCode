@@ -293,11 +293,16 @@ class HelpRichMod(loader.Module):
         dev = mod_developer(mod)
 
         def build(qv):
-            head = "<p>%s <b>%s</b></p>" % (head_em, name)
-            if doc:
-                head += "<p>%s</p>" % esc(doc)
+            title = "%s <b>%s</b>" % (head_em, name)
             if qv:
-                head = "<blockquote>%s</blockquote>" % head
+                # название и описание в разных цитатах
+                head = "<blockquote>%s</blockquote>" % title
+                if doc:
+                    head += "<blockquote>%s</blockquote>" % esc(doc)
+            else:
+                head = "<p>%s</p>" % title
+                if doc:
+                    head += "<p>%s</p>" % esc(doc)
             text = head
             if lines:
                 inner = "".join(lines)
