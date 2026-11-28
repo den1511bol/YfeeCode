@@ -94,8 +94,8 @@ class HelpRichMod(loader.Module):
             ),
             loader.ConfigValue(
                 "command_emoji",
-                "",
-                "Эмодзи перед командой в .help имя. Пусто: берётся из модуля Help",
+                "•",
+                "Значок перед командой (по умолчанию точка). Можно вставить эмодзи",
             ),
             loader.ConfigValue(
                 "desc_icon",
@@ -183,7 +183,7 @@ class HelpRichMod(loader.Module):
                 lines = ["<code>%s</code> - %s" % (esc(c), esc(d)) if d else "<code>%s</code>" % esc(c) for c, d in cmds]
                 out.append("<b>%s %s</b>\n<blockquote expandable>%s</blockquote>" % (em, name, "\n".join(lines)))
             else:
-                cem = self._em("command_emoji", "")
+                cem = fix_emoji(self.config["command_emoji"])
                 body = "".join(
                     "<p>%s<code>%s</code>%s</p>" % ((cem + " ") if cem else "", esc(c), (" - " + esc(d)) if d else "")
                     for c, d in cmds
@@ -204,7 +204,7 @@ class HelpRichMod(loader.Module):
     async def _module_help(self, message, mod):
         """.help имя: команды одного модуля в том же стиле."""
         prefix = self.get_prefix()
-        cmd_em = self._em("command_emoji", "▫️")
+        cmd_em = fix_emoji(self.config["command_emoji"]) or "•"
         head_em = self._em("desc_icon", "🪐")
         name = esc(mod_name(mod))
         cmds = mod_commands(mod, prefix)
