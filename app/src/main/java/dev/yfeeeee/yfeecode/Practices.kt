@@ -109,7 +109,9 @@ object Practices {
             Practice("py33", "Срез списка", "Выведи элементы списка nums с индекса 1 до 3 (не включая 3) с помощью среза.", "nums = [10, 20, 30, 40]\n", Lang.PYTHON,
                 listOf(must("""nums\s*\[\s*1\s*:\s*3\s*\]""", "Нужен срез nums[1:3]"), must("""print\s*\(""", "Выведи результат через print")), "[20, 30]"),
             Practice("py34", "split строки", "Раздели строку text на слова через split и выведи количество слов через len.", "text = \"один два три\"\n", Lang.PYTHON,
-                listOf(must("""\.split\s*\(""", "Нужен text.split()"), must("""len\s*\(""", "Посчитай слова через len(...)"), must("""print\s*\(""", "Выведи результат через print")), "3")
+                listOf(must("""\.split\s*\(""", "Нужен text.split()"), must("""len\s*\(""", "Посчитай слова через len(...)"), must("""print\s*\(""", "Выведи результат через print")), "3"),
+            Practice("py35", "Максимум max", "Найди наибольшее число в списке nums через max и выведи его через print.", "nums = [3, 9, 4]\n", Lang.PYTHON,
+                listOf(must("""max\s*\(""", "Нужен max(nums)"), must("""print\s*\(""", "Выведи результат через print")), "9")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
