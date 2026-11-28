@@ -5,11 +5,11 @@
 # HelpRich: подменяет обычную команду .help. Каждый модуль отдельным свёрнутым списком
 # (<details>), внутри его команды с описаниями. Отдельная команда не нужна: пишешь .help
 # как обычно. С аргументом (.help имя) работает оригинальный help.
+# Сделано под Heroku (coddrago/Heroku): обёртка над dispatch_candidates.
 # При выгрузке модуля оригинальный help возвращается.
 # Автор: @yfeeeee
 
 import html as _html
-import inspect
 import logging
 
 from .. import loader, utils
@@ -57,62 +57,39 @@ class HelpRichMod(loader.Module):
             ),
         )
         self._orig = None
-        self._disp = None
+        self._cand = None
 
     def _install(self):
-        """Подмена help сразу в трёх местах: словарь команд, модуль Help и dispatch."""
+        """Heroku берёт обработчик из dispatch_candidates (последний в списке).
+        Оборачиваем его: для команды help добавляем в конец свой обработчик.
+        Словарь commands не трогаем, его раз в 30 секунд пересобирает сам юзербот."""
         am = self.allmodules
-        try:
-            cmds = am.commands
-            cur = cmds.get("help")
-            if cur is not None and getattr(cur, "__self__", None) is not self:
-                self._orig = cur
-            cmds["help"] = self._help
-        except Exception as e:
-            logger.warning("HelpRich commands: %s", e)
-        for mod in am.modules:
-            if mod is self:
-                continue
-            mc = getattr(mod, "commands", None)
-            if isinstance(mc, dict) and "help" in mc:
-                try:
-                    if self._orig is None:
-                        self._orig = mc["help"]
-                    mc["help"] = self._help
-                except Exception as e:
-                    logger.warning("HelpRich module commands: %s", e)
-        disp = getattr(am, "dispatch", None)
-        if disp is not None and not getattr(disp, "_helprich", False) and not inspect.iscoroutinefunction(disp):
-            outer = self
+        cur = getattr(am, "dispatch_candidates", None)
+        if cur is None or getattr(cur, "_helprich", False):
+            return
+        outer = self
 
-            def dispatch(command, *a, **kw):
-                res = disp(command, *a, **kw)
-                try:
-                    if isinstance(res, tuple) and len(res) == 2 and str(res[0]).lower() == "help":
-                        return res[0], outer._help
-                except Exception:
-                    pass
-                return res
+        def dispatch_candidates(command, *a, **kw):
+            res = cur(command, *a, **kw)
+            try:
+                txt, hs = res
+                if hs and str(txt).split()[0].lower() == "help":
+                    last = hs[-1]
+                    if getattr(last, "__self__", None) is not outer:
+                        outer._orig = last
+                    return txt, [h for h in hs if getattr(h, "__self__", None) is not outer] + [outer._help]
+            except Exception as e:
+                logger.warning("HelpRich dispatch: %s", e)
+            return res
 
-            dispatch._helprich = True
-            dispatch._orig = disp
-            self._disp = disp
-            am.dispatch = dispatch
+        dispatch_candidates._helprich = True
+        self._cand = cur
+        am.dispatch_candidates = dispatch_candidates
 
     def _uninstall(self):
-        am = self.allmodules
-        if self._orig is not None:
-            try:
-                am.commands["help"] = self._orig
-            except Exception:
-                pass
-            for mod in am.modules:
-                mc = getattr(mod, "commands", None)
-                if isinstance(mc, dict) and mc.get("help") == self._help:
-                    mc["help"] = self._orig
-        if getattr(self, "_disp", None) is not None:
-            am.dispatch = self._disp
-            self._disp = None
+        if getattr(self, "_cand", None) is not None:
+            self.allmodules.dispatch_candidates = self._cand
+            self._cand = None
 
     async def client_ready(self, client, db):
         self._client = client
