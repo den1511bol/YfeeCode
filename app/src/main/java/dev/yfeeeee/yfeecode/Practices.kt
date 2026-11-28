@@ -291,7 +291,9 @@ object Practices {
             Practice("css28", "Тень блока", "Добавь для .box тень через box-shadow со смещением 0 4px, размытием 8px и цветом rgba(0,0,0,0.2).", "", Lang.CSS,
                 listOf(must("""\.box\s*\{""", "Нужен селектор .box"), must("""box-shadow\s*:\s*0\s+4px\s+8px""", "Добавь box-shadow: 0 4px 8px ..."), must("""rgba\s*\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0?\.2\s*\)""", "Цвет тени: rgba(0,0,0,0.2)"))),
             Practice("css29", "Многоточие в строке", "Для .title сделай так, чтобы длинный текст обрезался многоточием в одну строку: white-space nowrap, overflow hidden и text-overflow ellipsis.", "", Lang.CSS,
-                listOf(must("""\.title\s*\{""", "Нужен селектор .title"), must("""white-space\s*:\s*nowrap""", "Добавь white-space: nowrap"), must("""overflow\s*:\s*hidden""", "Добавь overflow: hidden"), must("""text-overflow\s*:\s*ellipsis""", "Добавь text-overflow: ellipsis")))
+                listOf(must("""\.title\s*\{""", "Нужен селектор .title"), must("""white-space\s*:\s*nowrap""", "Добавь white-space: nowrap"), must("""overflow\s*:\s*hidden""", "Добавь overflow: hidden"), must("""text-overflow\s*:\s*ellipsis""", "Добавь text-overflow: ellipsis"))),
+            Practice("css30", "Пропорции aspect-ratio", "Сделай для .video блок с пропорциями 16 на 9 через aspect-ratio и шириной 100%.", "", Lang.CSS,
+                listOf(must("""\.video\s*\{""", "Нужен селектор .video"), must("""aspect-ratio\s*:\s*16\s*/\s*9""", "Добавь aspect-ratio: 16 / 9"), must("""width\s*:\s*100%""", "Добавь width: 100%")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
