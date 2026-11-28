@@ -111,7 +111,9 @@ object Practices {
             Practice("py34", "split строки", "Раздели строку text на слова через split и выведи количество слов через len.", "text = \"один два три\"\n", Lang.PYTHON,
                 listOf(must("""\.split\s*\(""", "Нужен text.split()"), must("""len\s*\(""", "Посчитай слова через len(...)"), must("""print\s*\(""", "Выведи результат через print")), "3"),
             Practice("py35", "Максимум max", "Найди наибольшее число в списке nums через max и выведи его через print.", "nums = [3, 9, 4]\n", Lang.PYTHON,
-                listOf(must("""max\s*\(""", "Нужен max(nums)"), must("""print\s*\(""", "Выведи результат через print")), "9")
+                listOf(must("""max\s*\(""", "Нужен max(nums)"), must("""print\s*\(""", "Выведи результат через print")), "9"),
+            Practice("py36", "Модуль числа abs", "Выведи модуль числа x через abs.", "x = -7\n", Lang.PYTHON,
+                listOf(must("""abs\s*\(""", "Нужен abs(x)"), must("""print\s*\(""", "Выведи результат через print")), "7")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
