@@ -275,7 +275,9 @@ object Practices {
             Practice("css26", "Позиционирование", "Сделай .card позиционным родителем (position: relative), а .badge поставь в правый верхний угол через position: absolute, top и right.", "", Lang.CSS,
                 listOf(must("""position\s*:\s*relative""", "У .card нужен position: relative"), must("""position\s*:\s*absolute""", "У .badge нужен position: absolute"), must("""\btop\s*:""", "Добавь top"), must("""\bright\s*:""", "Добавь right"))),
             Practice("css27", "Отступ gap", "Сделай для .gallery сетку display: grid и задай расстояние между ячейками через gap: 12px.", "", Lang.CSS,
-                listOf(must("""\.gallery""", "Нужен селектор .gallery"), must("""display\s*:\s*grid""", "Включи display: grid"), must("""\bgap\s*:\s*12px""", "Добавь gap: 12px")))
+                listOf(must("""\.gallery""", "Нужен селектор .gallery"), must("""display\s*:\s*grid""", "Включи display: grid"), must("""\bgap\s*:\s*12px""", "Добавь gap: 12px"))),
+            Practice("css28", "Тень блока", "Добавь для .box тень через box-shadow со смещением 0 4px, размытием 8px и цветом rgba(0,0,0,0.2).", "", Lang.CSS,
+                listOf(must("""\.box\s*\{""", "Нужен селектор .box"), must("""box-shadow\s*:\s*0\s+4px\s+8px""", "Добавь box-shadow: 0 4px 8px ..."), must("""rgba\s*\(\s*0\s*,\s*0\s*,\s*0\s*,\s*0?\.2\s*\)""", "Цвет тени: rgba(0,0,0,0.2)")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
