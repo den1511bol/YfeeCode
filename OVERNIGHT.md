@@ -138,3 +138,4 @@
 - F4 configChanges в манифесте (uiMode|locale|fontScale|layoutDirection|screenLayout|smallestScreenSize), чтобы терминал не терялся - ждёт
 - F2 готово (try/catch в submit, scrollTick)
 - F3 готово (контраст, 48dp, TalkBack у акцентов; остальное из LearnUi/LinuxScreen/HelpScreen позже)
+- F4 готово (configChanges)
