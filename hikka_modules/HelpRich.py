@@ -55,6 +55,12 @@ def no_emoji(html_text):
 
 def mod_developer(mod):
     """Разработчик модуля: атрибут developer, иначе строка '# meta developer:' из исходника."""
+    # так делает сам Help: ищет строку "# meta developer:" в атрибуте __source__ модуля
+    src0 = getattr(mod, "__source__", None)
+    if isinstance(src0, str):
+        m0 = re.search(r"# ?meta developer: ?(.+)", src0)
+        if m0:
+            return m0.group(1).strip()
     dev = getattr(mod, "developer", None)
     if dev:
         return str(dev)
