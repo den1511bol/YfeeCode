@@ -239,7 +239,9 @@ object Practices {
             Practice("html29", "Индикатор progress", "Добавь индикатор выполнения: тег progress с атрибутами value=\"70\" и max=\"100\".", "", Lang.HTML,
                 listOf(must("""<progress[\s>]""", "Нужен тег <progress>"), must("""value\s*=\s*["']70["']""", "Добавь value=\"70\""), must("""max\s*=\s*["']100["']""", "Добавь max=\"100\""), must("""</progress>""", "Закрой тег </progress>"))),
             Practice("html30", "Выпадающий список", "Сделай выпадающий список: тег select и три вложенных option.", "", Lang.HTML,
-                listOf(must("""<select[\s>][\s\S]*</select>""", "Нужен тег <select>…</select>"), must("""(<option[\s>][\s\S]*){3}""", "Нужно три пункта <option>"), must("""</option>""", "Закрывай каждый <option> тегом </option>")))
+                listOf(must("""<select[\s>][\s\S]*</select>""", "Нужен тег <select>…</select>"), must("""(<option[\s>][\s\S]*){3}""", "Нужно три пункта <option>"), must("""</option>""", "Закрывай каждый <option> тегом </option>"))),
+            Practice("html31", "Цитата", "Оформи цитату: тег blockquote с текстом внутри и подписью в теге cite.", "", Lang.HTML,
+                listOf(must("""<blockquote[\s>][\s\S]*</blockquote>""", "Нужен тег <blockquote>…</blockquote>"), must("""<cite[\s>][\s\S]*</cite>""", "Добавь подпись в <cite>…</cite>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
