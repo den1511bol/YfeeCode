@@ -421,3 +421,4 @@
 - v5-N73: практика cs29 тернарный оператор (172 практики). Автор: @yfeeeee.
 - HelpRich v13: убрано число команд в скобках из заголовков. Автор: @yfeeeee.
 - HelpRich v14: баннер (картинка/гифка) сверху в цитате: banner_url из HelpRich или Help; варианты blockquote+figure, figure, без баннера. Автор: @yfeeeee.
+- v5-N74: практика html28 ссылка target=_blank (173 практики). Автор: @yfeeeee.
