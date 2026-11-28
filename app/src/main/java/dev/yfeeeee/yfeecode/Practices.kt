@@ -185,7 +185,9 @@ object Practices {
             Practice("html20", "Список ссылок", "Сделай меню: ul с тремя li, в каждом li ссылка a.", "", Lang.HTML,
                 listOf(must("""<ul""", "Нужен тег ul"), must("""<li[^>]*>\s*<a""", "В li нужна ссылка a"))),
             Practice("html21", "Форма с email", "Сделай форму: label для поля, input type=\"email\" и кнопку button.", "", Lang.HTML,
-                listOf(must("""<form""", "Нужен тег form"), must("""<label""", "Нужна подпись label"), must("""<input[^>]*type\s*=\s*["']email["']""", "Нужен input с type=\"email\""), must("""<button""", "Нужна кнопка button")))
+                listOf(must("""<form""", "Нужен тег form"), must("""<label""", "Нужна подпись label"), must("""<input[^>]*type\s*=\s*["']email["']""", "Нужен input с type=\"email\""), must("""<button""", "Нужна кнопка button"))),
+            Practice("html22", "Таблица", "Сделай таблицу: table с thead (строка заголовков th) и tbody (строка с ячейками td).", "", Lang.HTML,
+                listOf(must("""<table""", "Нужен тег table"), must("""<thead""", "Нужен thead"), must("""<th""", "Нужны заголовки th"), must("""<tbody""", "Нужен tbody"), must("""<td""", "Нужны ячейки td")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
