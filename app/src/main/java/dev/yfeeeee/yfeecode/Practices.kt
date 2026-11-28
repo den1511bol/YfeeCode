@@ -101,7 +101,9 @@ object Practices {
             Practice("py29", "Генератор списка с условием", "Из списка nums возведи в квадрат только чётные числа через генератор списка с if и выведи результат.", "nums = [1, 2, 3, 4, 5, 6]\n", Lang.PYTHON,
                 listOf(must("""\[[^\]]*\bfor\b[^\]]*\bif\b[^\]]*\]""", "Нужен генератор списка: [... for n in nums if ...]"), must("""%\s*2""", "Чётность проверяй через % 2"), must("""print\s*\(""", "Выведи результат через print")), "[4, 16, 36]"),
             Practice("py30", "Класс с __init__", "Напиши класс Dog с __init__(self, name) и методом speak, который возвращает имя и слово гав через пробел. Выведи Dog(\"Рекс\").speak().", "", Lang.PYTHON,
-                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""def\s+__init__\s*\(\s*self""", "Нужен __init__(self, name)"), must("""def\s+speak\s*\(\s*self""", "Нужен метод speak(self)"), must("""print\s*\(""", "Выведи результат через print")), "Рекс гав")
+                listOf(must("""class\s+Dog""", "Нужен class Dog"), must("""def\s+__init__\s*\(\s*self""", "Нужен __init__(self, name)"), must("""def\s+speak\s*\(\s*self""", "Нужен метод speak(self)"), must("""print\s*\(""", "Выведи результат через print")), "Рекс гав"),
+            Practice("py31", "dict.get с умолчанием", "В словаре settings язык есть только у пользователя \"1\". Выведи язык пользователя \"2\" через settings.get со значением по умолчанию \"en\".", "settings = {\"1\": \"ru\"}\n", Lang.PYTHON,
+                listOf(must("""\.get\s*\(""", "Нужен settings.get(...)"), must("""["']en["']""", "Значение по умолчанию: \"en\""), must("""print\s*\(""", "Выведи результат через print")), "en")
         ),
         "js" to listOf(
             Practice("js1", "Привет", "Выведи в консоль слово Hello.", "// Напиши код ниже\n", Lang.JS,
