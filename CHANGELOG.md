@@ -450,3 +450,4 @@
 - v5-F4: манифест: configChanges расширен (uiMode, locale, fontScale и др.), терминал и лог больше не теряются при смене темы, языка или масштаба шрифта. Автор: @yfeeeee.
 - v5-N92: практика html31 цитата blockquote и cite (191 практика). Автор: @yfeeeee.
 - v5-N93: практика css31 text-transform и letter-spacing (192 практики). Автор: @yfeeeee.
+- v5-N94: практика js36 метод some (193 практики). Автор: @yfeeeee.
