@@ -111,6 +111,7 @@ class HelpRichMod(loader.Module):
         )
         self._orig = None
         self._cand = None
+        self._hidden_count = 0
 
     def _install(self):
         """Heroku берёт обработчик из dispatch_candidates (последний в списке).
@@ -165,14 +166,34 @@ class HelpRichMod(loader.Module):
                     break
         return fix_emoji(val) or fallback
 
-    def _blocks(self, quote):
+    def _hidden(self):
+        """Список скрытых модулей из базы Help (команда .helphide), имена классов."""
+        for m in self.allmodules.modules:
+            if getattr(m, "strings", {}).get("name") == "Help":
+                try:
+                    return list(m.get("hide", []))
+                except Exception:
+                    return []
+        return []
+
+    def _blocks(self, quote, force=False, only=None):
+        """force: показать и скрытые (.help -f). only: core (.help -c) или loaded (.help -l)."""
         prefix = self.get_prefix()
+        hidden = self._hidden()
+        self._hidden_count = 0
         out = []
         for mod in self.allmodules.modules:
             if mod is self:
                 continue
-            name = esc(mod_name(mod))
             core = str(getattr(mod, "__origin__", "")).startswith("<core")
+            if only == "core" and not core:
+                continue
+            if only == "loaded" and core:
+                continue
+            if mod.__class__.__name__ in hidden and not force:
+                self._hidden_count += 1
+                continue
+            name = esc(mod_name(mod))
             em = self._em("core_emoji" if core else "plain_emoji", "📦")
             cmds = mod_commands(mod, prefix)
             if not cmds:
@@ -235,6 +256,9 @@ class HelpRichMod(loader.Module):
     async def _help(self, message):
         """Список модулей и команд (подменён HelpRich)"""
         args = utils.get_args_raw(message)
+        force = "-f" in args or "-c" in args or "-l" in args
+        only = "core" if "-c" in args else ("loaded" if "-l" in args else None)
+        args = args.replace("-f", "").replace("-c", "").replace("-l", "").strip()
         if args:
             mod = self._find_module(args.split()[0])
             if mod is not None:
@@ -243,8 +267,9 @@ class HelpRichMod(loader.Module):
                 return await self._orig(message)
         # Так отправляет сам Help при rich_mode: одним rich-сообщением
         if self.config["mode"] == "details":
-            blocks = self._blocks(False)
-            head = "<p>%s <b>Модулей: %d</b></p>" % (self._em("desc_icon", "📚"), len(blocks))
+            blocks = self._blocks(False, force, only)
+            hid = (", скрыто: %d" % self._hidden_count) if self._hidden_count else ""
+            head = "<p>%s <b>Модулей: %d%s</b></p>" % (self._em("desc_icon", "📚"), len(blocks), hid)
             if self.config["nested"]:
                 blocks = ["<details><summary>Модули (%d)</summary>%s</details>" % (len(blocks), "".join(blocks))]
             rich = getattr(utils, "answer_with_media_fallback", None)
@@ -258,7 +283,7 @@ class HelpRichMod(loader.Module):
                         return
                     except Exception as e:
                         logger.warning("HelpRich rich variant %d failed: %s. Начало текста: %r", n + 1, e, variant[:400])
-        await self._plain(message, self._blocks(True))
+        await self._plain(message, self._blocks(True, force, only))
 
     async def _plain(self, message, blocks):
         """Запасной путь: свёрнутые цитаты обычными сообщениями до LIMIT знаков."""
@@ -272,7 +297,8 @@ class HelpRichMod(loader.Module):
             chunks.append(cur)
         if not chunks:
             chunks = ["<b>Модулей нет</b>"]
-        await utils.answer(message, "<b>📚 Модулей: %d</b>\n" % len(blocks) + chunks[0])
+        hid = (", скрыто: %d" % self._hidden_count) if self._hidden_count else ""
+        await utils.answer(message, "<b>📚 Модулей: %d%s</b>\n" % (len(blocks), hid) + chunks[0])
         for ch in chunks[1:]:
             await self._client.send_message(utils.get_chat_id(message), ch, parse_mode="html")
 
