@@ -209,7 +209,9 @@ object Practices {
             Practice("html24", "Раскрывающийся блок", "Сделай раскрывающийся блок: details с заголовком summary и абзацем p внутри.", "", Lang.HTML,
                 listOf(must("""<details""", "Нужен тег details"), must("""<summary""", "Нужен заголовок summary"), must("""<p""", "Добавь абзац p"))),
             Practice("html25", "Обязательное поле", "Сделай поле ввода input с подсказкой placeholder и обязательным атрибутом required.", "", Lang.HTML,
-                listOf(must("""<input""", "Нужен тег input"), must("""placeholder\s*=""", "Добавь placeholder"), must("""\brequired\b""", "Добавь атрибут required")))
+                listOf(must("""<input""", "Нужен тег input"), must("""placeholder\s*=""", "Добавь placeholder"), must("""\brequired\b""", "Добавь атрибут required"))),
+            Practice("html26", "Видео", "Вставь видео: тег video с атрибутом controls и вложенным source с src.", "", Lang.HTML,
+                listOf(must("""<video""", "Нужен тег video"), must("""\bcontrols\b""", "Добавь атрибут controls"), must("""<source[^>]*src\s*=""", "Добавь <source src=...>")))
         ),
         "css" to listOf(
             Practice("css1", "Тёмный фон", "Задай для body тёмный фон и светлый цвет текста.", "", Lang.CSS,
