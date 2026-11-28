@@ -17,6 +17,16 @@ object Cheats {
   <tg-spoiler>спойлер</tg-spoiler>
   <tg-emoji emoji-id="ID">🙂</tg-emoji>
   Символы < > & в обычном тексте: &lt; &gt; &amp;
+  <pre><code class="language-python">код</code></pre>
+  <a href="tg://user?id=123">ссылка на пользователя</a>
+
+Rich-сообщения (новые Bot API, sendRichMessage с полем html)
+  <table bordered striped compact>   таблица с рамками, полосами, компактная
+    <tr><td valign="middle">Имя</td><td><b>значение</b></td></tr>
+  </table>
+  <details><summary>Заголовок</summary>скрыто</details>   закрытый список
+  <details open><summary>...</summary>...</details>        открытый список
+  Работает только при отправке как rich-сообщение, в обычном parse_mode HTML таблицы и details не рисуются.
 
 Основа
   def f(x): ...        функция
