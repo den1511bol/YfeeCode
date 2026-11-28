@@ -384,3 +384,4 @@
 - v5-N56: практика html25 (required и placeholder).
 - v5-N57: практика css25 (grid).
 - v5-N58: практика py30 (класс с __init__).
+- v5-N59: практика js30 (Map).
