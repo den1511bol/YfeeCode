@@ -227,7 +227,9 @@ object Practices {
             Practice("css20", "Наведение", "Сделай так, чтобы кнопка .btn меняла фон при наведении мыши через :hover.", "", Lang.CSS,
                 listOf(must("""\.btn\s*:hover""", "Нужен селектор .btn:hover"), must("""background""", "Измени background"))),
             Practice("css21", "Flex-контейнер", "Сделай для .row flex-контейнер: display flex, justify-content space-between и gap между элементами.", "", Lang.CSS,
-                listOf(must("""\.row""", "Нужен селектор .row"), must("""display\s*:\s*flex""", "Добавь display: flex"), must("""justify-content\s*:""", "Добавь justify-content"), must("""gap\s*:""", "Добавь gap")))
+                listOf(must("""\.row""", "Нужен селектор .row"), must("""display\s*:\s*flex""", "Добавь display: flex"), must("""justify-content\s*:""", "Добавь justify-content"), must("""gap\s*:""", "Добавь gap"))),
+            Practice("css22", "Медиазапрос", "Сделай медиазапрос: на экранах до 600px шириной у .menu должно быть display: none.", "", Lang.CSS,
+                listOf(must("""@media""", "Нужен @media"), must("""max-width\s*:\s*600px""", "Условие: (max-width: 600px)"), must("""\.menu""", "Нужен селектор .menu"), must("""display\s*:\s*none""", "Добавь display: none")))
         ),
         "cpp" to listOf(
             Practice("cpp1", "Hello, C++", "Напиши программу, которая выводит Hello.", "", Lang.CPP,
